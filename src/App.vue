@@ -33,4 +33,5 @@ export default {
   letter-spacing: 1px;
   line-height: 13px;
 }
+
 </style>

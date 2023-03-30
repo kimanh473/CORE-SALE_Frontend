@@ -7,16 +7,15 @@
         <span class="text-2xl font-semibold text-gray-700">Cove Admin</span>
       </div>
 
-      <form class="mt-5" @submit.prevent="login">
+      <form class="mt-5" @submit.prevent="LoginData">
         <label class="block">
           <span class="text-sm text-gray-700">Email</span>
-          <input type="email" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" v-model="email"/>
+          <input type="email" v-model="student.email" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" />
         </label>
 
         <label class="block mt-3">
           <span class="text-sm text-gray-700">Password</span>
-          <input type="password" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" v-model="password"
-          />
+          <input type="password" v-model="student.password" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"/>
         </label>
 
         <div class="flex items-center justify-between mt-4">
@@ -33,8 +32,8 @@
         </div>
 
         <div class="mt-6">
-          <button type="submit" class="w-full px-4 py-2 text-sm text-center text-white bg-indigo-600 rounded-md focus:outline-none hover:bg-indigo-500">
-            Sign in
+          <button type="submit" @click="LoginData()" class="w-full px-4 py-2 text-sm text-center text-white bg-indigo-600 rounded-md focus:outline-none hover:bg-indigo-500">
+            Login
           </button>
         </div>
       </form>
@@ -44,26 +43,49 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
+// import { createApp} from 'vue';
+import axios from 'axios';
+import router from "@/router";
 
-export default defineComponent({
-  setup() {
-    const router = useRouter();
-    const email = ref("nguyenngocnam@mail.com");
-    const password = ref("12345678");
-
-    function login() {
-      router.push("/");
-    }
-
+// Vue.use(axios)
+export default {
+  name: 'Login',
+  data () {
     return {
-      login,
-      email,
-      password,
-    };
+      result: {},
+      student:{
+        email: '',
+        password: ''
+      }
+    }
   },
-});
+  created() {
+  },
+  mounted() {
+    console.log("mounted() called.......");
+    // this.LoginData();
+  },
+  methods: {
+    LoginData()
+    {
+      axios.post("http://127.0.0.1:8000/api/auth/login", this.student)
+          .then(
+              ({data})=>{
+                console.log(data);
+                try {
+                  this.result = data;
+                  localStorage.setItem('jwtToken', data.access_token)
+                  console.log(this.result);
+                  router.push('/')
+                } catch (err) {
+                  alert("Error, please try again");
+                  router.push('/login');
+                }
+              }
+          )
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -28,11 +28,12 @@
           <span>General</span>
         </div>
       </div>
-      <div class="h-[calc(250vh-50px)] bg-gray-800 py-[20px]">
+      <div class="container bg-gray-800 py-[20px]">
         <div class="flex flex-col justify-between h-full px-[20px] space-y-[10px]">
           <div class=" flex flex-col justify-between space-y-[10px]">
             <div @click="toggleshowDashBoard()">
-              <div class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+              <div
+                  class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
                 <svg class=" mr-2 h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="3" y="3" width="7" height="7"/>
@@ -40,43 +41,45 @@
                   <rect x="14" y="14" width="7" height="7"/>
                   <rect x="3" y="14" width="7" height="7"/>
                 </svg>
-<!--               <a href="/cryto"></a>-->
+                <!--               <a href="/cryto"></a>-->
                 DashBoard
                 <span class="sidebar-label">new</span>
               </div>
             </div>
-              <div v-if="showDashBoard" class=" flex flex-col justify-between space-y-[10px]">
+            <div v-if="showDashBoard" class=" flex flex-col justify-between space-y-[10px]">
 
-                <router-link to="/ecomerce"
-                             class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+              <router-link to="/ecomerce"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                  E-Commerce
-                </router-link>
+                E-Commerce
+              </router-link>
 
-                <router-link to="/cryto"
-                             class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/cryto"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                  Cryto
-                </router-link>
-                <router-link to="/crm"
-                             class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+                Cryto
+              </router-link>
+              <router-link to="/crm"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                  CRM
-                  <span class="sidebar-label">new</span>
-                </router-link>
-                <router-link to="/widget"
-                             class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+                CRM
+                <span class="sidebar-label">new</span>
+              </router-link>
+              <router-link to="/widget"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                  Widgets
-                </router-link>
-                <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+                Widgets
+              </router-link>
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                  SAAS
-                  <span class="sidebar-label">new</span>
-                </router-link>
-              </div>
+                SAAS
+                <span class="sidebar-label">new</span>
+              </router-link>
+            </div>
 
-            <div @click="toggleshowCryto()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowCryto()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -109,7 +112,8 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
@@ -117,7 +121,8 @@
             </div>
 
 
-            <div @click="toggleshowCrm()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowCrm()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -151,14 +156,16 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
 
-            <div @click="toggleshowWidgets()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowWidgets()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -191,14 +198,16 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
 
-            <div @click="toggleshowEComerce()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowEComerce()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -232,7 +241,8 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
@@ -240,7 +250,8 @@
             </div>
 
 
-            <div @click="toggleshowPage()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowPage()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -273,14 +284,16 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
 
-            <div @click="toggleshowSession()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowSession()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -313,44 +326,46 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-              <div class="h-[10px] flex justify-start  items-center ">
-                <div class="px-[10px]" style="font-size: 12px">
-                  <span>Module</span>
-                </div>
+            <div class="h-[10px] flex justify-start  items-center ">
+              <div class="px-[10px]" style="font-size: 12px">
+                <span>Module</span>
               </div>
-              <router-link to="/inbox"
-                           class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-                <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
-                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd"
-                        d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z"
-                        clip-rule="evenodd"></path>
-                </svg>
-                Inbox
-              </router-link>
-              <router-link to="/chat"
-                           class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-                <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
-                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd"
-                        d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z"
-                        clip-rule="evenodd"></path>
-                </svg>
-                Chat
-              </router-link>
+            </div>
+            <router-link to="/inbox"
+                         class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
+                   viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z"
+                      clip-rule="evenodd"></path>
+              </svg>
+              Inbox
+            </router-link>
+            <router-link to="/chat"
+                         class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
+                   viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z"
+                      clip-rule="evenodd"></path>
+              </svg>
+              Chat
+            </router-link>
             <div class="h-[10px] flex justify-start  items-center ">
               <div class="px-[10px]" style="font-size: 12px">
                 <span>Components</span>
               </div>
             </div>
 
-            <div @click="toggleshowUI()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowUI()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg class="mr-2 h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z"/>
@@ -383,13 +398,15 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-            <div @click="toggleshowTree()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowTree()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -422,14 +439,16 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
 
-            <div @click="toggleshowTime" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowTime"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -462,14 +481,16 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
 
-            <div @click="toggleshowForm" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowForm"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -502,14 +523,16 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
 
-            <div @click="toggleshowChart()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowChart()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -542,13 +565,15 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-            <div @click="toggleshowIcon()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowIcon()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -581,13 +606,15 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-            <div @click="toggleshowTable()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowTable()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -621,14 +648,16 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
 
-            <div @click="toggleshowMap()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowMap()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -661,7 +690,8 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
@@ -672,7 +702,8 @@
                 <span>Applications</span>
               </div>
             </div>
-            <div @click="toggleshowUser()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowUser()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -705,13 +736,15 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-            <div @click="toggleshowCalender()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowCalender()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -744,7 +777,8 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
@@ -755,7 +789,8 @@
                 <span>Features</span>
               </div>
             </div>
-            <div @click="toggleshowEditor()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowEditor()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -788,13 +823,15 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-            <div @click="toggleshowDrag()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowDrag()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -827,7 +864,8 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
@@ -838,7 +876,8 @@
                 <span>Extensions</span>
               </div>
             </div>
-            <div @click="toggleshowImage()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowImage()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -871,13 +910,15 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-            <div @click="toggleshowVideo()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowVideo()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -910,13 +951,15 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
-            <div @click="toggleshowDropzone()" class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+            <div @click="toggleshowDropzone()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -949,7 +992,8 @@
 
                 Widgets
               </router-link>
-              <router-link to="/saas" class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <router-link to="/saas"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 SAAS
                 <span class="sidebar-label">new</span>
@@ -969,6 +1013,51 @@
                 d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/>
           </svg>
         </div>
+
+        <button @click="toggleshowMenu()" class="mx-10 w-[30px]">
+          <svg class="w-[25px] h-[25px] text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </button>
+
+        <div v-if="showmenu" role="menu" class="v-menu__content ">
+          <div class="dropdown-content w-[321px] mt-60 ml-2">
+            <div class="flex border-[2px] justify-between bg-indigo-400"  >
+              <span class="white--text font-medium my-2">Quick Links</span>
+              <span class="v-badge warning">NEW</span>
+            </div>
+            <div class="flex border-[2px] justify-between" >
+              <div>
+
+                <div class="v-list-item v-list-item--link theme--light flex w">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                  </svg>
+
+                  <span>Gallery</span>
+                </div>
+                <div   class="v-list-item v-list-item--link theme--light"><i
+                    class="mr-3 ti-layout error--text"></i><span>Tables</span></div>
+                <div   class="v-list-item v-list-item--link theme--light"><i
+                    class="mr-3 ti-email success--text"></i><span>Inbox</span></div>
+              </div>
+
+              <div>
+                <div   class="v-list-item v-list-item--link theme--light"><i
+                    class="mr-3 ti-gallery primary--text"></i><span>Gallery</span></div>
+                <div   class="v-list-item v-list-item--link theme--light"><i
+                    class="mr-3 ti-layout error--text"></i><span>Tables</span></div>
+                <div   class="v-list-item v-list-item--link theme--light"><i
+                    class="mr-3 ti-email success--text"></i><span>Inbox</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Search bar -->
 
         <div class="w-[calc(100%-30px)] flex">
@@ -1004,7 +1093,7 @@
           <div class="w-[200px] ">
             <div class="flex items-center justify-start space-x-4" @click="toggleDrop">
               <img class="w-10 h-10 rounded-full border-2 border-gray-50"
-                   src="https://yt3.ggpht.com/hqsxh-Vnbw9OK0_X4DAWh6RkmEUVnL-82SRCyh-IKr9fIXR8zhUCRdBEwgWWL_14q_L8Piod=s108-c-k-c0x00ffffff-no-rj"
+                   src="https://vuely.theironnetwork.org/static/avatars/user-13.jpg"
                    alt="">
               <div class="font-semibold dark:text-white text-left">
                 <div>NguyenNam</div>
@@ -1017,14 +1106,14 @@
                  role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
               <div class="py-1 text-left" role="none">
                 <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm"  tabindex="-1"
                    id="menu-item-0">Account settings</a>
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm"  tabindex="-1"
                    id="menu-item-1">Support</a>
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm"  tabindex="-1"
                    id="menu-item-2">License</a>
                 <form method="POST" action="#" role="none">
-                  <button type="submit" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" role="menuitem"
+                  <button type="submit" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" 
                           tabindex="-1" id="menu-item-3">Sign out
                   </button>
                 </form>
@@ -1033,8 +1122,8 @@
           </div>
         </div>
       </div>
-      <div class="h-[calc(100vh-50px)] bg-gray-50 p-[20px]">
-        <div class="border border-gray-300 rounded-md p-[20px] h-full">
+      <div class="h-full bg-gray-50">
+        <div class="rounded-md h-full">
           <router-view></router-view>
         </div>
       </div>
@@ -1049,28 +1138,29 @@ export default {
     return {
       showDropDown: false,
       showSide: true,
-      showDashBoard:false,
-      showCryto:false,
-      showCrm:false,
-      showWidgets:false,
-      showEComerce:false,
-      showPage:false,
-      showSession:false,
-      showUI:false,
-      showTree:false,
-      showTime:false,
-      showForm:false,
-      showChart:false,
-      showIcon:false,
-      showTable:false,
-      showMap:false,
-      showUser:false,
-      showCalender:false,
-      showEditor:false,
-      showDrag:false,
-      showImage:false,
-      showVideo:false,
-      showDropzone:false
+      showDashBoard: false,
+      showCryto: false,
+      showCrm: false,
+      showWidgets: false,
+      showEComerce: false,
+      showPage: false,
+      showSession: false,
+      showUI: false,
+      showTree: false,
+      showTime: false,
+      showForm: false,
+      showChart: false,
+      showIcon: false,
+      showTable: false,
+      showMap: false,
+      showUser: false,
+      showCalender: false,
+      showEditor: false,
+      showDrag: false,
+      showImage: false,
+      showVideo: false,
+      showDropzone: false,
+      showmenu:false
     }
   },
   methods: {
@@ -1083,71 +1173,74 @@ export default {
       this.showmodule = !this.showmodule
     },
 
-    toggleshowDashBoard(){
-      this.showDashBoard=!this.showDashBoard
+    toggleshowDashBoard() {
+      this.showDashBoard = !this.showDashBoard
     },
-    toggleshowCryto(){
-      this.showCryto=!this.showCryto
+    toggleshowCryto() {
+      this.showCryto = !this.showCryto
     },
-    toggleshowCrm(){
-      this.showCrm=!this.showCrm
+    toggleshowCrm() {
+      this.showCrm = !this.showCrm
     },
-    toggleshowWidgets(){
-      this.showWidgets=!this.showWidgets
+    toggleshowWidgets() {
+      this.showWidgets = !this.showWidgets
     },
-    toggleshowEComerce(){
-      this.showEComerce=!this.showEComerce
+    toggleshowEComerce() {
+      this.showEComerce = !this.showEComerce
     },
-    toggleshowPage(){
-      this.showPage=!this.showPage
+    toggleshowPage() {
+      this.showPage = !this.showPage
     },
-    toggleshowSession(){
-      this.showSession=!this.showSession
+    toggleshowSession() {
+      this.showSession = !this.showSession
     },
-    toggleshowUI(){
-      this.showUI=!this.showUI
+    toggleshowUI() {
+      this.showUI = !this.showUI
     },
-    toggleshowTree(){
-      this.showTree=!this.showTree
+    toggleshowTree() {
+      this.showTree = !this.showTree
     },
-    toggleshowTime(){
-      this.showTime=!this.showTime
+    toggleshowTime() {
+      this.showTime = !this.showTime
     },
-    toggleshowChart(){
-      this.showChart=!this.showChart
+    toggleshowChart() {
+      this.showChart = !this.showChart
     },
-    toggleshowForm(){
-      this.showForm=!this.showForm
+    toggleshowForm() {
+      this.showForm = !this.showForm
     },
-    toggleshowIcon(){
-      this.showIcon=!this.showIcon
+    toggleshowIcon() {
+      this.showIcon = !this.showIcon
     },
-    toggleshowTable(){
-      this.showTable=!this.showTable
+    toggleshowTable() {
+      this.showTable = !this.showTable
     },
-    toggleshowMap(){
-      this.showMap=!this.showMap
+    toggleshowMap() {
+      this.showMap = !this.showMap
     },
-    toggleshowUser(){
-      this.showUser=!this.showUser
+    toggleshowUser() {
+      this.showUser = !this.showUser
     },
-    toggleshowCalender(){
-      this.showCalender=!this.showCalender
+    toggleshowCalender() {
+      this.showCalender = !this.showCalender
     },
-    toggleshowEditor(){
-      this.showEditor=!this.showEditor
+    toggleshowEditor() {
+      this.showEditor = !this.showEditor
     },
-    toggleshowDrag(){
-      this.showDrag=!this.showDrag
+    toggleshowDrag() {
+      this.showDrag = !this.showDrag
     },
-    toggleshowImage(){
-      this.showImage=!this.showImage
+    toggleshowImage() {
+      this.showImage = !this.showImage
     },
-    toggleshowVideo(){
-      this.showVideo=!this.showVideo
+    toggleshowVideo() {
+      this.showVideo = !this.showVideo
     },
-    toggleshowDropzone(){
-      this.showDropzone=!this.showDropzone
+    toggleshowDropzone() {
+      this.showDropzone = !this.showDropzone
+    },
+    toggleshowMenu() {
+      this.showmenu = !this.showmenu
     },
     // toggle user
     toggleDrop() {
