@@ -1123,7 +1123,7 @@
         </div>
       </div>
       <div class="bg-gray-50">
-        <div class="rounded-md h-full">
+        <div class="rounded-md h-full w-full">
           <router-view></router-view>
         </div>
       </div>

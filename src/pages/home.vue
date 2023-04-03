@@ -424,9 +424,9 @@
                 <div class=" hover:bg-cyan-400"> Expense Category</div>
               </div>
             </div>
-            <table class="w-full">
+            <table class="w-full h-full">
               <thead>
-              <tr class="justify-between">
+              <tr class="">
                 <th>Transaction Id</th>
                 <th>Date</th>
                 <th>Account</th>
@@ -556,7 +556,6 @@
             <!--                <div>Credit</div>-->
             <!--                <div>Balance</div>-->
             <!--              </div>-->
-
 
           </div>
         </div>
