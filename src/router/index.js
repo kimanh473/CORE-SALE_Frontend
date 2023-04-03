@@ -14,12 +14,12 @@ import profile from '../pages/profile'
       },
     {
       name: 'Dashboard',
-      path: '/',
+      path: '/home',
       component: dashboard,
       children: [
          {
           name: 'home',
-          path: '/home',
+          path: '/',
           component:home
         },
         {
