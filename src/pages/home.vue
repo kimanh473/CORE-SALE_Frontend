@@ -10,28 +10,18 @@
           </div>
 
         </ul>
+
+        <div class="grid grid-cols-4 gap-4">
+          <div>01</div>
+          <div>01</div>
+          <div>01</div>
+          <div>09</div>
+        </div>
+
+
         <div class="container">
           <div class="row row-cols-4 mt-10 h-[249px]">
-            <div class="col bg-cyan-400 p-1 items-center h-[249px] w-[232px] mr-8">
-              <div>
-                <div class="flex">
-                  <svg class="h-8 w-8 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="8.5" cy="7" r="4"/>
-                    <line x1="20" y1="8" x2="20" y2="14"/>
-                    <line x1="23" y1="11" x2="17" y2="11"/>
-                  </svg>
-                  <span class="font-bold text-xl ">Visitors</span>
-                </div>
-              </div>
-              <div> biểu đồ</div>
-              <div>
-                <div>
 
-                </div>
-              </div>
-            </div>
             <div class="col bg-green-400 h-[249px] w-[232px] mr-8">
               <div> title</div>
               <div> biểu đồ</div>
@@ -60,7 +50,7 @@
           <div>
             <div class="h-full bg-gray-100 ml-3 mr-3">
               <h3>Sales</h3>
-              <!--              <canvas id="myChart"></canvas>-->
+                            <canvas id="myChart2"></canvas>
             </div>
           </div>
         </div>
@@ -296,7 +286,7 @@
 
           </div>
 
-          <div class="col-span-2 bg-gray-100 mr-2 snap-y snap-mandatory overflow-scroll ...">
+          <div class="col-span-2 bg-gray-100 mr-2 snap-y snap-mandatory overflow-y-auto h-[50vh]">
 
             <div class="flex justify-between">
               <div class="m-3 font-bold text-[1.2rem]">
@@ -307,7 +297,7 @@
               </div>
             </div>
 
-            <div>
+            <div class="flex justify-between">
               <div class="flex mt-5">
                 <div class="rounded-full w-[40px] h-[40px] mt-2">
                   <img src="https://vuely.theironnetwork.org/static/avatars/user-14.jpg" alt="">
@@ -323,7 +313,7 @@
                   </div>
                 </div>
               </div>
-              <div class="flex mt-3 ml-[300px]">
+              <div class="flex mt-3 ">
                 <div class="text-left">
                   <span class="ml-3 ml-[19rem]">
                     Max Wells
@@ -592,7 +582,26 @@ export default {
             beginAtZero: true
           }
         }
-      }
+      },
+    });
+    const ctx2 = document.getElementById('myChart2');
+    new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: ['Project 1', 'Project 2', 'Project 3', 'Project 4'],
+        datasets: [{
+          label: '# of Votes',
+          data: [12, 19, 3, 5],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
     });
   }
 
