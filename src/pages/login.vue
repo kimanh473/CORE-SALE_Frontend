@@ -1,54 +1,67 @@
 <template>
-<!--<div>-->
-<!--  <div class="flex items-center justify-center h-screen px-6 bg-gray-200">-->
-<!--    <div class="w-full max-w-sm p-6 bg-white rounded-md shadow-md">-->
-<!--      <div class="flex items-center justify-center">-->
 
-<!--        <span class="text-2xl font-semibold text-gray-700">Cove Admin</span>-->
-<!--      </div>-->
+  <div class="container-fluid bg-gray-100 h-screen w-screen">
+    <div class="grid grid-cols-3 gap-1">
+      <div class="bg-white h-full w-full">
+        <div>
 
-<!--      <form class="mt-5" @submit.prevent="LoginData">-->
-<!--        <label class="block">-->
-<!--          <span class="text-sm text-gray-700">Email</span>-->
-<!--          <input type="email" v-model="student.email" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" />-->
-<!--        </label>-->
+        </div>
+      </div>
+      <div class="col-span-2 bg-white">
+        <div class="m-20" style="text-align: -webkit-center">
+          <div class="">
+            <img src="https://vuely.theironnetwork.org/static/img/session.png ">
+            <h2 class="text-[1.5rem] mb-[16px] font-bold mt-3">Login To Admin</h2>
+            <p class="font-medium">Enter username and password to access control panel of Vuely.</p>
+          </div>
+          <div>
+          </div>
+        </div>
 
-<!--        <label class="block mt-3">-->
-<!--          <span class="text-sm text-gray-700">Password</span>-->
-<!--          <input type="password" v-model="student.password" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"/>-->
-<!--        </label>-->
-
-<!--        <div class="flex items-center justify-between mt-4">-->
-<!--          <div>-->
-<!--            <label class="inline-flex items-center">-->
-<!--              <input type="checkbox" class="text-indigo-600 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" />-->
-<!--              <span class="mx-2 text-sm text-gray-600">Remember me</span>-->
-<!--            </label>-->
-<!--          </div>-->
-
-<!--          <div>-->
-<!--            <a class="block text-sm text-indigo-700 fontme hover:underline" href="#">Forgot your password?</a>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="mt-6">-->
-<!--          <button type="submit" @click="LoginData()" class="w-full px-4 py-2 text-sm text-center text-white bg-indigo-600 rounded-md focus:outline-none hover:bg-indigo-500">-->
-<!--            Login-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      </form>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-  <div class="grid grid-cols-3 gap-4">
-    <div class="...">
-
-    </div>
-    <div class="col-span-2 ...">
-
+      </div>
     </div>
   </div>
+  <!--  <div>-->
+  <!--    <div class="flex items-center justify-center h-screen px-6 bg-gray-200">-->
+  <!--      <div class="w-full max-w-sm p-6 bg-white rounded-md shadow-md">-->
+  <!--        <div class="flex items-center justify-center">-->
+
+  <!--          <span class="text-2xl font-semibold text-gray-700">Cove Admin</span>-->
+  <!--        </div>-->
+
+  <!--        <form class="mt-5" @submit.prevent="LoginData">-->
+  <!--          <label class="block">-->
+  <!--            <span class="text-sm text-gray-700">Email</span>-->
+  <!--            <input type="email" v-model="student.email" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" />-->
+  <!--          </label>-->
+
+  <!--          <label class="block mt-3">-->
+  <!--            <span class="text-sm text-gray-700">Password</span>-->
+  <!--            <input type="password" v-model="student.password" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"/>-->
+  <!--          </label>-->
+
+  <!--          <div class="flex items-center justify-between mt-4">-->
+  <!--            <div>-->
+  <!--              <label class="inline-flex items-center">-->
+  <!--                <input type="checkbox" class="text-indigo-600 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" />-->
+  <!--                <span class="mx-2 text-sm text-gray-600">Remember me</span>-->
+  <!--              </label>-->
+  <!--            </div>-->
+
+  <!--            <div>-->
+  <!--              <a class="block text-sm text-indigo-700 fontme hover:underline" href="#">Forgot your password?</a>-->
+  <!--            </div>-->
+  <!--          </div>-->
+
+  <!--          <div class="mt-6">-->
+  <!--            <button type="submit" @click="LoginData()" class="w-full px-4 py-2 text-sm text-center text-white bg-indigo-600 rounded-md focus:outline-none hover:bg-indigo-500">-->
+  <!--              Login-->
+  <!--            </button>-->
+  <!--          </div>-->
+  <!--        </form>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
 
 </template>
 

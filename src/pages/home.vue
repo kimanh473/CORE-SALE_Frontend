@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="app-card">
-      <div class="app-full-content p-[24px] 	">
+      <div class="app-full-content p-[24px]">
         <ul class="v-breadcrumbs h-[77px] w-full items-center theme--light flex justify-between bg-slate-100">
           <h2 class="text-[1.5rem] font-medium ml-10">DashBoard</h2>
           <div class="flex mr-10">
@@ -11,33 +11,30 @@
 
         </ul>
 
-        <div class="grid grid-cols-4 gap-4">
-          <div>01</div>
-          <div>01</div>
-          <div>01</div>
-          <div>09</div>
-        </div>
+        <div class="grid grid-cols-4 gap-4 mt-[3vh]">
+          <div class="col bg-cyan-400">
+            <div class="flex m-3 items-center">
 
+            </div>
+            <div> <canvas id="myChartline"></canvas> </div>
 
-        <div class="container">
-          <div class="row row-cols-4 mt-10 h-[249px]">
-
-            <div class="col bg-green-400 h-[249px] w-[232px] mr-8">
-              <div> title</div>
-              <div> biểu đồ</div>
-              <div>chân</div>
-            </div>
-            <div class="col bg-orange-400 h-[249px] w-[232px] mr-8">
-              <div> title</div>
-              <div> biểu đồ</div>
-              <div>chân</div>
-            </div>
-            <div class="col bg-red-500 h-[249px] w-[232px] ">
-              <div> title</div>
-              <div> biểu đồ</div>
-              <div>chân</div>
-            </div>
           </div>
+          <div class="col bg-green-400">
+            <div> title</div>
+            <div> <canvas id="myChartline2"></canvas></div>
+            <div>chân</div>
+          </div>
+          <div class="col bg-orange-400 ">
+            <div> title</div>
+            <div> <canvas id="myChartline3"></canvas></div>
+            <div>chân</div>
+          </div>
+          <div class="col bg-red-500 ">
+            <div> title</div>
+            <div> <canvas id="myChartline4"></canvas></div>
+            <div>chân</div>
+          </div>
+
         </div>
 
         <div class="mt-[20px] grid grid-flow-row-dense grid-cols-3 ...">
@@ -48,9 +45,9 @@
             </div>
           </div>
           <div>
-            <div class="h-full bg-gray-100 ml-3 mr-3">
+            <div class="h-full bg-gray-100 ml-3">
               <h3>Sales</h3>
-                            <canvas id="myChart2"></canvas>
+              <canvas id="myChart2"></canvas>
             </div>
           </div>
         </div>
@@ -286,7 +283,7 @@
 
           </div>
 
-          <div class="col-span-2 bg-gray-100 mr-2 snap-y snap-mandatory overflow-y-auto h-[50vh]">
+          <div class="col-span-2 bg-gray-100 mr-2 overflow-y-auto h-[80vh]">
 
             <div class="flex justify-between">
               <div class="m-3 font-bold text-[1.2rem]">
@@ -297,7 +294,7 @@
               </div>
             </div>
 
-            <div class="flex justify-between">
+            <div class="">
               <div class="flex mt-5">
                 <div class="rounded-full w-[40px] h-[40px] mt-2">
                   <img src="https://vuely.theironnetwork.org/static/avatars/user-14.jpg" alt="">
@@ -313,7 +310,7 @@
                   </div>
                 </div>
               </div>
-              <div class="flex mt-3 ">
+              <div class="flex mt-3 ml-[300px]">
                 <div class="text-left">
                   <span class="ml-3 ml-[19rem]">
                     Max Wells
@@ -433,7 +430,7 @@
                 <td> 19 Aug 2018</td>
                 <td>Citibank</td>
                 <td>
-                  <span >
+                  <span>
                       Saving
                   </span>
                 </td>
@@ -588,11 +585,88 @@ export default {
     new Chart(ctx2, {
       type: 'pie',
       data: {
-        labels: ['Project 1', 'Project 2', 'Project 3', 'Project 4'],
+        labels: ['Project A', 'Project B', 'Project C', 'Project 2'],
         datasets: [{
           label: '# of Votes',
           data: [12, 19, 3, 5],
           borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+
+    const ctx3 = document.getElementById('myChartline');
+    new Chart(ctx3, {
+      type: 'line',
+      data: {
+        labels: ['A', ' B', ' C', ' D' , 'E'],
+        datasets: [{
+          label: 'Visitors',
+          data: [30, 41, 26, 10, 30],
+          borderWidth: 3,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+    const ctx4 = document.getElementById('myChartline2');
+    new Chart(ctx4, {
+      type: 'line',
+      data: {
+        labels: ['A', ' B', ' C', ' D' , 'E'],
+        datasets: [{
+          label: 'Visitors',
+          data: [30, 41, 26, 10, 30],
+          borderWidth: 3,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+    const ctx5 = document.getElementById('myChartline3');
+    new Chart(ctx5, {
+      type: 'line',
+      data: {
+        labels: ['A', ' B', ' C', ' D' , 'E'],
+        datasets: [{
+          label: 'Visitors',
+          data: [30, 41, 26, 10, 30],
+          borderWidth: 3,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+    const ctx6 = document.getElementById('myChartline4');
+    new Chart(ctx6, {
+      type: 'line',
+      data: {
+        labels: ['A', ' B', ' C', ' D' , 'E'],
+        datasets: [{
+          label: 'Visitors',
+          data: [30, 41, 26, 10, 30],
+          borderWidth: 3,
         }]
       },
       options: {
@@ -611,5 +685,7 @@ export default {
 </script>
 
 <style>
-
+html {
+  font-family: 'Montserrat', sans-serif;
+}
 </style>

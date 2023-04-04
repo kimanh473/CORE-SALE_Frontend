@@ -5,6 +5,7 @@ import dashboard from '../pages/master/dashboard'
 import home from '../pages/home'
 import login from "../pages/login.vue";
 import profile from '../pages/profile'
+import ecomerce from "@/pages/ecomerce.vue";
 
   const routes = [
       {
@@ -26,7 +27,12 @@ import profile from '../pages/profile'
           name: 'profile',
           path: '/profile',
           component:profile
-        }
+        },
+          {
+              name: 'ecomerce',
+              path: '/ecomerce',
+              component:ecomerce
+          }
       ]
     },
        

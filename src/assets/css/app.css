@@ -8,6 +8,9 @@
   .router-link-exact-active{
     @apply  bg-gray-200 text-gray-800  transition duration-400 ease-in-out
   }
+  .body{
+   font-family: 'Montserrat', sans-serif;
+  }
   html {
    font-family: 'Montserrat', sans-serif;
   }

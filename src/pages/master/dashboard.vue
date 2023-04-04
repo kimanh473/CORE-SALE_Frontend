@@ -1,8 +1,8 @@
 <template>
   <div class="w-screen h-screen flex">
     <!-- Side bar -->
-    <div class="w-[300px] h-full bg-gray-200 text-white" v-show="showSide">
-      <div class="h-[50px] bg-gray-800 flex justify-start  items-center ">
+    <div class="w-[400px] bg-gray-200 text-white overflow-y-auto h-[100vh]" v-show="showSide" >
+      <div class="h-[100px] bg-gray-800 flex justify-start items-center ">
         <div class="px-[20px]">
           <a href="#" class="router-link-active">
             <img src="https://vuely.theironnetwork.org/static/img/site-logo.png" width="100" height="30">
@@ -58,12 +58,31 @@
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 Cryto
+                <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/crm"
+
+              <router-link to="/"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
                 CRM
                 <span class="sidebar-label">new</span>
+              </router-link>
+
+              <router-link to="/Web"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Web Analytics
+              </router-link>
+
+              <router-link to="/magazine"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Magazine
+              </router-link>
+              <router-link to="/new"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                News
               </router-link>
               <router-link to="/widget"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
@@ -90,36 +109,27 @@
             </div>
             <div v-if="showCryto" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/market"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                E-Commerce
+                Market Cap
+                <span class="sidebar-label">new</span>
               </router-link>
 
-              <router-link to="/cryto"
+              <router-link to="/wallet"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Cryto
+                Wallet
+                <span class="sidebar-label">new</span>
               </router-link>
               <router-link to="/crm"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                CRM
+                Trade
                 <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/widget"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Widgets
-              </router-link>
-              <router-link to="/saas"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                SAAS
-                <span class="sidebar-label">new</span>
-              </router-link>
             </div>
-
 
             <div @click="toggleshowCrm()"
                  class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
@@ -134,35 +144,71 @@
             </div>
             <div v-if="showCrm" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/project"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                E-Commerce
-              </router-link>
-
-              <router-link to="/cryto"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                Cryto
-              </router-link>
-              <router-link to="/crm"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                CRM
+                Projects
                 <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/widget"
+
+              <router-link to="/projectdetail"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Project Details
+                <span class="sidebar-label">new</span>
+              </router-link>
+              <router-link to="/client "
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Clients
+                <span class="sidebar-label">new</span>
+              </router-link>
+              <router-link to="/report "
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                Widgets
-              </router-link>
-              <router-link to="/saas"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                SAAS
-                <span class="sidebar-label">new</span>
+                Reports
               </router-link>
             </div>
+
+            <div @click="toggleshowCourses()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
+                   viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z"
+                      clip-rule="evenodd"></path>
+              </svg>
+              Courses
+            </div>
+
+            <div v-if="showCourses" class=" flex flex-col justify-between space-y-[10px]">
+
+              <router-link to="/course"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+
+                Courses
+              </router-link>
+
+              <router-link to="/courselist"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Courses Lists
+              </router-link>
+              <router-link to="/coursedetail "
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Courses Detail
+                <span class="sidebar-label">new</span>
+              </router-link>
+              <router-link to="/signin "
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+                Sign In
+              </router-link>
+              <router-link to="/payment "
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+                Payment
+              </router-link>
+            </div>
+
 
             <div @click="toggleshowWidgets()"
                  class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
@@ -176,34 +222,18 @@
             </div>
             <div v-if="showWidgets" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/user"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                E-Commerce
+                Users
               </router-link>
 
-              <router-link to="/cryto"
+              <router-link to="/chart"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Cryto
+                Charts
               </router-link>
-              <router-link to="/crm"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                CRM
-                <span class="sidebar-label">new</span>
-              </router-link>
-              <router-link to="/widget"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                Widgets
-              </router-link>
-              <router-link to="/saas"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                SAAS
-                <span class="sidebar-label">new</span>
-              </router-link>
             </div>
 
             <div @click="toggleshowEComerce()"
@@ -219,33 +249,58 @@
             </div>
             <div v-if="showEComerce" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/shopwith"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                E-Commerce
+                ShopWithAlgolia
               </router-link>
 
-              <router-link to="/cryto"
+              <router-link to="/shop"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Cryto
-              </router-link>
-              <router-link to="/crm"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                CRM
+                Shop
                 <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/widget"
+              <router-link to="/productdetail"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Product Detail
+                <span class="sidebar-label">new</span>
+              </router-link>
+              <router-link to="/addproduct"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Widgets
+                Add Product
+                <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/saas"
+              <router-link to="/editproduct"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                SAAS
+                Edit Product
                 <span class="sidebar-label">new</span>
+              </router-link>
+              <router-link to="/editdetail"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Edit Detail
+                <span class="sidebar-label">new</span>
+              </router-link>
+
+              <router-link to="/cart"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Cart
+              </router-link>
+              <router-link to="/checkout"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Check out
+              </router-link>
+
+              <router-link to="/card"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+
+                Cards
               </router-link>
             </div>
 
@@ -262,32 +317,32 @@
             </div>
             <div v-if="showPage" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/blog"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                E-Commerce
+                Blog
               </router-link>
 
-              <router-link to="/cryto"
+              <router-link to="/gallery"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Cryto
+                Gallery
               </router-link>
-              <router-link to="/crm"
+              <router-link to="/pricing1"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                CRM
+                Pricing 1
                 <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/widget"
+              <router-link to="/pricing2"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Widgets
+                Pricing 2
               </router-link>
-              <router-link to="/saas"
+              <router-link to="/blank"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                SAAS
+                Blank
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
@@ -304,32 +359,32 @@
             </div>
             <div v-if="showSession" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/signup"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                E-Commerce
+                Sign Up
               </router-link>
 
-              <router-link to="/cryto"
+              <router-link to="/login"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Cryto
+                Login
               </router-link>
-              <router-link to="/crm"
+              <router-link to="/lock"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                CRM
+                Lock Screen
                 <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/widget"
+              <router-link to="/forgot-password"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Widgets
+                Forgot Password
               </router-link>
-              <router-link to="/saas"
+              <router-link to="/reset-password "
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                SAAS
+                Reset Password
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
@@ -376,32 +431,35 @@
             </div>
             <div v-if="showUI" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/app"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                E-Commerce
+                App Bars
+                <span class="sidebar-label">new</span>
               </router-link>
 
-              <router-link to="/cryto"
+              <router-link to="/banner "
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Cryto
+                Banners
+                <span class="sidebar-label">new</span>
               </router-link>
               <router-link to="/crm"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                CRM
+                List Item Groups
                 <span class="sidebar-label">new</span>
               </router-link>
               <router-link to="/widget"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Widgets
+                Slide Groups
+                <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/saas"
+              <router-link to="/overlays"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                SAAS
+                Overlays
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
@@ -1141,6 +1199,7 @@ export default {
       showDashBoard: false,
       showCryto: false,
       showCrm: false,
+      showCourses:false,
       showWidgets: false,
       showEComerce: false,
       showPage: false,
@@ -1181,6 +1240,9 @@ export default {
     },
     toggleshowCrm() {
       this.showCrm = !this.showCrm
+    },
+    toggleshowCourses(){
+      this.showCourses=!this.showCourses
     },
     toggleshowWidgets() {
       this.showWidgets = !this.showWidgets
