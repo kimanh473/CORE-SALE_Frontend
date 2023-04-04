@@ -1061,7 +1061,7 @@
         </div>
       </div>
     </div>
-    <div class="w-full h-full bg-gray-400">
+    <div class="w-full h-full bg-gray-400 ">
       <div class="h-[50px] bg-gray-100 flex items-center shadow-sm px-[20px] w-full py-[10px] z-10 border-b ">
         <!-- Hambuger menu -->
         <div class="cursor-pointer w-[30px]" @click="toggleSideBar">
@@ -1171,7 +1171,7 @@
                 <a href="#" class="text-gray-700 block px-4 py-2 text-sm"  tabindex="-1"
                    id="menu-item-2">License</a>
                 <form method="POST" action="#" role="none">
-                  <button type="submit" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" 
+                  <button type="submit" class="text-gray-700 block w-full px-4 py-2 text-left text-sm"
                           tabindex="-1" id="menu-item-3">Sign out
                   </button>
                 </form>
@@ -1180,8 +1180,8 @@
           </div>
         </div>
       </div>
-      <div class="bg-gray-50">
-        <div class="rounded-md h-full w-full">
+      <div class="bg-gray-50 h-[95vh] w-full  overflow-y-auto">
+        <div class="rounded-md  ">
           <router-view></router-view>
         </div>
       </div>

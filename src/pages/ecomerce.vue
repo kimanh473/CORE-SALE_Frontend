@@ -35,7 +35,7 @@
           <div class="col-span-2 bg-gray-100 mr-3 ">
             <div class="m-4">
               <strong><h2 class="mr-[200vh]">Sales</h2></strong>
-              <canvas id="myChart" class="mt-5"></canvas>
+              <canvas id="myChartsale" class="mt-5"></canvas>
             </div>
           </div>
           <div>
@@ -86,7 +86,7 @@
                 </div>
               </div>
 
-              <div class="flex justify-between mt-5">
+              <div class="flex justify-between border mt-5">
                 <div class="ml-3 h-full">
                   <img src="https://vuely.theironnetwork.org/static/img/icon2.png">
                 </div>
@@ -116,7 +116,7 @@
                 </div>
               </div>
 
-              <div class="flex justify-between mt-5">
+              <div class="flex justify-between border ">
                 <div class="ml-3 h-full">
                   <img src="https://vuely.theironnetwork.org/static/img/icon2.png">
                 </div>
@@ -146,7 +146,7 @@
                 </div>
               </div>
 
-              <div class="flex justify-between mt-5">
+              <div class="flex justify-between border">
                 <div class="ml-3 h-full">
                   <img src="https://vuely.theironnetwork.org/static/img/icon2.png">
                 </div>
@@ -493,8 +493,8 @@
               </div>
             </div>
             <div >
-              <div class="overflow-x-scroll ">
-                <table class="w-full h-full ">
+              <div class=" h-full w-full ">
+                <table class="overflow-x-scroll h-32 w-full h-full ">
                   <thead>
                   <tr class="">
                     <th>#</th>
@@ -733,19 +733,6 @@
               </tr>
               </tbody>
             </table>
-
-
-            <!--              <div class="grid grid-cols-8 gap-8 font-medium">-->
-            <!--                <div>Transaction Id</div>-->
-            <!--                <div>Date</div>-->
-            <!--                <div>Account</div>-->
-            <!--                <div>Type</div>-->
-            <!--                <div>Amount</div>-->
-            <!--                <div>Debit</div>-->
-            <!--                <div>Credit</div>-->
-            <!--                <div>Balance</div>-->
-            <!--              </div>-->
-
           </div>
         </div>
       </div>
@@ -777,6 +764,123 @@ export default {
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1,
 
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+    const ctx = document.getElementById('myChartsale');
+    new Chart(ctx, {
+
+      type: 'bar',
+      data: {
+        labels: ['Project 1', 'Project 2', 'Project 3', 'Project 4', 'Project 5', 'Project 6', 'Project 7'],
+        datasets: [{
+          label: '# of Votes',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+          ],
+          borderWidth: 1,
+
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+    const myChart2 = document.getElementById('myChart2');
+    new Chart(myChart2, {
+
+      type: 'doughnut',
+      data: {
+        labels: [
+          'Red',
+          'Blue',
+          'Yellow'],
+        datasets: [{
+          label: 'My First Dataset',
+          data: [65, 59, 80, ],
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+          ],
+          hoverOffset: 4
+        }]
+      },
+    });
+    const ctx4 = document.getElementById('myChartline2');
+    new Chart(ctx4, {
+      type: 'line',
+      data: {
+        labels: ['A', ' B', ' C', ' D' , 'E'],
+        datasets: [{
+          label: 'Visitors',
+          data: [30, 41, 26, 10, 30],
+          borderWidth: 3,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+    const ctx5 = document.getElementById('myChartline3');
+    new Chart(ctx5, {
+      type: 'line',
+      data: {
+        labels: ['A', ' B', ' C', ' D' , 'E'],
+        datasets: [{
+          label: 'Visitors',
+          data: [30, 41, 26, 10, 30],
+          borderWidth: 3,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+    const ctx6 = document.getElementById('myChartline4');
+    new Chart(ctx6, {
+      type: 'line',
+      data: {
+        labels: ['A', ' B', ' C', ' D' , 'E'],
+        datasets: [{
+          label: 'Visitors',
+          data: [30, 41, 26, 10, 30],
+          borderWidth: 3,
         }]
       },
       options: {
