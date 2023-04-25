@@ -1,7 +1,7 @@
 <template>
   <div class="w-screen h-screen flex">
     <!-- Side bar -->
-    <div class="w-[400px] bg-gray-200 text-white overflow-y-auto h-[100vh]" v-show="showSide" >
+    <div class="w-[400px] bg-gray-200 text-white overflow-y-auto h-[100vh]" v-show="showSide">
       <div class="h-[100px] bg-gray-800 flex justify-start items-center ">
         <div class="px-[20px]">
           <a href="#" class="router-link-active">
@@ -684,34 +684,33 @@
             </div>
             <div v-if="showTable" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/ecomerce"
+              <router-link to="/list"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
-
-                E-Commerce
+                Nhóm Kho
               </router-link>
 
-              <router-link to="/cryto"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+<!--              <router-link to="/cryto"-->
+<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
 
-                Cryto
-              </router-link>
-              <router-link to="/crm"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+<!--                Cryto-->
+<!--              </router-link>-->
+<!--              <router-link to="/crm"-->
+<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
 
-                CRM
-                <span class="sidebar-label">new</span>
-              </router-link>
-              <router-link to="/widget"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+<!--                CRM-->
+<!--                <span class="sidebar-label">new</span>-->
+<!--              </router-link>-->
+<!--              <router-link to="/widget"-->
+<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
 
-                Widgets
-              </router-link>
-              <router-link to="/saas"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+<!--                Widgets-->
+<!--              </router-link>-->
+<!--              <router-link to="/saas"-->
+<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
 
-                SAAS
-                <span class="sidebar-label">new</span>
-              </router-link>
+<!--                SAAS-->
+<!--                <span class="sidebar-label">new</span>-->
+<!--              </router-link>-->
             </div>
 
             <div @click="toggleshowMap()"
@@ -1080,36 +1079,39 @@
             <rect x="14" y="14" width="7" height="7"/>
             <rect x="3" y="14" width="7" height="7"/>
           </svg>
+
         </button>
 
         <div v-if="showmenu" role="menu" class="v-menu__content ">
           <div class="dropdown-content w-[321px] mt-60 ml-2">
-            <div class="flex border-[2px] justify-between bg-indigo-400"  >
+            <div class="flex border-[2px] justify-between bg-indigo-400">
               <span class="white--text font-medium my-2">Quick Links</span>
               <span class="v-badge warning">NEW</span>
             </div>
-            <div class="flex border-[2px] justify-between" >
+            <div class="flex border-[2px] justify-between">
               <div>
 
                 <div class="v-list-item v-list-item--link theme--light flex w">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                       stroke="currentColor" className="w-16 h-16">
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                          d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
                   </svg>
 
                   <span>Gallery</span>
                 </div>
-                <div   class="v-list-item v-list-item--link theme--light"><i
+                <div class="v-list-item v-list-item--link theme--light"><i
                     class="mr-3 ti-layout error--text"></i><span>Tables</span></div>
-                <div   class="v-list-item v-list-item--link theme--light"><i
+                <div class="v-list-item v-list-item--link theme--light"><i
                     class="mr-3 ti-email success--text"></i><span>Inbox</span></div>
               </div>
 
               <div>
-                <div   class="v-list-item v-list-item--link theme--light"><i
+                <div class="v-list-item v-list-item--link theme--light"><i
                     class="mr-3 ti-gallery primary--text"></i><span>Gallery</span></div>
-                <div   class="v-list-item v-list-item--link theme--light"><i
+                <div class="v-list-item v-list-item--link theme--light"><i
                     class="mr-3 ti-layout error--text"></i><span>Tables</span></div>
-                <div   class="v-list-item v-list-item--link theme--light"><i
+                <div class="v-list-item v-list-item--link theme--light"><i
                     class="mr-3 ti-email success--text"></i><span>Inbox</span></div>
               </div>
             </div>
@@ -1147,6 +1149,15 @@
               </div>
             </form>
           </div>
+
+          <button class="mx-10 w-[30px]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path
+                  d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z"/>
+            </svg>
+
+          </button>
+
           <!-- User login -->
           <div class="w-[200px] ">
             <div class="flex items-center justify-start space-x-4" @click="toggleDrop">
@@ -1164,11 +1175,11 @@
                  role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
               <div class="py-1 text-left" role="none">
                 <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm"  tabindex="-1"
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" tabindex="-1"
                    id="menu-item-0">Account settings</a>
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm"  tabindex="-1"
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" tabindex="-1"
                    id="menu-item-1">Support</a>
-                <a href="#" class="text-gray-700 block px-4 py-2 text-sm"  tabindex="-1"
+                <a href="#" class="text-gray-700 block px-4 py-2 text-sm" tabindex="-1"
                    id="menu-item-2">License</a>
                 <form method="POST" action="#" role="none">
                   <button type="submit" class="text-gray-700 block w-full px-4 py-2 text-left text-sm"
@@ -1199,7 +1210,7 @@ export default {
       showDashBoard: false,
       showCryto: false,
       showCrm: false,
-      showCourses:false,
+      showCourses: false,
       showWidgets: false,
       showEComerce: false,
       showPage: false,
@@ -1219,7 +1230,7 @@ export default {
       showImage: false,
       showVideo: false,
       showDropzone: false,
-      showmenu:false
+      showmenu: false
     }
   },
   methods: {
@@ -1241,8 +1252,8 @@ export default {
     toggleshowCrm() {
       this.showCrm = !this.showCrm
     },
-    toggleshowCourses(){
-      this.showCourses=!this.showCourses
+    toggleshowCourses() {
+      this.showCourses = !this.showCourses
     },
     toggleshowWidgets() {
       this.showWidgets = !this.showWidgets

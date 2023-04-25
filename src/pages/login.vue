@@ -4,7 +4,7 @@
     <div class="grid grid-cols-3 gap-1">
       <div class="bg-white h-full w-full">
         <div>
-          im
+
         </div>
       </div>
       <div class="col-span-2 bg-white h-[100vh] w-full">
@@ -17,24 +17,24 @@
           <div>
             <form @submit.prevent="LoginData">
               <div class="relative z-0 w-[50%] mb-10 mt-10 group">
-                <input type="email" name="floating_email" id="floating_email" v-model="student.email"
+                <input type="email" name="email" id="email" v-model="student.email"
                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                        placeholder="" required/>
-                <label for="floating_email"
+                <label for="email"
                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email
                   address</label>
               </div>
               <div class="relative z-0 w-[50%] mb-10 group">
-                <input type="password" name="floating_password" id="floating_password" v-model="student.password"
+                <input type="password" name="password" id="password" v-model="student.password"
                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                        placeholder=" " required/>
-                <label for="floating_password"
+                <label for="password"
                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
               </div>
               <div class="">
                 <div class="v-input-control">
                   <div class="v-input-slot">
-                    <i class="fa-thin fa-stop"></i>
+
                   </div>
                   <div class="v-massage">
                     <p>remember me</p>
@@ -61,53 +61,12 @@
       </div>
     </div>
   </div>
-  <!--  <div>-->
-  <!--    <div class="flex items-center justify-center h-screen px-6 bg-gray-200">-->
-  <!--      <div class="w-full max-w-sm p-6 bg-white rounded-md shadow-md">-->
-  <!--        <div class="flex items-center justify-center">-->
-
-  <!--          <span class="text-2xl font-semibold text-gray-700">Cove Admin</span>-->
-  <!--        </div>-->
-
-  <!--        <form class="mt-5" @submit.prevent="LoginData">-->
-  <!--          <label class="block">-->
-  <!--            <span class="text-sm text-gray-700">Email</span>-->
-  <!--            <input type="email" v-model="student.email" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" />-->
-  <!--          </label>-->
-
-  <!--          <label class="block mt-3">-->
-  <!--            <span class="text-sm text-gray-700">Password</span>-->
-  <!--            <input type="password" v-model="student.password" class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"/>-->
-  <!--          </label>-->
-
-  <!--          <div class="flex items-center justify-between mt-4">-->
-  <!--            <div>-->
-  <!--              <label class="inline-flex items-center">-->
-  <!--                <input type="checkbox" class="text-indigo-600 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" />-->
-  <!--                <span class="mx-2 text-sm text-gray-600">Remember me</span>-->
-  <!--              </label>-->
-  <!--            </div>-->
-
-  <!--            <div>-->
-  <!--              <a class="block text-sm text-indigo-700 fontme hover:underline" href="#">Forgot your password?</a>-->
-  <!--            </div>-->
-  <!--          </div>-->
-
-  <!--          <div class="mt-6">-->
-  <!--            <button type="submit" @click="LoginData()" class="w-full px-4 py-2 text-sm text-center text-white bg-indigo-600 rounded-md focus:outline-none hover:bg-indigo-500">-->
-  <!--              Login-->
-  <!--            </button>-->
-  <!--          </div>-->
-  <!--        </form>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--  </div>-->
 
 </template>
 
 <script>
 
-// import { createApp } from 'vue';
+import { createApp } from 'vue';
 
 import axios from 'axios';
 
@@ -125,21 +84,22 @@ export default {
       }
     }
   },
-  created() {
-  },
+  // created() {
+  //
+  // },
   mounted() {
     console.log("mounted() called.......");
-    // this.LoginData();
+    this.LoginData();
   },
   methods: {
     LoginData() {
-      axios.post("http://127.0.0.1:8000/api/auth/login", this.student)
+      axios.post("http://127.0.0.1:8000/api/v1/auth/login", this.student)
           .then(
               ({data}) => {
                 console.log(data);
                 try {
                   this.result = data;
-                  localStorage.setItem('jwtToken', data.access_token)
+                  localStorage.setItem('jwtToken', data.apiToken)
                   console.log(this.result);
                   router.push('/')
                 } catch (err) {
@@ -147,7 +107,9 @@ export default {
                   router.push('/login');
                 }
               }
+              // console.log('success')
           )
+
     }
   }
 }

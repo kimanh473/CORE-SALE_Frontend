@@ -6,6 +6,7 @@ import home from '../pages/home'
 import login from "../pages/login.vue";
 import profile from '../pages/profile'
 import ecomerce from "@/pages/ecomerce.vue";
+import list from "@/pages/warehouse_group/list.vue";
 
   const routes = [
       {
@@ -32,6 +33,12 @@ import ecomerce from "@/pages/ecomerce.vue";
               name: 'ecomerce',
               path: '/ecomerce',
               component:ecomerce
+          },
+
+          {
+              name: 'list',
+              path: '/list',
+              component:list
           }
       ]
     },
