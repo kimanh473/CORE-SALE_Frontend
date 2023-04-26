@@ -7,6 +7,9 @@ import login from "../pages/login.vue";
 import profile from '../pages/profile'
 import ecomerce from "@/pages/ecomerce.vue";
 import list from "@/pages/warehouse_group/list.vue";
+import create from "@/pages/warehouse_group/create.vue";
+import edit from "@/pages/warehouse_group/edit.vue";
+// import list from
 
   const routes = [
       {
@@ -26,20 +29,30 @@ import list from "@/pages/warehouse_group/list.vue";
         },
         {
           name: 'profile',
-          path: '/profile',
+          path: 'profile',
           component:profile
         },
           {
               name: 'ecomerce',
-              path: '/ecomerce',
+              path: 'ecomerce',
               component:ecomerce
           },
 
           {
               name: 'list',
-              path: '/list',
+              path: 'list',
               component:list
-          }
+          },
+          {
+              name: 'create',
+              path: 'create',
+              component:create
+          },
+          {
+              name: 'edit',
+              path: 'edit',
+              component:edit
+          },
       ]
     },
        

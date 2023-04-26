@@ -14,8 +14,13 @@ import {fas} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
 library.add(fas);
-
+// const cors = require('cors');
+// const app = express();
+// app.use(cors({
+//   origin:'http://localhost:8081/'
+// }))
 const app = createApp(App)
+
   app.use(router)
   app.use(Antd)
   app.use('fa',FontAwesomeIcon)

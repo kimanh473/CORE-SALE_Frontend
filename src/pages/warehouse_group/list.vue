@@ -11,9 +11,10 @@
             <div class=" ">
               <div class="flex text-left m-3 h-full font-medium text-[1rem]">
                 <div class=" hover:bg-cyan-400 mr-5 mt-2.5">
-                  <a href="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Thêm nhóm kho
-                  </a>
+                    <router-link :to="{name:'create'}"
+                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                      Thêm nhóm kho
+                    </router-link>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 ">
                   <select class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
@@ -46,7 +47,6 @@
                 <th>Loại nhóm</th>
                 <th>Tình trạng</th>
                 <th>Hoạt động</th>
-
               </tr>
               </thead>
               <tbody>
@@ -85,7 +85,6 @@
                     Xóa
                   </button>
                 </td>
-
               </tr>
 
               </tbody>
@@ -97,3 +96,10 @@
 
   </div>
 </template>
+<script>
+
+</script>
+
+<style>
+
+</style>

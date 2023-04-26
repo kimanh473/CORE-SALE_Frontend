@@ -96,7 +96,30 @@
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
+            <div @click="toggleshowTable()"
+                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
+              <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
+                   viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z"
+                      clip-rule="evenodd"></path>
+              </svg>
+              Bảng
+              <span class="sidebar-label">new</span>
+            </div>
 
+            <div v-if="showTable" class=" flex flex-col justify-between space-y-[10px]">
+
+              <router-link :to="{path:'list'}"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+                Nhóm Kho
+              </router-link>
+
+              <router-link :to="{path:'/warehouse/list'}"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+                 Kho
+              </router-link>
+            </div>
             <div @click="toggleshowCryto()"
                  class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
@@ -670,47 +693,6 @@
                 SAAS
                 <span class="sidebar-label">new</span>
               </router-link>
-            </div>
-            <div @click="toggleshowTable()"
-                 class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-              <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"
-                   viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                      d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z"
-                      clip-rule="evenodd"></path>
-              </svg>
-              Tables
-              <span class="sidebar-label">new</span>
-            </div>
-            <div v-if="showTable" class=" flex flex-col justify-between space-y-[10px]">
-
-              <router-link to="/list"
-                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
-                Nhóm Kho
-              </router-link>
-
-<!--              <router-link to="/cryto"-->
-<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
-
-<!--                Cryto-->
-<!--              </router-link>-->
-<!--              <router-link to="/crm"-->
-<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
-
-<!--                CRM-->
-<!--                <span class="sidebar-label">new</span>-->
-<!--              </router-link>-->
-<!--              <router-link to="/widget"-->
-<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md rounded-b-lg hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
-
-<!--                Widgets-->
-<!--              </router-link>-->
-<!--              <router-link to="/saas"-->
-<!--                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">-->
-
-<!--                SAAS-->
-<!--                <span class="sidebar-label">new</span>-->
-<!--              </router-link>-->
             </div>
 
             <div @click="toggleshowMap()"

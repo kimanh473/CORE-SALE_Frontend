@@ -84,19 +84,18 @@ export default {
       }
     }
   },
-  // created() {
-  //
-  // },
+  created() {
+
+  },
   mounted() {
     console.log("mounted() called.......");
-    this.LoginData();
+    // this.LoginData();
   },
   methods: {
     LoginData() {
       axios.post("http://127.0.0.1:8000/api/v1/auth/login", this.student)
           .then(
               ({data}) => {
-                console.log(data);
                 try {
                   this.result = data;
                   localStorage.setItem('jwtToken', data.apiToken)
@@ -107,9 +106,7 @@ export default {
                   router.push('/login');
                 }
               }
-              // console.log('success')
           )
-
     }
   }
 }
