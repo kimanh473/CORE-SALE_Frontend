@@ -6,7 +6,9 @@ import './assets/css/app.css'
 
 // import router
 import router from './router/index.js'
-
+//import axios
+import axios from "axios";
+window.axios = axios;
 //import antd
 import Antd from 'ant-design-vue';
 // import fontawesome

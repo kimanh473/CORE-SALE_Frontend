@@ -100,7 +100,7 @@ export default {
                   this.result = data;
                   localStorage.setItem('jwtToken', data.apiToken)
                   console.log(this.result);
-                  router.push('/')
+                  router.push('/admin')
                 } catch (err) {
                   alert("Error, please try again");
                   router.push('/login');
