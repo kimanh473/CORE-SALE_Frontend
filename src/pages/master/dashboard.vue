@@ -110,12 +110,12 @@
 
             <div v-if="showTable" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link :to="{path:'/list'}"
+              <router-link :to="{path:'warehouse-group-list'}"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
                 Nhóm Kho
               </router-link>
 
-              <router-link :to="{path:'/warehouse/list'}"
+              <router-link :to="{path:'warehouse-list'}"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
                  Kho
               </router-link>
@@ -1183,8 +1183,19 @@
   </div>
 </template>
 <script>
+import { defineComponent} from "vue";
+import { storeToRefs } from 'pinia'
+import {useMenu} from "@/stores/use-menu.js";
 
 export default {
+  setup() {
+    const store = useMenu();
+    const { selectedKeys,openKeys } = store;
+
+    return {
+      ...storeToRefs(store)
+    }
+  },
   data() {
     return {
       showDropDown: false,

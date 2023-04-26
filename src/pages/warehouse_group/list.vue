@@ -1,5 +1,5 @@
 <template>
-  <div>
+
     <div class="app-card">
       <div class="app-full-content p-[24px]">
         <ul class="v-breadcrumbs h-[77px] w-full items-center theme--light flex justify-between bg-slate-100">
@@ -11,7 +11,7 @@
             <div class=" ">
               <div class="flex text-left m-3 h-full font-medium text-[1rem]">
                 <div class=" hover:bg-cyan-400 mr-5 mt-2.5">
-                    <router-link :to="{name:'create'}"
+                    <router-link :to="{name:'admin-warehouse-group-create'}"
                                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                       Thêm nhóm kho
                     </router-link>
@@ -94,10 +94,15 @@
       </div>
     </div>
 
-  </div>
 </template>
 <script>
-
+import {useMenu} from "@/stores/use-menu.js";
+export default {
+  setup() {
+      const store = useMenu();
+      store.onSelectedKeys(["warehouse-group-list"]);
+  }
+}
 </script>
 
 <style>
