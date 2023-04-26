@@ -39,8 +39,8 @@ import edit from "@/pages/warehouse_group/edit.vue";
           },
 
           {
-              name: 'list',
-              path: 'list',
+              name: '/list',
+              path: '/list',
               component:list
           },
           {
