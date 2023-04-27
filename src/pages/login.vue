@@ -67,6 +67,7 @@
 <script>
 
 import { createApp } from 'vue';
+import setAuthHeader from "../ultis/setAuthHeader";
 
 import axios from 'axios';
 
@@ -98,9 +99,12 @@ export default {
               ({data}) => {
                 try {
                   this.result = data;
-                  localStorage.setItem('jwtToken', data.apiToken)
-                  console.log(this.result);
-                  router.push('/admin')
+                  localStorage.setItem('jwtToken', data.apiToken);
+
+                  router.push('/admin/home');
+
+                  setAuthHeader(data.apiToken);
+
                 } catch (err) {
                   alert("Error, please try again");
                   router.push('/login');

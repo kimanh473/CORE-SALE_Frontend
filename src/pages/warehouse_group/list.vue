@@ -41,57 +41,43 @@
               </div>
             </div>
           </div>
-          <table class="w-full h-full mt-[20px]">
-            <thead>
-            <tr class="">
-              <th>Id</th>
-              <th>Tên nhóm</th>
-              <th>Tên nhóm 2</th>
-              <th>Loại nhóm</th>
-              <th>Tình trạng</th>
-              <th>Hoạt động</th>
-            </tr>
-            </thead>
-            <tbody>
 
-            <tr class="m-10 mt-3 border">
-              <td>#trn001</td>
-              <td> 19 Aug 2018</td>
-              <td>Citibank</td>
-              <td>
-                  <span>
-                      Saving
-                  </span>
-              </td>
-              <td>$2000</td>
-              <td>$1,807.00</td>
+                    <table class="w-full h-full mt-[20px]"   >
+                      <thead>
+                      <tr class="">
+                        <th>STT</th>
+                        <th>Loại nhóm</th>
+                        <th>Tên nhóm</th>
+                        <th>Tên nhóm 2</th>
+                        <th>Tình trạng</th>
+                        <th>Hoạt động</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr class="m-10 mt-3 border" v-for="index in warehouse_group.data" :key="index">
+                        <td>1</td>
+                        <td>
+                          {{index.loainhom}}
+                        </td>
+                        <td> {{index.tennh}}</td>
+                        <td>{{index.tennh2}}</td>
+                        <td >{{(index.tinhtrang==1) ? ' Hoạt động ' : 'Không Hoạt động'}}</td>
+                        <td>
+                          <router-link :to="{name:'admin-warehouse-group-edit'}"
+                                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            Sửa
+                          </router-link>
+                        </td>
+                        <td>
+                          <router-link :to="{}"
+                                       class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            Xóa
+                          </router-link>
+                        </td>
+                      </tr>
 
-            </tr>
-
-            <tr class="m-10 mt-3 border">
-              <td>#trn001</td>
-              <td> 19 Aug 2018</td>
-              <td>Citibank</td>
-              <td>
-                  <span>
-                      Saving
-                  </span>
-              </td>
-              <td>Hoạt động</td>
-              <td>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                  Sửa
-                </button>
-              </td>
-              <td>
-                <button class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                  Xóa
-                </button>
-              </td>
-            </tr>
-
-            </tbody>
-          </table>
+                      </tbody>
+                    </table>
         </div>
       </div>
     </div>
@@ -99,27 +85,31 @@
 
 </template>
 <script>
+import {ref} from "vue";
 import {useMenu} from "@/stores/use-menu.js";
 import axios from "axios";
+import setAuthHeader from "@/ultis/setAuthHeader.js";
 
 export default {
   setup() {
     const store = useMenu();
     store.onSelectedKeys(["warehouse-group-list"]);
-
+    const warehouse_group = ref([]);
     const getWareHouseGroup = () => {
       // Make a request for a user with a given ID
       axios.get('http://127.0.0.1:8000/api/v1/warehouse-group')
           .then(function (response) {
-            // handle success
-            console.log(response);
+            setAuthHeader(response.apiToken);
+            warehouse_group.value = response.data
           })
           .catch(function (error) {
-            // handle error
             console.log(error);
           });
     };
     getWareHouseGroup();
+    return {
+      warehouse_group,
+    }
   }
 }
 </script>

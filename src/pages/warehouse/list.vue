@@ -12,10 +12,10 @@
               <div class=" ">
                 <div class="flex text-left m-3 h-full font-medium text-[1rem]">
                   <div class=" hover:bg-cyan-400 mr-5 mt-2.5">
-                    <router-link :to="{name:'create'}"
+                    <a href=""
                                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                       Thêm kho
-                    </router-link>
+                    </a>
                   </div>
                   <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 ">
                     <select class="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
@@ -42,40 +42,27 @@
               <table class="w-full h-full mt-[20px]">
                 <thead>
                 <tr class="">
-                  <th>Id</th>
-                  <th>Tên nhóm</th>
-                  <th>Tên nhóm 2</th>
+                  <th>STT</th>
+                  <th>Email</th>
+                  <th>Tên kho</th>
+                  <th>Tên kho 2</th>
                   <th>Loại nhóm</th>
                   <th>Tình trạng</th>
                   <th>Hoạt động</th>
                 </tr>
                 </thead>
                 <tbody>
-
-                <tr class="m-10 mt-3 border">
-                  <td>#trn001</td>
-                  <td> 19 Aug 2018</td>
-                  <td>Citibank</td>
+                <tr class="m-10 mt-3 border" v-for="index in warehouse.data" :key="index">
+                  <td>STT</td>
+                  <td>{{index.email}}</td>
+                  <td> {{index.ten_kho}}</td>
+                  <td>{{index.ten_kho2}}</td>
                   <td>
                   <span>
-                      Saving
+                      {{index.dai_ly}}
                   </span>
                   </td>
-                  <td>$2000</td>
-                  <td>$1,807.00</td>
-
-                </tr>
-
-                <tr class="m-10 mt-3 border">
-                  <td>#trn001</td>
-                  <td> 19 Aug 2018</td>
-                  <td>Citibank</td>
-                  <td>
-                  <span>
-                      Saving
-                  </span>
-                  </td>
-                  <td>Hoạt động</td>
+                  <td>{{index.dien_thoai}}</td>
                   <td>
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                       Sửa
@@ -100,8 +87,31 @@
 </template>
 
 <script>
+import {useMenu} from "@/stores/use-menu";
+import {ref} from "vue";
+import axios from "axios";
+import setAuthHeader from "@/ultis/setAuthHeader";
+
 export default {
-  name: "list.vue"
+  setup() {
+    const store = useMenu();
+    store.onSelectedKeys(["warehouse-list"]);
+    const warehouse = ref([]);
+    const getWareHouse = () => {
+      axios.get('http://127.0.0.1:8000/api/v1/warehouse')
+          .then(function (response) {
+            setAuthHeader(response.apiToken);
+            warehouse.value = response.data
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    };
+    getWareHouse();
+    return {
+      warehouse,
+    }
+  }
 }
 </script>
 

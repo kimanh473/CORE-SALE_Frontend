@@ -8,7 +8,7 @@ const admin = [
 
     {
         path:"/admin",
-        component:import("../pages/master/dashboard"),
+        component:import("../pages/master/dashboard.vue"),
         children:[
             {
                 path: "home",
@@ -34,6 +34,21 @@ const admin = [
                 path: "warehouse-group-edit",
                 name:"admin-warehouse-group-edit",
                 component: import("../pages/warehouse_group/edit.vue"),
+            },
+            {
+                path: "warehouse-list",
+                name:"admin-warehouse-list",
+                component: import("../pages/warehouse/list.vue"),
+            },
+            {
+                path: "warehouse-create",
+                name:"admin-warehouse-create",
+                component: import("../pages/warehouse/create.vue"),
+            },
+            {
+                path: "warehouse-edit",
+                name:"admin-warehouse-create",
+                component: import("../pages/warehouse/edit.vue"),
             },
         ]
     }

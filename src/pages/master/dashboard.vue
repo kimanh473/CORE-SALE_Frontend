@@ -119,6 +119,15 @@
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
                  Kho
               </router-link>
+
+              <router-link to="/product"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+                Sản phẩm
+              </router-link>
+              <router-link to="/careservice"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+
+              </router-link>
             </div>
             <div @click="toggleshowCryto()"
                  class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
