@@ -78,6 +78,15 @@
 
             </tbody>
           </table>
+          <div class="flex items-center justify-center p-2"                                                                                                                                                     >
+            <v-pagination
+                v-model="page"
+                :pages="pageCount"
+                :range-size="1"
+                active-color="#DCEDFF"
+                @update:modelValue="updateHandler"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -85,19 +94,25 @@
 
 </template>
 <script>
+
+
 import {ref} from "vue";
 import {useMenu} from "@/stores/use-menu.js";
 import setAuthHeader from "@/ultis/setAuthHeader.js";
 import axios from "@/ultis/axios";
 
+// import VPagination from "@hennge/vue3-pagination";
+// import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 export default {
   setup() {
     const store = useMenu();
     store.onSelectedKeys(["warehouse-group-list"]);
     const warehouse_group = ref([]);
+    let page = ref(1);
+    let pageCount = ref(null);
     const getWareHouseGroup = () => {
       // Make a request for a user with a given ID
-      axios.get('http://127.0.0.1:8000/api/v1/warehouse-group', {
+      axios.get('http://127.0.0.1:8000/api/v1/warehouse-group?page=', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
         }
@@ -105,7 +120,7 @@ export default {
           .then(function (response) {
 
             setAuthHeader(response.apiToken);
-
+            // page.value= response.data.page_count
             warehouse_group.value = response.data
           })
           .catch(function (error) {

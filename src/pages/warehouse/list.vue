@@ -62,7 +62,7 @@
                       {{index.dai_ly}}
                   </span>
                   </td>
-                  <td>{{index.dien_thoai}}</td>
+                  <td>{{ (index.trang_thai == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
                   <td>
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                       Sửa
@@ -77,6 +77,7 @@
 
                 </tbody>
               </table>
+
             </div>
           </div>
         </div>
@@ -89,7 +90,7 @@
 <script>
 import {useMenu} from "@/stores/use-menu";
 import {ref} from "vue";
-import axios from "axios";
+import axios from "@/ultis/axios";
 import setAuthHeader from "@/ultis/setAuthHeader";
 
 export default {
@@ -98,9 +99,12 @@ export default {
     store.onSelectedKeys(["warehouse-list"]);
     const warehouse = ref([]);
     const getWareHouse = () => {
-      axios.get('http://127.0.0.1:8000/api/v1/warehouse')
+      axios.get('http://127.0.0.1:8000/api/v1/warehouse',{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+        }
+      })
           .then(function (response) {
-            setAuthHeader(response.apiToken);
             warehouse.value = response.data
           })
           .catch(function (error) {
