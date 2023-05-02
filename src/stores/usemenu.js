@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useMenu = defineStore('menuId', {
+export const usemenu = defineStore('menuId', {
     // arrow function recommended for full type inference
     state: () => ({
         selectedKeys:[],

@@ -20,6 +20,7 @@ const admin = [
                 name:"admin-ecomerce",
                 component: import("../pages/ecomerce.vue")
             },
+            //quản lý nhóm kho
             {
                 path: "warehouse-group-list",
                 name:"admin-warehouse-group-list",
@@ -35,6 +36,7 @@ const admin = [
                 name:"admin-warehouse-group-edit",
                 component: import("../pages/warehouse_group/edit.vue"),
             },
+            //quản lý các kho
             {
                 path: "warehouse-list",
                 name:"admin-warehouse-list",

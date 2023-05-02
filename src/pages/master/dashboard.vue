@@ -1194,11 +1194,11 @@
 <script>
 import { defineComponent} from "vue";
 import { storeToRefs } from 'pinia'
-import {useMenu} from "@/stores/use-menu.js";
+import {usemenu} from "@/stores/usemenu.js";
 
 export default {
   setup() {
-    const store = useMenu();
+    const store = usemenu();
     const { selectedKeys,openKeys } = store;
 
     return {

@@ -46,7 +46,7 @@
             <thead>
             <tr class="">
               <th>STT</th>
-              <th>Loại nhóm</th>
+              <th>Mã nhóm</th>
               <th>Tên nhóm</th>
               <th>Tên nhóm 2</th>
               <th>Tình trạng</th>
@@ -57,36 +57,30 @@
             <tr class="m-10 mt-3 border" v-for="index in warehouse_group.data" :key="index">
               <td>1</td>
               <td>
-                {{ index.loainhom }}
+                {{ index.type_warehouse_group }}
               </td>
-              <td> {{ index.tennh }}</td>
-              <td>{{ index.tennh2 }}</td>
-              <td>{{ (index.tinhtrang == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
+              <td> {{ index.name_warehouse_group }}</td>
+              <td>{{ index.name_warehouse_group2 }}</td>
+              <td>{{ (index.status == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
               <td>
                 <router-link :to="{name:'admin-warehouse-group-edit'}"
                              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Sửa
                 </router-link>
-              </td>
-              <td>
-                <router-link :to="{}"
+                <button @click="deleteWarehouseGroup"
                              class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Xóa
-                </router-link>
+                </button>
               </td>
+
             </tr>
 
             </tbody>
           </table>
-          <div class="flex items-center justify-center p-2"                                                                                                                                                     >
-            <v-pagination
-                v-model="page"
-                :pages="pageCount"
-                :range-size="1"
-                active-color="#DCEDFF"
-                @update:modelValue="updateHandler"
-            />
-          </div>
+          <Bootstrap5Pagination
+              :data="warehouse_group"
+              @pagination-change-page="getWareHouseGroup"
+          />
         </div>
       </div>
     </div>
@@ -94,44 +88,40 @@
 
 </template>
 <script>
-
-
-import {ref} from "vue";
-import {useMenu} from "@/stores/use-menu.js";
+import {Bootstrap5Pagination} from 'laravel-vue-pagination';
+import {onMounted, ref} from "vue";
+import {usemenu} from "@/stores/usemenu.js";
 import setAuthHeader from "@/ultis/setAuthHeader.js";
 import axios from "@/ultis/axios";
 
-// import VPagination from "@hennge/vue3-pagination";
-// import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 export default {
   setup() {
-    const store = useMenu();
-    store.onSelectedKeys(["warehouse-group-list"]);
-    const warehouse_group = ref([]);
-    let page = ref(1);
-    let pageCount = ref(null);
-    const getWareHouseGroup = () => {
+    usemenu().onSelectedKeys(["warehouse-group-list"]);
+    const warehouse_group = ref({'data': []});
+    const getWareHouseGroup = (page = 1) => {
       // Make a request for a user with a given ID
-      axios.get('http://127.0.0.1:8000/api/v1/warehouse-group?page=', {
+      axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group?page=${page}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
         }
       })
           .then(function (response) {
-
             setAuthHeader(response.apiToken);
-            // page.value= response.data.page_count
             warehouse_group.value = response.data
           })
           .catch(function (error) {
             console.log(error);
           });
     };
+    const deleteWarehouseGroup = () => {
+      console.log('acc')
+    }
     getWareHouseGroup();
+
     return {
       warehouse_group,
     }
-  }
+  },
 }
 </script>
 
