@@ -52,6 +52,23 @@ const admin = [
                 name:"admin-warehouse-create",
                 component: import("../pages/warehouse/edit.vue"),
             },
+            //quản lý dịch vụ chăm sóc
+            {
+                path: "careservice-list",
+                name: "admin-careservice-list",
+                component: import("../pages/care_service/list.vue"),
+            },
+            {
+                path: "careservice-create",
+                name: "admin-careservice-create",
+                component: import("../pages/care_service/create.vue"),
+            },
+            {
+                path: "careservice-edit",
+                name: "admin-careservice-edit",
+                component: import("../pages/care_service/edit.vue"),
+            },
+
         ]
     }
 ]

@@ -49,9 +49,7 @@
                   <th>Email</th>
                   <th>Tên kho</th>
                   <th>Tên kho 2</th>
-                  <th>Đại lý</th>
                   <th>Điện thoại</th>
-                  <th>Địa chỉ</th>
                   <th>Mã lộ trình</th>
                   <th>Nhóm kho</th>
                   <th>Tình trạng</th>
@@ -60,17 +58,12 @@
                 </thead>
                 <tbody>
                 <tr class="m-10 mt-3 border" v-for="index in warehouse.data" :key="index">
-                  <td>STT</td>
+                  <td>{{index.id}}</td>
                   <td>{{ index.email }}</td>
                   <td> {{ index.name_warehouse }}</td>
                   <td>{{ index.name_warehouse2 }}</td>
-                  <td>
-                  <span>
-                      {{ index.sales_agent }}
-                  </span>
-                  </td>
+
                   <td>{{ index.phone }}</td>
-                  <td>{{ index.address }}</td>
                   <td>{{ index.code_route }}</td>
                   <td>{{ index.type_warehouse_group }}</td>
                   <td>{{ (index.status == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
