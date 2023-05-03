@@ -55,7 +55,7 @@
             </thead>
             <tbody>
             <tr class="m-10 mt-3 border" v-for="index in warehouse_group.data" :key="index.id">
-              <td>{{index.id}}</td>
+              <td>{{ index.id }}</td>
               <td>
                 {{ index.type_warehouse_group }}
               </td>
@@ -68,7 +68,7 @@
                   Sửa
                 </router-link>
                 <button @click="deleteWarehouseGroup"
-                             class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Xóa
                 </button>
               </td>
@@ -78,7 +78,7 @@
             </tbody>
           </table>
           <Bootstrap5Pagination
-              :data="warehouse_group"
+              :data="paginate"
               @pagination-change-page="getWareHouseGroup"
           />
         </div>
@@ -88,16 +88,17 @@
 
 </template>
 <script>
-import {Bootstrap5Pagination} from 'laravel-vue-pagination';
-import { ref} from "vue";
+import {ref} from "vue";
 import {usemenu} from "@/stores/usemenu.js";
 import setAuthHeader from "@/ultis/setAuthHeader.js";
 import axios from "@/ultis/axios";
+import {Bootstrap5Pagination} from 'laravel-vue-pagination';
 
 export default {
   setup() {
     usemenu().onSelectedKeys(["warehouse-group-list"]);
-    const warehouse_group = ref({'data': []});
+    const warehouse_group = ref([]);
+    const paginate = {}
     const getWareHouseGroup = (page = 1) => {
       // Make a request for a user with a given ID
       axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group?page=${page}`, {
@@ -108,19 +109,22 @@ export default {
           .then(function (response) {
             setAuthHeader(response.apiToken);
             warehouse_group.value = response.data
+            paginate.laravelData = response.data.data.map(e => ({
+                  id: e.id
+                })
+            )
+            console.log(response.data)
           })
           .catch(function (error) {
             console.log(error);
           });
     };
-    // const deleteWarehouseGroup = () => {
-    //   console.log('acc')
-    // }
     getWareHouseGroup();
 
     return {
       warehouse_group,
     }
+
   },
 }
 </script>
