@@ -129,7 +129,7 @@
                 Dịch vụ chăm sóc
               </router-link>
 
-              <router-link to="/#"
+              <router-link :to="{path:'subsystem-list'}"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
                 Phân hệ
               </router-link>

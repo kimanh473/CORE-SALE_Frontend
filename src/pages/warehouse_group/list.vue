@@ -54,7 +54,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="m-10 mt-3 border" v-for="index in warehouse_group.data" :key="index.id">
+            <tr class="m-10 mt-3 border" v-for="index in warehouse_groups.data" :key="index.id">
               <td>{{ index.id }}</td>
               <td>
                 {{ index.type_warehouse_group }}
@@ -63,7 +63,7 @@
               <td>{{ index.name_warehouse_group2 }}</td>
               <td>{{ (index.status == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
               <td>
-                <router-link :to="{name:'admin-warehouse-group-edit'}"
+                <router-link :to="{name:'admin-warehouse-group-edit',params:{ id:index.id}}"
                              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Sửa
                 </router-link>
@@ -77,55 +77,48 @@
 
             </tbody>
           </table>
-          <Bootstrap5Pagination
-              :data="paginate"
-              @pagination-change-page="getWareHouseGroup"
-          />
+          <nav aria-label="Page navigation example" class="mt-3 mr-3">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+<!--          <Bootstrap5Pagination-->
+<!--              :data="paginate"-->
+<!--              @pagination-change-page="getWareHouseGroup"-->
+<!--          />-->
         </div>
+
       </div>
     </div>
   </div>
 
 </template>
 <script>
-import {ref} from "vue";
-import {usemenu} from "@/stores/usemenu.js";
-import setAuthHeader from "@/ultis/setAuthHeader.js";
-import axios from "@/ultis/axios";
+import useWarehouse_group from "@/stores/warehouse_group";
+import { onMounted} from "vue";
 import {Bootstrap5Pagination} from 'laravel-vue-pagination';
 
 export default {
+  name: "list.vue",
   setup() {
-    usemenu().onSelectedKeys(["warehouse-group-list"]);
-    const warehouse_group = ref([]);
-    const paginate = {}
-    const getWareHouseGroup = (page = 1) => {
-      // Make a request for a user with a given ID
-      axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-        }
-      })
-          .then(function (response) {
-            setAuthHeader(response.apiToken);
-            warehouse_group.value = response.data
-            paginate.laravelData = response.data.data.map(e => ({
-                  id: e.id
-                })
-            )
-            console.log(response.data)
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    };
-    getWareHouseGroup();
+    const { warehouse_groups, getWarehouse_groups} = useWarehouse_group()
+
+    onMounted(getWarehouse_groups)
 
     return {
-      warehouse_group,
+      warehouse_groups,
     }
-
-  },
+  }
 }
 </script>
 

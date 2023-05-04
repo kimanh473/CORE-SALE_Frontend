@@ -1,12 +1,14 @@
 <template>
-  <div>
-
-  </div>
+  <Form />
 </template>
 
 <script>
+import Form from "@/pages/subsystem/Form.vue";
 export default {
-  name: "create.vue"
+  name: "create.vue",
+  components:{
+    Form
+  }
 }
 </script>
 

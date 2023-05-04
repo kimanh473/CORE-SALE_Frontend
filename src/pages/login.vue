@@ -90,7 +90,6 @@ export default {
   },
   mounted() {
     console.log("mounted() called.......");
-    // this.LoginData();
   },
   methods: {
     LoginData() {
