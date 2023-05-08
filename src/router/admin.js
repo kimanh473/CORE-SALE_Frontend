@@ -51,6 +51,22 @@ const admin = [
                 name: "admin-warehouse-create",
                 component: import("../pages/warehouse/edit.vue"),
             },
+            //Quản lý danh mục sản phẩm
+            {
+              path: "category-list",
+              name:"admin-category-list",
+              component: import("../pages/category/list.vue")
+            },
+            {
+              path: "category-create",
+              name:"admin-category-create",
+              component: import("../pages/category/create.vue")
+            },
+            {
+              path: "category-edit",
+              name:"admin-category-edit",
+              component: import("../pages/category/edit.vue")
+            },
             //quản lý dịch vụ chăm sóc
             {
                 path: "careservice-list",
@@ -79,10 +95,26 @@ const admin = [
                 component: import("../pages/subsystem/create.vue")
             },
             {
-                path: "/:id/subsystem-edit",
+                path: "subsystem-edit/:id/",
                 name: "admin-subsystem-edit",
                 component: import("../pages/subsystem/edit.vue"),
                 props:true
+            },
+            //quản lý thuế
+            {
+                path: "tax-list",
+                name: "admin-tax-list",
+                component: import("../pages/Tax/list.vue")
+            },
+            {
+                path: "tax-create",
+                name: "admin-tax-create",
+                component: import("../pages/Tax/create.vue")
+            },
+            {
+                path: "tax-edit",
+                name: "admin-tax-edit",
+                component: import("../pages/Tax/edit.vue")
             }
 
         ]

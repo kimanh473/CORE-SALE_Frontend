@@ -6,7 +6,7 @@ export default function useWarehouse_group(){
     const warehouse_group = ref([])
     const router = useRouter()
     const errors = ref('')
-    const getWarehouse_groups = async (page = 1) =>{
+    const getWarehouse_groups = async (page) =>{
         let response = await axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group?page=${page}`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
@@ -21,7 +21,6 @@ export default function useWarehouse_group(){
             }
         })
         warehouse_group.value = response.data;
-        console.log(response.data)
     }
     const storeWarehouse_group = async (data) => {
         errors.value = ''

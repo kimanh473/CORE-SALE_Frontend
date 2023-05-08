@@ -25,8 +25,8 @@
           <label for="status" class="form-label"> Tình trạng </label>
           <select class="form-control" v-model="form.status">
             <option value="select"> -- Trạng thái --</option>
-            <option value="select"> -- Hoạt động --</option>
-            <option value="select"> -- Không Hoạt động --</option>
+            <option value="1"> -- Hoạt động --</option>
+            <option value="0"> -- Không Hoạt động --</option>
           </select>
         </div>
         <div class="col-md-6 mt-3 pt-[20px] text-[1.3rem]">

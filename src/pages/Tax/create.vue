@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h1>thêm kho</h1>
-  </div>
+<h1>create</h1>
 </template>
 
 <script>

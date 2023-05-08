@@ -72,30 +72,27 @@
                   Xóa
                 </button>
               </td>
-
             </tr>
-
             </tbody>
           </table>
-          <nav aria-label="Page navigation example" class="mt-3 mr-3">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-<!--          <Bootstrap5Pagination-->
-<!--              :data="paginate"-->
-<!--              @pagination-change-page="getWareHouseGroup"-->
-<!--          />-->
+          <div class="overflow-auto">
+            <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+            ></b-pagination>
+
+            <p class="mt-3">Current Page: {{ warehouse_groups }}</p>
+
+            <b-table
+                id="my-table"
+                :items="items"
+                :per-page="perPage"
+                :current-page="warehouse_groups"
+                small
+            ></b-table>
+          </div>
         </div>
 
       </div>
@@ -110,6 +107,7 @@ import {Bootstrap5Pagination} from 'laravel-vue-pagination';
 
 export default {
   name: "list.vue",
+
   setup() {
     const { warehouse_groups, getWarehouse_groups} = useWarehouse_group()
 
@@ -117,8 +115,9 @@ export default {
 
     return {
       warehouse_groups,
+
     }
-  }
+  },
 }
 </script>
 

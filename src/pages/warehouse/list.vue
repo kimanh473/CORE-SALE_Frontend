@@ -12,10 +12,14 @@
               <div class=" ">
                 <div class="flex text-left m-3 h-full font-medium text-[1rem]">
                   <div class=" hover:bg-cyan-400 mr-5 mt-2.5">
-                    <a href=""
-                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+<!--                    <a href=""-->
+<!--                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
+<!--                      Thêm kho-->
+<!--                    </a>-->
+                    <router-link :to="{name:'admin-warehouse-create'}"
+                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                       Thêm kho
-                    </a>
+                    </router-link>
                   </div>
                   <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 ">
                     <select

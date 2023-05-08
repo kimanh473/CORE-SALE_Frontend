@@ -120,6 +120,11 @@
                  Kho
               </router-link>
 
+              <router-link :to="{path:'category-list'}"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+               Danh mục sản phẩm
+              </router-link>
+
               <router-link to="/#"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
                 Sản phẩm
@@ -137,6 +142,11 @@
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
                 Tài khoản
               </router-link>
+
+              <router-link :to="{path:'tax-list'}"
+                           class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
+                Thuế
+              </router-link>
             </div>
             <div @click="toggleshowCryto()"
                  class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
@@ -145,7 +155,7 @@
                 <path
                     d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"></path>
               </svg>
-              Cryto
+              Quản lý
               <span class="sidebar-label">new</span>
             </div>
             <div v-if="showCryto" class=" flex flex-col justify-between space-y-[10px]">
@@ -153,25 +163,23 @@
               <router-link to="/market"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
-                Market Cap
+                Vai trò
                 <span class="sidebar-label">new</span>
               </router-link>
 
               <router-link to="/wallet"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Wallet
+                Quyền
                 <span class="sidebar-label">new</span>
               </router-link>
               <router-link to="/crm"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
 
-                Trade
+                Nhóm người dùng
                 <span class="sidebar-label">new</span>
               </router-link>
-
             </div>
-
             <div @click="toggleshowCrm()"
                  class="inline-flex relative items-center py-[10px] px-[30px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
               <svg aria-hidden="true" class="mr-2 w-[25px] h-[25px] fill-current" fill="currentColor"

@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <h1>thêm kho</h1>
-  </div>
+ <Form> </Form>
 </template>
 
 <script>
 export default {
-  name: "create.vue"
+  name: "Form"
 }
 </script>
 

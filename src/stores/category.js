@@ -1,37 +1,37 @@
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
 import axios from "@/ultis/axios";
-export default function useSubsystem(){
-    const subsystems = ref([])
-    const subsystem = ref([])
+export default function useCategory(){
+    const categories = ref([])
+    const category = ref([])
     const router = useRouter()
     const errors = ref('')
-    const getSubsystems = async () =>{
-        let response = await axios.get(`http://127.0.0.1:8000/api/v1/subsystem`,{
+    const getCategories = async () =>{
+        let response = await axios.get(`http://127.0.0.1:8000/api/v1/category`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
         })
-        subsystems.value = response.data;
+        categories.value = response.data;
     }
-    const getSubsystem = async (id) =>{
-        let response = await axios.get(`http://127.0.0.1:8000/api/v1/subsystem/${id}`,{
+    const getCategory = async (id) =>{
+        let response = await axios.get(`http://127.0.0.1:8000/api/v1/category/${id}`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
         })
-        subsystem.value = response.data;
+        category.value = response.data;
         // console.log(response.data)
     }
-    const storeSubsystem = async (data) => {
+    const storeCategory = async (data) => {
         errors.value = ''
         try {
-            await axios.post(`http://127.0.0.1:8000/api/v1/subsystem`,data,{
+            await axios.post(`http://127.0.0.1:8000/api/v1/category`,data,{
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             })
-            await router.push({ name:'admin-subsystem-list' });
+            await router.push({ name:'admin-category-list' });
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors){
@@ -40,15 +40,15 @@ export default function useSubsystem(){
             }
         }
     }
-    const updateSubsystem = async (id) =>{
+    const updateCategory = async (id) =>{
         errors.value = ''
         try {
-            await axios.put(`http://127.0.0.1:8000/api/v1/subsystem/${id}`,subsystem.value,{
+            await axios.put(`http://127.0.0.1:8000/api/v1/category/${id}`,category.value,{
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             })
-            await router.push({name:'admin-subsystem-list'})
+            await router.push({name:'admin-category-list'})
         } catch (e) {
             if (e.response.status === 422){
                 for (const key in e.response.data.errors){
@@ -57,26 +57,23 @@ export default function useSubsystem(){
             }
         }
     }
-    const destroySubsystem = async (id) =>{
+    const destroyCategory = async (id) =>{
         await axios.delete(`http://127.0.0.1:8000/api/v1/subsystem/${id}`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
         }).then(res=>{
             console.log(res.data.success)
-            // if (res.data.success){
-            //     this.getSubsystems()
-            // }
         })
     }
     return {
-        subsystems,
-        subsystem,
+        categories,
+        category,
         errors,
-        getSubsystems,
-        getSubsystem,
-        storeSubsystem,
-        updateSubsystem,
-        destroySubsystem
+        getCategories,
+        getCategory,
+        storeCategory,
+        updateCategory,
+        destroyCategory
     }
 }

@@ -7,12 +7,12 @@
       <div class="mt-2 mb-6 text-sm text-red-600" v-if="errors !== ''">
         {{ errors }}
       </div>
-      <form action="" class="mt-3 pt-[20px]" @submit.prevent="saveSubsystem">
+
+      <form action="" class="mt-3 pt-[20px]" @submit.prevent="saveSubsystem" >
         <div class="col-md-6">
           <label for="type_subsystem" class="form-label pt-[20px] text-[1.3rem] font-medium">Loại phân hệ </label>
-          <input type="text"  class="form-control" v-model="form.type_subsystem">
+          <input type="text" class="form-control" v-model="form.type_subsystem">
         </div>
-
         <div class="col-md-6">
           <label for="code_subsystem" class="form-label pt-[20px] text-[1.3rem] font-medium">Mã phân hệ </label>
           <input type="text"  class="form-control" v-model="form.code_subsystem">
@@ -28,9 +28,9 @@
         <div class="col-md-6 pt-[20px] text-[1.2rem]">
           <label for="status" class="form-label"> Tình trạng </label>
           <select class="form-control" v-model="form.status">
-            <option value="select"> -- Trạng thái --</option>
-            <option value="select"> -- Hoạt động --</option>
-            <option value="select"> -- Không Hoạt động --</option>
+            <option disabled value="select"> -- Trạng thái --</option>
+            <option value="1"> -- Hoạt động --</option>
+            <option value="0"> -- Không Hoạt động --</option>
           </select>
         </div>
         <div class="col-md-6 mt-3 pt-[20px] text-[1.3rem]">

@@ -1,37 +1,36 @@
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
 import axios from "@/ultis/axios";
-export default function useSubsystem(){
-    const subsystems = ref([])
-    const subsystem = ref([])
+export default function useTax(){
+    const Taxes = ref([])
+    const Tax = ref([])
     const router = useRouter()
     const errors = ref('')
-    const getSubsystems = async () =>{
-        let response = await axios.get(`http://127.0.0.1:8000/api/v1/subsystem`,{
+    const getTaxes = async () =>{
+        let response = await axios.get(`http://127.0.0.1:8000/api/v1/tax`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
         })
-        subsystems.value = response.data;
+        Taxes.value = response.data;
     }
-    const getSubsystem = async (id) =>{
-        let response = await axios.get(`http://127.0.0.1:8000/api/v1/subsystem/${id}`,{
+    const getTax = async (id) =>{
+        let response = await axios.get(`http://127.0.0.1:8000/api/v1/tax/${id}`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
         })
-        subsystem.value = response.data;
-        // console.log(response.data)
+        Tax.value = response.data;
     }
-    const storeSubsystem = async (data) => {
+    const storeTax = async (data) => {
         errors.value = ''
         try {
-            await axios.post(`http://127.0.0.1:8000/api/v1/subsystem`,data,{
+            await axios.post(`http://127.0.0.1:8000/api/v1/tax`,data,{
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             })
-            await router.push({ name:'admin-subsystem-list' });
+            await router.push({ name:'admin-tax-list' });
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors){
@@ -40,15 +39,15 @@ export default function useSubsystem(){
             }
         }
     }
-    const updateSubsystem = async (id) =>{
+    const updateTax = async (id) =>{
         errors.value = ''
         try {
-            await axios.put(`http://127.0.0.1:8000/api/v1/subsystem/${id}`,subsystem.value,{
+            await axios.put(`http://127.0.0.1:8000/api/v1/tax/${id}`,Tax.value,{
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             })
-            await router.push({name:'admin-subsystem-list'})
+            await router.push({name:'admin-tax-list'})
         } catch (e) {
             if (e.response.status === 422){
                 for (const key in e.response.data.errors){
@@ -57,26 +56,23 @@ export default function useSubsystem(){
             }
         }
     }
-    const destroySubsystem = async (id) =>{
-        await axios.delete(`http://127.0.0.1:8000/api/v1/subsystem/${id}`,{
+    const destroyTax = async (id) =>{
+        await axios.delete(`http://127.0.0.1:8000/api/v1/tax/${id}`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
         }).then(res=>{
             console.log(res.data.success)
-            // if (res.data.success){
-            //     this.getSubsystems()
-            // }
         })
     }
     return {
-        subsystems,
-        subsystem,
+        Taxes,
+        Tax,
         errors,
-        getSubsystems,
-        getSubsystem,
-        storeSubsystem,
-        updateSubsystem,
-        destroySubsystem
+        getTaxes,
+        getTax,
+        storeTax,
+        updateTax,
+        destroyTax
     }
 }
