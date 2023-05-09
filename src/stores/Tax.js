@@ -61,8 +61,8 @@ export default function useTax(){
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
-        }).then(res=>{
-            console.log(res.data.success)
+        }).then(response=>{
+            this.Taxes.splice(this.Taxes.indexOf(id),1)
         })
     }
     return {

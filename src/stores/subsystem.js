@@ -62,11 +62,8 @@ export default function useSubsystem(){
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
-        }).then(res=>{
-            console.log(res.data.success)
-            // if (res.data.success){
-            //     this.getSubsystems()
-            // }
+        }).then(response=>{
+            this.subsystems.splice(this.subsystems.indexOf(id),1)
         })
     }
     return {

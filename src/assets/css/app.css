@@ -15,5 +15,15 @@
   .html{
    font-family: 'Montserrat', sans-serif;
   }
+  .login,
+  .image {
+   min-height: 100vh;
+  }
+
+  .bg-image {
+   background-image: url('https://hrm.btpholdings.vn/img/bg-BTP.35acb40d.jpg');
+   background-size: cover;
+   background-position: center center;
+  }
 
  }

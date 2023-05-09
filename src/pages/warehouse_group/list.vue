@@ -67,7 +67,7 @@
                              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Sửa
                 </router-link>
-                <button @click="deleteWarehouseGroup"
+                <button @click="deleteWarehouseGroup(index.id)"
                         class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Xóa
                 </button>
@@ -102,19 +102,29 @@
 </template>
 <script>
 import useWarehouse_group from "@/stores/warehouse_group";
-import { onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import {Bootstrap5Pagination} from 'laravel-vue-pagination';
+import axios from "@/ultis/axios";
+import router from "@/router";
 
 export default {
   name: "list.vue",
-
   setup() {
-    const { warehouse_groups, getWarehouse_groups} = useWarehouse_group()
+    const { warehouse_groups, getWarehouse_groups, destroyWarehouse_group} = useWarehouse_group()
 
     onMounted(getWarehouse_groups)
 
+    const deleteWarehouseGroup = async (id) =>{
+      if (!window.confirm('Bạn có chắc muốn xóa')){
+        return
+      }
+      await destroyWarehouse_group(id)
+      await getWarehouse_groups()
+    }
+
     return {
       warehouse_groups,
+      deleteWarehouseGroup,
 
     }
   },

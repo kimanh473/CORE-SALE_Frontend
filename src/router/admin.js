@@ -31,7 +31,7 @@ const admin = [
                 component: import("../pages/warehouse_group/create.vue"),
             },
             {
-                path: "/:id/warehouse-group-edit",
+                path: "/warehouse-group-edit/:id/",
                 name: "admin-warehouse-group-edit",
                 component: import("../pages/warehouse_group/edit.vue"),
             },
@@ -117,7 +117,11 @@ const admin = [
                 component: import("../pages/Tax/edit.vue")
             }
 
-        ]
+        ],
+        beforeEnter:(to, from, next)=>{
+            console.log('middleware');
+            next()
+        }
     }
 ]
 export default admin

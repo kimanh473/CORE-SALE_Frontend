@@ -57,10 +57,12 @@ export default function useWarehouse_group(){
         }
     }
     const destroyWarehouse_group = async (id) =>{
-        await axios.delete(`http://127.0.0.1:8000/api/v1/warehouse-group/`+id,{
+        await axios.delete(`http://127.0.0.1:8000/api/v1/warehouse-group/${id}`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
+        }).then(response=>{
+            this.warehouse_groups.splice(this.warehouse_groups.indexOf(id),1)
         })
     }
     return {

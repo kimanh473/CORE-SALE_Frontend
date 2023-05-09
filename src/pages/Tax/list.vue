@@ -74,7 +74,7 @@
                              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Sửa
                 </router-link>
-                <button @click="deleteTax"
+                <button @click="deleteTax(index.id)"
                         class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                   Xóa
                 </button>
@@ -123,7 +123,7 @@ export default {
       if (!window.confirm('Bạn có chắc muốn xóa')){
         return
       }
-      await destroyTax();
+      await destroyTax(id);
       await getTaxes();
     }
     return {

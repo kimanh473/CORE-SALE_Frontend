@@ -48,7 +48,7 @@ export default {
   props: {
     warehouse_groupId: {
       required: false,
-      // type:String
+      type:String
     },
   },
   setup(props) {
