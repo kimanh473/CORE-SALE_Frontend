@@ -31,7 +31,7 @@ const admin = [
                 component: import("../pages/warehouse_group/create.vue"),
             },
             {
-                path: "/warehouse-group-edit/:id/",
+                path: "warehouse-group-edit/:id/",
                 name: "admin-warehouse-group-edit",
                 component: import("../pages/warehouse_group/edit.vue"),
             },

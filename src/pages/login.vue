@@ -23,7 +23,7 @@
                     <label for="customCheck1" class="form-check-label">Remember password</label>
                   </div>
                   <div class="d-grid gap-2 mt-2">
-                    <button type="submit" @click="LoginData()" class="btn btn-primary bg-cyan-500 btn-block text-uppercase mb-3 rounded-pill shadow-sm">
+                    <button loading="loading" type="submit" @click="LoginData()" class="btn btn-primary bg-cyan-500 btn-block text-uppercase mb-3 rounded-pill shadow-sm">
                       Sign in
                     </button>
                   </div>

@@ -1,21 +1,23 @@
-import { ref } from 'vue';
-import { useRouter } from "vue-router";
+import {ref} from 'vue';
+import {useRouter} from "vue-router";
 import axios from "@/ultis/axios";
-export default function useWarehouse_group(){
+import Swal from "sweetalert2";
+
+export default function useWarehouse_group() {
     const warehouse_groups = ref([])
     const warehouse_group = ref([])
     const router = useRouter()
     const errors = ref('')
-    const getWarehouse_groups = async (page) =>{
-        let response = await axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group?page=${page}`,{
+    const getWarehouse_groups = async (page) => {
+        let response = await axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group?page=${page}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
         })
         warehouse_groups.value = response.data;
     }
-    const getWarehouse_group = async (id) =>{
-        let response = await axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group/`+id,{
+    const getWarehouse_group = async (id) => {
+        let response = await axios.get(`http://127.0.0.1:8000/api/v1/warehouse-group/` + id, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
@@ -23,47 +25,73 @@ export default function useWarehouse_group(){
         warehouse_group.value = response.data;
     }
     const storeWarehouse_group = async (data) => {
-        errors.value = ''
+        errors.value = '';
+
         try {
-            await axios.post(`http://127.0.0.1:8000/api/v1/warehouse-group/`,data,{
+            await axios.post(`http://127.0.0.1:8000/api/v1/warehouse-group/`, data, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             })
-            await router.push({ name:'admin-warehouse-group-list' });
+            Swal.fire('Tạo thành công ');
+            await router.push({name: 'admin-warehouse-group-list'});
         } catch (e) {
             if (e.response.status === 422) {
-                for (const key in e.response.data.errors){
-                    errors.value += e.response.data.errors[key][0]+'';
-                }
-            }
-        }
-    }
-    const updateWarehouse_group = async (id) =>{
-        errors.value = ''
-        try {
-            await axios.put(`http://127.0.0.1:8000/api/v1/warehouse-group/`+id,warehouse_group.value,{
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
-            })
-            await router.push({name:'admin-warehouse-group-list'})
-        } catch (e) {
-            if (e.response.status === 422){
-                for (const key in e.response.data.errors){
+                for (const key in e.response.data.errors) {
                     errors.value += e.response.data.errors[key][0] + '';
                 }
             }
         }
     }
-    const destroyWarehouse_group = async (id) =>{
-        await axios.delete(`http://127.0.0.1:8000/api/v1/warehouse-group/${id}`,{
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    const updateWarehouse_group = async (id) => {
+        errors.value = ''
+        try {
+            await axios.put(`http://127.0.0.1:8000/api/v1/warehouse-group/${id}`, warehouse_group.value, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            Swal.fire('Cập nhập thành công ');
+
+            await router.push({name: 'admin-warehouse-group-list'});
+
+        } catch (e) {
+            if (e.response.status === 422) {
+                for (const key in e.response.data.errors) {
+                    errors.value += e.response.data.errors[key][0] + '';
+                }
             }
-        }).then(response=>{
-            this.warehouse_groups.splice(this.warehouse_groups.indexOf(id),1)
+        }
+    }
+    const destroyWarehouse_group = (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then( async (result) => {
+            if (result.isConfirmed) {
+                await axios.delete(`http://127.0.0.1:8000/api/v1/warehouse-group/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                    }
+                }).then(response => {
+                    this.warehouse_groups.splice(this.warehouse_groups.indexOf(id), 1)
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success',
+                    )
+
+                })
+                // window.location.href = 'warehouse-group-list';
+            }
         })
+
+
     }
     return {
         warehouse_groups,

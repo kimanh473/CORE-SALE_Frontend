@@ -73,15 +73,9 @@
                   Xóa
                 </button>
               </td>
-
             </tr>
-
             </tbody>
           </table>
-          <!--          <Bootstrap5Pagination-->
-          <!--              :data="subsystems"-->
-          <!--              @pagination-change-page="getSubsystems"-->
-          <!--          />-->
         </div>
       </div>
     </div>

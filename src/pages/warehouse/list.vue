@@ -12,10 +12,6 @@
               <div class=" ">
                 <div class="flex text-left m-3 h-full font-medium text-[1rem]">
                   <div class=" hover:bg-cyan-400 mr-5 mt-2.5">
-<!--                    <a href=""-->
-<!--                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
-<!--                      Thêm kho-->
-<!--                    </a>-->
                     <router-link :to="{name:'admin-warehouse-create'}"
                                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                       Thêm kho
@@ -61,25 +57,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="m-10 mt-3 border" v-for="index in warehouse.data" :key="index">
-                  <td>{{index.id}}</td>
+                <tr class="m-10 mt-3 border" v-for="index in warehouses.data" :key="index.id">
+                  <td>{{ index.id }}</td>
                   <td>{{ index.email }}</td>
                   <td> {{ index.name_warehouse }}</td>
                   <td>{{ index.name_warehouse2 }}</td>
-
                   <td>{{ index.phone }}</td>
                   <td>{{ index.code_route }}</td>
                   <td>{{ index.type_warehouse_group }}</td>
                   <td>{{ (index.status == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
                   <td>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+<!--                    <router-link :to="{name:'admin-warehouse-edit',params:{ id:index.id}}"-->
+<!--                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">-->
+<!--                      Sửa-->
+<!--                    </router-link >-->
+<!--                    <button @click="deleteWarehouse(index.id)"-->
+<!--                            class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">-->
+<!--                      Xóa-->
+<!--                    </button>-->
+                    <a
+                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                       Sửa
-                    </button>
-                    <button class="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                    </a >
+                    <button
+                            class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                       Xóa
                     </button>
-                  </td>
 
+                  </td>
                 </tr>
 
                 </tbody>
@@ -95,32 +100,18 @@
 </template>
 
 <script>
-import {usemenu} from "@/stores/usemenu";
-import {ref} from "vue";
-import axios from "@/ultis/axios";
-import setAuthHeader from "@/ultis/setAuthHeader";
+import useWarehouse from "@/stores/warehouse";
+import {onMounted, ref} from "vue";
 
 export default {
+  name: "list.vue",
   setup() {
-    const store = usemenu();
-    store.onSelectedKeys(["warehouse-list"]);
-    const warehouse = ref([]);
-    const getWareHouse = () => {
-      axios.get('http://127.0.0.1:8000/api/v1/warehouse', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-        }
-      })
-          .then(function (response) {
-            warehouse.value = response.data
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    };
-    getWareHouse();
+
+    const { warehouses, getWarehouses, destroyWarehouse} = useWarehouse()
+    onMounted(getWarehouses);
+
     return {
-      warehouse,
+      warehouses,
     }
   }
 }

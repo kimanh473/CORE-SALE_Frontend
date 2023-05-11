@@ -1,5 +1,6 @@
 <template>
-  <Form :warehouse_groupId="id" />
+  <Form :warehousegroupId="id" />
+<!--  <h1>edit</h1>-->
 </template>
 
 <script>

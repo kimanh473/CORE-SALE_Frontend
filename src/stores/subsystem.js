@@ -1,6 +1,8 @@
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
 import axios from "@/ultis/axios";
+import Swal from "sweetalert2";
+
 export default function useSubsystem(){
     const subsystems = ref([])
     const subsystem = ref([])
@@ -21,17 +23,18 @@ export default function useSubsystem(){
             }
         })
         subsystem.value = response.data;
-        // console.log(response.data)
     }
     const storeSubsystem = async (data) => {
-        errors.value = ''
+        errors.value = '';
+
+
         try {
             await axios.post(`http://127.0.0.1:8000/api/v1/subsystem`,data,{
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             })
-            await router.push({ name:'admin-subsystem-list' });
+            await router.push({ name: 'admin-subsystem-list' });
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors){
@@ -48,7 +51,10 @@ export default function useSubsystem(){
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             })
-            await router.push({name:'admin-subsystem-list'})
+            Swal.fire('Cập nhập thành công ');
+
+            router.push({ name: 'admin-subsystem-list' })
+            console.log('aaa');
         } catch (e) {
             if (e.response.status === 422){
                 for (const key in e.response.data.errors){

@@ -106,6 +106,7 @@ import {onMounted, ref} from "vue";
 import {Bootstrap5Pagination} from 'laravel-vue-pagination';
 import axios from "@/ultis/axios";
 import router from "@/router";
+import Swal from 'sweetalert2';
 
 export default {
   name: "list.vue",
@@ -115,11 +116,10 @@ export default {
     onMounted(getWarehouse_groups)
 
     const deleteWarehouseGroup = async (id) =>{
-      if (!window.confirm('Bạn có chắc muốn xóa')){
-        return
-      }
+
       await destroyWarehouse_group(id)
       await getWarehouse_groups()
+
     }
 
     return {
