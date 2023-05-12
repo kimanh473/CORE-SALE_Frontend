@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <h1>thêm kho</h1>
-  </div>
+ <Form />
 </template>
 
 <script>
+import Form from "@/pages/warehouse/Form.vue";
 export default {
-  name: "create.vue"
+  name: "create.vue",
+  components:{
+    Form
+  }
 }
 </script>
 

@@ -84,20 +84,23 @@
 
 <script>
 import useSubsystem from "@/stores/subsystem.js";
-import {onMounted} from "vue";
+import { onMounted, reactive} from "vue";
 import {Bootstrap5Pagination} from 'laravel-vue-pagination';
 
 export default {
   name: "list.vue",
   setup() {
     const {subsystems, getSubsystems, destroySubsystem} = useSubsystem()
-
+    // const param = reactive({
+    //   'type_subsystem':'',
+    //   'code_subsystem':'',
+    //   'name_subsystem':'',
+    //   'name_subsystem2':'',
+    //   'status':'',
+    // })
     onMounted(getSubsystems)
 
     const deleteSubsystem = async (id) => {
-      if (!window.confirm('Bạn có chắc muốn xóa')){
-        return
-      }
       await destroySubsystem(id);
       await getSubsystems();
     }

@@ -120,12 +120,9 @@ export default {
     onMounted(getTaxes)
 
     const deleteTax = async (id) => {
-      if (!window.confirm('Bạn có chắc muốn xóa')){
-        return
-      }
       await destroyTax(id);
       await getTaxes();
-    }
+      }
     return {
       Taxes,
       deleteTax

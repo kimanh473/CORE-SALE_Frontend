@@ -34,6 +34,7 @@ const admin = [
                 path: "warehouse-group-edit/:id/",
                 name: "admin-warehouse-group-edit",
                 component: import("../pages/warehouse_group/edit.vue"),
+                props: true
             },
             //quản lý các kho
             {
@@ -47,9 +48,11 @@ const admin = [
                 component: import("../pages/warehouse/create.vue"),
             },
             {
-                path: "warehouse-edit",
-                name: "admin-warehouse-create",
+                path: "warehouse-edit/:id/",
+                name: "admin-warehouse-edit",
                 component: import("../pages/warehouse/edit.vue"),
+                props:true
+
             },
             //Quản lý danh mục sản phẩm
             {
@@ -113,15 +116,15 @@ const admin = [
             },
             {
                 path: "tax-edit",
-                name: "admin-tax-edit",
-                component: import("../pages/Tax/edit.vue")
+                name: "admin-tax-edit/:id/",
+                component: import("../pages/Tax/edit.vue"),
+                props: true
             }
-
         ],
-        beforeEnter:(to, from, next)=>{
-            console.log('middleware');
-            next()
-        }
+        // beforeEnter:(to, from, next)=>{
+        //     console.log('middleware');
+        //     next()
+        // }
     }
 ]
 export default admin

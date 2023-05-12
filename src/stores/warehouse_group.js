@@ -52,9 +52,8 @@ export default function useWarehouse_group() {
                 }
             });
             Swal.fire('Cập nhập thành công ');
-
             await router.push({name: 'admin-warehouse-group-list'});
-
+            window.location.reload();
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
@@ -63,16 +62,16 @@ export default function useWarehouse_group() {
             }
         }
     }
-    const destroyWarehouse_group = (id) => {
+    const destroyWarehouse_group = async (id) => {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Bạn có chắc muốn xóa?',
+            text: "Bạn sẽ không thể hoàn tác!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-        }).then( async (result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
                 await axios.delete(`http://127.0.0.1:8000/api/v1/warehouse-group/${id}`, {
                     headers: {
@@ -85,13 +84,9 @@ export default function useWarehouse_group() {
                         'Your file has been deleted.',
                         'success',
                     )
-
                 })
-                // window.location.href = 'warehouse-group-list';
             }
         })
-
-
     }
     return {
         warehouse_groups,

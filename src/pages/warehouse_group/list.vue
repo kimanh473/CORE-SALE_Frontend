@@ -62,6 +62,7 @@
               <td> {{ index.name_warehouse_group }}</td>
               <td>{{ index.name_warehouse_group2 }}</td>
               <td>{{ (index.status == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
+
               <td>
                 <router-link :to="{name:'admin-warehouse-group-edit',params:{ id:index.id}}"
                              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">

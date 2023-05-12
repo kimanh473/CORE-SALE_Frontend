@@ -34,6 +34,7 @@
           </select>
         </div>
         <div class="col-md-6 mt-3 pt-[20px] text-[1.3rem]">
+          {{subsystemId}}
           <button type="submit" class="btn btn-primary bg-cyan-400">
             {{ subsystemId ? 'Update' : 'Create' }}
           </button>
@@ -54,22 +55,24 @@ export default {
       // type:String,
     },
   },
-  setup(props) {
+  setup: function (props) {
     let form = reactive({
-      id:'',
-      type_subsystem:'',
-      code_subsystem:'',
-      name_subsystem:'',
-      name_subsystem2:'',
-      status:''
+      'id': '',
+      'type_subsystem': '',
+      'code_subsystem': '',
+      'name_subsystem': '',
+      'name_subsystem2': '',
+      'status': ''
     })
-    const { errors, subsystem, getSubsystem, storeSubsystem, updateSubsystem  } = useSubsystem()
+
+    const {errors, subsystem, getSubsystem, storeSubsystem, updateSubsystem} = useSubsystem()
+
     if (props.subsystemId) {
       onMounted(getSubsystem(props.subsystemId))
       form = subsystem
     }
-    const saveSubsystem = async () =>{
-      props.subsystemId ? await updateSubsystem(props.subsystemId) : storeSubsystem({...form})
+    const saveSubsystem = async () => {
+      props.subsystemId ? updateSubsystem(props.subsystemId) : storeSubsystem({...form})
     }
     return {
       form,

@@ -51,6 +51,8 @@
                   <th>Tên kho 2</th>
                   <th>Điện thoại</th>
                   <th>Mã lộ trình</th>
+                  <th>Mã vận chuyển</th>
+                  <th>Mã dịch vụ chăm sóc</th>
                   <th>Nhóm kho</th>
                   <th>Tình trạng</th>
                   <th>Hoạt động</th>
@@ -64,26 +66,19 @@
                   <td>{{ index.name_warehouse2 }}</td>
                   <td>{{ index.phone }}</td>
                   <td>{{ index.code_route }}</td>
+                  <td>{{ index.transport_id }}</td>
+                  <td>{{ index.care_service_id }}</td>
                   <td>{{ index.type_warehouse_group }}</td>
                   <td>{{ (index.status == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
                   <td>
-<!--                    <router-link :to="{name:'admin-warehouse-edit',params:{ id:index.id}}"-->
-<!--                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">-->
-<!--                      Sửa-->
-<!--                    </router-link >-->
-<!--                    <button @click="deleteWarehouse(index.id)"-->
-<!--                            class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">-->
-<!--                      Xóa-->
-<!--                    </button>-->
-                    <a
+                    <router-link :to="{name:'admin-warehouse-edit',params:{ id:index.id}}"
                                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                       Sửa
-                    </a >
-                    <button
+                    </router-link >
+                    <button @click="deleteWarehouse(index.id)"
                             class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                       Xóa
                     </button>
-
                   </td>
                 </tr>
 
@@ -109,9 +104,14 @@ export default {
 
     const { warehouses, getWarehouses, destroyWarehouse} = useWarehouse()
     onMounted(getWarehouses);
+    const deleteWarehouse = async (id)=>{
+      await destroyWarehouse(id)
+      await getWarehouses()
 
+    }
     return {
       warehouses,
+      deleteWarehouse
     }
   }
 }

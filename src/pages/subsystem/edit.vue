@@ -4,7 +4,6 @@
 
 <script>
 import Form from "@/pages/subsystem/Form.vue";
-
 export default {
   name: "edit.vue",
   props:{

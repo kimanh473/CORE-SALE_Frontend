@@ -41,23 +41,23 @@
 
 <script>
 import {reactive, onMounted} from "vue";
-import useWarehouse_group from "@/stores/warehouse_group";
+import useWarehouse_group from "@/stores/warehouse_group.js";
 
 export default {
   name: "Form.vue",
   props: {
     warehousegroupId: {
       required: false,
-      type:String
+      // type:String
     },
   },
   setup(props) {
     let form = reactive({
-      id: '',
-      type_warehouse_group: '',
-      name_warehouse_group: '',
-      name_warehouse_group2: '',
-      status: ''
+      'id': '',
+      'type_warehouse_group': '',
+      'name_warehouse_group': '',
+      'name_warehouse_group2': '',
+      'status': ''
     })
     const {
       errors,
@@ -73,7 +73,6 @@ export default {
     const saveWarehouse_group = async () => {
       props.warehousegroupId ? await updateWarehouse_group(props.warehousegroupId) : storeWarehouse_group({...form})
     }
-      console.log('aa')
     return {
       form,
       saveWarehouse_group,

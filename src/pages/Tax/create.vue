@@ -1,10 +1,14 @@
 <template>
-<h1>create</h1>
+  <Form />
 </template>
 
 <script>
+import Form from "@/pages/Tax/Form.vue";
 export default {
-  name: "create.vue"
+  name: "create.vue",
+  components:{
+    Form
+  }
 }
 </script>
 

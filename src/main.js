@@ -25,7 +25,7 @@ import {
     List,
     Drawer,
     Button,
-    message
+    message, Form
 } from 'ant-design-vue';
 
 // import fontawesome
@@ -48,6 +48,7 @@ app.use(router),
     app.use(List),
     app.use(Drawer),
     app.use(Button),
+    app.use(Form)
     app.use('fa', FontAwesomeIcon)
 app.mount('#app')
 app.config.globalProperties.$message = message;
