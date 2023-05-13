@@ -68,7 +68,7 @@
                   <td>{{ index.code_route }}</td>
                   <td>{{ index.transport_id }}</td>
                   <td>{{ index.care_service_id }}</td>
-                  <td>{{ index.type_warehouse_group }}</td>
+                  <td>{{ index.warehouse_group_id }}</td>
                   <td>{{ (index.status == 1) ? ' Hoạt động ' : 'Không Hoạt động' }}</td>
                   <td>
                     <router-link :to="{name:'admin-warehouse-edit',params:{ id:index.id}}"

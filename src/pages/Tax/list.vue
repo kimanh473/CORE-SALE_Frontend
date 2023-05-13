@@ -47,9 +47,9 @@
               <th>STT</th>
               <th>Mã thuế</th>
               <th>Tên thuế</th>
-<!--              <th>Tên thuế 2</th>-->
-              <th>Loại thuế </th>
-              <th>Thuế suất </th>
+              <th>Tên thuế 2</th>
+              <th>Loại thuế</th>
+              <th>Thuế suất</th>
               <th>Thuế dư</th>
               <th>Thuế nợ</th>
               <th>Tình trạng</th>
@@ -63,7 +63,7 @@
                 {{ index.tax_code }}
               </td>
               <td> {{ index.name_tax }}</td>
-<!--              <td>{{ index.name_tax2 }}</td>-->
+              <td>{{ index.name_tax2 }}</td>
               <td>{{ index.type_tax }}</td>
               <td>{{ index.rate_tax }}</td>
               <td>{{ index.account_tax_residual }}</td>
@@ -114,7 +114,7 @@ import useTax from "@/stores/Tax";
 
 export default {
   name: "list.vue",
-  setup(){
+  setup() {
     const {Taxes, getTaxes, destroyTax} = useTax()
 
     onMounted(getTaxes)
@@ -122,7 +122,7 @@ export default {
     const deleteTax = async (id) => {
       await destroyTax(id);
       await getTaxes();
-      }
+    }
     return {
       Taxes,
       deleteTax

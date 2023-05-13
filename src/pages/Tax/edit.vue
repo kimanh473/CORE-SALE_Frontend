@@ -1,5 +1,5 @@
 <template>
-  <Form :taxId="id"/>
+  <Form :TaxId="id"/>
 </template>
 
 <script>

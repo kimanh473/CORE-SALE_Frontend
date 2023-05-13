@@ -76,24 +76,7 @@
             </tr>
             </tbody>
           </table>
-          <div class="overflow-auto">
-            <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-                :per-page="perPage"
-                aria-controls="my-table"
-            ></b-pagination>
-
-            <p class="mt-3">Current Page: {{ warehouse_groups }}</p>
-
-            <b-table
-                id="my-table"
-                :items="items"
-                :per-page="perPage"
-                :current-page="warehouse_groups"
-                small
-            ></b-table>
-          </div>
+<!--          <pagination class="mt-6" :links="warehouse_groups.links" />-->
         </div>
 
       </div>
@@ -104,6 +87,7 @@
 <script>
 import useWarehouse_group from "@/stores/warehouse_group";
 import {onMounted, ref} from "vue";
+// import pagination from "@/pages/pagination.vue";
 import {Bootstrap5Pagination} from 'laravel-vue-pagination';
 import axios from "@/ultis/axios";
 import router from "@/router";
@@ -129,6 +113,12 @@ export default {
 
     }
   },
+  // components:{
+  //   pagination
+  // },
+  // props:{
+  //   warehouse_groups: Object
+  // },
 }
 </script>
 

@@ -115,8 +115,8 @@ const admin = [
                 component: import("../pages/Tax/create.vue")
             },
             {
-                path: "tax-edit",
-                name: "admin-tax-edit/:id/",
+                path: "tax-edit/:id/",
+                name: "admin-tax-edit",
                 component: import("../pages/Tax/edit.vue"),
                 props: true
             }
