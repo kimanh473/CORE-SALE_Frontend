@@ -74,9 +74,25 @@
                 </button>
               </td>
             </tr>
+
             </tbody>
           </table>
-<!--          <pagination class="mt-6" :links="warehouse_groups.links" />-->
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item" >
+<!--                v-bind="[{ disabled: !pagination.prev_page_url }]"-->
+                <a class="page-link" href="#" @click="makePagination()" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
 
       </div>
@@ -87,14 +103,11 @@
 <script>
 import useWarehouse_group from "@/stores/warehouse_group";
 import {onMounted, ref} from "vue";
-// import pagination from "@/pages/pagination.vue";
 import {Bootstrap5Pagination} from 'laravel-vue-pagination';
-import axios from "@/ultis/axios";
-import router from "@/router";
-import Swal from 'sweetalert2';
-
+// import pagination from "@/pages/pagination.vue";
 export default {
   name: "list.vue",
+
   setup() {
     const { warehouse_groups, getWarehouse_groups, destroyWarehouse_group} = useWarehouse_group()
 
@@ -106,19 +119,26 @@ export default {
       await getWarehouse_groups()
 
     }
-
+    // const makePagination = (links) => {
+    //
+    //   let pa = {  };
+    //   let pagi = {
+    //     // current_page:pagination.current_page,
+    //     // last_page:pagination.last_page,
+    //     // next_page_url: pagination.links,
+    //     // prev_page_url: pagination.links
+    //   }
+    //   console.log(links.url)
+    //   this.pa= pagi
+    // }
     return {
       warehouse_groups,
       deleteWarehouseGroup,
+      // makePagination
+
 
     }
   },
-  // components:{
-  //   pagination
-  // },
-  // props:{
-  //   warehouse_groups: Object
-  // },
 }
 </script>
 

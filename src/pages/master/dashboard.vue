@@ -122,7 +122,7 @@
 
               <router-link :to="{path:'category-list'}"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
-               Danh mục sản phẩm
+               Danhmụcsảnphẩm
               </router-link>
 
               <router-link to="/#"
@@ -160,7 +160,7 @@
             </div>
             <div v-if="showCryto" class=" flex flex-col justify-between space-y-[10px]">
 
-              <router-link to="/market"
+              <router-link :to="{path:'role-list'}"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-200 hover:text-gray-800  transition duration-400 ease-in-out">
 
                 Vai trò
@@ -173,10 +173,9 @@
                 Quyền
                 <span class="sidebar-label">new</span>
               </router-link>
-              <router-link to="/crm"
+              <router-link :to="{path:'group-list'}"
                            class="inline-flex relative items-center py-[10px] px-[50px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-gray-300  hover:text-gray-800 transition duration-400 ease-in-out">
-
-                Nhóm người dùng
+                Nhómngườidùng
                 <span class="sidebar-label">new</span>
               </router-link>
             </div>
@@ -1199,8 +1198,8 @@
           </div>
         </div>
       </div>
-      <div class="bg-gray-50 h-[95vh] w-full  overflow-y-auto">
-        <div class="rounded-md  ">
+      <div class="bg-gray-50 h-[95vh] w-full overflow-y-auto ">
+        <div class="rounded-md">
           <router-view></router-view>
         </div>
       </div>

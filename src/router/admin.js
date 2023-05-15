@@ -82,9 +82,10 @@ const admin = [
                 component: import("../pages/care_service/create.vue"),
             },
             {
-                path: "careservice-edit",
+                path: "careservice-edit/",
                 name: "admin-careservice-edit",
                 component: import("../pages/care_service/edit.vue"),
+                props: true
             },
             //quản lý phân hệ
             {
@@ -119,6 +120,28 @@ const admin = [
                 name: "admin-tax-edit",
                 component: import("../pages/Tax/edit.vue"),
                 props: true
+            },
+            // quản lý nhóm người dùng
+            {
+                path: "group-list",
+                name: "admin-group-list",
+                component: import("../pages/Group/list.vue"),
+            },
+            {
+                path: "group-create",
+                name: "admin-group-create",
+                component: import("../pages/Group/create.vue"),
+            },
+            {
+                path: "group-edit",
+                name: "admin-group-edit",
+                component: import("../pages/Group/edit.vue"),
+                // props: true
+            },
+            {
+                path: "role-list",
+                name: "admin-role-list",
+                component: import("../pages/role/list.vue")
             }
         ],
         // beforeEnter:(to, from, next)=>{

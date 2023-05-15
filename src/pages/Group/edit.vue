@@ -1,14 +1,13 @@
 <template>
-  <Form :careserviceId="id" />
+<Form :groupId="id" />
 </template>
 
 <script>
-import Form from "@/pages/care_service/Form.vue"
-
+import Form from "@/pages/Group/Form.vue";
 export default {
   name: "edit.vue",
   props:{
-    id : {
+    id:{
       required:true,
       type:String
     }
