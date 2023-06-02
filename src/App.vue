@@ -1,37 +1,25 @@
 <template>
-  <div>
+  <component :is="layout">
     <router-view />
-  </div>
+  </component>
 </template>
-
-<script>
-export default {
-  name: 'App',
-  components: {
-
-  }
-}
+<script setup lang="ts">
+  import { useRoute } from 'vue-router'
+  import { computed } from 'vue'
+  const route = useRoute()
+  const layout = computed(() =>
+    route.meta.layout ? route.meta.layout : 'base-layout'
+  )
 </script>
-
-<style>
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /*text-align: center;*/
-  color: #2c3e50;
-
-}
-.sidebar-label{
-  position: absolute;
-  background: #e53935;
-  color: #fff;
-  padding: .1rem .2rem;
-  border-radius: 5px;
-  font-size: .6rem;
-  top: 15px;
-  right: 1px;
-  letter-spacing: 1px;
-  line-height: 13px;
-}
-
+<style scoped>
+  #app {
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 </style>
