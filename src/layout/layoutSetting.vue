@@ -1,18 +1,15 @@
 <template>
-  <div class="w-screen h-screen flex">
-    <a-layout class="!flex-row" style="min-height: 100vh">
-      <slot name="sidebar"></slot>
-      <a-layout>
-        <a-layout-header style="background: #fff; padding: 0"
-          ><slot name="header"></slot
-        ></a-layout-header>
-        <a-layout-content style="margin: 0 16px"
-          ><slot name="content"></slot
-        ></a-layout-content>
-        <a-layout-footer style="text-align: center"
-          ><slot name="footer"></slot
-        ></a-layout-footer>
-      </a-layout>
+  <div class="w-screen h-screen">
+    <a-layout style="min-height: 100vh">
+      <a-layout-header style="background: #fff; padding: 0"
+        ><slot name="header"></slot
+      ></a-layout-header>
+      <a-layout-content style="margin: 0 16px"
+        ><slot name="content"></slot
+      ></a-layout-content>
+      <a-layout-footer style="text-align: center"
+        ><slot name="footer"></slot
+      ></a-layout-footer>
     </a-layout>
   </div>
 </template>
@@ -32,6 +29,7 @@
   #components-layout-demo-side .logo {
     height: 32px;
     margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
   }
 
   .site-layout .site-layout-background {

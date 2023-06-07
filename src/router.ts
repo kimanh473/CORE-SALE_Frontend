@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 type TRoute = {
   path: string
   component: () => Promise<any>
-  meta : any
+  meta: any
 }
 const route: TRoute[] = [
   {
@@ -15,6 +15,13 @@ const route: TRoute[] = [
   {
     path: '/forgot-pass',
     component: () => import('./page/accounts/ForgotPass.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/setting-menu',
+    component: () => import('./page/settings/SettingMenu.vue'),
     meta: {
       layout: "base-layout",
     },
