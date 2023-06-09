@@ -4,7 +4,7 @@ import axios from 'axios'
 export const UserLoginApi = async (user: object) => {
   const res = await axios({
     method: 'POST',
-    url: `http://192.168.1.240:6688/api/v1/login`,
+    url: `http://coresale-betest.btpholdings.vn:2000/api/v1/login`,
     data: user,
   })
   return res.data

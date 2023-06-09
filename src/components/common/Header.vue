@@ -4,9 +4,9 @@
       class="flex justify-between mx-auto w-full bg-blue-950"
       style="height: inherit"
     >
-      <div class="logo flex ml-[20px] items-center">
+      <!-- <div class="logo flex ml-[20px] items-center">
         <img src="../../assets/images/btp.png" />
-      </div>
+      </div> -->
       <slot></slot>
       <div class="text-right w-[300px]" v-if="isShowSearch">
         <slot name="search"></slot>

@@ -2,7 +2,7 @@
   <a-menu
     v-model:openKeys="state.openKeys"
     v-model:selectedKeys="state.selectedKeys"
-    style="width: 256px"
+    class="w-[256px] overflow-scroll"
     mode="vertical"
     @click="handleClick"
   >
@@ -48,7 +48,10 @@
         <SettingOutlined />
       </template>
       <template #title>{{ item.title }}</template>
-      <a-menu-item v-for="child in item.children" :key="child.key"
+      <a-menu-item
+        v-for="child in item.children"
+        :key="child.key"
+        @click="router.push(`${child.path}`)"
         >{{ child.title }}
       </a-menu-item>
     </a-sub-menu>
@@ -60,6 +63,7 @@
     {
       key: '1',
       title: 'Option 1',
+      path: '/',
     },
     {
       key: '2',
@@ -68,6 +72,18 @@
         {
           key: '2.1',
           title: 'Navigation 3',
+          path: '/setting-menu',
+        },
+      ],
+    },
+    {
+      key: '3',
+      title: 'Cài đặt hệ thống',
+      children: [
+        {
+          key: '2.1',
+          title: 'Cài đặt admin',
+          path: '/setting-admin',
         },
       ],
     },
@@ -80,13 +96,25 @@
     AppstoreOutlined,
     SettingOutlined,
   } from '@ant-design/icons-vue'
+  import { useRouter } from 'vue-router'
   const state = reactive({
     selectedKeys: [],
     openKeys: [],
   })
-
+  const router = useRouter()
   const handleClick: MenuProps['onClick'] = (menuInfo) => {
     console.log('click ', menuInfo)
   }
 </script>
-<style></style>
+<style>
+  /* width */
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 5px;
+  }
+</style>

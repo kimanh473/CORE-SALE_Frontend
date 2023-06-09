@@ -6,6 +6,20 @@ type TRoute = {
 }
 const route: TRoute[] = [
   {
+    path: '/setting-admin-view',
+    component: () => import('./page/settings/Admin/SettingAdminView.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/setting-admin',
+    component: () => import('./page/settings/Admin/SettingAdmin.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/login',
     component: () => import('./page/accounts/LoginView.vue'),
     meta: {
