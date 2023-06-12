@@ -172,6 +172,9 @@
   })
   const logout = () => {
     // store.dispatch('userLogin/UserLogoutAction')
+    router.push('/login')
+    localStorage.removeItem('TOKEN')
+    localStorage.removeItem('authenticated')
   }
   const handleOpenDetail = () => {
     isOpenDetail.value = true

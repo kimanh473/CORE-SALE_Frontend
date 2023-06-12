@@ -108,7 +108,6 @@
       localStorage.removeItem('dataUser')
       // store.dispatch('userLogin/UserLoginAction', user)
       userlog.LoginAction(user, router)
-      console.log(router)
 
       // router.push('/')
     }

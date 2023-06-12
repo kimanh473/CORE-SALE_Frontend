@@ -6,6 +6,9 @@ import router from './router'
 import { createPinia } from 'pinia'
 import 'ant-design-vue/dist/antd.css'
 import Antd from 'ant-design-vue';
+import Toast from "vue-toastification";
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
 // @ts-ignore
 import vClickOutside from "click-outside-vue3"
 /* import the fontawesome core */
@@ -25,5 +28,6 @@ createApp(App)
     .use(store)
     .use(Antd)
     .use(vClickOutside)
+    .use(Toast)
     .component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app')

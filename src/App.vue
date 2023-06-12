@@ -4,12 +4,16 @@
   </component>
 </template>
 <script setup lang="ts">
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { computed } from 'vue'
+  import { userLogin } from './store/modules/accounts/userLogin'
   const route = useRoute()
+  const router = useRouter()
+  const userlog = userLogin()
   const layout = computed(() =>
     route.meta.layout ? route.meta.layout : 'base-layout'
   )
+  userlog.checkAuthenticated(router)
 </script>
 <style scoped>
   #app {
