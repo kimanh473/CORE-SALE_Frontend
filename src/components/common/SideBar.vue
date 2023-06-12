@@ -1,5 +1,5 @@
 <template>
-  <a-menu
+  <!-- <a-menu
     v-model:openKeys="state.openKeys"
     v-model:selectedKeys="state.selectedKeys"
     class="w-[256px] overflow-scroll"
@@ -55,6 +55,20 @@
         >{{ child.title }}
       </a-menu-item>
     </a-sub-menu>
+  </a-menu> -->
+  <a-menu style="width: 256px" mode="inline">
+    <a-sub-menu v-for="item in list" :key="item.key">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <template #title>{{ item.title }}</template>
+      <a-menu-item
+        v-for="child in item.children"
+        :key="child.key"
+        @click="router.push(`${child.path}`)"
+        >{{ child.title }}
+      </a-menu-item>
+    </a-sub-menu>
   </a-menu>
 </template>
 
@@ -81,7 +95,7 @@
       title: 'Cài đặt hệ thống',
       children: [
         {
-          key: '2.1',
+          key: '3.1',
           title: 'Cài đặt admin',
           path: '/setting-admin',
         },
@@ -89,7 +103,7 @@
     },
   ]
   import { reactive } from 'vue'
-  import type { MenuProps } from 'ant-design-vue'
+  // import type { MenuProps } from 'ant-design-vue'
   import {
     MailOutlined,
     CalendarOutlined,
@@ -98,13 +112,15 @@
   } from '@ant-design/icons-vue'
   import { useRouter } from 'vue-router'
   const state = reactive({
-    selectedKeys: [],
-    openKeys: [],
+    collapsed: false,
+    selectedKeys: ['1'],
+    openKeys: ['sub1'],
+    preOpenKeys: ['sub1'],
   })
   const router = useRouter()
-  const handleClick: MenuProps['onClick'] = (menuInfo) => {
-    console.log('click ', menuInfo)
-  }
+  // const handleClick: MenuProps['onClick'] = (menuInfo) => {
+  //   console.log('click ', menuInfo)
+  // }
 </script>
 <style>
   /* width */

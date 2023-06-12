@@ -14,27 +14,11 @@
               <Transition name="slide-fade">
                 <div
                   class="button-create relative group"
-                  title="Tạo mới đơn từ"
-                >
-                  <div
-                    class="text-black text-sm absolute w-48 z-10 bg-white left-0 top-full rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible p-2 drop-shadow-xl before:content-[''] before:h-5 before:w-full before:-top-3 before:z-10 before:right-0 before:absolute"
-                  >
-                    <ul>
-                      <li
-                        class="p-[10px] hover:bg-slate-100 hover:rounded-lg flex justify-between items-center relative sub-dropdown"
-                      >
-                        Tạo mới 1
-                      </li>
-                      <li
-                        class="p-[10px] hover:bg-slate-100 hover:rounded-lg flex justify-between items-center relative sub-dropdown"
-                      >
-                        Tạo mới 2
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                  title="Tạo mới nhóm quyền"
+                  @click="CreateGroupAdmin()"
+                ></div>
               </Transition>
-              <p class="longText">Tạo mới</p>
+              <p class="longText text-[#fff] mb-0">Tạo mới nhóm quyền</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div></div
@@ -43,7 +27,7 @@
     <template v-slot:content class="relative"
       ><a-table
         :columns="columns"
-        :data-source="data"
+        :data-source="listGroupPermission"
         :row-selection="rowSelection"
     /></template>
     <template v-slot:footer>footer</template>
@@ -58,15 +42,21 @@
   import { useAdminSetting } from '../../../store/modules/admin-setting/adminsetting'
   import { ref } from 'vue'
   //   import { Table } from 'ant-design-vue'
-  //   import { storeToRefs } from 'pinia'
+  import { storeToRefs } from 'pinia'
   const getadminSetting = useAdminSetting()
   getadminSetting.getAllPermissionGroupsAction(10, 1)
-  console.log(getadminSetting.listGroupPermission)
+  const { listGroupPermission } = storeToRefs(getadminSetting)
+  console.log(listGroupPermission.value)
   const columns = [
     {
       title: 'Tên',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: 'Quản trị hệ thống',
+      dataIndex: 'is_admin',
+      key: 'title',
     },
     {
       title: 'Ngày tạo',
@@ -86,30 +76,6 @@
     created_at: any
     updated_at: any
   }
-  console.log(getadminSetting.listGroupPermission.map((item: any) => item.id))
-
-  const data: DataItem[] = [
-    // {
-    //   key: Number(
-    //     getadminSetting.listGroupPermission.map((item: any) => item.id)
-    //   ),
-    //   name: getadminSetting.listGroupPermission.map((item: any) => item.title),
-    //   created_at: getadminSetting.listGroupPermission.map(
-    //     (item: any) => item.created_at
-    //   ),
-    //   updated_at: getadminSetting.listGroupPermission.map(
-    //     (item: any) => item.updated_at
-    //   ),
-    // },
-  ]
-  getadminSetting.listGroupPermission.map((item: any) =>
-    data.push({
-      key: Number(item.id),
-      name: item.title,
-      created_at: item.created_at,
-      updated_at: item.updated_at,
-    })
-  )
   const rowSelection = ref({
     checkStrictly: false,
     onChange: (
@@ -137,6 +103,7 @@
       console.log(selected, selectedRows, changeRows)
     },
   })
+  const CreateGroupAdmin = () => {}
   //   const selectedRowKeys = ref<DataItem['key'][]>([])
   //   const onSelectChange = (changableRowKeys: string[]) => {
   //     console.log('selectedRowKeys changed: ', changableRowKeys)
