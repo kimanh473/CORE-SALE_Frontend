@@ -97,7 +97,7 @@
         {
           key: '3.1',
           title: 'Cài đặt admin',
-          path: '/setting-admin',
+          path: '/group-admin-view',
         },
       ],
     },

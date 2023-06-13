@@ -1,133 +1,82 @@
 <template>
-  <a-table
-    :columns="columns"
-    :data-source="data"
-    :row-selection="rowSelection"
-  />
+  <table class="h-full whitespace-nowrap border w-full relative">
+    <thead>
+      <tr>
+        <th
+          class="sticky top-0 px-3 py-3 text-[#050505] text-center font-medium bg-slate-50 z-[5]"
+          v-for="(item, index) in table.header"
+          :key="index"
+          align="center"
+          @click="handleSort"
+          :class="{ isCheck: table.isCheck }"
+        >
+          {{ item }}
+        </th>
+      </tr>
+    </thead>
+    <tbody class="border-b">
+      <slot></slot>
+    </tbody>
+  </table>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-      width: '12%',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      width: '30%',
-      key: 'address',
-    },
-  ]
-
-  interface DataItem {
-    key: number
-    name: string
-    age: number
-    address: string
-    children?: DataItem[]
+  // export default {
+  //   props: {
+  //     header: {
+  //       type: Array,
+  //     },
+  //     users: {
+  //       type: Array,
+  //     },
+  //     checkAll: {
+  //       type: Function,
+  //     },
+  //     isCheck: {
+  //       type: Boolean,
+  //     },
+  //     isShow: {
+  //       type: Boolean,
+  //       default: true,
+  //     },
+  //   },
+  //   setup() {
+  //     const handleSort = () => {
+  //       console.log('a')
+  //     }
+  //     return { handleSort }
+  //   },
+  // }
+  interface Table {
+    header: Array<any>
+    checkAll: Function
+    isCheck: boolean
+    isShow: boolean
   }
-
-  const data: DataItem[] = [
-    {
-      key: 1,
-      name: 'John Brown sr.',
-      age: 60,
-      address: 'New York No. 1 Lake Park',
-      children: [
-        {
-          key: 11,
-          name: 'John Brown',
-          age: 42,
-          address: 'New York No. 2 Lake Park',
-        },
-        {
-          key: 12,
-          name: 'John Brown jr.',
-          age: 30,
-          address: 'New York No. 3 Lake Park',
-          children: [
-            {
-              key: 121,
-              name: 'Jimmy Brown',
-              age: 16,
-              address: 'New York No. 3 Lake Park',
-            },
-          ],
-        },
-        {
-          key: 13,
-          name: 'Jim Green sr.',
-          age: 72,
-          address: 'London No. 1 Lake Park',
-          children: [
-            {
-              key: 131,
-              name: 'Jim Green',
-              age: 42,
-              address: 'London No. 2 Lake Park',
-              children: [
-                {
-                  key: 1311,
-                  name: 'Jim Green jr.',
-                  age: 25,
-                  address: 'London No. 3 Lake Park',
-                },
-                {
-                  key: 1312,
-                  name: 'Jimmy Green sr.',
-                  age: 18,
-                  address: 'London No. 4 Lake Park',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      key: 2,
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-  ]
-
-  const rowSelection = ref({
-    checkStrictly: false,
-    onChange: (
-      selectedRowKeys: (string | number)[],
-      selectedRows: DataItem[]
-    ) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      )
-    },
-    onSelect: (
-      record: DataItem,
-      selected: boolean,
-      selectedRows: DataItem[]
-    ) => {
-      console.log(record, selected, selectedRows)
-    },
-    onSelectAll: (
-      selected: boolean,
-      selectedRows: DataItem[],
-      changeRows: DataItem[]
-    ) => {
-      console.log(selected, selectedRows, changeRows)
-    },
-  })
+  defineProps<{
+    table: Table
+  }>()
+  const handleSort = () => {
+    console.log('a')
+  }
 </script>
 
-<style></style>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+    /* border: #ddd; */
+  }
+  tbody tr:hover {
+    background-color: #f7f8f9;
+    /* color: white; */
+  }
+  thead th:nth-child(11) {
+    text-align: center;
+  }
+</style>
