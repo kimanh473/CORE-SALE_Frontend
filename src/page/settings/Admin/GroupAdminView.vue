@@ -40,9 +40,11 @@
   import Header from '../../../components/common/Header.vue'
   //   import TableResponsive from '../../../components/common/TableResponsive.vue'
   import { useAdminSetting } from '../../../store/modules/admin-setting/adminsetting'
+  import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   //   import { Table } from 'ant-design-vue'
   import { storeToRefs } from 'pinia'
+  const router = useRouter()
   const getadminSetting = useAdminSetting()
   getadminSetting.getAllPermissionGroupsAction(10, 1)
   const { listGroupPermission } = storeToRefs(getadminSetting)
@@ -103,7 +105,9 @@
       console.log(selected, selectedRows, changeRows)
     },
   })
-  const CreateGroupAdmin = () => {}
+  const CreateGroupAdmin = () => {
+    router.push('/create-group-admin')
+  }
   //   const selectedRowKeys = ref<DataItem['key'][]>([])
   //   const onSelectChange = (changableRowKeys: string[]) => {
   //     console.log('selectedRowKeys changed: ', changableRowKeys)

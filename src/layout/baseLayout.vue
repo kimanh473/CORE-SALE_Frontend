@@ -18,7 +18,7 @@
         <a-layout-header :style="{ background: '#fff', padding: 0 }"
           ><slot name="header"></slot
         ></a-layout-header>
-        <a-layout-content style="min-height: auto; overflow: initial">
+        <a-layout-content style="min-height: auto; overflow: auto">
           <slot name="content"></slot>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">
