@@ -75,7 +75,6 @@
           </div>
           <a-tabs
             v-model:activeKey="activeKey"
-            :tab-position="tabPosition"
             animated
             style="padding-left: 15px"
           >
