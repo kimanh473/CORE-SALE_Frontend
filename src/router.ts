@@ -48,6 +48,20 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/sales-list',
+    component: () => import('./page/sales/sales_list.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/products-list',
+    component: () => import('./page/products/products_list.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/:catchAll(.*)',
     component: () => import('./components/ErrorCom.vue'),
     meta: {

@@ -10,15 +10,16 @@
       <Header :is-show-search="false" />
     </template>
     <template v-slot:content class="relative"
-      ><a-breadcrumb style="margin: 16px 0">
+      >
+      <!-- <a-breadcrumb style="margin: 16px 0">
         <a-breadcrumb-item>User</a-breadcrumb-item>
         <a-breadcrumb-item>Bill</a-breadcrumb-item>
       </a-breadcrumb>
       <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
         Bill is a cat.
-      </div>
+      </div> -->
     </template>
-    <template v-slot:footer>Ant Design ©2018 Created by Ant UED</template>
+    <template v-slot:footer>Copyright © 2023 Btp holdings Ecom.</template>
   </base-layout>
 </template>
 

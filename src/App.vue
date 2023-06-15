@@ -13,17 +13,18 @@
   const layout = computed(() =>
     route.meta.layout ? route.meta.layout : 'base-layout'
   )
-  userlog.checkAuthenticated(router)
+  // userlog.checkAuthenticated(router)
 </script>
 <style scoped>
   #app {
     font-family: 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    text-align: left;
     color: #2c3e50;
     width: 100%;
     height: 100%;
     overflow: hidden;
+  
   }
 </style>
