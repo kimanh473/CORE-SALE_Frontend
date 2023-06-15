@@ -6,6 +6,13 @@ type TRoute = {
 }
 const route: TRoute[] = [
   {
+    path: '/list-category',
+    component: () => import('./page/settings/Shop-settings/CategoryList.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/group-admin-view',
     component: () => import('./page/settings/Admin/GroupAdminView.vue'),
     meta: {

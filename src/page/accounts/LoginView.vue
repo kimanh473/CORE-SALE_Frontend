@@ -101,7 +101,7 @@
         password: user.password,
         isCheck: savePassword.value,
       }
-      localStorage.setItem('dataUser', JSON.stringify(dataUser))
+      // localStorage.setItem('dataUser', JSON.stringify(dataUser))
       // store.dispatch('userLogin/UserLoginAction', user)
       userlog.LoginAction(user, router)
     } else {

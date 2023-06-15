@@ -2,8 +2,8 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-            <img src="../assets/images/btp.png" />
-          </div> -->
+              <img src="../assets/images/btp.png" />
+            </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
@@ -1315,12 +1315,8 @@
             ></a-tab-pane>
             <a-tab-pane key="2" tab="Tab 2">
               <div class="flex">
-                <div
-                  v-for="(item, index) in listWeb"
-                  :key="index"
-                  class="flex pr-[30px]"
-                >
-                  <p class="pr-[5px]">{{ item.web_name }}</p>
+                <div class="flex pr-[30px]">
+                  <p class="pr-[5px]">Hawonkoo</p>
                   <input
                     class="mt-[3px]"
                     type="checkbox"
@@ -1330,24 +1326,10 @@
                 </div>
               </div>
             </a-tab-pane>
-            <a-tab-pane key="3" tab="Tab 3"
-              ><div class="flex">
-                <div
-                  v-for="(item, index) in listInventory"
-                  :key="index"
-                  class="flex pr-[30px]"
-                >
-                  <p class="pr-[5px]">{{ item.title }}</p>
-                  <input
-                    class="mt-[3px]"
-                    type="checkbox"
-                    true-value="PERSONNEL_PROFILE_IMPORT"
-                    false-value=""
-                  />
-                </div></div
-            ></a-tab-pane>
-          </a-tabs></div
-      ></Transition>
+            <a-tab-pane key="3" tab="Tab 3">Content of Tab 3</a-tab-pane>
+          </a-tabs>
+        </div></Transition
+      >
     </template>
     <template class="p-0" v-slot:footer
       ><div class="bg-gray-100 pb-2 pl-2">
@@ -1365,23 +1347,14 @@
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
   import TableResponsive from '../../../components/common/TableResponsive.vue'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useInventory } from '../../../store/modules/inventory/product-invetory'
   import { useRouter } from 'vue-router'
   import { reactive, ref } from 'vue'
-  import { storeToRefs } from 'pinia'
   const router = useRouter()
   const isInfor = ref(true)
   const is_admin = ref('no')
   const title = ref('')
   const is_default = 0
   const activeKey = ref('1')
-  const webCatalog = useWebCatalog()
-  webCatalog.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(webCatalog)
-  const dataInventory = useInventory()
-  dataInventory.getListInventoryAction()
-  const { listInventory } = storeToRefs(dataInventory)
   const table = reactive({
     header: [
       '',
