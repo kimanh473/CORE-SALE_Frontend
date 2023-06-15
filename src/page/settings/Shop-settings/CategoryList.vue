@@ -2,45 +2,37 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-            <img src="../assets/images/btp.png" />
-          </div> -->
+              <img src="../assets/images/btp.png" />
+            </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
-      <Header :is-show-search="false"
-        ><div class="flex grow">
+      <Header :is-show-search="false">
+        <div class="flex grow">
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade">
                 <div
                   class="button-create relative group"
-                  title="Tạo mới nhóm quyền"
+                  title="Tạo mới danh mục"
                   @click="CreateGroupAdmin()"
                 ></div>
               </Transition>
-              <p class="longText text-[#fff] mb-0">Danh sách nhóm quyền</p>
+              <p class="longText text-[#fff] mb-0">Tạo mới danh mục sản phẩm</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
-          </div></div
-      ></Header>
+          </div>
+        </div>
+      </Header>
     </template>
     <template v-slot:content class="relative"
       ><a-table
         :columns="columns"
         :data-source="listGroupPermission"
         :row-selection="rowSelection"
-        :custom-row="rightClick"
     /></template>
     <template v-slot:footer>footer</template>
   </base-layout>
-  <div>
-    <context-menu :isActive="isActiveAdminGroup"
-      ><ul>
-        <li><i class="fal fa-edit"></i><a href="#">Sửa</a></li>
-        <li><i class="fal fa-trash"></i><a href="#">Xóa</a></li>
-      </ul></context-menu
-    >
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -49,22 +41,14 @@
   import Header from '../../../components/common/Header.vue'
   //   import TableResponsive from '../../../components/common/TableResponsive.vue'
   import { useAdminSetting } from '../../../store/modules/admin-setting/adminsetting'
-
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
-  import ContextMenu from '../../../components/common/ContextMenu.vue'
-  import {
-    FormatModalX,
-    FormatModalY,
-  } from '../../../components/constants/FormatAll'
   //   import { Table } from 'ant-design-vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
-  const isActiveAdminGroup = ref(false)
   const getadminSetting = useAdminSetting()
   getadminSetting.getAllPermissionGroupsAction(10, 1)
   const { listGroupPermission } = storeToRefs(getadminSetting)
-
   console.log(listGroupPermission.value)
   const columns = [
     {
@@ -124,26 +108,6 @@
   })
   const CreateGroupAdmin = () => {
     router.push('/create-group-admin')
-  }
-  const rightClick = (record: any) => {
-    return {
-      oncontextmenu: (event: MouseEvent) => {
-        event.preventDefault()
-        console.log('Right-clicked row:', record)
-        var menu = document.getElementById('contextMenu')
-        menu.style.display = 'block'
-        FormatModalX(menu, event)
-        FormatModalY(menu, event)
-        // if (isActiveAdminGroup.value === true) {
-        //   isActiveAdminGroup.value = false
-        // } else {
-        //   var menu = document.getElementById('contextMenu')
-        //   menu.style.display = 'block'
-        //   FormatModalX(menu, e)
-        //   FormatModalY(menu, e)
-        // }
-      },
-    }
   }
   //   const selectedRowKeys = ref<DataItem['key'][]>([])
   //   const onSelectChange = (changableRowKeys: string[]) => {

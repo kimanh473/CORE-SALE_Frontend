@@ -101,6 +101,17 @@
         },
       ],
     },
+    {
+      key: '4',
+      title: 'Cài đặt cửa hàng',
+      children: [
+        {
+          key: '4.1',
+          title: 'Danh mục sản phẩm',
+          path: '/list-category',
+        },
+      ],
+    },
   ]
   import { reactive } from 'vue'
   // import type { MenuProps } from 'ant-design-vue'
