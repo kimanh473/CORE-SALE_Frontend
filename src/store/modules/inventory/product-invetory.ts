@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllInventoryApi } from '../../../services/InventoryServices/inventory.service'
+import { getAllInventoryApi, createInventoryApi } from '../../../services/InventoryServices/inventory.service'
 export const useInventory = defineStore("Inventory", {
     state: () => ({
         listInventory: null
@@ -20,5 +20,29 @@ export const useInventory = defineStore("Inventory", {
                     console.log(err)
                 });
         },
+        async createInventoryAction(
+            data: Object,
+            toast: any,
+            EndTimeLoading: Function,
+            handleCloseCreate: Function
+        ) {
+            await createInventoryApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công");
+                        location.reload();
+                        handleCloseCreate();
+                        EndTimeLoading();
+                    }
+                })
+                .catch((err) => {
+                    toast.error("Tạo mới thất bại");
+                    console.log(err);
+                });
+        },
+
     },
 })

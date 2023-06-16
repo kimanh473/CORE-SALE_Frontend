@@ -75,8 +75,8 @@
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   //   import { useStore } from 'vuex'
-  import bg_BTP from '../../assets/images/bg-BTP.jpg'
-  import { userLogin } from '../../store/modules/accounts/userLogin'
+  import bg_BTP from '@/assets/images/bg-BTP.jpg'
+  import { userLogin } from '@/store/modules/accounts/userLogin'
 
   const router = useRouter()
   //   const store = useStore()

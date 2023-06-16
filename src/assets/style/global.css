@@ -130,6 +130,25 @@ body {
     margin-left: 8px;
   }
   
+  .button-create-new {
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+    min-height: 30px;
+    min-width: 30px;
+    display: flex;
+    justify-content: center;
+    background: var(--color-primary);
+    font-size: 1.3em;
+    color: white;
+    height: 30px;
+    max-width: 100px;
+  }
+  .button-create-new::before {
+    font-family: "Font Awesome 5 Pro";
+    content: "\f067";
+    font-weight: 500;
+  }
   .button-create {
     cursor: pointer;
     margin-left: 10px;

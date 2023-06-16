@@ -96,7 +96,7 @@
   //   import { useStore } from 'vuex'
   //   import { useRouter } from 'vue-router'
   //   import { useToast } from 'vue-toastification'
-  import bg_BTP from '../../assets/images/bg-BTP.jpg'
+  import bg_BTP from '@/assets/images/bg-BTP.jpg'
   //   const store = useStore()
   //   const router = useRouter()
   //   const toast = useToast()

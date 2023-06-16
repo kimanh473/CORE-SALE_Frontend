@@ -33,8 +33,6 @@ export const userLogin = defineStore("UserLogin", {
             const authenticated = localStorage.getItem("authenticated");
             if (authenticated === null) {
                 router.push("/login");
-            } else {
-                router.push("/");
             }
             // else if (to.name === "Social" && authenticated === null) {
             //     router.push("/login");
