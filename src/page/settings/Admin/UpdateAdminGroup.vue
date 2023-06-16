@@ -1343,10 +1343,10 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import TableResponsive from '../../../components/common/TableResponsive.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import TableResponsive from '@/components/common/TableResponsive.vue'
   import { useRouter } from 'vue-router'
   import { reactive, ref } from 'vue'
   const router = useRouter()

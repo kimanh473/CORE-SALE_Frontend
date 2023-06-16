@@ -6,6 +6,13 @@ type TRoute = {
 }
 const route: TRoute[] = [
   {
+    path: '/list-inventory',
+    component: () => import('./page/settings/Shop-settings/ManageInventory/ListInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/list-category',
     component: () => import('./page/settings/Shop-settings/CategoryList.vue'),
     meta: {
@@ -29,6 +36,13 @@ const route: TRoute[] = [
   {
     path: '/create-group-admin',
     component: () => import('./page/settings/Admin/CreateAdminGroup.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/update-group-admin/:id',
+    component: () => import('./page/settings/Admin/UpdateAdminGroup.vue'),
     meta: {
       layout: "base-layout",
     },

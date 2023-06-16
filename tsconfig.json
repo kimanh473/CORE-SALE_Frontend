@@ -12,6 +12,9 @@
     "jsx": "preserve",
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "lib": ["esnext", "dom",
       "dom.iterable",
       "scripthost"],
@@ -22,7 +25,7 @@
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "typeRoots": [ "./typings" ],
-    "types": ["node"],
+    // "types": ["node"],
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": [

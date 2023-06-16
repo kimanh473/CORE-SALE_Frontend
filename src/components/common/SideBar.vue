@@ -110,6 +110,11 @@
           title: 'Danh mục sản phẩm',
           path: '/list-category',
         },
+        {
+          key: '4.2',
+          title: 'Quản lý kho',
+          path: '/list-inventory',
+        },
       ],
     },
   ]
