@@ -69,7 +69,6 @@ export default {
 <template>
   <div
     class="menu-item flex-row"
-    :class="{ activeSidebar: checkRoute(to) }"
   >
     <div class="flex-row">
       <router-link
@@ -81,7 +80,7 @@ export default {
             <div class="flex items-center" v-if="icon">
               <i
                 style="
-                  font-size: 18px;
+                  font-size: 54px;
                   width: 25px;
                   height: 25px;
                   text-align: left;

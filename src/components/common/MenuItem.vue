@@ -18,8 +18,9 @@ export default {
   },
   setup(props) {
     const route = useRoute();
-    const isActive = computed(() => route.path == props.to);
+    // const isActive = computed(() => route.path == props.to);
     const showChildren = ref(true);
+    const isActive = ref(true);
     // const profile = useUserProfile();
     // const { userProfile } = storeToRefs(profile);
     // if (props.data) {
@@ -29,22 +30,23 @@ export default {
     //     showChildren.value = false;
     //   }
     // }
-    const checkRoute = (index) => {
-      if (index == route.path) {
-        return true;
-      } else {
-        return false;
-      }
-    };
+    // const checkRoute = (index) => {
+    //   if (index == route.path) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // };
     const checkActive = (index) => {
       if (index == true) {
-        return true;
+        return ' active';
       } else {
-        return false;
+        return '';
       }
     };
     const toggleShowChildren = () => {
-      showChildren.value = !showChildren.value;
+      // showChildren.value = !showChildren.value;
+      // checkActive(isActive);
     };
     // const checkRole = (index) => {
     //   for (let i = 0; i < index.length; i++) {
@@ -64,7 +66,7 @@ export default {
       isActive,
       collapsed,
       showChildren,
-      checkRoute,
+      // checkRoute,
       // userProfile,
       // checkRole,
       toggleShowChildren,
@@ -76,20 +78,15 @@ export default {
 <template>
   <div
     class="menu-item flex-row"
-    :class="{ activeSidebar: checkRoute(to) }"
   >
-    <div class="flex-row" @click="toggleShowChildren()">
-      <router-link
-        :to="to"
-        class="flex items-center py-2"
-        :class="checkCenter(collapsed)"
-      >
+    <div class="flex-row items-center py-2">
+    
         <div class="flex justify-center items-center text-white">
           <div class="flex flex-col items-center justify-center">
             <div class="flex items-center" v-if="icon">
               <i
                 style="
-                  font-size: 20px;
+                  font-size: 19px;
                   width: 30px;
                   height: 30px;
                   text-align: left;
@@ -102,10 +99,10 @@ export default {
             <div
               v-if="collapsed"
               style="
-                font-size: 10px;
+                font-size: 11px;
                 text-align: left;
                 white-space: nowrap;
-                margin-top: 8px;
+                margin-top: 8px;              
               "
             >
               {{ label }}
@@ -115,11 +112,11 @@ export default {
             {{ label }}
           </div>
         </div>
-      </router-link>
+     
     </div>
     <div class="item-container flex-2 ml-8" v-if="showChildren">
       <menu-item
-        class="hover:bg-white/20 text-white flex-column border-l-2 just"
+        class="hover:bg-white/20 text-red-500 flex-column border-l-2 just"
         v-for="(item, index) in data"
         :key="index"
         :label="item.label"
@@ -133,4 +130,8 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style>
+ /* .active {
+    background-color: red;
+  } */
+</style>

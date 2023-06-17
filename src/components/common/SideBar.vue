@@ -27,8 +27,7 @@
         <div class="menu">
           <div class="menu flex-col overflow-hidden py-4 text-white/10">
             <menu-item
-              class="hover:bg-white/20 text-white/10 py-2"
-              :class="checkClassActive(showMenuChil)"
+              class="hover:bg-white/20 text-white/10 py-2 cursor-pointer"
               v-for="(item, index) in menuTree"
               :key="index"
               :label="item.label"
@@ -38,24 +37,32 @@
               :icon="item.icon"
               :smallLabel="item.smallLabel"
               :permission="item.permission"
-              v-on:click="showMenuChil = !showMenuChil"
+              v-on:click="menuParentClick(index, item.label)"
+              @dblclick="showMenuChil=!showMenuChil"
             />
           </div>
         </div>
         <!--   main-->
       </div>
     </div>
-    <div class=" overflow-visible">
-      <section x-show="" class="menuChil w-64 px-4 py-6 h-screen" :class="checkClass(showMenuChil)">
-        <div class="">
-          <h2 class="text-xl text-white">SẢN PHẨM</h2>
+    <div class="overflow-visible">
+      <section
+        x-show=""
+        class="menuChil w-72 px-4 py-6 h-screen"
+        :class="checkClass(showMenuChil)"
+      >
+        <div class="pt-4">
+          <div class="grid grid-cols-4 gap-1 items-center text-white text-lg">
+            <div class="col-span-3"> <div class="items-center">{{ titleSubmenu }}</div></div>
+            <div class="text-right cursor-pointer"><i class="far fa-times" @click="submenuClose"></i></div>
+          </div>
         </div>
         <div class="flex-column w-full" style="background-color: #4a4542"></div>
         <div class="justify-start">
           <div class="item-container flex-2 py-4 text-white">
             <sub-menu-item
               class="hover:bg-white/10 text-white flex-column just"
-              v-for="(item, index) in menuTree[1].children"
+              v-for="(item, index) in menuTree[menuParentIndex].children"
               :key="index"
               :label="item.label"
               :icon="item.icon"
@@ -66,8 +73,7 @@
           </div>
         </div>
       </section>
-    </div> 
-      
+    </div>
   </div>
 </template>
 <script>
@@ -88,6 +94,9 @@
       const router = useRouter()
       const showMenu = ref(false)
       const showMenuChil = ref(false)
+      const isActived = ref(false)
+      const menuParentIndex = ref(0)
+      const titleSubmenu = ref('')
       const logo = ref('')
       const toggleShowMenu = () => (showMenu.value = !showMenu.value)
       const toggleShowMenuChil = () =>
@@ -96,24 +105,35 @@
         router.push({ path: '/', name: '' })
       }
       const checkClass = (index) => {
-      if (index == true) {
-        return " Show";
-      } else {
-        return " ";
+        if (index == true) {
+          return ' Show'
+        } else {
+          return ' '
+        }
       }
-      
-    };
-    const checkClassActive = (index) => {
-      if (index == true) {
-        return " active";
-      } else {
-        return " ";
+      const checkClassActive = (index) => {
+        if (index == true) {
+          return ' active'
+        } else {
+          return ' '
+        }
       }
-      
-    };
+      const menuParentClick = (index, title) => {
+        showMenuChil.value = false;
+        menuParentIndex.value = index;
+        showMenuChil.value = true;
+        titleSubmenu.value = title;   
+      }
+      const submenuClose =()=>{
+        showMenuChil.value = false;
+      }
       return {
         showMenu,
         showMenuChil,
+        submenuClose,
+        titleSubmenu,
+        isActived,
+        menuParentIndex,
         checkClass,
         checkClassActive,
         logo,
@@ -122,6 +142,7 @@
         collapsed,
         sidebarWidth,
         handleToSocial,
+        menuParentClick,
       }
     },
     data() {
@@ -133,26 +154,6 @@
             to: '/',
             permission: ['ASSET_ASSET'],
             smallLabel: 'DASHBOARD',
-            children: [
-              {
-                icon: '',
-                label: 'Người dùng',
-                to: '/',
-                permission: ['ASSET_ASSET'],
-              },
-              {
-                icon: '',
-                label: 'Phân quyền',
-                to: '',
-                permission: ['ASSET_ASSET'],
-              },
-              {
-                icon: '',
-                label: 'Lịch sử hoạt động',
-                to: '/',
-                permission: ['ASSET_ASSET'],
-              },
-            ],
           },
           {
             label: 'BÁN HÀNG',
@@ -164,7 +165,7 @@
               {
                 icon: '',
                 label: 'Quản lý đơn hàng ',
-                to: '/',
+                to: '/sales-list',
                 permission: ['ASSET_ASSET'],
               },
               {
@@ -193,11 +194,25 @@
             to: '/products-list',
             permission: ['ASSET_ASSET'],
             smallLabel: 'SẢN PHẨM',
+            children: [
+              {
+                icon: '',
+                label: 'Quản lý sản phẩm',
+                to: '/products-list',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Quản lý nghành hàng',
+                to: '/asset-groups',
+                permission: ['ASSET_ASSET'],
+              },
+            ],
           },
           {
             label: 'KHÁCH HÀNG',
             icon: 'fal fa-users',
-            to: '/',
+            to: '/3',
             permission: ['ASSET_ASSET'],
             smallLabel: 'KHÁCH HÀNG',
             children: [
@@ -227,32 +242,90 @@
               },
             ],
           },
-          
+
           {
             label: 'MARKETING',
             icon: 'fal fa-bullhorn',
-            to: '/',
+            to: '/4',
             permission: ['ASSET_ASSET'],
             smallLabel: 'MARKETING',
+            children: [
+              {
+                icon: '',
+                label: 'Mã giảm giá',
+                to: '/asset-suppliers',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Chiến dịch khuyến mại',
+                to: '/asset-groups',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Quảng cáo',
+                to: '/',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Kết nối',
+                to: '/',
+                permission: ['ASSET_ASSET'],
+              },
+            ],
           },
           {
             label: 'NỘI DUNG',
             icon: 'fal fa-clipboard-list-check',
-            to: '/',
+            to: '/5',
             permission: ['ASSET_ASSET'],
             smallLabel: 'NỘI DUNG',
+            children: [
+            {
+                icon: '',
+                label: 'Danh sách nội dung',
+                to: '/',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Tạo nội dung',
+                to: '/',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Sửa nội dung',
+                to: '/',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Xóa nội dung',
+                to: '/',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Xem trước',
+                to: '/',
+                permission: ['ASSET_ASSET'],
+              },
+            ],
           },
           {
             label: 'BÁO CÁO',
             icon: 'fal fa-chart-bar',
-            to: '/',
+            to: '/6',
             permission: ['ASSET_ASSET'],
             smallLabel: 'BÁO CÁO',
           },
           {
             label: 'CỬA HÀNG',
             icon: 'fal fa-warehouse',
-            to: '/',
+            to: '/7',
             permission: ['ASSET_ASSET'],
             smallLabel: 'CỬA HÀNG',
           },
@@ -271,7 +344,13 @@
               },
               {
                 icon: '',
-                label: 'Phân quyền',
+                label: 'Phân quyền website',
+                to: '',
+                permission: ['ASSET_ASSET'],
+              },
+              {
+                icon: '',
+                label: 'Phân quyền kho',
                 to: '',
                 permission: ['ASSET_ASSET'],
               },
@@ -282,69 +361,6 @@
                 permission: ['ASSET_ASSET'],
               },
             ],
-          },
-        ],
-        children: [
-          {
-            icon: '',
-            label: 'Tất cả',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-            smallLabel: 'Tất cả',
-          },
-          {
-            icon: '',
-            label: 'Cấp phát',
-            to: '',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Thu hồi',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Điều chuyển',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Báo hỏng',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Báo mất',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Hủy tài sản',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Thanh lý',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Sửa chữa/nâng cấp',
-            to: '/',
-            permission: ['ASSET_ASSET'],
-          },
-          {
-            icon: '',
-            label: 'Hoàn thành sửa chữa',
-            to: '/',
-            permission: ['ASSET_ASSET'],
           },
         ],
       }
@@ -374,8 +390,5 @@
   }
   .menuChil.Show {
     transform: translateX(0);
-  }
-  .menu.active {
-    background-color: white;
   }
 </style>
