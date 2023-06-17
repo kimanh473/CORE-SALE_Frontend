@@ -20,16 +20,20 @@
       </Header>
     </template>
     <template v-slot:content class="relative">
-      <a-breadcrumb class="!my-4">
+      <a-breadcrumb
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+      >
+        <div></div>
         <div
-          class="button-create-new relative group"
+          class="button-create-new relative group rounded-md px-1"
           title="Tạo mới kho"
           @click="CreateGroupAdmin()"
         >
-          <p>Tạo mới kho</p>
+          <p class="text-[14px] mt-[2px] px-1">Tạo mới kho</p>
         </div>
       </a-breadcrumb>
       <a-table
+        class="!p-[10px]"
         :columns="columns"
         :data-source="listGroupPermission"
         :row-selection="rowSelection"

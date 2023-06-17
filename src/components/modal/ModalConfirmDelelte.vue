@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import img_delete from '@/assets/images/delete.png'
+  import img_delete from '../../assets/images/delete.png'
   export default {
     data() {
       return {
