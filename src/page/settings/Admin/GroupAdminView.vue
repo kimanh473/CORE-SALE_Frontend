@@ -56,17 +56,20 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '@/layout/baseLayout.vue'
-  import SideBar from '@/components/common/SideBar.vue'
-  import Header from '@/components/common/Header.vue'
+  import BaseLayout from '../../../layout/baseLayout.vue'
+  import SideBar from '../../../components/common/SideBar.vue'
+  import Header from '../../../components/common/Header.vue'
   //   import TableResponsive from '@/components/common/TableResponsive.vue'
-  import { useAdminSetting } from '@/store/modules/admin-setting/adminsetting'
+  import { useAdminSetting } from '../../../store/modules/admin-setting/adminsetting'
 
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
-  import ContextMenu from '@/components/common/ContextMenu.vue'
-  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
-  import { FormatModalX, FormatModalY } from '@/components/constants/FormatAll'
+  import ContextMenu from '../../../components/common/ContextMenu.vue'
+  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import {
+    FormatModalX,
+    FormatModalY,
+  } from '../../../components/constants/FormatAll'
   import { useToast } from 'vue-toastification'
   //   import { Table } from 'ant-design-vue'
   import { storeToRefs } from 'pinia'
