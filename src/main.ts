@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
+import './assets/style/tailwind.css'
+import './assets/style/global.css'
 import "./assets/plugins/fontawesome/css/all.css";
 import App from './App.vue'
 import router from './router'
@@ -19,7 +21,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
-
+//import component
+import LoadingOverlay from "./components/loading/LoadingOverlay.vue";
 /* add icons to the library */
 library.add(faUserSecret)
 const store = createPinia()
@@ -30,4 +33,5 @@ createApp(App)
     .use(vClickOutside)
     .use(Toast)
     .component('font-awesome-icon', FontAwesomeIcon)
+    .component('loading-overlay', LoadingOverlay)
     .mount('#app')

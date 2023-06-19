@@ -6,15 +6,43 @@ type TRoute = {
 }
 const route: TRoute[] = [
   {
-    path: '/setting-admin-view',
+    path: '/list-inventory',
+    component: () => import('./page/settings/Shop-settings/ManageInventory/ListInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/list-category',
+    component: () => import('./page/settings/Shop-settings/CategoryList.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/group-admin-view',
     component: () => import('./page/settings/Admin/GroupAdminView.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
-    path: '/setting-admin',
+    path: '/group-admin',
     component: () => import('./page/settings/Admin/GroupAdmin.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/create-group-admin',
+    component: () => import('./page/settings/Admin/CreateAdminGroup.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/update-group-admin/:id',
+    component: () => import('./page/settings/Admin/UpdateAdminGroup.vue'),
     meta: {
       layout: "base-layout",
     },
