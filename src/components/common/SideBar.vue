@@ -38,7 +38,7 @@
               :smallLabel="item.smallLabel"
               :permission="item.permission"
               v-on:click="menuParentClick(index, item.label)"
-              @dblclick="showMenuChil=!showMenuChil"
+              @dblclick="showMenuChil = !showMenuChil"
             />
           </div>
         </div>
@@ -53,8 +53,12 @@
       >
         <div class="pt-4">
           <div class="grid grid-cols-4 gap-1 items-center text-white text-lg">
-            <div class="col-span-3"> <div class="items-center">{{ titleSubmenu }}</div></div>
-            <div class="text-right cursor-pointer"><i class="far fa-times" @click="submenuClose"></i></div>
+            <div class="col-span-3">
+              <div class="items-center pl-2">{{ titleSubmenu }}</div>
+            </div>
+            <div class="text-right cursor-pointer">
+              <i class="far fa-times" @click="submenuClose"></i>
+            </div>
           </div>
         </div>
         <div class="flex-column w-full" style="background-color: #4a4542"></div>
@@ -119,13 +123,13 @@
         }
       }
       const menuParentClick = (index, title) => {
-        showMenuChil.value = false;
-        menuParentIndex.value = index;
-        showMenuChil.value = true;
-        titleSubmenu.value = title;   
+        showMenuChil.value = false
+        menuParentIndex.value = index
+        showMenuChil.value = true
+        titleSubmenu.value = title
       }
-      const submenuClose =()=>{
-        showMenuChil.value = false;
+      const submenuClose = () => {
+        showMenuChil.value = false
       }
       return {
         showMenu,
@@ -215,32 +219,6 @@
             to: '/3',
             permission: ['ASSET_ASSET'],
             smallLabel: 'KHÁCH HÀNG',
-            children: [
-              {
-                icon: '',
-                label: 'Nhà cung cấp',
-                to: '/asset-suppliers',
-                permission: ['ASSET_ASSET'],
-              },
-              {
-                icon: '',
-                label: 'Nhóm tài sản',
-                to: '/asset-groups',
-                permission: ['ASSET_ASSET'],
-              },
-              {
-                icon: '',
-                label: 'Nguồn gốc',
-                to: '/',
-                permission: ['ASSET_ASSET'],
-              },
-              {
-                icon: '',
-                label: 'Vị trí',
-                to: '/',
-                permission: ['ASSET_ASSET'],
-              },
-            ],
           },
 
           {
@@ -283,7 +261,7 @@
             permission: ['ASSET_ASSET'],
             smallLabel: 'NỘI DUNG',
             children: [
-            {
+              {
                 icon: '',
                 label: 'Danh sách nội dung',
                 to: '/',
