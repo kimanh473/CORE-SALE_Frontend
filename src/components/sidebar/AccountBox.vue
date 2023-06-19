@@ -3,7 +3,7 @@
     <div class="flex flex-col items-center p-4 mt-2">
       <div class="py-2">
         <img
-          src="../../assets/images/btp.png"
+          src="../../assets/images/t.png"
           style="
             height: 50px;
             width: 50px;

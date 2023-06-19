@@ -1,9 +1,10 @@
 <template>
   <div class="w-full border h-full flex-1">
     <nav
-      class="flex justify-between mx-auto w-full bg-blue-950"
+      class="flex justify-between mx-auto w-full bg-white"
       style="height: inherit"
     >
+    <slot name="name"></slot>
       <div class="logo flex ml-[20px] items-center">
         <!-- <img src="../../assets/images/btp.png" /> -->
       </div>
@@ -82,18 +83,18 @@
                 ></notify-box>
               </div>
             </div>
-            <div
+            <!-- <div
               class="absolute text-white w-[20px] h-[20px] rounded-full top-0 text-xs right-0 flex items-center justify-center"
               style="background-color: var(--color-primary)"
-            ></div>
+            ></div> -->
           </li>
           <li
-            class="text-white hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1 w-[60px]"
+            class="text-white hover:bg-gray-100 cursor-pointer p-2 w-[60px]"
             @click="toggleActiveAccountBox"
             v-click-outside="onClickOutsideAccountBox"
           >
             <img
-              src="../../assets/images/btp.png"
+              src="../../assets/images/t.png"
               style="
                 height: 25px;
                 width: 25px;

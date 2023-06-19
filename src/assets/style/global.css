@@ -36,7 +36,7 @@ body {
   }
   
   :root {
-    --color-primary: #3b82f6;
+    --color-primary: #4a4542;
     --color-input: #ccc;
     /* Font */
     --vs-font-size: 14px;
@@ -369,7 +369,7 @@ body {
   
   .sidebarChange {
     transition: width 0.5s;
-    overflow-y: auto;
+    /* overflow-y: auto; */
   }
   
   .format-scroll::-webkit-scrollbar {
