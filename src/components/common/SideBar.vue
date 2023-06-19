@@ -343,6 +343,12 @@
                 to: '/',
                 permission: [''],
               },
+              {
+                icon: '',
+                label: 'Cài đặt kho',
+                to: '/list-inventory',
+                permission: [''],
+              },
             ],
           },
           {
@@ -356,6 +362,12 @@
                 icon: '',
                 label: 'Người dùng',
                 to: '/',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Nhóm người dùng',
+                to: '/group-admin-view',
                 permission: [''],
               },
               {

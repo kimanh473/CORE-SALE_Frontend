@@ -134,8 +134,8 @@ body {
     cursor: pointer;
     margin-left: 10px;
     margin-right: 10px;
-    min-height: 30px;
-    min-width: 30px;
+    min-height: 35px;
+    min-width: 35px;
     display: flex;
     justify-content: center;
     background: var(--color-primary);
@@ -146,8 +146,9 @@ body {
   }
   .button-create-new::before {
     font-family: "Font Awesome 5 Pro";
-    content: "\f067";
+    content: "\f055";
     font-weight: 500;
+    margin-top: 2px;
   }
   .button-create {
     cursor: pointer;
