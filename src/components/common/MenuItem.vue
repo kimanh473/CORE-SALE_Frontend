@@ -80,8 +80,7 @@ export default {
     class="menu-item flex-row"
   >
     <div class="flex-row items-center py-2">
-    
-        <div class="flex justify-center items-center text-white">
+        <div class="flex justify-center items-center" style="color: var(--color-text-menu)">
           <div class="flex flex-col items-center justify-center">
             <div class="flex items-center" v-if="icon">
               <i
@@ -112,11 +111,10 @@ export default {
             {{ label }}
           </div>
         </div>
-     
     </div>
     <div class="item-container flex-2 ml-8" v-if="showChildren">
       <menu-item
-        class="hover:bg-white/20 text-red-500 flex-column border-l-2 just"
+        class="hover:bg-white/20 flex-column border-l-2"
         v-for="(item, index) in data"
         :key="index"
         :label="item.label"
