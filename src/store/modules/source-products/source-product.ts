@@ -8,7 +8,7 @@ export const useSourceProduct = defineStore("SourceProduct", {
     actions: {
         getListSourceProduct(payload: any) {
             this.listSourceProduct = payload.data.data
-            console.log(this.listInventory);
+            console.log(this.listSourceProduct);
 
         },
         getListSourceProductAction() {

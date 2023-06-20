@@ -13,6 +13,13 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/create-source-product',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/SourceProduct/CreateSourceProduct.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/list-inventory',
     component: () => import('./page/settings/Shop-settings/ManageProduct/ManageInventory/ListInventory.vue'),
     meta: {

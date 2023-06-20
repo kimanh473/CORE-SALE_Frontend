@@ -26,10 +26,10 @@
         <div></div>
         <div
           class="button-create-new relative group rounded-md px-2"
-          title="Tạo mới kho"
-          @click="CreateInventory()"
+          title="Tạo mới nguồn hàng"
+          @click="CreateSourceProduct()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới kho</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới nguồn hàng</p>
         </div>
       </div>
       <a-table
@@ -46,139 +46,6 @@
     >
     <template v-slot:footer>footer</template>
   </base-layout>
-  <modal-view :isOpen="isOpenCreateInventory" :handleCloseDetail="handleClose">
-    <div>
-      <h1 class="header-modal">Tạo mới kho</h1>
-      <div
-        class="text-left p-2 min-h-[300px] max-h-[600px] min-w-[500px] overflow-y-auto format-scroll"
-      >
-        <div class="">
-          <label for="" class="form-group-label">Tên kho</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập tên kho"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Loại kho</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập mã phòng ban"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Quản lý kho</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập mã phòng ban"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Số điện thoại</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập mã phòng ban"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Địa chỉ</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập số"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Quốc gia</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập số"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Tỉnh/Thành phố</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập chiều rộng"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Quận/Huyện</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập chiều dài"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Xã/Phường/Thị trấn</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập chiều dài"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Địa chỉ chi tiết</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập địa chỉ"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="bg-button-modal">
-        <button class="button-modal">Cập nhật</button>
-        <button class="button-close-modal" @click="handleClose">Hủy bỏ</button>
-      </div>
-    </div>
-  </modal-view>
 </template>
 
 <script setup lang="ts">
@@ -190,18 +57,13 @@
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   //   import { Table } from 'ant-design-vue'
-  import ModalView from '../../../../../components/modal/ModalView.vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
-  const isOpenCreateInventory = ref<boolean>(false)
   const dataSourceProduct = useSourceProduct()
   dataSourceProduct.getListSourceProductAction()
   const { listSourceProduct } = storeToRefs(dataSourceProduct)
   console.log(listSourceProduct)
 
-  const handleClose = () => {
-    isOpenCreateInventory.value = false
-  }
   const columns = [
     {
       title: 'Mã nguồn hàng',
@@ -226,8 +88,8 @@
     is_admin: any
   }
 
-  const CreateInventory = () => {
-    isOpenCreateInventory.value = true
+  const CreateSourceProduct = () => {
+    router.push('/create-source-product')
   }
   //   const selectedRowKeys = ref<DataItem['key'][]>([])
   //   const onSelectChange = (changableRowKeys: string[]) => {
