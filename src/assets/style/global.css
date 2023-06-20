@@ -142,7 +142,7 @@ body {
     font-size: 1.3em;
     color: white;
     height: 30px;
-    max-width: 120px;
+    max-width: 2200px;
   }
   .button-create-new::before {
     font-family: "Font Awesome 5 Pro";
