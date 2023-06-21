@@ -47,6 +47,7 @@
                           placeholder="Nhập tên kho"
                           v-model="inventory.title"
                         />
+                        <p class="text-red-600">{{ messageError?.title[0] }}</p>
                       </div>
                     </div>
                     <div>
@@ -60,6 +61,7 @@
                           placeholder="Nhập mã kho"
                           v-model="inventory.code"
                         />
+                        <p class="text-red-600">{{ messageError?.code[0] }}</p>
                       </div>
                     </div>
                   </div>
@@ -151,10 +153,11 @@
                       ></label>
                       <div>
                         <input
-                          type="text"
+                          type="email"
                           class="form-control-input"
                           placeholder="Nhập tên nguồn hàng"
                           v-model="inventory.contact_email"
+                          required
                         />
                       </div>
                     </div>
@@ -259,6 +262,7 @@
                             v-for="(item, index) in listAllCity"
                             :key="index"
                             :value="item.ID"
+                            :title="item.title"
                             >{{ item.title }}</a-select-option
                           >
                         </a-select>
@@ -280,6 +284,7 @@
                             v-for="(item, index) in listAllDistrict"
                             :key="index"
                             :value="item.ID"
+                            :title="item.title"
                             >{{ item.title }}</a-select-option
                           ></a-select
                         >
@@ -295,11 +300,13 @@
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
                           v-model:value="inventory.address_ward_id"
+                          @change="handleChangeWard"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllWard"
                             :key="index"
                             :value="item.ID"
+                            :title="item.title"
                             >{{ item.title }}</a-select-option
                           ></a-select
                         >
@@ -385,7 +392,7 @@
     contact_name: '',
     contact_email: '',
     contact_phone: '',
-    address: '',
+    address: null,
     address_country_id: '1',
     address_district_id: null,
     address_ward_id: null,
@@ -395,6 +402,9 @@
     desc: '',
   })
   const dataInventory = useInventory()
+  const { messageError } = storeToRefs(dataInventory)
+  console.log(messageError)
+
   const dataGroupInventory = useGroupInventory()
   const getListGroupInventory = () => {
     dataGroupInventory.getListGroupInventoryAction()
@@ -423,12 +433,17 @@
   }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
-  const handleChangeCity = (value: number) => {
+  const handleChangeCity = (value: number, name: any) => {
     dataLocation.getListAllDistrictAction(value)
-    // inventory.address = value.title
+
+    inventory.address = name.title + ', ' + 'Việt Nam'
   }
-  const handleChangeDistrict = (value: number) => {
+  const handleChangeDistrict = (value: number, name: any) => {
     dataLocation.getListAllWardAction(value)
+    inventory.address = name.title + ', ' + inventory.address
+  }
+  const handleChangeWard = (value: number, name: any) => {
+    inventory.address = name.title + ', ' + inventory.address
   }
   const createInventory = () => {
     let data = {
