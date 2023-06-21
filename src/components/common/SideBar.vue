@@ -363,24 +363,28 @@
                 label: 'Tạo nội dung',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Sửa nội dung',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Xóa nội dung',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Xem trước',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
             ],
           },
@@ -512,24 +516,28 @@
                 label: 'Người dùng',
                 to: '/',
                 permission: [''],
+                submenuGroup:''
               },
               {
                 icon: '',
                 label: 'Phân quyền website',
                 to: '',
                 permission: [''],
+                submenuGroup:''
               },
               {
                 icon: '',
                 label: 'Phân quyền kho',
                 to: '',
                 permission: [''],
+                submenuGroup:''
               },
               {
                 icon: '',
                 label: 'Lịch sử hoạt động',
                 to: '/',
                 permission: [''],
+                submenuGroup:''
               },
             ],
           },
