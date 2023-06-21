@@ -10,19 +10,18 @@
         style="background-color: var(--color-primary)"
       >
         <div
-          class="flex justify-between text-white items-center pt-4"
-          :class="{ isToogle: collapsed }"
+          class="flex justify-center text-white items-center pt-3"
         >
           <a
             href=""
-            class="flex items-center px-6 space-x-2 text-white"
+            class="flex items-center  text-white"
             @click.prevent="handleToSocial"
             v-show="collapsed === true"
           >
             <img
               src="../../assets/images/logo.png"
               alt=""
-              class="w-[35px] h-[35px]"
+              class="w-[45px] h-[45px]"
             />
           </a>
         </div>
@@ -77,7 +76,7 @@
                   {{ checkArray(menuTree[menuParentIndex]?.children1) }}
                 </div>
                 <sub-menu-item
-                  class="hover:bg-[#403934] flex-column w-60"
+                  class="hover:bg-[#403934] flex-column w-60 rounded-sm"
                   v-for="(item, index) in menuTree[menuParentIndex].children1"
                   :key="index"
                   :label="item.label"
@@ -103,7 +102,7 @@
                   {{ checkArray(menuTree[menuParentIndex]?.children2) }}
                 </div>
                 <sub-menu-item
-                  class="hover:bg-[#403934] flex-column w-60"
+                  class="hover:bg-[#403934] flex-column w-60 rounded-sm"
                   v-for="(item, index) in menuTree[menuParentIndex].children2"
                   :key="index"
                   :label="item.label"
