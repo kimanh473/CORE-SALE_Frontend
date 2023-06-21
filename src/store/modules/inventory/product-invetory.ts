@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import { getAllInventoryApi, createInventoryApi } from '../../../services/InventoryServices/inventory.service'
 export const useInventory = defineStore("Inventory", {
     state: () => ({
-        listInventory: []
+        listInventory: [],
+        messageError: null
     }),
     getters: {},
     actions: {
         getListInventory(payload: any) {
             this.listInventory = payload.data?.data
             console.log(this.listInventory);
-
         },
         getListInventoryAction() {
             getAllInventoryApi()
@@ -40,6 +40,8 @@ export const useInventory = defineStore("Inventory", {
                 })
                 .catch((err) => {
                     toast.error("Tạo mới thất bại");
+                    this.messageError = err.response.data.messages
+                    console.log(this.messageError);
                     console.log(err);
                 });
         },
