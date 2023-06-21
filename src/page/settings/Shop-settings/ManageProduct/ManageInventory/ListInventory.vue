@@ -12,7 +12,7 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText text-[#fff] mb-0">Danh sách kho</p>
+              <p class="longText pl-5 mb-0">Danh sách kho</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -35,7 +35,7 @@
       <a-table
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listInventory"
+        :data-source="data"
         :row-selection="rowSelection"
         bordered
         ><template #bodyCell="{ column }">
@@ -47,7 +47,7 @@
     >
     <template v-slot:footer>footer</template>
   </base-layout>
-  <modal-view :isOpen="isOpenCreateInventory" :handleCloseDetail="handleClose">
+  <!-- <modal-view :isOpen="isOpenCreateInventory" :handleCloseDetail="handleClose">
     <div>
       <h1 class="header-modal">Tạo mới kho</h1>
       <div
@@ -179,7 +179,7 @@
         <button class="button-close-modal" @click="handleClose">Hủy bỏ</button>
       </div>
     </div>
-  </modal-view>
+  </modal-view> -->
 </template>
 
 <script setup lang="ts">
@@ -189,28 +189,30 @@
   //   import TableResponsive from '../../../components/common/TableResponsive.vue'
   import { useInventory } from '../../../../../store/modules/inventory/product-invetory'
   import { useRouter } from 'vue-router'
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   //   import { Table } from 'ant-design-vue'
-  import ModalView from '../../../../../components/modal/ModalView.vue'
+  // import ModalView from '../../../../../components/modal/ModalView.vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
-  const isOpenCreateInventory = ref<boolean>(false)
+  // const isOpenCreateInventory = ref<boolean>(false)
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { listInventory } = storeToRefs(dataInventory)
-  console.log(listInventory)
+  // console.log(listInventory)
 
-  const handleClose = () => {
-    isOpenCreateInventory.value = false
-  }
+  // const handleClose = () => {
+  //   isOpenCreateInventory.value = false
+  // }
   const columns = [
     {
       title: 'STT',
       dataIndex: 'id',
+      sorter: true,
     },
     {
       title: 'Tên kho',
       dataIndex: 'title',
+      sorter: true,
     },
     {
       title: 'Mã kho',
@@ -235,40 +237,57 @@
   ]
 
   interface DataItem {
-    title: number
-    is_admin: any
-    created_at: any
-    updated_at: any
+    title: string
+    id: number
   }
-  const rowSelection = ref({
-    checkStrictly: false,
-    onChange: (
-      selectedRowKeys: (string | number)[],
-      selectedRows: DataItem[]
-    ) => {
+  const data: DataItem[] = [
+    {
+      id: 12,
+      title: '123',
+    },
+    {
+      id: 122,
+      title: '12323',
+    },
+  ]
+  const rowSelection = {
+    onChange(selectedRowKeys: (string | number)[], selectedRows: DataItem[]) {
       console.log(
         `selectedRowKeys: ${selectedRowKeys}`,
         'selectedRows: ',
         selectedRows
       )
     },
-    onSelect: (
-      record: DataItem,
-      selected: boolean,
-      selectedRows: DataItem[]
-    ) => {
-      console.log(record, selected, selectedRows)
-    },
-    onSelectAll: (
-      selected: boolean,
-      selectedRows: DataItem[],
-      changeRows: DataItem[]
-    ) => {
-      console.log(selected, selectedRows, changeRows)
-    },
-  })
+  }
+  // const rowSelection = ref({
+  //   checkStrictly: false,
+  //   onChange: (
+  //     selectedRowKeys: (string | number)[],
+  //     selectedRows: DataItem[]
+  //   ) => {
+  //     console.log(
+  //       `selectedRowKeys: ${selectedRowKeys}`,
+  //       'selectedRows: ',
+  //       selectedRows
+  //     )
+  //   },
+  //   onSelect: (
+  //     record: DataItem,
+  //     selected: boolean,
+  //     selectedRows: DataItem[]
+  //   ) => {
+  //     console.log(record, selected, selectedRows)
+  //   },
+  //   onSelectAll: (
+  //     selected: boolean,
+  //     selectedRows: DataItem[],
+  //     changeRows: DataItem[]
+  //   ) => {
+  //     console.log(selected, selectedRows, changeRows)
+  //   },
+  // })
   const CreateInventory = () => {
-    isOpenCreateInventory.value = true
+    router.push('/create-inventory')
   }
   //   const selectedRowKeys = ref<DataItem['key'][]>([])
   //   const onSelectChange = (changableRowKeys: string[]) => {

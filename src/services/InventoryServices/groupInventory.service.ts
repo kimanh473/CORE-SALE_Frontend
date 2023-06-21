@@ -1,7 +1,7 @@
 import httpClient from "../services";
 //Danh sách kho
 const getAllGroupInventoryApi = () => {
-    return httpClient.get(`/setting/product-inventory/index`);
+    return httpClient.get(`/system-manage/product-inventory-type/index`);
 };
 //Tạo mới kho
 const createGroupInventoryApi = (data: Object) => {
