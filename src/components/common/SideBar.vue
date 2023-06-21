@@ -3,11 +3,11 @@
     <div
       class="sidebarChange format-scroll h-screen"
       :style="{ width: sidebarWidth }"
-      style="background-color: var(--color-primary)"
+      style="background-color: var(--color-bg-menu)"
     >
       <div
         class="flex-column w-full"
-        style="background-color: var(--color-primary)"
+        style="background-color: var(--color-bg-menu)"
       >
         <div
           class="flex justify-center text-white items-center pt-3"
@@ -501,6 +501,12 @@
                 submenuGroup: 'Khách hàng',
                 permission: [''],
               },
+              {
+                icon: '',
+                label: 'Cài đặt kho',
+                to: '/list-inventory',
+                permission: [''],
+              },
             ],
           },
           {
@@ -516,6 +522,12 @@
                 to: '/',
                 permission: [''],
                 submenuGroup:''
+              },
+              {
+                icon: '',
+                label: 'Nhóm người dùng',
+                to: '/group-admin-view',
+                permission: [''],
               },
               {
                 icon: '',
@@ -550,7 +562,7 @@
     z-index: 10;
   }
   .menuChil {
-    background-color: #524d49;
+    background-color: #474347;
     /* box-shadow: 0 0 3px #000;
     left: 100%;
     padding: 2rem 0 0;

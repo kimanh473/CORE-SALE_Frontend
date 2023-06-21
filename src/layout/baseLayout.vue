@@ -21,7 +21,7 @@
           ><slot name="header"></slot
         ></a-layout-header>
         <a-layout-content
-          style="min-height: auto; overflow: initial; z-index: 15"
+          style="min-height: auto; overflow: auto; z-index: 15"
           class="mx-3 my-2"
         >
           <slot name="content"></slot>

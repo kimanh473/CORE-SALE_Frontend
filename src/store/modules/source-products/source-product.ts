@@ -1,32 +1,32 @@
 import { defineStore } from "pinia";
-import { getAllInventoryApi, createInventoryApi } from '../../../services/InventoryServices/inventory.service'
-export const useInventory = defineStore("Inventory", {
+import { getAllSourceProductsApi, createSourceProductApi } from '../../../services/SourceProductServices/sourceProduct.services'
+export const useSourceProduct = defineStore("SourceProduct", {
     state: () => ({
-        listInventory: []
+        listSourceProduct: null
     }),
     getters: {},
     actions: {
-        getListInventory(payload: any) {
-            this.listInventory = payload.data?.data
-            console.log(this.listInventory);
+        getListSourceProduct(payload: any) {
+            this.listSourceProduct = payload.data.data
+            console.log(this.listSourceProduct);
 
         },
-        getListInventoryAction() {
-            getAllInventoryApi()
+        getListSourceProductAction() {
+            getAllSourceProductsApi()
                 .then((payload: any) => {
-                    this.getListInventory(payload.data)
+                    this.getListSourceProduct(payload.data)
                 })
                 .catch((err) => {
                     console.log(err)
                 });
         },
-        async createInventoryAction(
+        async createSourceProductAction(
             data: Object,
             toast: any,
             EndTimeLoading: Function,
-            // handleCloseCreate: Function
+            handleCloseCreate: Function
         ) {
-            await createInventoryApi(data)
+            await createSourceProductApi(data)
                 .then((res) => {
                     if (res.data.status == "failed") {
                         toast.error(res.data.messages);
@@ -34,7 +34,7 @@ export const useInventory = defineStore("Inventory", {
                     } else {
                         toast.success("Tạo mới thành công");
                         location.reload();
-                        // handleCloseCreate();
+                        handleCloseCreate();
                         EndTimeLoading();
                     }
                 })

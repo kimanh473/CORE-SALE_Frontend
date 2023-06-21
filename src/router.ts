@@ -6,8 +6,22 @@ type TRoute = {
 }
 const route: TRoute[] = [
   {
+    path: '/list-source-product',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/SourceProduct/ListSourceProduct.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/create-inventory',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/ManageInventory/CreateInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/list-inventory',
-    component: () => import('./page/settings/Shop-settings/ManageInventory/ListInventory.vue'),
+    component: () => import('./page/settings/Shop-settings/ManageProduct/ManageInventory/ListInventory.vue'),
     meta: {
       layout: "base-layout",
     },

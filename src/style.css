@@ -15,7 +15,8 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   /* --color-primary: #3b82f6; */
-  --color-primary: ##373330;
+  --color-primary: white;
+  --color-bg-menu: #373330;
   --color-input: #ccc;
   /* Font */
   --vs-font-size: 14px;
