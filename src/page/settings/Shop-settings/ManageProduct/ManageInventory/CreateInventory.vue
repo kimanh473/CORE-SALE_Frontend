@@ -7,7 +7,11 @@
       <SideBar />
     </template>
     <template v-slot:header>
-      <Header :is-show-search="false" />
+      <Header :is-show-search="false">
+        <template v-slot:name
+          ><p class="pl-5 text-[16px]">Tạo mới kho</p></template
+        >
+      </Header>
     </template>
     <template v-slot:content class="relative">
       <Transition :duration="550" name="nested">
@@ -33,61 +37,59 @@
                   <div class="grid grid-cols-2 gap-2 form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Tên nguồn hàng<span class="text-red-600">* </span>
+                        >Tên kho<span class="text-red-600">* </span>
                         <span></span
                       ></label>
                       <div>
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập tên nguồn hàng"
+                          placeholder="Nhập tên kho"
+                          v-model="inventory.title"
                         />
                       </div>
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Mã nguồn hàng<span class="text-red-600"></span
+                        >Mã kho<span class="text-red-600"></span
                       ></label>
                       <div>
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập mã nguồn hàng"
+                          placeholder="Nhập mã kho"
+                          v-model="inventory.code"
                         />
                       </div>
                     </div>
                   </div>
-                  <div class="grid grid-cols-2 gap-2 form-small">
+                  <div class="form-small">
+                    <label for="" class="form-group-label"
+                      >Nhóm kho<span class="text-red-600">* </span> <span></span
+                    ></label>
                     <div>
-                      <label for="" class="form-group-label"
-                        >Kinh độ <span></span
-                      ></label>
-                      <div>
-                        <input
-                          type="text"
-                          class="form-control-input"
-                          placeholder="Nhập kinh độ"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Vĩ độ<span class="text-red-600">*</span></label
+                      <a-select
+                        class="form-control-input"
+                        placeholder="Chọn nhóm kho"
+                        v-model:value="inventory.type_code"
+                        @click.once="getListGroupInventory"
+                        mode="multiple"
                       >
-                      <div>
-                        <input
-                          type="text"
-                          class="form-control-input"
-                          placeholder="Nhập vĩ độ"
-                        />
-                      </div>
+                        <a-select-option
+                          v-for="(item, index) in listGroupInventory"
+                          :key="index"
+                          :value="item.code"
+                          >{{ item.title }}</a-select-option
+                        >
+                      </a-select>
                     </div>
                   </div>
-                  <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
-                  nhận
+
+                  <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
+                  nhận -->
                   <div>
                     <div class="form-small">
-                      <label for="" class="form-group-label">Ghi chú</label>
+                      <label for="" class="form-group-label">Mô tả</label>
                       <div>
                         <textarea
                           name=""
@@ -95,6 +97,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
+                          v-model="inventory.desc"
                         ></textarea>
                       </div>
                     </div>
@@ -138,6 +141,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên liên lạc"
+                          v-model="inventory.contact_name"
                         />
                       </div>
                     </div>
@@ -150,6 +154,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên nguồn hàng"
+                          v-model="inventory.contact_email"
                         />
                       </div>
                     </div>
@@ -160,9 +165,10 @@
                       ></label>
                       <div>
                         <input
-                          type="text"
+                          type="number"
                           class="form-control-input"
                           placeholder="Nhập số điện thoại"
+                          v-model="inventory.contact_phone"
                         />
                       </div>
                     </div>
@@ -208,6 +214,34 @@
                         ></a-select>
                       </div>
                     </div> -->
+                    <div class="grid grid-cols-2 gap-2 form-small">
+                      <div>
+                        <label for="" class="form-group-label"
+                          >Kinh độ <span class="text-red-600">*</span></label
+                        >
+                        <div>
+                          <input
+                            type="number"
+                            class="form-control-input"
+                            placeholder="Nhập kinh độ"
+                            v-model="inventory.longitude"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label for="" class="form-group-label"
+                          >Vĩ độ<span class="text-red-600">*</span></label
+                        >
+                        <div>
+                          <input
+                            type="number"
+                            class="form-control-input"
+                            placeholder="Nhập vĩ độ"
+                            v-model="inventory.latitude"
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <div>
                       <label for="" class="form-group-label"
                         >Tỉnh/Thành phố<span class="text-red-600">* </span>
@@ -218,7 +252,8 @@
                           class="form-control-input"
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
-                          v-model:value="selectedCity"
+                          @click.once="getDataCity"
+                          v-model:value="inventory.address_state_id"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllCity"
@@ -239,7 +274,7 @@
                           class="form-control-input"
                           placeholder="Chọn quận/huyện"
                           @change="handleChangeDistrict"
-                          v-model:value="selectedDistrict"
+                          v-model:value="inventory.address_district_id"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllDistrict"
@@ -259,7 +294,7 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
-                          v-model:value="selectedWard"
+                          v-model:value="inventory.address_ward_id"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllWard"
@@ -272,7 +307,7 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Địa chỉ cụ thể<span class="text-red-600">* </span>
+                        >Địa chỉ cụ thể<span class="text-red-600"> </span>
                         <span></span
                       ></label>
                       <div>
@@ -282,6 +317,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
+                          v-model="inventory.address_detail"
                         ></textarea>
                       </div>
                     </div>
@@ -301,26 +337,70 @@
         </div>
       </Transition>
     </template>
-    <template v-slot:footer>Copyright © 2023 Btp holdings Ecom.</template>
+    <template v-slot:footer
+      ><div class="bg-slate-300">
+        <div class="p-4 text-left">
+          <button class="button-modal" @click="createInventory()">
+            Cập nhật
+          </button>
+          <button class="button-close-modal" @click="this.$router.go(-1)">
+            Hủy bỏ
+          </button>
+        </div>
+      </div></template
+    >
   </base-layout>
+  <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
 <script setup lang="ts">
   import BaseLayout from '../../../../../layout/baseLayout.vue'
   import SideBar from '../../../../../components/common/SideBar.vue'
   import Header from '../../../../../components/common/Header.vue'
-  import type { SelectProps } from 'ant-design-vue'
+  // import type { SelectProps } from 'ant-design-vue'
   import { useLocation } from '../../../../../store/modules/location/location'
+  import { useGroupInventory } from '../../../../../store/modules/inventory/group-inventory'
+  import { useInventory } from '../../../../../store/modules/inventory/product-invetory'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
-  const selectedCity = ref(null)
-  const selectedDistrict = ref(null)
-  const selectedWard = ref(null)
+  import { useToast } from 'vue-toastification'
+  // const selectedGroupInventory = ref(null)
+  // const selectedCity = ref(null)
+  // const selectedDistrict = ref(null)
+  // const selectedWard = ref(null)
+  const toast = useToast()
   const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
-  const checked = ref(false)
-  let options2 = ref<SelectProps['options']>([])
+  // const checked = ref(false)
+  const isLoading = ref<boolean>(false)
+  const EndTimeLoading = () => {
+    isLoading.value = false
+  }
+  const inventory = reactive({
+    title: '',
+    type_code: [],
+    latitude: '',
+    longitude: '',
+    contact_name: '',
+    contact_email: '',
+    contact_phone: '',
+    address: '',
+    address_country_id: '1',
+    address_district_id: null,
+    address_ward_id: null,
+    address_state_id: null,
+    address_detail: '',
+    code: '',
+    desc: '',
+  })
+  const dataInventory = useInventory()
+  const dataGroupInventory = useGroupInventory()
+  const getListGroupInventory = () => {
+    dataGroupInventory.getListGroupInventoryAction()
+  }
+  const { listGroupInventory } = storeToRefs(dataGroupInventory)
+  // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
   //     code: 'SOURCEA',
@@ -338,14 +418,37 @@
   //     use_direct: '0',
   //   })
   const dataLocation = useLocation()
-  dataLocation.getListAllCityAction()
+  const getDataCity = () => {
+    dataLocation.getListAllCityAction()
+  }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
   const handleChangeCity = (value: number) => {
     dataLocation.getListAllDistrictAction(value)
+    // inventory.address = value.title
   }
   const handleChangeDistrict = (value: number) => {
     dataLocation.getListAllWardAction(value)
+  }
+  const createInventory = () => {
+    let data = {
+      title: inventory.title,
+      code: inventory.code,
+      type_code: inventory.type_code,
+      latitude: inventory.latitude,
+      longitude: inventory.longitude,
+      contact_name: inventory.contact_name,
+      contact_email: inventory.contact_email,
+      contact_phone: inventory.contact_phone,
+      address: inventory.address,
+      address_country_id: inventory.address_country_id,
+      address_district_id: inventory.address_district_id,
+      address_ward_id: inventory.address_ward_id,
+      address_state_id: inventory.address_state_id,
+      address_detail: inventory.address_detail,
+      desc: inventory.desc,
+    }
+    dataInventory.createInventoryAction(data, toast, EndTimeLoading)
   }
 </script>
 

@@ -162,7 +162,4 @@
     z-index: 9999;
     justify-items: center;
   }
-  input.ant-checkbox-input {
-    display: contents;
-  }
 </style>

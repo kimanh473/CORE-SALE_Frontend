@@ -2,12 +2,12 @@ import { defineStore } from "pinia";
 import { getAllInventoryApi, createInventoryApi } from '../../../services/InventoryServices/inventory.service'
 export const useInventory = defineStore("Inventory", {
     state: () => ({
-        listInventory: null
+        listInventory: []
     }),
     getters: {},
     actions: {
         getListInventory(payload: any) {
-            this.listInventory = payload.data.data
+            this.listInventory = payload.data?.data
             console.log(this.listInventory);
 
         },
@@ -24,7 +24,7 @@ export const useInventory = defineStore("Inventory", {
             data: Object,
             toast: any,
             EndTimeLoading: Function,
-            handleCloseCreate: Function
+            // handleCloseCreate: Function
         ) {
             await createInventoryApi(data)
                 .then((res) => {
@@ -34,7 +34,7 @@ export const useInventory = defineStore("Inventory", {
                     } else {
                         toast.success("Tạo mới thành công");
                         location.reload();
-                        handleCloseCreate();
+                        // handleCloseCreate();
                         EndTimeLoading();
                     }
                 })
