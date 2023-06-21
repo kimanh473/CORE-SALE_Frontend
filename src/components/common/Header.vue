@@ -55,13 +55,13 @@
             </div>
           </li>
           <li
-            class="hover:bg-gray-100 cursor-pointer p-5 rounded-lg max-sm:px-1"
+            class="hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1"
             style="color: var(--color-primary)"
           >
             <i class="fal fa-phone text-lg"></i>
           </li>
           <li
-            class="hover:bg-gray-100 cursor-pointer p-5 rounded-lg max-sm:px-1 w-[60px]"
+            class="hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1 w-[60px]"
             @click="toggleActiveNotifyBox"
             v-click-outside="onClickOutsideNotifyBox"
             style="color: var(--color-primary)"
@@ -91,15 +91,15 @@
             ></div> -->
           </li>
           <li
-            class="text-white hover:bg-gray-100 cursor-pointer p-2 w-[60px]"
+            class="text-white hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1 w-full"
             @click="toggleActiveAccountBox"
             v-click-outside="onClickOutsideAccountBox"
           >
             <img
               src="../../assets/images/t.png"
               style="
-                height: 25px;
-                width: 25px;
+                height: 30px;
+                width: 30px;
                 border-radius: 50%;
                 border-color: var(--color-primary);
               "
