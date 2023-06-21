@@ -57,32 +57,26 @@
                       </div>
                     </div>
                   </div>
-                  <div class="grid grid-cols-2 gap-2 form-small">
+                  <div class="form-small">
+                    <label for="" class="form-group-label"
+                      >Nhóm kho<span class="text-red-600">* </span> <span></span
+                    ></label>
                     <div>
-                      <label for="" class="form-group-label"
-                        >Kinh độ <span></span
-                      ></label>
-                      <div>
-                        <input
-                          type="text"
-                          class="form-control-input"
-                          placeholder="Nhập kinh độ"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Vĩ độ<span class="text-red-600">*</span></label
+                      <a-select
+                        class="form-control-input"
+                        placeholder="Chọn nhóm kho"
+                        v-model:value="selectedGroupInventory"
                       >
-                      <div>
-                        <input
-                          type="text"
-                          class="form-control-input"
-                          placeholder="Nhập vĩ độ"
-                        />
-                      </div>
+                        <a-select-option
+                          v-for="(item, index) in listAllCity"
+                          :key="index"
+                          :value="item.ID"
+                          >{{ item.title }}</a-select-option
+                        >
+                      </a-select>
                     </div>
                   </div>
+
                   <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
                   nhận
                   <div>
@@ -208,6 +202,32 @@
                         ></a-select>
                       </div>
                     </div> -->
+                    <div class="grid grid-cols-2 gap-2 form-small">
+                      <div>
+                        <label for="" class="form-group-label"
+                          >Kinh độ <span></span
+                        ></label>
+                        <div>
+                          <input
+                            type="text"
+                            class="form-control-input"
+                            placeholder="Nhập kinh độ"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label for="" class="form-group-label"
+                          >Vĩ độ<span class="text-red-600">*</span></label
+                        >
+                        <div>
+                          <input
+                            type="text"
+                            class="form-control-input"
+                            placeholder="Nhập vĩ độ"
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <div>
                       <label for="" class="form-group-label"
                         >Tỉnh/Thành phố<span class="text-red-600">* </span>
@@ -218,6 +238,7 @@
                           class="form-control-input"
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
+                          @click.once="getDataCity"
                           v-model:value="selectedCity"
                         >
                           <a-select-option
@@ -313,6 +334,7 @@
   import { useLocation } from '../../../../../store/modules/location/location'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
+  const selectedGroupInventory = ref(null)
   const selectedCity = ref(null)
   const selectedDistrict = ref(null)
   const selectedWard = ref(null)
@@ -338,7 +360,9 @@
   //     use_direct: '0',
   //   })
   const dataLocation = useLocation()
-  dataLocation.getListAllCityAction()
+  const getDataCity = () => {
+    dataLocation.getListAllCityAction()
+  }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
   const handleChangeCity = (value: number) => {
