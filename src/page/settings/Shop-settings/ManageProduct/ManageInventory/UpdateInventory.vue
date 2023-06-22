@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-        <img src="../assets/images/btp.png" />
-      </div> -->
+          <img src="../assets/images/btp.png" />
+        </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới kho</p></template
+          ><p class="pl-5 text-[16px]">Sửa thông tin kho</p></template
         >
       </Header>
     </template>
@@ -45,7 +45,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên kho"
-                          v-model="inventory.title"
+                          v-model="detailInventory.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -61,7 +61,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập mã kho"
-                          v-model="inventory.code"
+                          v-model="detailInventory.code"
                         />
                         <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
@@ -77,7 +77,7 @@
                       <a-select
                         class="form-control-input"
                         placeholder="Chọn nhóm kho"
-                        v-model:value="inventory.type_code"
+                        v-model:value="detailInventory.type_code"
                         @click.once="getListGroupInventory"
                         mode="multiple"
                       >
@@ -95,7 +95,7 @@
                   </div>
 
                   <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
-                  nhận -->
+                    nhận -->
                   <div>
                     <div class="form-small">
                       <label for="" class="form-group-label">Mô tả</label>
@@ -106,7 +106,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
-                          v-model="inventory.desc"
+                          v-model="detailInventory.desc"
                         ></textarea>
                       </div>
                     </div>
@@ -150,7 +150,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên liên lạc"
-                          v-model="inventory.contact_name"
+                          v-model="detailInventory.contact_name"
                         />
                         <p
                           v-if="messageError?.contact_name"
@@ -169,7 +169,7 @@
                           type="email"
                           class="form-control-input"
                           placeholder="Nhập tên nguồn hàng"
-                          v-model="inventory.contact_email"
+                          v-model="detailInventory.contact_email"
                         />
                         <p
                           v-if="messageError?.contact_email"
@@ -189,7 +189,7 @@
                           type="number"
                           class="form-control-input"
                           placeholder="Nhập số điện thoại"
-                          v-model="inventory.contact_phone"
+                          v-model="detailInventory.contact_phone"
                         />
                         <p
                           v-if="messageError?.contact_phone"
@@ -228,19 +228,19 @@
                 <div v-show="isAddress == true">
                   <div class="form-small">
                     <!-- <div>
-                      <label for="" class="form-group-label"
-                        >Quốc gia<span class="text-red-600">* </span>
-                        <span></span
-                      ></label>
-                      <div>
-                        <a-select
-                          class="form-control-input"
-                          :options="options2"
-                          placeholder="Chọn quốc gia"
-                          disabled
-                        ></a-select>
-                      </div>
-                    </div> -->
+                        <label for="" class="form-group-label"
+                          >Quốc gia<span class="text-red-600">* </span>
+                          <span></span
+                        ></label>
+                        <div>
+                          <a-select
+                            class="form-control-input"
+                            :options="options2"
+                            placeholder="Chọn quốc gia"
+                            disabled
+                          ></a-select>
+                        </div>
+                      </div> -->
                     <div class="grid grid-cols-2 gap-2 form-small">
                       <div>
                         <label for="" class="form-group-label"
@@ -251,7 +251,7 @@
                             type="number"
                             class="form-control-input"
                             placeholder="Nhập kinh độ"
-                            v-model="inventory.longitude"
+                            v-model="detailInventory.longitude"
                           />
                           <p
                             v-if="messageError?.longitude"
@@ -270,7 +270,7 @@
                             type="number"
                             class="form-control-input"
                             placeholder="Nhập vĩ độ"
-                            v-model="inventory.latitude"
+                            v-model="detailInventory.latitude"
                           />
                           <p v-if="messageError?.latitude" class="text-red-600">
                             {{ messageError?.latitude[0] }}
@@ -289,7 +289,7 @@
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
                           @click.once="getDataCity"
-                          v-model:value="inventory.address_state_id"
+                          v-model:value="detailInventory.address_state_id"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllCity"
@@ -317,7 +317,7 @@
                           class="form-control-input"
                           placeholder="Chọn quận/huyện"
                           @change="handleChangeDistrict"
-                          v-model:value="inventory.address_district_id"
+                          v-model:value="detailInventory.address_district_id"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllDistrict"
@@ -344,7 +344,7 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
-                          v-model:value="inventory.address_ward_id"
+                          v-model:value="detailInventory.address_ward_id"
                           @change="handleChangeWard"
                         >
                           <a-select-option
@@ -375,7 +375,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
-                          v-model="inventory.address_detail"
+                          v-model="detailInventory.address_detail"
                         ></textarea>
                       </div>
                     </div>
@@ -398,7 +398,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createInventory()">
+          <button class="button-modal" @click="updateInventory()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -422,10 +422,13 @@
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
+  import { useRouter, useRoute } from 'vue-router'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
   // const selectedWard = ref(null)
+  const router = useRouter()
+  const route = useRoute()
   const toast = useToast()
   const isAddress = ref(true)
   const isInfor = ref(true)
@@ -433,7 +436,6 @@
   // const checked = ref(false)
   const isLoading = ref<boolean>(false)
   // const isReInput = ref<boolean>(true)
-
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -465,8 +467,9 @@
   //   isReInput.value = false
   // }
   const dataInventory = useInventory()
-  const { messageError } = storeToRefs(dataInventory)
-  console.log(messageError)
+  dataInventory.getDetailInventoryAction(Number(route.params.id))
+  const { messageError, detailInventory } = storeToRefs(dataInventory)
+  console.log(detailInventory)
 
   const dataGroupInventory = useGroupInventory()
   const getListGroupInventory = () => {
@@ -491,6 +494,9 @@
   //     use_direct: '0',
   //   })
   const dataLocation = useLocation()
+  dataLocation.getListAllCityAction()
+  dataLocation.getListAllDistrict(detailInventory.value?.address_state_id)
+  dataLocation.getListAllWard(detailInventory.value?.address_district_id)
   const getDataCity = () => {
     dataLocation.getListAllCityAction()
   }
@@ -499,34 +505,41 @@
   const handleChangeCity = (value: number, name: any) => {
     dataLocation.getListAllDistrictAction(value)
 
-    inventory.address = name.title + ', ' + 'Việt Nam'
+    detailInventory.value.address = name.title + ', ' + 'Việt Nam'
   }
   const handleChangeDistrict = (value: number, name: any) => {
     dataLocation.getListAllWardAction(value)
-    inventory.address = name.title + ', ' + inventory.address
+    detailInventory.value.address =
+      name.title + ', ' + detailInventory.value.address
   }
   const handleChangeWard = (value: number, name: any) => {
-    inventory.address = name.title + ', ' + inventory.address
+    detailInventory.value.address =
+      name.title + ', ' + detailInventory.value.address
   }
-  const createInventory = () => {
+  const updateInventory = () => {
     let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
+      title: detailInventory.value.title,
+      code: detailInventory.value.code,
+      type_code: detailInventory.value.type_code,
+      latitude: detailInventory.value.latitude,
+      longitude: detailInventory.value.longitude,
+      contact_name: detailInventory.value.contact_name,
+      contact_email: detailInventory.value.contact_email,
+      contact_phone: detailInventory.value.contact_phone,
+      address: detailInventory.value.address,
+      address_country_id: detailInventory.value.address_country_id,
+      address_district_id: detailInventory.value.address_district_id,
+      address_ward_id: detailInventory.value.address_ward_id,
+      address_state_id: detailInventory.value.address_state_id,
+      address_detail: detailInventory.value.address_detail,
+      desc: detailInventory.value.desc,
     }
-    dataInventory.createInventoryAction(data, toast, EndTimeLoading)
+    dataInventory.updateInventoryAction(
+      detailInventory.value.id,
+      data,
+      toast,
+      EndTimeLoading
+    )
   }
 </script>
 

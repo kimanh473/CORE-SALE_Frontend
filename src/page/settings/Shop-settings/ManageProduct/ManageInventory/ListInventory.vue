@@ -35,16 +35,21 @@
       <a-table
         class="!p-[10px]"
         :columns="columns"
-        :data-source="data"
-        :row-selection="rowSelection"
+        :data-source="dataItems"
         bordered
-        ><template #bodyCell="{ column }">
-          <template v-if="column.key === 'action'">
-            <a>Sửa</a>&nbsp;|&nbsp;<a>Xóa</a>
+        ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'id'">
+            <a @click="navigateUpdateInvent(record.id)">Sửa</a>&nbsp;|&nbsp;<a
+              @click="handleOpenDeleteInvent(record)"
+              >Xóa</a
+            >
           </template>
-        </template></a-table
-      ></template
-    >
+        </template>
+        <template #switch="{ text }">
+          <a-switch :checked="text" />
+        </template> </a-table
+    ></template>
+
     <template v-slot:footer>footer</template>
   </base-layout>
   <!-- <modal-view :isOpen="isOpenCreateInventory" :handleCloseDetail="handleClose">
@@ -180,85 +185,130 @@
       </div>
     </div>
   </modal-view> -->
+  <modal-delete
+    :isOpen="isOpenConfirm"
+    :handleCloseDetail="handleCloseConfirm"
+    :ConfirmDelete="handleDelete"
+  >
+  </modal-delete>
+  <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
 <script setup lang="ts">
   import BaseLayout from '../../../../../layout/baseLayout.vue'
   import SideBar from '../../../../../components/common/SideBar.vue'
   import Header from '../../../../../components/common/Header.vue'
-  //   import TableResponsive from '../../../components/common/TableResponsive.vue'
   import { useInventory } from '../../../../../store/modules/inventory/product-invetory'
-  import { useRouter } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive } from 'vue'
-  //   import { Table } from 'ant-design-vue'
-  // import ModalView from '../../../../../components/modal/ModalView.vue'
+  import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
+  import ModalDelete from '../../../../../components/modal/ModalConfirmDelelte.vue'
+  const route = useRoute()
   const router = useRouter()
-  // const isOpenCreateInventory = ref<boolean>(false)
+  const toast = useToast()
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
+  dataInventory.getDetailInventoryAction(Number(route.params.id))
+  const isLoading = ref<boolean>(false)
+  const isOpenConfirm = ref<boolean>(false)
   const { listInventory } = storeToRefs(dataInventory)
-  // console.log(listInventory)
 
-  // const handleClose = () => {
-  //   isOpenCreateInventory.value = false
-  // }
   const columns = [
     {
-      title: 'STT',
-      dataIndex: 'id',
-      sorter: true,
+      title: 'Mã kho',
+      dataIndex: 'code',
     },
     {
       title: 'Tên kho',
       dataIndex: 'title',
-      sorter: true,
+      sorter: (a: DataItem, b: DataItem) => a.title.localeCompare(b.title),
     },
     {
-      title: 'Mã kho',
-      dataIndex: '',
+      title: 'Địa chỉ',
+      dataIndex: 'address',
     },
     {
-      title: 'Nguồn hàng',
-      dataIndex: '',
+      title: 'Kích hoạt',
+      dataIndex: 'status',
+      key: 'status',
+      slots: { customRender: 'switch' },
+    },
+    {
+      title: 'Thuộc nhóm kho',
+      dataIndex: `json_type_code`,
+      key: 'json_type_code',
+      slots: { customRender: 'group' },
     },
     {
       title: 'Người tạo',
-      dataIndex: '',
+      dataIndex: 'fullname',
+      key: 'fullname',
     },
     {
       title: 'Ngày tạo',
-      dataIndex: '',
+      dataIndex: 'created_at',
+      key: 'created_at',
     },
     {
       title: 'Thao tác',
-      key: 'action',
+      dataIndex: 'id',
+      key: 'id',
     },
   ]
-
+  const idSelected = ref()
   interface DataItem {
-    title: string
     id: number
+    title: string
+    code: string
+    status: boolean
+    json_type_code: any
+    address: string
+    fullname: string
+    created_at: string
   }
-  const data: DataItem[] = [
-    {
-      id: 12,
-      title: '123',
-    },
-    {
-      id: 122,
-      title: '12323',
-    },
-  ]
-  const rowSelection = {
-    onChange(selectedRowKeys: (string | number)[], selectedRows: DataItem[]) {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      )
-    },
+  const dataItems = ref<DataItem[]>([])
+  dataItems.value = listInventory.value.map((item: any) => ({
+    id: item.id,
+    title: item.title,
+    code: item.code,
+    status: item.status == null || item.status == false ? false : true,
+    json_type_code: item.json_type_code,
+    address: item.address,
+    fullname: item.user_created?.fullname,
+    created_at: item?.created_at?.substring(0, 10),
+  }))
+  const navigateUpdateInvent = (id: number) => {
+    router.push(`/update-inventory/${id}`)
   }
+  const handleOpenDeleteInvent = (record: any) => {
+    isOpenConfirm.value = true
+    idSelected.value = record.id
+  }
+  const handleCloseConfirm = () => {
+    isOpenConfirm.value = false
+  }
+  const EndTimeLoading = () => {
+    isLoading.value = false
+  }
+  const handleDelete = () => {
+    dataInventory.deleteInventoryAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirm
+    )
+    dataInventory.getListInventoryAction()
+  }
+  // const rowSelection = {
+  //   onChange(selectedRowKeys: (string | number)[], selectedRows: DataItem[]) {
+  //     console.log(
+  //       `selectedRowKeys: ${selectedRowKeys}`,
+  //       'selectedRows: ',
+  //       selectedRows
+  //     )
+  //   },
+  // }
   // const rowSelection = ref({
   //   checkStrictly: false,
   //   onChange: (
@@ -289,53 +339,6 @@
   const CreateInventory = () => {
     router.push('/create-inventory')
   }
-  //   const selectedRowKeys = ref<DataItem['key'][]>([])
-  //   const onSelectChange = (changableRowKeys: string[]) => {
-  //     console.log('selectedRowKeys changed: ', changableRowKeys)
-  //     selectedRowKeys.value = changableRowKeys
-  //   }
-  //   const rowSelection = computed(() => {
-  //     return {
-  //       selectedRowKeys: unref(selectedRowKeys),
-  //       onChange: onSelectChange,
-  //       hideDefaultSelections: true,
-  //       selections: [
-  //         Table.SELECTION_ALL,
-  //         Table.SELECTION_INVERT,
-  //         Table.SELECTION_NONE,
-  //         {
-  //           key: 'odd',
-  //           text: 'Select Odd Row',
-  //           onSelect: (changableRowKeys: string[]) => {
-  //             let newSelectedRowKeys = []
-  //             newSelectedRowKeys = changableRowKeys.filter((_key, index) => {
-  //               if (index % 2 !== 0) {
-  //                 return false
-  //               }
-  //               return true
-  //             })
-  //             selectedRowKeys.value = newSelectedRowKeys
-  //           },
-  //         },
-  //         {
-  //           key: 'even',
-  //           text: 'Select Even Row',
-  //           onSelect: (changableRowKeys: string[]) => {
-  //             let newSelectedRowKeys = []
-  //             newSelectedRowKeys = changableRowKeys.filter((_key, index) => {
-  //               if (index % 2 !== 0) {
-  //                 return true
-  //               }
-  //               return false
-  //             })
-  //             selectedRowKeys.value = newSelectedRowKeys
-  //           },
-  //         },
-  //       ],
-  //     }
-  //   })
-  //   import { useRouter } from 'vue-router'
-  //   const router = useRouter()
   defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>

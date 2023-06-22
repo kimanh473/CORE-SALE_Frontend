@@ -13,6 +13,13 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/update-inventory/:id',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/ManageInventory/UpdateInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/create-inventory',
     component: () => import('./page/settings/Shop-settings/ManageProduct/ManageInventory/CreateInventory.vue'),
     meta: {
