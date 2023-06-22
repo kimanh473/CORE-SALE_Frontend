@@ -9,13 +9,13 @@ export const useLocation = defineStore("Location", {
     getters: {},
     actions: {
         getListAllCity(payload: any) {
-            this.listAllCity = payload.data
+            this.listAllCity = payload?.data
         },
         getListAllDistrict(payload: any) {
-            this.listAllDistrict = payload.data
+            this.listAllDistrict = payload?.data
         },
         getListAllWard(payload: any) {
-            this.listAllWard = payload.data
+            this.listAllWard = payload?.data
         },
         getListAllCityAction() {
             GetAllCityApi()
