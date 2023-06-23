@@ -13,6 +13,20 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/create-web',
+    component: () => import('./page/settings/Admin/ManageWebsite/CreateWebSite.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/list-web',
+    component: () => import('./page/settings/Admin/ManageWebsite/ListWebSite.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/update-inventory/:id',
     component: () => import('./page/settings/Shop-settings/ManageProduct/ManageInventory/UpdateInventory.vue'),
     meta: {

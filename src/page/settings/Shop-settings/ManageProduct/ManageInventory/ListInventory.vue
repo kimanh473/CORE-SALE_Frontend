@@ -209,7 +209,6 @@
   const toast = useToast()
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
-  dataInventory.getDetailInventoryAction(Number(route.params.id))
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
   const { listInventory } = storeToRefs(dataInventory)
@@ -258,14 +257,14 @@
   ]
   const idSelected = ref()
   interface DataItem {
-    id: number
-    title: string
-    code: string
+    id: any
+    title: any
+    code: any
     status: boolean
     json_type_code: any
-    address: string
-    fullname: string
-    created_at: string
+    address: any
+    fullname: any
+    created_at: any
   }
   const dataItems = ref<DataItem[]>([])
   dataItems.value = listInventory.value.map((item: any) => ({
@@ -273,10 +272,10 @@
     title: item.title,
     code: item.code,
     status: item.status == null || item.status == false ? false : true,
-    json_type_code: item.json_type_code,
+    json_type_code: item.json_type_code.map((item: any) => item + ' '),
     address: item.address,
-    fullname: item.user_created?.fullname,
-    created_at: item?.created_at?.substring(0, 10),
+    fullname: item.user_created.fullname,
+    created_at: item.created_at.substring(0, 10),
   }))
   const navigateUpdateInvent = (id: number) => {
     router.push(`/update-inventory/${id}`)
