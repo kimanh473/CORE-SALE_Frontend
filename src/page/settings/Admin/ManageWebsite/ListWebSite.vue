@@ -36,7 +36,10 @@
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
-            <a>Sửa</a>&nbsp;|&nbsp;<a>Xóa</a>
+            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
+              @click="handleOpenDelete(record)"
+              >Xóa</a
+            >
           </template>
         </template>
         <template #switch="{ text }">
@@ -111,9 +114,25 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const handleDelete = () => {}
   const CreateWebsite = () => {
     router.push('/create-web')
+  }
+  const navigateUpdate = (id: number) => {
+    router.push(`/update-web/${id}`)
+  }
+  const idSelected = ref()
+  const handleOpenDelete = (record: any) => {
+    isOpenConfirm.value = true
+    idSelected.value = record.id
+  }
+  const handleDelete = () => {
+    // dataInventory.deleteInventoryAction(
+    //   Number(idSelected.value),
+    //   EndTimeLoading,
+    //   toast,
+    //   handleCloseConfirm
+    // )
+    // dataInventory.getListInventoryAction()
   }
   defineProps<{ isShowSearch: boolean }>()
 </script>

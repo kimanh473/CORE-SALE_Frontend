@@ -45,7 +45,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên kho"
-                          v-model="detailInventory.title"
+                          v-model="inventData.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -61,7 +61,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập mã kho"
-                          v-model="detailInventory.code"
+                          v-model="inventData.code"
                         />
                         <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
@@ -77,7 +77,7 @@
                       <a-select
                         class="form-control-input"
                         placeholder="Chọn nhóm kho"
-                        v-model:value="detailInventory.type_code"
+                        v-model:value="inventData.type_code"
                         @click.once="getListGroupInventory"
                         mode="multiple"
                       >
@@ -106,7 +106,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
-                          v-model="detailInventory.desc"
+                          v-model="inventData.desc"
                         ></textarea>
                       </div>
                     </div>
@@ -119,8 +119,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên nguồn*, Mã *, Mặc định ( nút bật tắt) Mô tả Vĩ độ* Kinh độ*
-                Sử dụng làm điểm nhận ( nút bật tắt)
+                Tên nguồn*, Mã *, Mặc định ( nút bật tắt), Mô tả
               </h2>
             </div>
 
@@ -150,7 +149,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên liên lạc"
-                          v-model="detailInventory.contact_name"
+                          v-model="inventData.contact_name"
                         />
                         <p
                           v-if="messageError?.contact_name"
@@ -169,7 +168,7 @@
                           type="email"
                           class="form-control-input"
                           placeholder="Nhập tên nguồn hàng"
-                          v-model="detailInventory.contact_email"
+                          v-model="inventData.contact_email"
                         />
                         <p
                           v-if="messageError?.contact_email"
@@ -189,7 +188,7 @@
                           type="number"
                           class="form-control-input"
                           placeholder="Nhập số điện thoại"
-                          v-model="detailInventory.contact_phone"
+                          v-model="inventData.contact_phone"
                         />
                         <p
                           v-if="messageError?.contact_phone"
@@ -251,7 +250,7 @@
                             type="number"
                             class="form-control-input"
                             placeholder="Nhập kinh độ"
-                            v-model="detailInventory.longitude"
+                            v-model="inventData.longitude"
                           />
                           <p
                             v-if="messageError?.longitude"
@@ -270,7 +269,7 @@
                             type="number"
                             class="form-control-input"
                             placeholder="Nhập vĩ độ"
-                            v-model="detailInventory.latitude"
+                            v-model="inventData.latitude"
                           />
                           <p v-if="messageError?.latitude" class="text-red-600">
                             {{ messageError?.latitude[0] }}
@@ -289,7 +288,7 @@
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
                           @click.once="getDataCity"
-                          v-model:value="detailInventory.address_state_id"
+                          v-model:value="inventData.address_state_id"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllCity"
@@ -317,7 +316,7 @@
                           class="form-control-input"
                           placeholder="Chọn quận/huyện"
                           @change="handleChangeDistrict"
-                          v-model:value="detailInventory.address_district_id"
+                          v-model:value="inventData.address_district_id"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllDistrict"
@@ -344,7 +343,7 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
-                          v-model:value="detailInventory.address_ward_id"
+                          v-model:value="inventData.address_ward_id"
                           @change="handleChangeWard"
                         >
                           <a-select-option
@@ -375,7 +374,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
-                          v-model="detailInventory.address_detail"
+                          v-model="inventData.address_detail"
                         ></textarea>
                       </div>
                     </div>
@@ -387,7 +386,8 @@
                   @click="isAddress = !isAddress"
                   class="cursor-pointer form-group-label"
                 >
-                  Quốc gia*, Tỉnh/Thành phố*, Quận/Huyện*, Địa chỉ cụ thể*
+                  Vĩ độ*, Kinh độ*, Quốc gia*, Tỉnh/Thành phố*, Quận/Huyện*, Địa
+                  chỉ cụ thể*
                 </h2>
               </div>
             </div>
@@ -420,7 +420,7 @@
   import { useGroupInventory } from '../../../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../../../store/modules/inventory/product-invetory'
   import { storeToRefs } from 'pinia'
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRouter, useRoute } from 'vue-router'
   // const selectedGroupInventory = ref(null)
@@ -470,6 +470,11 @@
   dataInventory.getDetailInventoryAction(Number(route.params.id))
   const { messageError, detailInventory } = storeToRefs(dataInventory)
   console.log(detailInventory)
+
+  const inventData = computed(() => {
+    return detailInventory.value
+  })
+  console.log(inventData.value)
 
   const dataGroupInventory = useGroupInventory()
   const getListGroupInventory = () => {

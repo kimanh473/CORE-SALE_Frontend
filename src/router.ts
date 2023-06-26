@@ -20,6 +20,13 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/update-web/:id',
+    component: () => import('./page/settings/Admin/ManageWebsite/UpdateWebsite.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/list-web',
     component: () => import('./page/settings/Admin/ManageWebsite/ListWebSite.vue'),
     meta: {
