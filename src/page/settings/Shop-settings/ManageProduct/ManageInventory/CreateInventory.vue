@@ -119,8 +119,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên nguồn*, Mã *, Mặc định ( nút bật tắt) Mô tả Vĩ độ* Kinh độ*
-                Sử dụng làm điểm nhận ( nút bật tắt)
+                Tên nguồn*, Mã *, Mặc định ( nút bật tắt) Mô tả
               </h2>
             </div>
 
@@ -387,7 +386,8 @@
                   @click="isAddress = !isAddress"
                   class="cursor-pointer form-group-label"
                 >
-                  Quốc gia*, Tỉnh/Thành phố*, Quận/Huyện*, Địa chỉ cụ thể*
+                  Vĩ độ* Kinh độ* Quốc gia*, Tỉnh/Thành phố*, Quận/Huyện*, Địa
+                  chỉ cụ thể*
                 </h2>
               </div>
             </div>

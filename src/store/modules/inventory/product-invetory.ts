@@ -7,11 +7,17 @@ export const useInventory = defineStore("Inventory", {
         messageError: null
     }),
     getters: {
+        getData: (state) => {
+            return state.listInventory
+        },
+        getListInventory: (state) => {
+            return (payload: any) => state.listInventory = payload.data?.data
+        }
     },
     actions: {
-        getListInventory(payload: any) {
-            this.listInventory = payload.data?.data
-        },
+        // getListInventory(payload: any) {
+        //     this.listInventory = payload.data?.data
+        // },
         getDetailInventory(payload: any) {
             this.detailInventory = payload.data
         },

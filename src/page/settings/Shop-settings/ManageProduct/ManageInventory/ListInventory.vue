@@ -35,7 +35,7 @@
       <a-table
         class="!p-[10px]"
         :columns="columns"
-        :data-source="dataItems"
+        :data-source="listInventory"
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
@@ -200,20 +200,23 @@
   import Header from '../../../../../components/common/Header.vue'
   import { useInventory } from '../../../../../store/modules/inventory/product-invetory'
   import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../../../components/modal/ModalConfirmDelelte.vue'
   const route = useRoute()
   const router = useRouter()
   const toast = useToast()
-  const dataInventory = useInventory()
-  dataInventory.getListInventoryAction()
-  dataInventory.getDetailInventoryAction(Number(route.params.id))
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const dataInventory = useInventory()
+  dataInventory.getListInventoryAction()
   const { listInventory } = storeToRefs(dataInventory)
+  console.log(listInventory)
+  console.log(listInventory.value)
 
+  // const dataListInvent = ref(JSON.parse(JSON.stringify(listInventory.value)))
+  // console.log(dataListInvent.value)
   const columns = [
     {
       title: 'Mã kho',
@@ -256,31 +259,34 @@
       key: 'id',
     },
   ]
-  const idSelected = ref()
+
   interface DataItem {
-    id: number
-    title: string
-    code: string
+    id: any
+    title: any
+    code: any
     status: boolean
     json_type_code: any
-    address: string
-    fullname: string
-    created_at: string
+    address: any
+    fullname: any
+    created_at: any
   }
-  const dataItems = ref<DataItem[]>([])
+  let dataItems = ref<DataItem[]>([])
   dataItems.value = listInventory.value.map((item: any) => ({
     id: item.id,
     title: item.title,
     code: item.code,
     status: item.status == null || item.status == false ? false : true,
-    json_type_code: item.json_type_code,
+    json_type_code: item.json_type_code.map((item: any) => item + ' '),
     address: item.address,
-    fullname: item.user_created?.fullname,
-    created_at: item?.created_at?.substring(0, 10),
+    fullname: item.user_created.fullname,
+    created_at: item.created_at.substring(0, 10),
   }))
+  console.log(dataItems)
+
   const navigateUpdateInvent = (id: number) => {
     router.push(`/update-inventory/${id}`)
   }
+  const idSelected = ref()
   const handleOpenDeleteInvent = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
