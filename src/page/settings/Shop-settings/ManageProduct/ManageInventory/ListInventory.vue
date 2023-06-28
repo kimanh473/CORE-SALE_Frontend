@@ -212,11 +212,7 @@
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { listInventory } = storeToRefs(dataInventory)
-  console.log(listInventory)
-  console.log(listInventory.value)
 
-  // const dataListInvent = ref(JSON.parse(JSON.stringify(listInventory.value)))
-  // console.log(dataListInvent.value)
   const columns = [
     {
       title: 'Mã kho',
@@ -225,7 +221,8 @@
     {
       title: 'Tên kho',
       dataIndex: 'title',
-      sorter: (a: DataItem, b: DataItem) => a.title.localeCompare(b.title),
+      sorter: (a: DataInventory, b: DataInventory) =>
+        a.title.localeCompare(b.title),
     },
     {
       title: 'Địa chỉ',
@@ -260,29 +257,6 @@
     },
   ]
 
-  interface DataItem {
-    id: any
-    title: any
-    code: any
-    status: boolean
-    json_type_code: any
-    address: any
-    fullname: any
-    created_at: any
-  }
-  let dataItems = ref<DataItem[]>([])
-  dataItems.value = listInventory.value.map((item: any) => ({
-    id: item.id,
-    title: item.title,
-    code: item.code,
-    status: item.status == null || item.status == false ? false : true,
-    json_type_code: item.json_type_code.map((item: any) => item + ' '),
-    address: item.address,
-    fullname: item.user_created.fullname,
-    created_at: item.created_at.substring(0, 10),
-  }))
-  console.log(dataItems)
-
   const navigateUpdateInvent = (id: number) => {
     router.push(`/update-inventory/${id}`)
   }
@@ -298,13 +272,13 @@
     isLoading.value = false
   }
   const handleDelete = () => {
+    isLoading.value = true
     dataInventory.deleteInventoryAction(
       Number(idSelected.value),
       EndTimeLoading,
       toast,
       handleCloseConfirm
     )
-    dataInventory.getListInventoryAction()
   }
   // const rowSelection = {
   //   onChange(selectedRowKeys: (string | number)[], selectedRows: DataItem[]) {

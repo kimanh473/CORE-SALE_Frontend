@@ -34,6 +34,7 @@
         :columns="columns"
         :data-source="listWebPaginate"
         bordered
+        row-key="id"
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
@@ -96,7 +97,7 @@
     },
     {
       title: 'Người tạo',
-      dataIndex: `json_type_code`,
+      dataIndex: `fullname`,
     },
     {
       title: 'Ngày tạo',
@@ -126,12 +127,13 @@
     idSelected.value = record.id
   }
   const handleDelete = () => {
-    // dataInventory.deleteInventoryAction(
-    //   Number(idSelected.value),
-    //   EndTimeLoading,
-    //   toast,
-    //   handleCloseConfirm
-    // )
+    dataWeb.deleteWebAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirm
+    )
+    dataWeb.getAllWebPaginateAction()
     // dataInventory.getListInventoryAction()
   }
   defineProps<{ isShowSearch: boolean }>()

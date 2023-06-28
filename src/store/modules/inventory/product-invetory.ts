@@ -1,30 +1,44 @@
 import { defineStore } from "pinia";
 import { getAllInventoryApi, createInventoryApi, updateInventoryApi, deleteInventoryApi, detailInventoryApi } from '../../../services/InventoryServices/inventory.service'
+
 export const useInventory = defineStore("Inventory", {
     state: () => ({
-        listInventory: [],
-        detailInventory: null,
-        messageError: null
+        listInventory: [] as DataInventory[],
+        detailInventory: {} as DetailInvent,
+        messageError: {} as DetailErorr
     }),
     getters: {
-        getData: (state) => {
-            return state.listInventory
+        // getData: (state) => {
+        //     return state.listInventory
+        // },
+        getListInventory: (state: any) => {
+            return (payload: any) => state.listInventory = payload.map((item: any) => ({
+                id: item.id,
+                title: item.title,
+                code: item.code,
+                status: item.status == null || item.status == '0' ? false : true,
+                json_type_code: item.json_type_code.map((item: any) => item + ' '),
+                address: item.address,
+                fullname: item.user_created.fullname,
+                created_at: item.created_at.substring(0, 10),
+            }))
         },
-        getListInventory: (state) => {
-            return (payload: any) => state.listInventory = payload.data?.data
+        getDetailInventory: (state: any) => {
+            return (payload: any) => state.detailInventory = payload
         }
     },
     actions: {
         // getListInventory(payload: any) {
         //     this.listInventory = payload.data?.data
         // },
-        getDetailInventory(payload: any) {
-            this.detailInventory = payload.data
-        },
-        getListInventoryAction() {
-            getAllInventoryApi()
+        // getDetailInventory(payload: any) {
+        //     this.detailInventory = payload.data
+        // },
+        async getListInventoryAction() {
+            await getAllInventoryApi()
                 .then((payload: any) => {
-                    this.getListInventory(payload.data)
+                    let res = payload?.data?.data?.data
+                    this.getListInventory(res)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -33,7 +47,8 @@ export const useInventory = defineStore("Inventory", {
         getDetailInventoryAction(id: number) {
             detailInventoryApi(id)
                 .then((payload: any) => {
-                    this.getDetailInventory(payload.data)
+                    let res = payload?.data?.data
+                    this.getDetailInventory(res)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -42,6 +57,7 @@ export const useInventory = defineStore("Inventory", {
         async createInventoryAction(
             data: Object,
             toast: any,
+            router: any,
             EndTimeLoading: Function,
             // handleCloseCreate: Function
         ) {
@@ -52,8 +68,7 @@ export const useInventory = defineStore("Inventory", {
                         EndTimeLoading();
                     } else {
                         toast.success("Tạo mới thành công");
-                        location.reload();
-                        // handleCloseCreate();
+                        router.push('/list-inventory');
                         EndTimeLoading();
                     }
                 })
@@ -93,11 +108,11 @@ export const useInventory = defineStore("Inventory", {
             deleteInventoryApi(id)
                 .then((res) => {
                     if (res.data.status == "success") {
-                        EndTimeLoading;
-                        toast.success("Xóa thành công");
+                        toast.success("Xóa thành công", 500);
                     } else {
-                        toast.error(res.data.messages);
+                        toast.error(res.data.messages, 500);
                     }
+                    EndTimeLoading();
                     handleCloseConfirm();
                 })
                 .catch((err) => {

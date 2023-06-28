@@ -422,10 +422,12 @@
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
+  import { useRouter } from 'vue-router'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
   // const selectedWard = ref(null)
+  const router = useRouter()
   const toast = useToast()
   const isAddress = ref(true)
   const isInfor = ref(true)
@@ -526,7 +528,7 @@
       address_detail: inventory.address_detail,
       desc: inventory.desc,
     }
-    dataInventory.createInventoryAction(data, toast, EndTimeLoading)
+    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 
