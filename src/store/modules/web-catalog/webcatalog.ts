@@ -28,8 +28,7 @@ export const useWebCatalog = defineStore("WebCatalog", {
         getAllWebCatalogAction() {
             getAllWebCatalogsApi()
                 .then((payload: any) => {
-                    // this.getListWeb(payload.data)
-                    let res = payload?.data?.data?.data
+                    let res = payload?.data?.data
                     this.getListWeb(res)
                 })
                 .catch((err) => {

@@ -78,7 +78,7 @@
             animated
             style="padding-left: 15px"
           >
-            <a-tab-pane key="1" tab="Tab 1"
+            <a-tab-pane key="1" tab="Phân quyền nhóm người dùng"
               ><div class="w-full inner">
                 <div class="w-full py-4">
                   <div class="w-full">
@@ -1313,7 +1313,7 @@
                   </div>
                 </div></div
             ></a-tab-pane>
-            <a-tab-pane key="2" tab="Tab 2">
+            <a-tab-pane key="2" tab="Phân quyền website">
               <div class="flex">
                 <div
                   v-for="(item, index) in listWeb"
@@ -1330,7 +1330,7 @@
                 </div>
               </div>
             </a-tab-pane>
-            <a-tab-pane key="3" tab="Tab 3"
+            <a-tab-pane key="3" tab="Phân quyền kho"
               ><div class="flex">
                 <div
                   v-for="(item, index) in listInventory"

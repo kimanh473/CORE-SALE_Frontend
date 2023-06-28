@@ -55,6 +55,20 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/list-group-inventory',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/ManageGroupInventory/ListGroupInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/create-group-inventory',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/ManageGroupInventory/CreateGroupInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/list-category',
     component: () => import('./page/settings/Shop-settings/CategoryList.vue'),
     meta: {
