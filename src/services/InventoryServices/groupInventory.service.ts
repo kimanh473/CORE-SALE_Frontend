@@ -5,7 +5,7 @@ const getAllGroupInventoryApi = () => {
 };
 //Tạo mới kho
 const createGroupInventoryApi = (data: Object) => {
-    return httpClient.post(`/setting/product-inventory/create`, data);
+    return httpClient.post(`/system-manage/product-inventory-type/create`, data);
 };
 export {
     getAllGroupInventoryApi,

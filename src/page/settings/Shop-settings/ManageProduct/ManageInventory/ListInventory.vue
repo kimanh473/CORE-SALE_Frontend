@@ -20,9 +20,7 @@
       </Header>
     </template>
     <template v-slot:content class="relative">
-      <div
-        class="rounded flex justify-between"
-      >
+      <div class="rounded flex justify-between">
         <div></div>
         <div
           class="button-create-new relative group rounded-sm px-3 text-[var(--color-text)]"
@@ -33,9 +31,14 @@
         </div>
       </div>
       <a-table
+        row-key="id"
         class="!p-[10px]"
         :columns="columns"
         :data-source="listInventory"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+        }"
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
@@ -280,15 +283,11 @@
       handleCloseConfirm
     )
   }
-  // const rowSelection = {
-  //   onChange(selectedRowKeys: (string | number)[], selectedRows: DataItem[]) {
-  //     console.log(
-  //       `selectedRowKeys: ${selectedRowKeys}`,
-  //       'selectedRows: ',
-  //       selectedRows
-  //     )
-  //   },
-  // }
+  const selectedRowKeys = ref([])
+  const onSelectChange = (selectedRowKeys1: any) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys1)
+    selectedRowKeys.value = selectedRowKeys1
+  }
   // const rowSelection = ref({
   //   checkStrictly: false,
   //   onChange: (

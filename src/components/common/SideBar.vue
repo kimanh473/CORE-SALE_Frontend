@@ -9,12 +9,10 @@
         class="flex-column w-full"
         style="background-color: var(--color-bg-menu)"
       >
-        <div
-          class="flex justify-center text-white items-center pt-3"
-        >
+        <div class="flex justify-center text-white items-center pt-3">
           <a
             href=""
-            class="flex items-center  text-white"
+            class="flex items-center text-white"
             @click.prevent="handleToSocial"
             v-show="collapsed === true"
           >
@@ -52,21 +50,18 @@
         class="menuChil px-4 py-6 h-screen"
         :class="checkClass(showMenuChil)"
       >
-      <div class="px-5">
-              <div
-                class="grid grid-cols-4 gap-1 items-center text-white text-lg"
-              >
-                <div class="col-span-3">
-                  <div class="items-center pl-2">{{ titleSubmenu }}</div>
-                </div>
-                <div class="text-right cursor-pointer">
-                  <i class="far fa-times" @click="submenuClose"></i>
-                </div>
-              </div>
-            </div>         
+        <div class="px-5">
+          <div class="grid grid-cols-4 gap-1 items-center text-white text-lg">
+            <div class="col-span-3">
+              <div class="items-center pl-2">{{ titleSubmenu }}</div>
+            </div>
+            <div class="text-right cursor-pointer">
+              <i class="far fa-times" @click="submenuClose"></i>
+            </div>
+          </div>
+        </div>
         <div v-bind:class="getClass()">
           <div class="">
-            
             <div class="justify-start">
               <div class="item-container flex-2 py-6 text-white">
                 <div
@@ -92,7 +87,6 @@
             v-if="checkArray(menuTree[menuParentIndex]?.children2) != ''"
             class=""
           >
-            
             <div class="justify-start">
               <div class="item-container flex-2 py-6 text-white">
                 <div
@@ -215,7 +209,9 @@
     },
     methods: {
       getClass() {
-        if (this.checkArray(this.menuTree[this.menuParentIndex]?.children2) != '') {
+        if (
+          this.checkArray(this.menuTree[this.menuParentIndex]?.children2) != ''
+        ) {
           return ' grid grid-cols-2 gap-4 px-5'
         } else {
           return ' grid grid-cols-1 gap-0 px-5'
@@ -226,7 +222,7 @@
       return {
         menuTree: [
           {
-            label: 'TÔNG QUÁT',
+            label: 'TỔNG QUAN',
             icon: 'fal fa-tachometer-alt',
             to: '/',
             permission: [''],
@@ -507,6 +503,12 @@
                 to: '/list-inventory',
                 permission: [''],
               },
+              {
+                icon: '',
+                label: 'Cài đặt nhóm kho',
+                to: '/list-group-inventory',
+                permission: [''],
+              },
             ],
           },
           {
@@ -521,7 +523,7 @@
                 label: 'Người dùng',
                 to: '/',
                 permission: [''],
-                submenuGroup:''
+                submenuGroup: '',
               },
               {
                 icon: '',
@@ -534,21 +536,28 @@
                 label: 'Phân quyền website',
                 to: '',
                 permission: [''],
-                submenuGroup:''
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Phân quyền kho',
                 to: '',
                 permission: [''],
-                submenuGroup:''
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Lịch sử hoạt động',
                 to: '/',
                 permission: [''],
-                submenuGroup:''
+                submenuGroup: '',
+              },
+              {
+                icon: '',
+                label: 'Danh mục website',
+                to: '/list-web',
+                permission: [''],
+                submenuGroup: '',
               },
             ],
           },
@@ -578,7 +587,7 @@
     z-index: -1;
     position: absolute;
     padding-left: 90px;
-    font-family: Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-family: Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: 400;
     line-height: 1.36;
     color: aquamarine;

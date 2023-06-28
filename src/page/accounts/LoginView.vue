@@ -20,7 +20,6 @@
               id="username"
               placeholder="Nhập mã nhân viên"
               class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
-              autocomplete
               autofocus
               required
               v-model="user.username"
@@ -71,7 +70,7 @@
     </div>
   </section>
 </template>
-<script setup>
+<script setup lang="ts">
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   //   import { useStore } from 'vuex'
