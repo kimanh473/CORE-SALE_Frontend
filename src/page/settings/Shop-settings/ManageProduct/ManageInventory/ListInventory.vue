@@ -12,7 +12,7 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Danh sách kho</p>
+              <p class="longText pl-5 mb-0 text-xl font-bold">Danh sách kho</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -21,15 +21,15 @@
     </template>
     <template v-slot:content class="relative">
       <div
-        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+        class="rounded flex justify-between"
       >
         <div></div>
         <div
-          class="button-create-new relative group rounded-md px-2"
+          class="button-create-new relative group rounded-sm px-3 text-[var(--color-text)]"
           title="Tạo mới kho"
           @click="CreateInventory()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới kho</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới</p>
         </div>
       </div>
       <a-table

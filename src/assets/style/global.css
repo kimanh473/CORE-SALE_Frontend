@@ -36,7 +36,12 @@ body {
   }
   
   :root {
-    --color-primary: #4a4542;
+    --color-primary: #2d4262 ;
+  --color-bg-menu: #363237;
+    /* --color-primary: #373330; */
+    --color-text:#D4D4D4;
+    --color-text-submenu:#e4e4e4;
+    --color-text-menu:#b4b4b4;
     --color-input: #ccc;
     /* Font */
     --vs-font-size: 14px;

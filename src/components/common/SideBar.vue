@@ -3,23 +3,25 @@
     <div
       class="sidebarChange format-scroll h-screen"
       :style="{ width: sidebarWidth }"
-      style="background-color: #4a4542"
+      style="background-color: var(--color-bg-menu)"
     >
-      <div class="flex-column w-full" style="background-color: #4a4542">
+      <div
+        class="flex-column w-full"
+        style="background-color: var(--color-bg-menu)"
+      >
         <div
-          class="flex justify-between text-white items-center pt-4"
-          :class="{ isToogle: collapsed }"
+          class="flex justify-center text-white items-center pt-3"
         >
           <a
             href=""
-            class="flex items-center px-6 space-x-2 text-white"
+            class="flex items-center  text-white"
             @click.prevent="handleToSocial"
             v-show="collapsed === true"
           >
             <img
               src="../../assets/images/logo.png"
               alt=""
-              class="w-[35px] h-[35px]"
+              class="w-[45px] h-[45px]"
             />
           </a>
         </div>
@@ -27,12 +29,12 @@
         <div class="menu">
           <div class="menu flex-col overflow-hidden py-4 text-white/10">
             <menu-item
-              class="hover:bg-white/20 text-white/10 py-2 cursor-pointer"
+              class="hover:bg-white/20 py-2 cursor-pointer"
               v-for="(item, index) in menuTree"
               :key="index"
               :label="item.label"
               :depth="0"
-              :data="item.children"
+              :data="item.children1"
               :to="item.to"
               :icon="item.icon"
               :smallLabel="item.smallLabel"
@@ -45,38 +47,75 @@
         <!--   main-->
       </div>
     </div>
-    <div class="overflow-visible">
-      <section
-        x-show=""
-        class="menuChil w-72 px-4 py-6 h-screen"
+    <div class="w-screen absolute">
+      <div
+        class="menuChil px-4 py-6 h-screen"
         :class="checkClass(showMenuChil)"
       >
-        <div class="pt-4">
-          <div class="grid grid-cols-4 gap-1 items-center text-white text-lg">
-            <div class="col-span-3">
-              <div class="items-center pl-2">{{ titleSubmenu }}</div>
+      <div class="px-5">
+              <div
+                class="grid grid-cols-4 gap-1 items-center text-white text-lg"
+              >
+                <div class="col-span-3">
+                  <div class="items-center pl-2">{{ titleSubmenu }}</div>
+                </div>
+                <div class="text-right cursor-pointer">
+                  <i class="far fa-times" @click="submenuClose"></i>
+                </div>
+              </div>
+            </div>         
+        <div v-bind:class="getClass()">
+          <div class="">
+            
+            <div class="justify-start">
+              <div class="item-container flex-2 py-6 text-white">
+                <div
+                  v-if="checkArray(menuTree[menuParentIndex]?.children1) != ''"
+                  class="items-center pl-2 py-4 text-lg text-zinc-400"
+                >
+                  {{ checkArray(menuTree[menuParentIndex]?.children1) }}
+                </div>
+                <sub-menu-item
+                  class="hover:bg-[#403934] flex-column w-60 rounded-sm"
+                  v-for="(item, index) in menuTree[menuParentIndex].children1"
+                  :key="index"
+                  :label="item.label"
+                  :icon="item.icon"
+                  :depth="0"
+                  :smallLabel="item.smallLabel"
+                  :to="item.to"
+                ></sub-menu-item>
+              </div>
             </div>
-            <div class="text-right cursor-pointer">
-              <i class="far fa-times" @click="submenuClose"></i>
+          </div>
+          <div
+            v-if="checkArray(menuTree[menuParentIndex]?.children2) != ''"
+            class=""
+          >
+            
+            <div class="justify-start">
+              <div class="item-container flex-2 py-6 text-white">
+                <div
+                  v-if="checkArray(menuTree[menuParentIndex]?.children2) != ''"
+                  class="items-center pl-2 py-4 text-lg text-zinc-400"
+                >
+                  {{ checkArray(menuTree[menuParentIndex]?.children2) }}
+                </div>
+                <sub-menu-item
+                  class="hover:bg-[#403934] flex-column w-60 rounded-sm"
+                  v-for="(item, index) in menuTree[menuParentIndex].children2"
+                  :key="index"
+                  :label="item.label"
+                  :icon="item.icon"
+                  :depth="0"
+                  :smallLabel="item.smallLabel"
+                  :to="item.to"
+                ></sub-menu-item>
+              </div>
             </div>
           </div>
         </div>
-        <div class="flex-column w-full" style="background-color: #4a4542"></div>
-        <div class="justify-start">
-          <div class="item-container flex-2 py-4 text-white">
-            <sub-menu-item
-              class="hover:bg-white/10 text-white flex-column just"
-              v-for="(item, index) in menuTree[menuParentIndex].children"
-              :key="index"
-              :label="item.label"
-              :icon="item.icon"
-              :depth="0"
-              :smallLabel="item.smallLabel"
-              :to="item.to"
-            ></sub-menu-item>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   </div>
 </template>
@@ -101,6 +140,7 @@
       const isActived = ref(false)
       const menuParentIndex = ref(0)
       const titleSubmenu = ref('')
+      const titleSubmenuGroup = ref('')
       const logo = ref('')
       const toggleShowMenu = () => (showMenu.value = !showMenu.value)
       const toggleShowMenuChil = () =>
@@ -122,6 +162,14 @@
           return ' '
         }
       }
+      const ShowSubmenu = (index) => {
+        console.log(index)
+        if (index != '') {
+          return ' grid grid-cols-2 gap-4 px-4'
+        } else {
+          return ' grid grid-cols-1 gap-4 px-4'
+        }
+      }
       const menuParentClick = (index, title) => {
         showMenuChil.value = false
         menuParentIndex.value = index
@@ -131,11 +179,27 @@
       const submenuClose = () => {
         showMenuChil.value = false
       }
+      const checkArray = (arr) => {
+        if (arr != null) {
+          console.log(arr[0])
+          if (arr[0] != undefined) {
+            return arr[0].submenuGroup
+          } else {
+            return ''
+          }
+        } else {
+          return ''
+        }
+      }
+
       return {
         showMenu,
         showMenuChil,
         submenuClose,
+        checkArray,
+        ShowSubmenu,
         titleSubmenu,
+        titleSubmenuGroup,
         isActived,
         menuParentIndex,
         checkClass,
@@ -149,15 +213,25 @@
         menuParentClick,
       }
     },
+    methods: {
+      getClass() {
+        if (this.checkArray(this.menuTree[this.menuParentIndex]?.children2) != '') {
+          return ' grid grid-cols-2 gap-4 px-5'
+        } else {
+          return ' grid grid-cols-1 gap-0 px-5'
+        }
+      },
+    },
     data() {
       return {
         menuTree: [
           {
-            label: 'DASHBOARD',
+            label: 'TÔNG QUÁT',
             icon: 'fal fa-tachometer-alt',
             to: '/',
             permission: [''],
             smallLabel: 'DASHBOARD',
+            children1: [],
           },
           {
             label: 'BÁN HÀNG',
@@ -165,18 +239,20 @@
             to: '/sales-list',
             permission: [''],
             smallLabel: 'BÁN HÀNG',
-            children: [
+            children1: [
               {
                 icon: '',
                 label: 'Quản lý đơn hàng ',
                 to: '/sales-list',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Hóa đơn',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
@@ -198,17 +274,26 @@
             to: '/products-list',
             permission: [''],
             smallLabel: 'SẢN PHẨM',
-            children: [
+            children11: [
               {
                 icon: '',
-                label: 'Quản lý sản phẩm',
+                label: 'Danh mục sản phẩm',
                 to: '/products-list',
+                submenuGroup: '',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Quản lý nghành hàng',
+                label: 'Loại sản phẩm',
                 to: '/asset-groups',
+                submenuGroup: '',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Đơn vị tính',
+                to: '/asset-groups',
+                submenuGroup: '',
                 permission: [''],
               },
             ],
@@ -217,27 +302,31 @@
             label: 'KHÁCH HÀNG',
             icon: 'fal fa-users',
             to: '/3',
+            submenuGroup: '',
             permission: [''],
             smallLabel: 'KHÁCH HÀNG',
+            children1: [],
           },
-
           {
             label: 'MARKETING',
             icon: 'fal fa-bullhorn',
             to: '/4',
+            submenuGroup: '',
             permission: [''],
             smallLabel: 'MARKETING',
-            children: [
+            children1: [
               {
                 icon: '',
                 label: 'Mã giảm giá',
                 to: '/asset-suppliers',
+                submenuGroup: '',
                 permission: [''],
               },
               {
                 icon: '',
                 label: 'Chiến dịch khuyến mại',
                 to: '/asset-groups',
+                submenuGroup: '',
                 permission: [''],
               },
               {
@@ -260,36 +349,41 @@
             to: '/5',
             permission: [''],
             smallLabel: 'NỘI DUNG',
-            children: [
+            children1: [
               {
                 icon: '',
                 label: 'Danh sách nội dung',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Tạo nội dung',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Sửa nội dung',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Xóa nội dung',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
               {
                 icon: '',
                 label: 'Xem trước',
                 to: '/',
                 permission: [''],
+                submenuGroup: '',
               },
             ],
           },
@@ -306,41 +400,105 @@
             to: '/7',
             permission: [''],
             smallLabel: 'CỬA HÀNG',
-            children: [
+            children1: [
               {
                 icon: '',
-                label: 'Sản phẩm',
+                label: 'Danh mục sản phẩm',
                 to: '/list-inventory',
+                submenuGroup: 'Sản phẩm',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Khách hàng',
+                label: 'Loại sản phẩm',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Đơn vị tính',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Thông số',
                 to: '/list-category',
+                submenuGroup: 'Sản phẩm',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Bán hàng',
-                to: '',
+                label: 'Bảng kích cỡ thông số',
+                to: '/list-category',
+                submenuGroup: 'Sản phẩm',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Marketing',
-                to: '/',
+                label: 'Thuộc tính sản phẩm',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Giỏ hàng',
-                to: '/',
+                label: 'Nhóm thuộc tính sản phẩm',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Cài đặt gian hàng',
-                to: '/',
+                label: 'Tiền tệ',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Thuế',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Nguồn hàng',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Kho hàng',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Cài đặt sản phẩm',
+                to: '/asset-groups',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+            ],
+            children2: [
+              {
+                icon: '',
+                label: 'Nhóm khách hàng',
+                to: '/list-inventory',
+                submenuGroup: 'Khách hàng',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Cài đặt khách hàng',
+                to: '/asset-groups',
+                submenuGroup: 'Khách hàng',
                 permission: [''],
               },
               {
@@ -357,12 +515,13 @@
             to: '/setting-admin',
             permission: [''],
             smallLabel: 'CÀI ĐẶT',
-            children: [
+            children1: [
               {
                 icon: '',
                 label: 'Người dùng',
                 to: '/',
                 permission: [''],
+                submenuGroup:''
               },
               {
                 icon: '',
@@ -375,18 +534,21 @@
                 label: 'Phân quyền website',
                 to: '',
                 permission: [''],
+                submenuGroup:''
               },
               {
                 icon: '',
                 label: 'Phân quyền kho',
                 to: '',
                 permission: [''],
+                submenuGroup:''
               },
               {
                 icon: '',
                 label: 'Lịch sử hoạt động',
                 to: '/',
                 permission: [''],
+                submenuGroup:''
               },
             ],
           },
@@ -400,7 +562,7 @@
     z-index: 10;
   }
   .menuChil {
-    background-color: #524d49;
+    background-color: #474347;
     /* box-shadow: 0 0 3px #000;
     left: 100%;
     padding: 2rem 0 0;
@@ -415,6 +577,11 @@
     transition: all 0.7s;
     z-index: -1;
     position: absolute;
+    padding-left: 90px;
+    font-family: Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    line-height: 1.36;
+    color: aquamarine;
   }
   .menuChil.Show {
     transform: translateX(0);

@@ -73,9 +73,9 @@ export default {
     <div class="flex-row">
       <router-link
         :to="to"
-        class="flex items-center py-5"    
+        class="flex items-center py-3"
       >
-        <div class="flex items-center text-white">
+        <div class="flex items-center text-[var(--color-text-submenu)]">
           <div class="flex flex-col items-center">
             <div class="flex items-center" v-if="icon">
               <i
@@ -92,7 +92,7 @@ export default {
             </div>
             <div
               v-if="collapsed"
-              class="flex-nowrap text-left pl-2"
+              class="flex-nowrap text-left pl-2 text-[15px]"
             >
               {{ label }}
             </div>
