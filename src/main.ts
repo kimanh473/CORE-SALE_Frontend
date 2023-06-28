@@ -13,18 +13,12 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 // @ts-ignore
 import vClickOutside from "click-outside-vue3"
-/* import the fontawesome core */
-import { library } from '@fortawesome/fontawesome-svg-core'
-
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-/* import specific icons */
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 //import component
 import LoadingOverlay from "./components/loading/LoadingOverlay.vue";
 /* add icons to the library */
-library.add(faUserSecret)
 const store = createPinia()
 createApp(App)
     .use(router)

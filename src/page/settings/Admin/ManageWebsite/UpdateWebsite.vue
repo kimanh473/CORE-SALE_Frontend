@@ -27,7 +27,7 @@
                     type="text"
                     class="form-control-input"
                     placeholder="Nhập tên web"
-                    v-model="web.web_name"
+                    v-model="detailWeb.web_name"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                   {{ messageError?.title[0] }}
@@ -45,7 +45,7 @@
                     type="text"
                     class="form-control-input"
                     placeholder="Nhập url web"
-                    v-model="web.url"
+                    v-model="detailWeb.url"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                   {{ messageError?.title[0] }}
@@ -63,7 +63,7 @@
                     type="text"
                     class="form-control-input"
                     placeholder="Nhập mã web"
-                    v-model="web.code"
+                    v-model="detailWeb.code"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                   {{ messageError?.title[0] }}
@@ -71,7 +71,7 @@
                 </div>
               </div>
             </div>
-            <a-switch v-model:checked="web.status" /> &nbsp; Kích hoạt
+            <a-switch v-model:checked="detailWeb.status" /> &nbsp; Kích hoạt
           </div>
         </div>
       </Transition>
@@ -99,24 +99,23 @@
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
+  import { useRoute } from 'vue-router'
+  import { storeToRefs } from 'pinia'
   const isLoading = ref<boolean>(false)
   const toast = useToast()
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const route = useRoute()
   const dataWeb = useWebCatalog()
-  const web = reactive({
-    web_name: '',
-    code: '',
-    url: '',
-    status: false,
-  })
+  dataWeb.getDetailWebAction(Number(route.params.id))
+  const { detailWeb } = storeToRefs(dataWeb)
   const createInventory = () => {
     let data = {
-      web_name: web.web_name,
-      code: web.code,
-      url: web.url,
-      status: web.status,
+      web_name: detailWeb.value.web_name,
+      code: detailWeb.value.code,
+      url: detailWeb.value.url,
+      status: detailWeb.value.status == true ? '1' : '0',
     }
     dataWeb.createWebAction(data, toast, EndTimeLoading)
   }

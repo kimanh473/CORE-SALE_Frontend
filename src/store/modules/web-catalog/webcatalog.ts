@@ -1,23 +1,36 @@
 import { defineStore } from "pinia";
-import { getAllWebCatalogsApi, getAllWebIndexsApi, createWebApi } from '../../../services/WebCatalogServices/webcatalog.service'
+import { getAllWebCatalogsApi, getAllWebIndexsApi, createWebApi, detailWebApi, deleteWebApi } from '../../../services/WebCatalogServices/webcatalog.service'
 export const useWebCatalog = defineStore("WebCatalog", {
     state: () => ({
-        listWeb: null,
-        listWebPaginate: null
+        listWeb: [] as DataWeb[],
+        listWebPaginate: [] as DataWeb[],
+        detailWeb: {} as DataWeb
     }),
-    getters: {},
+    getters: {
+        getDetailWeb: (state: any) => {
+            return (payload: any) => state.detailWeb = payload
+        },
+        getListWeb: (state: any) => {
+            return (payload: any) => state.listWeb = payload
+        },
+        getListWebPagination: (state: any) => {
+            return (payload: any) => state.listWebPaginate = payload.map((item: any) => ({
+                id: item.id,
+                code: item.code,
+                web_name: item.web_name,
+                status: item.status,
+                fullname: item.user_created.fullname,
+                created_at: item.created_at.substring(0, 10),
+            }))
+        },
+    },
     actions: {
-        getListWeb(payload: any) {
-            this.listWeb = payload.data
-        },
-        getListWebPagination(payload: any) {
-            this.listWebPaginate = payload.data.data
-            console.log(payload);
-        },
         getAllWebCatalogAction() {
             getAllWebCatalogsApi()
                 .then((payload: any) => {
-                    this.getListWeb(payload.data)
+                    // this.getListWeb(payload.data)
+                    let res = payload?.data?.data?.data
+                    this.getListWeb(res)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -26,7 +39,8 @@ export const useWebCatalog = defineStore("WebCatalog", {
         getAllWebPaginateAction() {
             getAllWebIndexsApi()
                 .then((payload: any) => {
-                    this.getListWebPagination(payload.data)
+                    console.log(payload.data.data.data);
+                    this.getListWebPagination(payload?.data?.data?.data)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -55,6 +69,33 @@ export const useWebCatalog = defineStore("WebCatalog", {
                     this.messageError = err.response.data.messages
                     console.log(this.messageError);
                     console.log(err);
+                });
+        },
+        getDetailWebAction(id: number) {
+            detailWebApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailWeb(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        deleteWebAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
+            deleteWebApi(id)
+                .then((res) => {
+                    if (res.data.status == "success") {
+                        EndTimeLoading;
+                        toast.success("Xóa thành công");
+                    } else {
+                        toast.error(res.data.messages);
+                    }
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
                 });
         },
     },
