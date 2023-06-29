@@ -13,6 +13,27 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/update-user/:id',
+    component: () => import('./page/settings/Admin/ManageUser/UpdateUser.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/create-user',
+    component: () => import('./page/settings/Admin/ManageUser/CreateUser.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/list-user',
+    component: () => import('./page/settings/Admin/ManageUser/ManageUserView.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/create-web',
     component: () => import('./page/settings/Admin/ManageWebsite/CreateWebSite.vue'),
     meta: {
@@ -77,28 +98,28 @@ const route: TRoute[] = [
   },
   {
     path: '/group-admin-view',
-    component: () => import('./page/settings/Admin/GroupAdminView.vue'),
+    component: () => import('./page/settings/Admin/ManageGroupAdmin/GroupAdminView.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/group-admin',
-    component: () => import('./page/settings/Admin/GroupAdmin.vue'),
+    component: () => import('./page/settings/Admin/ManageGroupAdmin/GroupAdmin.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/create-group-admin',
-    component: () => import('./page/settings/Admin/CreateAdminGroup.vue'),
+    component: () => import('./page/settings/Admin/ManageGroupAdmin/CreateAdminGroup.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/update-group-admin/:id',
-    component: () => import('./page/settings/Admin/UpdateAdminGroup.vue'),
+    component: () => import('./page/settings/Admin/ManageGroupAdmin/UpdateAdminGroup.vue'),
     meta: {
       layout: "base-layout",
     },

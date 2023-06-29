@@ -2,8 +2,8 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-              <img src="../assets/images/btp.png" />
-            </div> -->
+            <img src="../assets/images/btp.png" />
+          </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
@@ -78,7 +78,7 @@
             animated
             style="padding-left: 15px"
           >
-            <a-tab-pane key="1" tab="Tab 1"
+            <a-tab-pane key="1" tab="Phân quyền nhóm người dùng"
               ><div class="w-full inner">
                 <div class="w-full py-4">
                   <div class="w-full">
@@ -88,7 +88,7 @@
                           <input
                             class="mr-4"
                             type="checkbox"
-                            true-value="PERSONNEL"
+                            true-value="STORE_SETTING"
                             false-value=""
                           />
                         </td>
@@ -108,7 +108,7 @@
                         <td class="cellTable text-center">
                           <input
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE"
+                            true-value="CATALOG_PRODUCT"
                             false-value=""
                           />
                         </td>
@@ -117,42 +117,42 @@
                         <td class="cellTable text-center">
                           <input
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_CREATE"
+                            true-value="CATALOG_PRODUCT_CREATE"
                             false-value=""
                           />
                         </td>
                         <td class="cellTable text-center">
                           <input
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_UPDATE"
+                            true-value="CATALOG_PRODUCT_UPDATE"
                             false-value=""
                           />
                         </td>
                         <td class="cellTable text-center">
                           <input
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_DELETE"
+                            true-value="CATALOG_PRODUCT_DELETE"
                             false-value=""
                           />
                         </td>
                         <td class="cellTable text-center">
                           <input
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_PRINT"
+                            true-value="CATALOG_PRODUCT_PRINT"
                             false-value=""
                           />
                         </td>
                         <td class="cellTable text-center">
                           <input
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_IMPORT"
+                            true-value="CATALOG_PRODUCT_IMPORT"
                             false-value=""
                           />
                         </td>
                         <td class="cellTable text-center">
                           <input
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_EXPORT"
+                            true-value="CATALOG_PRODUCT_EXPORT"
                             false-value=""
                           />
                         </td>
@@ -1313,10 +1313,14 @@
                   </div>
                 </div></div
             ></a-tab-pane>
-            <a-tab-pane key="2" tab="Tab 2">
+            <a-tab-pane key="2" tab="Phân quyền website">
               <div class="flex">
-                <div class="flex pr-[30px]">
-                  <p class="pr-[5px]">Hawonkoo</p>
+                <div
+                  v-for="(item, index) in listWeb"
+                  :key="index"
+                  class="flex pr-[30px]"
+                >
+                  <p class="pr-[5px]">{{ item.web_name }}</p>
                   <input
                     class="mt-[3px]"
                     type="checkbox"
@@ -1326,10 +1330,24 @@
                 </div>
               </div>
             </a-tab-pane>
-            <a-tab-pane key="3" tab="Tab 3">Content of Tab 3</a-tab-pane>
-          </a-tabs>
-        </div></Transition
-      >
+            <a-tab-pane key="3" tab="Phân quyền kho"
+              ><div class="flex">
+                <div
+                  v-for="(item, index) in listInventory"
+                  :key="index"
+                  class="flex pr-[30px]"
+                >
+                  <p class="pr-[5px]">{{ item.title }}</p>
+                  <input
+                    class="mt-[3px]"
+                    type="checkbox"
+                    true-value="PERSONNEL_PROFILE_IMPORT"
+                    false-value=""
+                  />
+                </div></div
+            ></a-tab-pane>
+          </a-tabs></div
+      ></Transition>
     </template>
     <template class="p-0" v-slot:footer
       ><div class="bg-gray-100 pb-2 pl-2">
@@ -1343,18 +1361,27 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import TableResponsive from '../../../components/common/TableResponsive.vue'
+  import BaseLayout from '../../../../layout/baseLayout.vue'
+  import SideBar from '../../../../components/common/SideBar.vue'
+  import Header from '../../../../components/common/Header.vue'
+  import TableResponsive from '../../../../components/common/TableResponsive.vue'
+  import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
+  import { useInventory } from '../../../../store/modules/inventory/product-invetory'
   import { useRouter } from 'vue-router'
   import { reactive, ref } from 'vue'
+  import { storeToRefs } from 'pinia'
   const router = useRouter()
   const isInfor = ref(true)
   const is_admin = ref('no')
   const title = ref('')
   const is_default = 0
   const activeKey = ref('1')
+  const webCatalog = useWebCatalog()
+  webCatalog.getAllWebCatalogAction()
+  const { listWeb } = storeToRefs(webCatalog)
+  const dataInventory = useInventory()
+  dataInventory.getListInventoryAction()
+  const { listInventory } = storeToRefs(dataInventory)
   const table = reactive({
     header: [
       '',
@@ -1372,24 +1399,24 @@
     isCheck: true,
     isShow: true,
   })
-  const listView = [
-    {
-      code: 'PERSONNEL_PROFILE_VIEW_ALL',
-      name: 'Xem tất cả',
-    },
-    {
-      code: 'PERSONNEL_PROFILE_VIEW_COMPANY',
-      name: 'Xem công ty',
-    },
-    {
-      code: 'PERSONNEL_PROFILE_VIEW_BRANCH',
-      name: 'Xem chi nhánh',
-    },
-    {
-      code: 'PERSONNEL_PROFILE_VIEW_DEPARTMENT',
-      name: 'Xem phòng ban',
-    },
-  ]
+  // const listView = [
+  //   {
+  //     code: 'PERSONNEL_PROFILE_VIEW_ALL',
+  //     name: 'Xem tất cả',
+  //   },
+  //   {
+  //     code: 'PERSONNEL_PROFILE_VIEW_COMPANY',
+  //     name: 'Xem công ty',
+  //   },
+  //   {
+  //     code: 'PERSONNEL_PROFILE_VIEW_BRANCH',
+  //     name: 'Xem chi nhánh',
+  //   },
+  //   {
+  //     code: 'PERSONNEL_PROFILE_VIEW_DEPARTMENT',
+  //     name: 'Xem phòng ban',
+  //   },
+  // ]
   defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
