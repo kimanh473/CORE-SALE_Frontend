@@ -167,7 +167,7 @@
                         <input
                           type="email"
                           class="form-control-input"
-                          placeholder="Nhập tên nguồn hàng"
+                          placeholder="Nhập tên email"
                           v-model="detailInventory.contact_email"
                         />
                         <p

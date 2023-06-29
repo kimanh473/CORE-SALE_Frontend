@@ -20,14 +20,16 @@
       </Header>
     </template>
     <template v-slot:content class="relative">
-      <div class="rounded flex justify-between">
+      <div
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+      >
         <div></div>
         <div
-          class="button-create-new relative group rounded-sm px-3 text-[var(--color-text)]"
-          title="Tạo mới kho"
+          class="button-create-new relative group rounded-md px-2"
+          title="Tạo mới web"
           @click="CreateInventory()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới kho</p>
         </div>
       </div>
       <a-table
