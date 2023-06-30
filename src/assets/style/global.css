@@ -212,7 +212,7 @@ body {
     font-size: 1em;
     transition: border 0.2s ease, box-shadow 0.2s ease;
     padding: 10px;
-    outline: transparent;
+    outline: transparent; 
   }
   
   .form-control-input:focus {

@@ -13,6 +13,20 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/manage-payment',
+    component: () => import('./page/settings/Admin/ManageSale/ManagePayment.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/manage-order',
+    component: () => import('./page/settings/Admin/ManageSale/ManageOrder.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/update-user/:id',
     component: () => import('./page/settings/Admin/ManageUser/UpdateUser.vue'),
     meta: {
