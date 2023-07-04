@@ -13,57 +13,78 @@ const route: TRoute[] = [
     },
   },
   {
-    path: '/manage-payment',
-    component: () => import('./page/settings/Admin/ManageSale/ManagePayment.vue'),
+    path: '/setting-discount',
+    component: () => import('./page/settings/Admin/SettingSale/SettingDiscount.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
-    path: '/manage-order',
-    component: () => import('./page/settings/Admin/ManageSale/ManageOrder.vue'),
+    path: '/setting-customer',
+    component: () => import('./page/settings/Admin/SettingSale/SettingCustomer.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/setting-product',
+    component: () => import('./page/settings/Admin/SettingSale/SettingProduct.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/setting-payment',
+    component: () => import('./page/settings/Admin/SettingSale/SettingPayment.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/setting-order',
+    component: () => import('./page/settings/Admin/SettingSale/SettingOrder.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/update-user/:id',
-    component: () => import('./page/settings/Admin/ManageUser/UpdateUser.vue'),
+    component: () => import('./page/settings/Admin/SettingUser/UpdateUser.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/create-user',
-    component: () => import('./page/settings/Admin/ManageUser/CreateUser.vue'),
+    component: () => import('./page/settings/Admin/SettingUser/CreateUser.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/list-user',
-    component: () => import('./page/settings/Admin/ManageUser/ManageUserView.vue'),
+    component: () => import('./page/settings/Admin/SettingUser/SettingUserView.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/create-web',
-    component: () => import('./page/settings/Admin/ManageWebsite/CreateWebSite.vue'),
+    component: () => import('./page/settings/Admin/SettingWebsite/CreateWebSite.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/update-web/:id',
-    component: () => import('./page/settings/Admin/ManageWebsite/UpdateWebsite.vue'),
+    component: () => import('./page/settings/Admin/SettingWebsite/UpdateWebsite.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/list-web',
-    component: () => import('./page/settings/Admin/ManageWebsite/ListWebSite.vue'),
+    component: () => import('./page/settings/Admin/SettingWebsite/ListWebSite.vue'),
     meta: {
       layout: "base-layout",
     },
@@ -112,28 +133,28 @@ const route: TRoute[] = [
   },
   {
     path: '/group-admin-view',
-    component: () => import('./page/settings/Admin/ManageGroupAdmin/GroupAdminView.vue'),
+    component: () => import('./page/settings/Admin/SettingGroupAdmin/GroupAdminView.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/group-admin',
-    component: () => import('./page/settings/Admin/ManageGroupAdmin/GroupAdmin.vue'),
+    component: () => import('./page/settings/Admin/SettingGroupAdmin/GroupAdmin.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/create-group-admin',
-    component: () => import('./page/settings/Admin/ManageGroupAdmin/CreateAdminGroup.vue'),
+    component: () => import('./page/settings/Admin/SettingGroupAdmin/CreateAdminGroup.vue'),
     meta: {
       layout: "base-layout",
     },
   },
   {
     path: '/update-group-admin/:id',
-    component: () => import('./page/settings/Admin/ManageGroupAdmin/UpdateAdminGroup.vue'),
+    component: () => import('./page/settings/Admin/SettingGroupAdmin/UpdateAdminGroup.vue'),
     meta: {
       layout: "base-layout",
     },

@@ -175,6 +175,7 @@
     router.push('/login')
     localStorage.removeItem('TOKEN')
     localStorage.removeItem('authenticated')
+    window.location.reload()
   }
   const handleOpenDetail = () => {
     isOpenDetail.value = true

@@ -9,90 +9,105 @@
     <template v-slot:header>
       <Header :is-show-search="false"
         ><template v-slot:name
-          ><p class="pl-5 text-[16px]">Cài đặt mail thông báo</p></template
+          ><p class="pl-5 text-[16px]">Cài đặt sản phẩm</p></template
         ></Header
       >
     </template>
     <template v-slot:content class="relative">
       <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane key="1" tab="Xử lý đơn hàng">
+        <a-tab-pane key="1" tab="Sản phẩm">
           <div class="p-2 h-full">
-            <h2 class="text-left uppercase font-semibold p-2">đơn hàng</h2>
+            <h2 class="text-left uppercase font-semibold p-2">Sản phẩm</h2>
             <div class="w-full p-2 border rounded-lg">
               <div class="row-setting">
                 <div class="flex flex-col text-left">
                   <h5 class="text-setting">
-                    Cho phép khách hàng thanh toán bằng tiền mặt
+                    Cài sản phẩm là sản phẩm mới
+                    <input
+                      type="number"
+                      name=""
+                      id=""
+                      class="form-control-input !w-[50px]"
+                      value="0"
+                    />
+                    ngày kể từ khi hiển thị trên web bán
                   </h5>
-                  <h5 class="sub-setting"></h5>
-                </div>
-                <div>
-                  <a-switch v-model:checked="checkCancel" />
                 </div>
               </div>
               <hr />
               <div class="row-setting">
                 <div class="flex flex-col text-left">
                   <h5 class="text-setting">
-                    Cho phép khách hàng thanh toán bằng thẻ tín dụng
+                    Cho phép khách hàng viết đánh giá
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkCreate" />
+                  <a-switch v-model:checked="checkEvaluate" />
                 </div>
               </div>
               <hr />
               <div class="row-setting">
                 <div class="flex flex-col text-left">
                   <h5 class="text-setting">
-                    Cho phép khách hàng thanh toán bằng ví điện tử
+                    Chuyển trạng thái của sản phẩm thành còn hàng khi đơn hàng
+                    bị hủy <br />
+                    (Khi sản phẩm đang ở trạng thái hết hàng nhưng đơn bị hủy
+                    thì có thể đổi sang trạng thái còn hàng)
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkUnpay" />
+                  <a-switch v-model:checked="checkChangeStatus" />
                 </div>
               </div>
               <hr />
-              <Transition v-if="checkUnpay == true" name="nested">
-                <div>
-                  <div class="row-setting">
-                    <div>
-                      <div class="check">
-                        <input
-                          id="checkAbsence"
-                          type="checkbox"
-                          true-value="1"
-                          false-value="0"
-                        />
-                        <label for="checkAbsence"> VN Pay</label>
-                      </div>
-                    </div>
-                  </div>
-                  <hr />
+              <div class="row-setting">
+                <div class="flex flex-col text-left">
+                  <h5 class="text-setting">
+                    Mức hết hàng
+                    <input
+                      type="number"
+                      name=""
+                      id=""
+                      class="form-control-input !w-[50px]"
+                      value="0"
+                    />
+                  </h5>
                 </div>
-              </Transition>
+              </div>
+              <hr />
+              <div class="row-setting">
+                <div class="flex flex-col text-left">
+                  <h5 class="text-setting">
+                    Số lượng sản phẩm tối đa trong giỏ hàng
+                    <input
+                      type="number"
+                      name=""
+                      id=""
+                      class="form-control-input !w-[50px]"
+                      value="0"
+                    />
+                  </h5>
+                </div>
+              </div>
+              <hr />
+              <div class="row-setting">
+                <div class="flex flex-col text-left">
+                  <h5 class="text-setting">
+                    Số lượng tối thiểu được phép trong giỏ hàng
+                    <input
+                      type="number"
+                      name=""
+                      id=""
+                      class="form-control-input !w-[50px]"
+                      value="0"
+                    />
+                  </h5>
+                </div>
+              </div>
+              <hr />
             </div>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="2" tab="Phương thức giao hàng" force-render
-          ><div class="p-2 h-full">
-            <h2 class="text-left uppercase font-semibold p-2">đơn hàng</h2>
-            <div class="w-full p-2 border rounded-lg">
-              <div class="row-setting">
-                <div class="flex flex-col text-left">
-                  <h5 class="text-setting">
-                    Nhận tại kho (Cho phép khách hàng có thể tự chọn kho để nhận
-                    hàng)
-                  </h5>
-                </div>
-                <div>
-                  <a-switch v-model:checked="checkCancel" />
-                </div>
-              </div>
-            </div></div
-        ></a-tab-pane>
       </a-tabs>
     </template>
     <template v-slot:footer
@@ -116,12 +131,8 @@
   import Header from '../../../../components/common/Header.vue'
   import { ref } from 'vue'
   const activeKey = ref('1')
-  const checkCancel = ref<boolean>(false)
-  const checkCreate = ref<boolean>(false)
-  const checkStart = ref<boolean>(false)
-  const checkChange = ref<boolean>(false)
-  const checkConfirm = ref<boolean>(false)
-  const checkUnpay = ref<boolean>(false)
+  const checkEvaluate = ref<boolean>(false)
+  const checkChangeStatus = ref<boolean>(false)
   const updateOrderSetting = () => {}
   defineProps<{ isShowSearch: boolean }>()
 </script>
