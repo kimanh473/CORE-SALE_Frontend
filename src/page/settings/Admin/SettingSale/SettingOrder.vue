@@ -24,7 +24,6 @@
                   <h5 class="text-setting">
                     Gửi Thông báo/email hủy đơn hàng khi khách hàng hủy đơn hàng
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
                   <a-switch v-model:checked="checkCancel" />
@@ -37,7 +36,6 @@
                     Gửi Thông báo/email đến khách hàng khi khách hàng tạo đơn
                     hàng
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
                   <a-switch v-model:checked="checkCreate" />
@@ -50,7 +48,6 @@
                     Gửi Thông báo/email đến khách hàng khi khách hàng khi bắt
                     đầu giao hàng
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
                   <a-switch v-model:checked="checkStart" />
@@ -63,7 +60,6 @@
                     Gửi Thông báo/email đến khách hàng khi thông tin giao hàng
                     bị thay đổi
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
                   <a-switch v-model:checked="checkChange" />
@@ -76,7 +72,6 @@
                     Gửi Thông báo/email đến khách hàng khi đơn hàng xác nhận
                     thanh toán
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
                   <a-switch v-model:checked="checkConfirm" />
@@ -89,33 +84,28 @@
                     Gửi Thông báo/email đến khách hàng đã mua hàng nhưng chưa
                     hoàn thành việc thanh toán đơn hàng
                   </h5>
-                  <h5 class="sub-setting"></h5>
                 </div>
                 <div>
                   <a-switch v-model:checked="checkUnpay" />
                 </div>
               </div>
               <hr />
-              <Transition v-if="checkUnpay == true" name="nested">
-                <div>
-                  <div class="row-setting">
-                    <div class="ml-4 flex flex-col">
-                      <h5 class="text-setting">
-                        Sau
-                        <input
-                          type="number"
-                          name=""
-                          id=""
-                          class="form-control-input !w-[50px]"
-                          value="0"
-                        />
-                        tiếng
-                      </h5>
-                    </div>
-                  </div>
-                  <hr />
+              <div class="row-setting">
+                <div class="ml-4 flex flex-col">
+                  <h5 class="text-setting">
+                    Sau
+                    <input
+                      type="number"
+                      name=""
+                      id=""
+                      class="form-control-input !w-[50px]"
+                      v-model="afterHour"
+                    />
+                    tiếng
+                  </h5>
                 </div>
-              </Transition>
+              </div>
+              <hr />
             </div>
           </div>
         </a-tab-pane>
@@ -157,15 +147,70 @@
   import BaseLayout from '../../../../layout/baseLayout.vue'
   import SideBar from '../../../../components/common/SideBar.vue'
   import Header from '../../../../components/common/Header.vue'
+  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
+  import { storeToRefs } from 'pinia'
   const activeKey = ref('1')
-  const checkCancel = ref<boolean>(false)
-  const checkCreate = ref<boolean>(false)
-  const checkStart = ref<boolean>(false)
-  const checkChange = ref<boolean>(false)
-  const checkConfirm = ref<boolean>(false)
-  const checkUnpay = ref<boolean>(false)
-  const updateOrderSetting = () => {}
+  const systemSetting = useSystemSetting()
+  systemSetting.detailSystemSettingAction('MAIL_TO_CUSTOMER')
+  const { dataSettingMail } = storeToRefs(systemSetting)
+  const formatTrueFasle = (value: Number) => {
+    if (value == 1) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const checkCancel = ref<boolean>(
+    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_deleted_order)
+  )
+  const checkCreate = ref<boolean>(
+    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_created_order)
+  )
+  const checkStart = ref<boolean>(
+    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_start_shipping)
+  )
+  const checkChange = ref<boolean>(
+    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_change_order)
+  )
+  const checkConfirm = ref<boolean>(
+    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_paid)
+  )
+  const checkUnpay = ref<boolean>(
+    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_hasnt_paid)
+  )
+  const shipMethod = ref([])
+  const afterHour = ref<Number>(0)
+
+  console.log(dataSettingMail)
+  console.log(dataSettingMail.value.mail_to_customer_when_change_order)
+
+  const updateOrderSetting = () => {
+    // const data = {
+    //   code: 'MAIL_TO_CUSTOMER',
+    //   value: [
+    //     {
+    //       mail_to_customer_when_deleted_order: formatTrueFasle(
+    //         checkCancel.value
+    //       ),
+    //       mail_to_customer_when_created_order: formatTrueFasle(
+    //         checkCreate.value
+    //       ),
+    //       mail_to_customer_when_start_shipping: formatTrueFasle(
+    //         checkStart.value
+    //       ),
+    //       mail_to_customer_when_change_order: formatTrueFasle(
+    //         checkChange.value
+    //       ),
+    //       mail_to_customer_when_paid: formatTrueFasle(checkConfirm.value),
+    //       mail_to_customer_when_hasnt_paid: formatTrueFasle(checkUnpay.value),
+    //       after_hour: hour.value,
+    //       shipping_method: shipMethod.value,
+    //     },
+    //   ],
+    // }
+    // systemSetting.updateSystemSettingAction(data)
+  }
   defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
