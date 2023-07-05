@@ -26,7 +26,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkCancel" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.mail_to_customer_when_deleted_order
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -38,7 +44,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkCreate" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.mail_to_customer_when_created_order
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -50,7 +62,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkStart" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.mail_to_customer_when_start_shipping
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -62,7 +80,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkChange" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.mail_to_customer_when_change_order
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -74,7 +98,11 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkConfirm" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.mail_to_customer_when_paid"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -86,7 +114,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkUnpay" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.mail_to_customer_when_hasnt_paid
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -99,7 +133,7 @@
                       name=""
                       id=""
                       class="form-control-input !w-[50px]"
-                      v-model="afterHour"
+                      v-model="dataSettingMail.after_hour"
                     />
                     tiếng
                   </h5>
@@ -150,66 +184,61 @@
   import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
   import { storeToRefs } from 'pinia'
+  import { useToast } from 'vue-toastification'
+  const toast = useToast()
   const activeKey = ref('1')
   const systemSetting = useSystemSetting()
   systemSetting.detailSystemSettingAction('MAIL_TO_CUSTOMER')
   const { dataSettingMail } = storeToRefs(systemSetting)
-  const formatTrueFasle = (value: Number) => {
-    if (value == 1) {
-      return true
-    } else {
-      return false
-    }
-  }
-  const checkCancel = ref<boolean>(
-    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_deleted_order)
-  )
-  const checkCreate = ref<boolean>(
-    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_created_order)
-  )
-  const checkStart = ref<boolean>(
-    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_start_shipping)
-  )
-  const checkChange = ref<boolean>(
-    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_change_order)
-  )
-  const checkConfirm = ref<boolean>(
-    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_paid)
-  )
-  const checkUnpay = ref<boolean>(
-    formatTrueFasle(dataSettingMail.value.mail_to_customer_when_hasnt_paid)
-  )
+  // const formatTrueFasle = (value: Number) => {
+  //   if (value == 1) {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
+  const checkCancel = ref<boolean>(false)
+  // const checkCreate = ref<boolean>(
+  //   formatTrueFasle(dataSettingMail.value.mail_to_customer_when_created_order)
+  // )
+  // const checkStart = ref<boolean>(
+  //   formatTrueFasle(dataSettingMail.value.mail_to_customer_when_start_shipping)
+  // )
+  // const checkChange = ref<boolean>(
+  //   formatTrueFasle(dataSettingMail.value.mail_to_customer_when_change_order)
+  // )
+  // const checkConfirm = ref<boolean>(
+  //   formatTrueFasle(dataSettingMail.value.mail_to_customer_when_paid)
+  // )
+  // const checkUnpay = ref<boolean>(
+  //   formatTrueFasle(dataSettingMail.value.mail_to_customer_when_hasnt_paid)
+  // )
   const shipMethod = ref([])
   const afterHour = ref<Number>(0)
 
-  console.log(dataSettingMail)
-  console.log(dataSettingMail.value.mail_to_customer_when_change_order)
-
   const updateOrderSetting = () => {
-    // const data = {
-    //   code: 'MAIL_TO_CUSTOMER',
-    //   value: [
-    //     {
-    //       mail_to_customer_when_deleted_order: formatTrueFasle(
-    //         checkCancel.value
-    //       ),
-    //       mail_to_customer_when_created_order: formatTrueFasle(
-    //         checkCreate.value
-    //       ),
-    //       mail_to_customer_when_start_shipping: formatTrueFasle(
-    //         checkStart.value
-    //       ),
-    //       mail_to_customer_when_change_order: formatTrueFasle(
-    //         checkChange.value
-    //       ),
-    //       mail_to_customer_when_paid: formatTrueFasle(checkConfirm.value),
-    //       mail_to_customer_when_hasnt_paid: formatTrueFasle(checkUnpay.value),
-    //       after_hour: hour.value,
-    //       shipping_method: shipMethod.value,
-    //     },
-    //   ],
-    // }
-    // systemSetting.updateSystemSettingAction(data)
+    const data = {
+      code: 'MAIL_TO_CUSTOMER',
+      value: [
+        {
+          mail_to_customer_when_deleted_order:
+            dataSettingMail.value.mail_to_customer_when_deleted_order,
+          mail_to_customer_when_created_order:
+            dataSettingMail.value.mail_to_customer_when_deleted_order,
+          mail_to_customer_when_start_shipping:
+            dataSettingMail.value.mail_to_customer_when_start_shipping,
+          mail_to_customer_when_change_order:
+            dataSettingMail.value.mail_to_customer_when_change_order,
+          mail_to_customer_when_paid:
+            dataSettingMail.value.mail_to_customer_when_paid,
+          mail_to_customer_when_hasnt_paid:
+            dataSettingMail.value.mail_to_customer_when_hasnt_paid,
+          after_hour: dataSettingMail.value.after_hour,
+          shipping_method: shipMethod.value,
+        },
+      ],
+    }
+    systemSetting.updateSystemSettingAction(data, toast)
   }
   defineProps<{ isShowSearch: boolean }>()
 </script>

@@ -26,7 +26,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkAutoGroup" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.AUTO_ADD_GROUP_DEFAULT_FOR_CUSTOMER
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -37,7 +43,11 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkSendConfirm" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.SENT_MAIL_VERIFY"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -46,11 +56,18 @@
                   <h5 class="text-setting">Yêu cầu xác thực email</h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkConfirmMail" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.CUSTOMER_CONFIRM_EMAIL"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
-              <Transition v-if="checkConfirmMail == true" name="nested">
+              <Transition
+                v-if="dataSettingMail.CUSTOMER_CONFIRM_EMAIL == 1"
+                name="nested"
+              >
                 <div>
                   <div class="row-setting">
                     <div class="ml-4 flex flex-col">
@@ -61,7 +78,7 @@
                           name=""
                           id=""
                           class="form-control-input !w-[50px]"
-                          value="0"
+                          v-model="dataSettingMail.TIME_CUSTOMER_CONFIRM_EMAIL"
                         />
                         tiếng
                       </h5>
@@ -78,7 +95,11 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkNewCustomer" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.WELCOME_NEW_CUSTOMER"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -95,7 +116,11 @@
                   <h5 class="text-setting">Vô hiệu hóa chức năng tài khoản</h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkDisableAccount" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.BUY_NO_USE_ACCOUNT"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
             </div></div
@@ -105,7 +130,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="updateOrderSetting()">
+          <button class="button-modal" @click="updateCustomerSetting()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -121,14 +146,38 @@
   import BaseLayout from '../../../../layout/baseLayout.vue'
   import SideBar from '../../../../components/common/SideBar.vue'
   import Header from '../../../../components/common/Header.vue'
+  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useToast } from 'vue-toastification'
+  const toast = useToast()
   const activeKey = ref('1')
+  const systemSetting = useSystemSetting()
+  systemSetting.detailSystemSettingAction('SETTING_CUSTOMER')
+  const { dataSettingMail } = storeToRefs(systemSetting)
   const checkAutoGroup = ref<boolean>(false)
   const checkSendConfirm = ref<boolean>(false)
   const checkConfirmMail = ref<boolean>(false)
   const checkNewCustomer = ref<boolean>(false)
   const checkDisableAccount = ref<boolean>(false)
-  const updateOrderSetting = () => {}
+  const updateCustomerSetting = () => {
+    const data = {
+      code: 'SETTING_CUSTOMER',
+      value: [
+        {
+          AUTO_ADD_GROUP_DEFAULT_FOR_CUSTOMER:
+            dataSettingMail.value.AUTO_ADD_GROUP_DEFAULT_FOR_CUSTOMER,
+          SENT_MAIL_VERIFY: dataSettingMail.value.SENT_MAIL_VERIFY,
+          CUSTOMER_CONFIRM_EMAIL: dataSettingMail.value.CUSTOMER_CONFIRM_EMAIL,
+          TIME_CUSTOMER_CONFIRM_EMAIL:
+            dataSettingMail.value.TIME_CUSTOMER_CONFIRM_EMAIL,
+          WELCOME_NEW_CUSTOMER: dataSettingMail.value.WELCOME_NEW_CUSTOMER,
+          BUY_NO_USE_ACCOUNT: dataSettingMail.value.BUY_NO_USE_ACCOUNT,
+        },
+      ],
+    }
+    systemSetting.updateSystemSettingAction(data, toast)
+  }
   defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>

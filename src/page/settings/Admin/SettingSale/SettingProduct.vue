@@ -28,7 +28,7 @@
                       name=""
                       id=""
                       class="form-control-input !w-[50px]"
-                      value="0"
+                      v-model="dataSettingMail.TIME_NEW_PRODUCT"
                     />
                     ngày kể từ khi hiển thị trên web bán
                   </h5>
@@ -42,7 +42,11 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkEvaluate" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.CUSTOMER_COMMENT"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -56,7 +60,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkChangeStatus" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.CHANGE_TOTAL_WHEN_DELETE_ORDER
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -69,8 +79,24 @@
                       name=""
                       id=""
                       class="form-control-input !w-[50px]"
-                      value="0"
+                      v-model="dataSettingMail.TOTAL_PRODUCT_MIN"
                     />
+                  </h5>
+                </div>
+              </div>
+              <hr />
+              <div class="row-setting">
+                <div class="flex flex-col text-left">
+                  <h5 class="text-setting">
+                    Cảnh báo hết hàng khi tồn kho còn
+                    <input
+                      type="number"
+                      name=""
+                      id=""
+                      class="form-control-input !w-[50px]"
+                      v-model="dataSettingMail.WARNING_WHEN_TOTAL_IS"
+                    />
+                    sản phẩm
                   </h5>
                 </div>
               </div>
@@ -84,7 +110,7 @@
                       name=""
                       id=""
                       class="form-control-input !w-[50px]"
-                      value="0"
+                      v-model="dataSettingMail.TOTAL_MAX_PRODUCT_IN_CART"
                     />
                   </h5>
                 </div>
@@ -99,7 +125,7 @@
                       name=""
                       id=""
                       class="form-control-input !w-[50px]"
-                      value="0"
+                      v-model="dataSettingMail.TOTAL_MIN_PRODUCT_IN_CART"
                     />
                   </h5>
                 </div>
@@ -113,7 +139,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="updateOrderSetting()">
+          <button class="button-modal" @click="updateProductSetting()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -129,11 +155,37 @@
   import BaseLayout from '../../../../layout/baseLayout.vue'
   import SideBar from '../../../../components/common/SideBar.vue'
   import Header from '../../../../components/common/Header.vue'
+  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useToast } from 'vue-toastification'
+  const toast = useToast()
   const activeKey = ref('1')
+  const systemSetting = useSystemSetting()
+  systemSetting.detailSystemSettingAction('SETTING_PRODUCT')
+  const { dataSettingMail } = storeToRefs(systemSetting)
   const checkEvaluate = ref<boolean>(false)
   const checkChangeStatus = ref<boolean>(false)
-  const updateOrderSetting = () => {}
+  const updateProductSetting = () => {
+    const data = {
+      code: 'SETTING_PRODUCT',
+      value: [
+        {
+          TIME_NEW_PRODUCT: dataSettingMail.value.TIME_NEW_PRODUCT,
+          CUSTOMER_COMMENT: dataSettingMail.value.CUSTOMER_COMMENT,
+          CHANGE_TOTAL_WHEN_DELETE_ORDER:
+            dataSettingMail.value.CHANGE_TOTAL_WHEN_DELETE_ORDER,
+          TOTAL_PRODUCT_MIN: dataSettingMail.value.TOTAL_PRODUCT_MIN,
+          WARNING_WHEN_TOTAL_IS: dataSettingMail.value.WARNING_WHEN_TOTAL_IS,
+          TOTAL_MAX_PRODUCT_IN_CART:
+            dataSettingMail.value.TOTAL_MAX_PRODUCT_IN_CART,
+          TOTAL_MIN_PRODUCT_IN_CART:
+            dataSettingMail.value.TOTAL_MIN_PRODUCT_IN_CART,
+        },
+      ],
+    }
+    systemSetting.updateSystemSettingAction(data, toast)
+  }
   defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>

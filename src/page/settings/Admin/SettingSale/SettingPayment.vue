@@ -31,7 +31,11 @@
                   <h5 class="sub-setting"></h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkPayCash" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.pay_cash"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -43,7 +47,11 @@
                   <h5 class="sub-setting"></h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkCredit" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.pay_credit_card"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -55,11 +63,15 @@
                   <h5 class="sub-setting"></h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkWallet" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.e_wallet"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
-              <Transition v-if="checkWallet == true" name="nested">
+              <Transition v-if="dataSettingMail.e_wallet == 1" name="nested">
                 <div>
                   <div class="row-setting">
                     <div>
@@ -85,7 +97,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="updateOrderSetting()">
+          <button class="button-modal" @click="updatePaymentSetting()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -101,13 +113,32 @@
   import BaseLayout from '../../../../layout/baseLayout.vue'
   import SideBar from '../../../../components/common/SideBar.vue'
   import Header from '../../../../components/common/Header.vue'
+  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
+  import { storeToRefs } from 'pinia'
   import { ref } from 'vue'
+  import { useToast } from 'vue-toastification'
+  const toast = useToast()
   const activeKey = ref('1')
-  const checkReceive = ref<boolean>(false)
-  const checkCredit = ref<boolean>(false)
-  const checkPayCash = ref<boolean>(false)
-  const checkWallet = ref<boolean>(false)
-  const updateOrderSetting = () => {}
+  // const checkReceive = ref<boolean>(false)
+  // const checkCredit = ref<boolean>(false)
+  // const checkPayCash = ref<boolean>(false)
+  // const checkWallet = ref<boolean>(false)
+  const systemSetting = useSystemSetting()
+  systemSetting.detailSystemSettingAction('PAY_METHOD')
+  const { dataSettingMail } = storeToRefs(systemSetting)
+  const updatePaymentSetting = () => {
+    const data = {
+      code: 'PAY_METHOD',
+      value: [
+        {
+          pay_cash: dataSettingMail.value.pay_cash,
+          pay_credit_card: dataSettingMail.value.pay_credit_card,
+          e_wallet: dataSettingMail.value.e_wallet,
+        },
+      ],
+    }
+    systemSetting.updateSystemSettingAction(data, toast)
+  }
   defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
