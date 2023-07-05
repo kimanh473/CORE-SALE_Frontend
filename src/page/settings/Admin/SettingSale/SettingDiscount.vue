@@ -26,11 +26,18 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkCode" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.MULTIPLE_DISCOUNT"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
-              <Transition v-if="checkCode == true" name="nested">
+              <Transition
+                v-if="dataSettingMail.MULTIPLE_DISCOUNT == 1"
+                name="nested"
+              >
                 <div>
                   <div class="row-setting">
                     <div class="ml-4 flex flex-col">
@@ -41,7 +48,7 @@
                           name=""
                           id=""
                           class="form-control-input !w-[50px]"
-                          value="0"
+                          v-model="dataSettingMail.MULTIPLE_DISCOUNT_COUNT"
                         />
                       </h5>
                     </div>
@@ -58,7 +65,9 @@
                       name=""
                       id=""
                       class="form-control-input !w-[50px]"
-                      value="0"
+                      v-model="
+                        dataSettingMail.CHANGE_VALUE_AFTER_EDIT_DELETE_DISCOUNT
+                      "
                     />
                     đơn hàng đã áp dụng <br />(Nếu đơn hàng đã áp dụng mã giảm
                     giá trước khi thay đổi thì sẽ không thay đổi khi mã giảm giá
@@ -82,11 +91,18 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkPromotions" />
+                  <a-switch
+                    v-model:checked="dataSettingMail.MULTIPLE_PROMOTION"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
-              <Transition v-if="checkPromotions == true" name="nested">
+              <Transition
+                v-if="dataSettingMail.MULTIPLE_PROMOTION == 1"
+                name="nested"
+              >
                 <div>
                   <div class="row-setting">
                     <div class="ml-4 flex flex-col">
@@ -97,7 +113,7 @@
                           name=""
                           id=""
                           class="form-control-input !w-[50px]"
-                          value="0"
+                          v-model="dataSettingMail.MULTIPLE_PROMOTION_COUNT"
                         />
                       </h5>
                     </div>
@@ -113,7 +129,13 @@
                   </h5>
                 </div>
                 <div>
-                  <a-switch v-model:checked="checkBoth" />
+                  <a-switch
+                    v-model:checked="
+                      dataSettingMail.MULTIPLE_PROMOTION_DISCOUNT
+                    "
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                  />
                 </div>
               </div>
               <hr />
@@ -124,7 +146,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="updateOrderSetting()">
+          <button class="button-modal" @click="updateDiscountSetting()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -140,12 +162,38 @@
   import BaseLayout from '../../../../layout/baseLayout.vue'
   import SideBar from '../../../../components/common/SideBar.vue'
   import Header from '../../../../components/common/Header.vue'
+  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useToast } from 'vue-toastification'
+  const toast = useToast()
   const activeKey = ref('1')
+  const systemSetting = useSystemSetting()
+  systemSetting.detailSystemSettingAction('SETTING_CUSTOMER')
+  const { dataSettingMail } = storeToRefs(systemSetting)
   const checkCode = ref<boolean>(false)
   const checkPromotions = ref<boolean>(false)
   const checkBoth = ref<boolean>(false)
-  const updateOrderSetting = () => {}
+  const updateDiscountSetting = () => {
+    const data = {
+      code: 'SETTING_CUSTOMER',
+      value: [
+        {
+          MULTIPLE_DISCOUNT: dataSettingMail.value.MULTIPLE_DISCOUNT,
+          MULTIPLE_DISCOUNT_COUNT:
+            dataSettingMail.value.MULTIPLE_DISCOUNT_COUNT,
+          CHANGE_VALUE_AFTER_EDIT_DELETE_DISCOUNT:
+            dataSettingMail.value.CHANGE_VALUE_AFTER_EDIT_DELETE_DISCOUNT,
+          MULTIPLE_PROMOTION: dataSettingMail.value.MULTIPLE_PROMOTION,
+          MULTIPLE_PROMOTION_COUNT:
+            dataSettingMail.value.MULTIPLE_PROMOTION_COUNT,
+          MULTIPLE_PROMOTION_DISCOUNT:
+            dataSettingMail.value.MULTIPLE_PROMOTION_DISCOUNT,
+        },
+      ],
+    }
+    systemSetting.updateSystemSettingAction(data, toast)
+  }
   defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>

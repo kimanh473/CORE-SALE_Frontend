@@ -18,13 +18,23 @@ export const useSystemSetting = defineStore("SystemSetting", {
                     console.log(err)
                 });
         },
-        updateSystemSettingAction(data: any) {
+        updateSystemSettingAction(data: any, toast: any) {
             updateSystemSettingApi(data)
                 .then((res: any) => {
-                    console.log(res);
+                    if (res?.data?.status == 'success') {
+                        toast.success("Cập nhật thành công");
+                    } else {
+                        toast.warning(res.data.messages.title);
+                    }
                 })
                 .catch((err) => {
                     console.log(err)
+                    if (err.response.status == 403) {
+                        toast.warning("Bạn không có quyền thực hiện chức năng này");
+                    } else if (err.response.status == 422) {
+                        console.log(err.response);
+                        toast.warning(err.response.data.error?.title[0]);
+                    }
                 });
         },
     },
