@@ -13,12 +13,17 @@
         >
       </Header>
     </template>
-    <template v-slot:content class="relative">
+    <template v-slot:content class="relative flex">
       <Transition :duration="550" name="nested">
         <div
-          class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over"
+          class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over flex"
         >
-          <div class="w-full">
+          <a-anchor class="w-[200px] h-[300px] border-2">
+            <a-anchor-link href="#infor-common" title="Thông tin chung" />
+            <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
+            <a-anchor-link href="#address" title="Địa chỉ" />
+          </a-anchor>
+          <div id="infor-common" class="w-full ml-4">
             <h4
               class="form-section-title form-small cursor-pointer"
               @click="isInfor = !isInfor"
@@ -123,7 +128,7 @@
               </h2>
             </div>
 
-            <div class="inner">
+            <div id="infor-contact" class="inner">
               <h4
                 class="form-section-title form-small cursor-pointer"
                 @click="isContact = !isContact"
@@ -210,7 +215,7 @@
                 </h2>
               </div>
             </div>
-            <div class="inner">
+            <div id="address" class="inner">
               <h4
                 class="form-section-title form-small cursor-pointer"
                 @click="isAddress = !isAddress"

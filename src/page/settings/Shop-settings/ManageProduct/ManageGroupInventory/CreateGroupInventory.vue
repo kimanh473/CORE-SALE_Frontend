@@ -28,8 +28,8 @@
                   <input
                     type="text"
                     class="form-control-input"
-                    placeholder="Nhập tên"
-                    v-model="web.web_name"
+                    placeholder="Nhập tên kho"
+                    v-model="invent.title"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                   {{ messageError?.title[0] }}
@@ -46,8 +46,8 @@
                   <input
                     type="text"
                     class="form-control-input"
-                    placeholder="Nhập mã"
-                    v-model="web.url"
+                    placeholder="Nhập mã kho"
+                    v-model="invent.code"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                   {{ messageError?.title[0] }}
@@ -64,6 +64,7 @@
                   cols="30"
                   rows="5"
                   class="form-control-input"
+                  v-model="invent.desc"
                 ></textarea>
               </div>
             </div>
@@ -75,7 +76,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createInventory()">
+          <button class="button-modal" @click="createGroupInventory()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -94,24 +95,32 @@
   import Header from '../../../../../components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
+  import { useGroupInventory } from '../../../../../store/modules/inventory/group-inventory'
+  import { useRouter } from 'vue-router'
+  const dataGroupInventory = useGroupInventory()
   const isLoading = ref<boolean>(false)
   const toast = useToast()
+  const router = useRouter()
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const web = reactive({
-    web_name: '',
+  const invent = reactive({
+    title: '',
     code: '',
-    url: '',
-    status: false,
+    desc: '',
   })
-  const createInventory = () => {
+  const createGroupInventory = () => {
     let data = {
-      web_name: web.web_name,
-      code: web.code,
-      url: web.url,
-      status: web.status,
+      title: invent.title,
+      code: invent.code,
+      desc: invent.desc,
     }
+    dataGroupInventory.createGroupInventoryAction(
+      data,
+      toast,
+      router,
+      EndTimeLoading
+    )
   }
 </script>
 
