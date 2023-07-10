@@ -13,6 +13,20 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/create-attribute-product',
+    component: () => import('./page/products/AttributeProduct/CreateAttribute.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/list-attribute-product',
+    component: () => import('./page/products/AttributeProduct/ListAttributeProduct.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/setting-discount',
     component: () => import('./page/settings/Admin/SettingSale/SettingDiscount.vue'),
     meta: {

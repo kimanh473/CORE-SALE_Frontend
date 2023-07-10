@@ -12,7 +12,7 @@ interface DetailInvent {
     id: string,
     title: string,
     code: string,
-    type_code: object,
+    json_type_code: object,
     latitude: string,
     longitude: string,
     contact_name: string,

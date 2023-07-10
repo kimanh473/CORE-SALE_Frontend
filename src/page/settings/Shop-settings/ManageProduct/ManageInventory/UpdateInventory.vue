@@ -77,7 +77,7 @@
                       <a-select
                         class="form-control-input"
                         placeholder="Chọn nhóm kho"
-                        v-model:value="detailInventory.type_code"
+                        v-model:value="detailInventory.json_type_code"
                         @click.once="getListGroupInventory"
                         mode="multiple"
                       >
@@ -525,7 +525,7 @@
     let data = {
       title: detailInventory.value.title,
       code: detailInventory.value.code,
-      type_code: detailInventory.value.type_code,
+      type_code: detailInventory.value.json_type_code,
       latitude: detailInventory.value.latitude,
       longitude: detailInventory.value.longitude,
       contact_name: detailInventory.value.contact_name,
