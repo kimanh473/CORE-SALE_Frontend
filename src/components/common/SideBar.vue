@@ -435,7 +435,7 @@
               {
                 icon: '',
                 label: 'Thuộc tính sản phẩm',
-                to: '/asset-groups',
+                to: '/list-attribute-product',
                 submenuGroup: 'Sản phẩm',
                 permission: [''],
               },

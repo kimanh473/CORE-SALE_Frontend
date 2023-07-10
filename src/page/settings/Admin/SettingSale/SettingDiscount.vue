@@ -169,14 +169,14 @@
   const toast = useToast()
   const activeKey = ref('1')
   const systemSetting = useSystemSetting()
-  systemSetting.detailSystemSettingAction('SETTING_CUSTOMER')
+  systemSetting.detailSystemSettingAction('SETTING_PROMOTION')
   const { dataSettingMail } = storeToRefs(systemSetting)
   const checkCode = ref<boolean>(false)
   const checkPromotions = ref<boolean>(false)
   const checkBoth = ref<boolean>(false)
   const updateDiscountSetting = () => {
     const data = {
-      code: 'SETTING_CUSTOMER',
+      code: 'SETTING_PROMOTION',
       value: [
         {
           MULTIPLE_DISCOUNT: dataSettingMail.value.MULTIPLE_DISCOUNT,

@@ -14,7 +14,7 @@ export const useWebCatalog = defineStore("WebCatalog", {
             return (payload: any) => state.listWeb = payload
         },
         getListWebPagination: (state: any) => {
-            return (payload: any) => state.listWebPaginate = payload.map((item: any) => ({
+            return (payload: any) => state.listWebPaginate = payload?.map((item: any) => ({
                 id: item.id,
                 code: item.code,
                 web_name: item.web_name,
@@ -38,7 +38,6 @@ export const useWebCatalog = defineStore("WebCatalog", {
         getAllWebPaginateAction() {
             getAllWebIndexsApi()
                 .then((payload: any) => {
-                    console.log(payload.data.data.data);
                     this.getListWebPagination(payload?.data?.data?.data)
                 })
                 .catch((err) => {
