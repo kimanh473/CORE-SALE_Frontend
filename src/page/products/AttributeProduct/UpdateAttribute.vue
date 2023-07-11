@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-          <img src="../assets/images/btp.png" />
-        </div> -->
+            <img src="../assets/images/btp.png" />
+          </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới thuộc tính</p></template
+          ><p class="pl-5 text-[16px]">Sửa thuộc tính</p></template
         >
       </Header>
     </template>
@@ -19,10 +19,10 @@
           class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over flex"
         >
           <!-- <a-anchor class="w-[200px] h-[300px] border-2">
-            <a-anchor-link href="#infor-common" title="Thông tin chung" />
-            <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
-            <a-anchor-link href="#address" title="Địa chỉ" />
-          </a-anchor> -->
+              <a-anchor-link href="#infor-common" title="Thông tin chung" />
+              <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
+              <a-anchor-link href="#address" title="Địa chỉ" />
+            </a-anchor> -->
           <div id="infor-common" class="w-full ml-4">
             <h4
               class="form-section-title form-small cursor-pointer"
@@ -50,7 +50,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên kho"
-                          v-model="inventory.title"
+                          v-model="attribute.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -88,7 +88,7 @@
                     </div>
 
                     <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
-                    nhận -->
+                      nhận -->
                     <div>
                       <div class="form-small">
                         <label for="" class="form-group-label">Tiêu đề </label>
@@ -97,8 +97,27 @@
                             type="text"
                             class="form-control-input"
                             placeholder="Nhập tên kho"
-                            v-model="inventory.title"
+                            v-model="attribute.title"
                           />
+                        </div>
+                      </div>
+                      <div class="form-small">
+                        <div>
+                          <label for="" class="form-group-label"
+                            >Các website<span class="text-red-600"></span
+                          ></label>
+                          <div>
+                            <a-select
+                              class="form-control-input"
+                              placeholder="Chọn website"
+                              :options="options1"
+                              @change="handleChange"
+                            >
+                            </a-select>
+                            <p v-if="messageError?.code" class="text-red-600">
+                              {{ messageError?.code[0] }}
+                            </p>
+                          </div>
                         </div>
                       </div>
                       <div class="form-small">
@@ -147,7 +166,7 @@
                         <input
                           type="text"
                           class="form-control-input"
-                          v-model="inventory.contact_name"
+                          v-model="attribute.contact_name"
                         />
                         <p
                           v-if="messageError?.contact_name"
@@ -167,7 +186,7 @@
                           type="email"
                           class="form-control-input"
                           placeholder="Nhập tên email"
-                          v-model="inventory.contact_email"
+                          v-model="attribute.contact_email"
                         />
                         <p
                           v-if="messageError?.contact_email"
@@ -219,7 +238,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createInventory()">
+          <button class="button-modal" @click="updateAttribute()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -313,7 +332,7 @@
       value: 'charOrNumber',
     },
   ])
-  const inventory = reactive({
+  const attribute = reactive({
     title: '',
     type_code: [],
     latitude: '',
@@ -381,32 +400,32 @@
   const handleChangeCity = (value: number, name: any) => {
     dataLocation.getListAllDistrictAction(value)
 
-    inventory.address = name.title + ', ' + 'Việt Nam'
+    attribute.address = name.title + ', ' + 'Việt Nam'
   }
   const handleChangeDistrict = (value: number, name: any) => {
     dataLocation.getListAllWardAction(value)
-    inventory.address = name.title + ', ' + inventory.address
+    attribute.address = name.title + ', ' + attribute.address
   }
   const handleChangeWard = (value: number, name: any) => {
-    inventory.address = name.title + ', ' + inventory.address
+    attribute.address = name.title + ', ' + attribute.address
   }
-  const createInventory = () => {
+  const updateAttribute = () => {
     let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
+      title: attribute.title,
+      code: attribute.code,
+      type_code: attribute.type_code,
+      latitude: attribute.latitude,
+      longitude: attribute.longitude,
+      contact_name: attribute.contact_name,
+      contact_email: attribute.contact_email,
+      contact_phone: attribute.contact_phone,
+      address: attribute.address,
+      address_country_id: attribute.address_country_id,
+      address_district_id: attribute.address_district_id,
+      address_ward_id: attribute.address_ward_id,
+      address_state_id: attribute.address_state_id,
+      address_detail: attribute.address_detail,
+      desc: attribute.desc,
     }
     dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
