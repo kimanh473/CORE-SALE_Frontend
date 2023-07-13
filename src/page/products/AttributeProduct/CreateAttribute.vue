@@ -50,7 +50,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên kho"
-                          v-model="inventory.title"
+                          v-model="attribute.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -77,37 +77,39 @@
                       </div>
                     </div>
                   </div>
-                  <div v-if="showManageChoice">
+                  <div
+                    class="border border-gray-800 w-[500px] p-4"
+                    v-if="showManageChoice"
+                  >
                     <h1>Quản lý lựa chọn</h1>
-                    <div class="form-small">
-                      <label for="" class="form-group-label"
-                        >Mặc định &nbsp;
-                        <a-switch v-model:checked="checked" />
-                        <span></span
-                      ></label>
+                    <div class="flex">
+                      <p class="pr-[100px]">Tiêu đề</p>
+                      <p>Mặc định</p>
                     </div>
-
-                    <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
-                    nhận -->
-                    <div>
-                      <div class="form-small">
-                        <label for="" class="form-group-label">Tiêu đề </label>
-                        <div>
-                          <input
-                            type="text"
-                            class="form-control-input"
-                            placeholder="Nhập tên kho"
-                            v-model="inventory.title"
-                          />
-                        </div>
+                    <div
+                      v-for="(item, index) in dataOption"
+                      :key="index"
+                      class="flex"
+                    >
+                      <div class="pr-[100px]">
+                        <a-checkbox
+                          v-model="item.defaultOption"
+                          class="!pl-[16px]"
+                        ></a-checkbox>
                       </div>
-                      <div class="form-small">
-                        <label for="" class="form-group-label"
-                          >Bắt buộc &nbsp;
-                          <a-switch v-model:checked="checked" />
-                          <span></span
-                        ></label>
+                      <div class="flex items-end">
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                        <i
+                          @click="removeOptions(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
                       </div>
+                    </div>
+                    <div @click="addOptions">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
                   </div>
                 </div>
@@ -140,15 +142,21 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Phạm vi<span class="text-red-600">* </span>
+                        >Website áp dụng<span class="text-red-600">* </span>
                         <span></span
                       ></label>
                       <div>
-                        <input
-                          type="text"
+                        <a-select
                           class="form-control-input"
-                          v-model="inventory.contact_name"
-                        />
+                          placeholder="Chọn web"
+                        >
+                          <a-select-option
+                            v-for="(item, index) in listWeb"
+                            :key="index"
+                            :value="item.code"
+                            >{{ item.web_name }}</a-select-option
+                          >
+                        </a-select>
                         <p
                           v-if="messageError?.contact_name"
                           class="text-red-600"
@@ -163,12 +171,7 @@
                         <span></span
                       ></label>
                       <div>
-                        <input
-                          type="email"
-                          class="form-control-input"
-                          placeholder="Nhập tên email"
-                          v-model="inventory.contact_email"
-                        />
+                        <a-switch v-model:checked="is_unique" />
                         <p
                           v-if="messageError?.contact_email"
                           class="text-red-600"
@@ -219,7 +222,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createInventory()">
+          <button class="button-modal" @click="createAttribute()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -245,6 +248,7 @@
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
+  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -256,8 +260,10 @@
   const isContact = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
+  const webCatalog = useWebCatalog()
+  webCatalog.getAllWebCatalogAction()
+  const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
-
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -268,19 +274,19 @@
     },
     {
       label: 'Ngày giờ',
-      value: 'time',
+      value: 'date_time',
     },
     {
       label: 'Hình ảnh',
-      value: 'image',
+      value: 'varchar',
     },
     {
       label: 'Nút bật tắt',
-      value: 'switch',
+      value: 'varchar',
     },
     {
       label: 'Nhiều lựa chọn',
-      value: 'multiple',
+      value: 'varchar',
     },
   ])
   const options2 = ref<SelectProps['options']>([
@@ -313,7 +319,7 @@
       value: 'charOrNumber',
     },
   ])
-  const inventory = reactive({
+  const attribute = reactive({
     title: '',
     type_code: [],
     latitude: '',
@@ -350,6 +356,24 @@
       showManageChoice.value = false
     }
   }
+  const is_unique = ref<boolean>(false)
+  const dataOption = reactive([
+    {
+      defaultOption: false,
+      title: '',
+    },
+  ])
+
+  const addOptions = () => {
+    const data = {
+      defaultOption: false,
+      title: '',
+    }
+    dataOption.push(data)
+  }
+  const removeOptions = (index: number) => {
+    dataOption.splice(index, 1)
+  }
   const dataGroupInventory = useGroupInventory()
   const getListGroupInventory = () => {
     dataGroupInventory.getListGroupInventoryAction()
@@ -381,32 +405,32 @@
   const handleChangeCity = (value: number, name: any) => {
     dataLocation.getListAllDistrictAction(value)
 
-    inventory.address = name.title + ', ' + 'Việt Nam'
+    attribute.address = name.title + ', ' + 'Việt Nam'
   }
   const handleChangeDistrict = (value: number, name: any) => {
     dataLocation.getListAllWardAction(value)
-    inventory.address = name.title + ', ' + inventory.address
+    attribute.address = name.title + ', ' + attribute.address
   }
   const handleChangeWard = (value: number, name: any) => {
-    inventory.address = name.title + ', ' + inventory.address
+    attribute.address = name.title + ', ' + attribute.address
   }
-  const createInventory = () => {
+  const createAttribute = () => {
     let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
+      title: attribute.title,
+      code: attribute.code,
+      type_code: attribute.type_code,
+      latitude: attribute.latitude,
+      longitude: attribute.longitude,
+      contact_name: attribute.contact_name,
+      contact_email: attribute.contact_email,
+      contact_phone: attribute.contact_phone,
+      address: attribute.address,
+      address_country_id: attribute.address_country_id,
+      address_district_id: attribute.address_district_id,
+      address_ward_id: attribute.address_ward_id,
+      address_state_id: attribute.address_state_id,
+      address_detail: attribute.address_detail,
+      desc: attribute.desc,
     }
     dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }

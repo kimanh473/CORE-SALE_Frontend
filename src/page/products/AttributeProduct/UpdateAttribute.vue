@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-            <img src="../assets/images/btp.png" />
-          </div> -->
+          <img src="../assets/images/btp.png" />
+        </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Sửa thuộc tính</p></template
+          ><p class="pl-5 text-[16px]">Tạo mới thuộc tính</p></template
         >
       </Header>
     </template>
@@ -19,10 +19,10 @@
           class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over flex"
         >
           <!-- <a-anchor class="w-[200px] h-[300px] border-2">
-              <a-anchor-link href="#infor-common" title="Thông tin chung" />
-              <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
-              <a-anchor-link href="#address" title="Địa chỉ" />
-            </a-anchor> -->
+            <a-anchor-link href="#infor-common" title="Thông tin chung" />
+            <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
+            <a-anchor-link href="#address" title="Địa chỉ" />
+          </a-anchor> -->
           <div id="infor-common" class="w-full ml-4">
             <h4
               class="form-section-title form-small cursor-pointer"
@@ -50,7 +50,6 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên kho"
-                          v-model="attribute.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -77,56 +76,39 @@
                       </div>
                     </div>
                   </div>
-                  <div v-if="showManageChoice">
+                  <div
+                    class="border border-gray-800 w-[500px] p-4"
+                    v-if="showManageChoice"
+                  >
                     <h1>Quản lý lựa chọn</h1>
-                    <div class="form-small">
-                      <label for="" class="form-group-label"
-                        >Mặc định &nbsp;
-                        <a-switch v-model:checked="checked" />
-                        <span></span
-                      ></label>
+                    <div class="flex">
+                      <p class="pr-[100px]">Tiêu đề</p>
+                      <p>Mặc định</p>
                     </div>
-
-                    <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
-                      nhận -->
-                    <div>
-                      <div class="form-small">
-                        <label for="" class="form-group-label">Tiêu đề </label>
-                        <div>
-                          <input
-                            type="text"
-                            class="form-control-input"
-                            placeholder="Nhập tên kho"
-                            v-model="attribute.title"
-                          />
-                        </div>
+                    <div
+                      v-for="(item, index) in dataOption"
+                      :key="index"
+                      class="flex"
+                    >
+                      <div class="pr-[100px]">
+                        <a-checkbox
+                          v-model="item.defaultOption"
+                          class="!pl-[16px]"
+                        ></a-checkbox>
                       </div>
-                      <div class="form-small">
-                        <div>
-                          <label for="" class="form-group-label"
-                            >Các website<span class="text-red-600"></span
-                          ></label>
-                          <div>
-                            <a-select
-                              class="form-control-input"
-                              placeholder="Chọn website"
-                              :options="options1"
-                              @change="handleChange"
-                            >
-                            </a-select>
-                            <p v-if="messageError?.code" class="text-red-600">
-                              {{ messageError?.code[0] }}
-                            </p>
-                          </div>
-                        </div>
+                      <div class="flex items-end">
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                        <i
+                          @click="removeOptions(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
                       </div>
-                      <div class="form-small">
-                        <label for="" class="form-group-label"
-                          >Bắt buộc &nbsp;
-                          <a-switch v-model:checked="checked" />
-                          <span></span
-                        ></label>
-                      </div>
+                    </div>
+                    <div @click="addOptions">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
                   </div>
                 </div>
@@ -159,15 +141,11 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Phạm vi<span class="text-red-600">* </span>
+                        >Website áp dụng<span class="text-red-600">* </span>
                         <span></span
                       ></label>
                       <div>
-                        <input
-                          type="text"
-                          class="form-control-input"
-                          v-model="attribute.contact_name"
-                        />
+                        <input type="text" class="form-control-input" />
                         <p
                           v-if="messageError?.contact_name"
                           class="text-red-600"
@@ -182,12 +160,7 @@
                         <span></span
                       ></label>
                       <div>
-                        <input
-                          type="email"
-                          class="form-control-input"
-                          placeholder="Nhập tên email"
-                          v-model="attribute.contact_email"
-                        />
+                        <a-switch v-model:checked="is_unique" />
                         <p
                           v-if="messageError?.contact_email"
                           class="text-red-600"
@@ -368,6 +341,24 @@
     } else {
       showManageChoice.value = false
     }
+  }
+  const is_unique = ref<boolean>(false)
+  const dataOption = reactive([
+    {
+      defaultOption: false,
+      title: '',
+    },
+  ])
+
+  const addOptions = () => {
+    const data = {
+      defaultOption: false,
+      title: '',
+    }
+    dataOption.push(data)
+  }
+  const removeOptions = (index: number) => {
+    dataOption.splice(index, 1)
   }
   const dataGroupInventory = useGroupInventory()
   const getListGroupInventory = () => {

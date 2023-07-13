@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { getAllAttributeProductsApi, deleteAttributeApi } from '../../../services/SettingStoreServices/attributeProduct.service'
+import { getAllAttributeGroupApi } from '../../../services/SettingStoreServices/attributeGroup.service'
 
-export const useAttributeProduct = defineStore("AttributeProduct", {
+export const useAttributeGroup = defineStore("AttributeGroup", {
     state: () => ({
-        listAttributeProduct: [] as DataInventory[],
+        listAttributeGroup: [] as DataAttribute[],
     }),
     getters: {
         // getData: (state) => {
@@ -22,7 +22,7 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
         //     }))
         // },
         getListAttribute: (state: any) => {
-            return (payload: any) => state.listAttributeProduct = payload
+            return (payload: any) => state.listAttributeGroup = payload
         }
     },
     actions: {
@@ -32,10 +32,10 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
         // getDetailInventory(payload: any) {
         //     this.detailInventory = payload.data
         // },
-        async getListAttributeAction() {
-            await getAllAttributeProductsApi()
+        async getListAttributeGroupAction() {
+            await getAllAttributeGroupApi()
                 .then((payload: any) => {
-                    let res = payload?.data?.data
+                    let res = payload?.data?.data?.data
                     this.getListAttribute(res)
                 })
                 .catch((err) => {
@@ -102,22 +102,22 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
         //                 console.log(err);
         //             });
         //     },
-        deleteAttributeAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
-            deleteAttributeApi(id)
-                .then((res) => {
-                    if (res.data.status == "success") {
-                        toast.success("Xóa thành công", 500);
-                    } else {
-                        toast.error(res.data.messages, 500);
-                    }
-                    EndTimeLoading();
-                    handleCloseConfirm();
-                })
-                .catch((err) => {
-                    console.log(err);
-                    handleCloseConfirm();
-                    EndTimeLoading();
-                });
-        },
+        //     deleteInventoryAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
+        //         deleteInventoryApi(id)
+        //             .then((res) => {
+        //                 if (res.data.status == "success") {
+        //                     toast.success("Xóa thành công", 500);
+        //                 } else {
+        //                     toast.error(res.data.messages, 500);
+        //                 }
+        //                 EndTimeLoading();
+        //                 handleCloseConfirm();
+        //             })
+        //             .catch((err) => {
+        //                 console.log(err);
+        //                 handleCloseConfirm();
+        //                 EndTimeLoading();
+        //             });
+        //     },
     },
 })
