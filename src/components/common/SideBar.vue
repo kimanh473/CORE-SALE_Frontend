@@ -442,7 +442,7 @@
               {
                 icon: '',
                 label: 'Nhóm thuộc tính sản phẩm',
-                to: '/asset-groups',
+                to: '/list-attribute-group',
                 submenuGroup: 'Sản phẩm',
                 permission: [''],
               },

@@ -38,7 +38,7 @@
         row-key="id"
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listInventory"
+        :data-source="listAttributeGroup"
         :rowSelection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
@@ -205,7 +205,7 @@
   import BaseLayout from '../../../layout/baseLayout.vue'
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
-  import { useInventory } from '../../../store/modules/inventory/product-invetory'
+  import { useAttributeGroup } from '../../../store/modules/store-setting/attribute-group'
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -216,10 +216,10 @@
   const toast = useToast()
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
-  const dataInventory = useInventory()
-  dataInventory.getListInventoryAction()
-  const { listInventory } = storeToRefs(dataInventory)
-
+  const dataAttributeGroup = useAttributeGroup()
+  dataAttributeGroup.getListAttributeGroupAction()
+  const { listAttributeGroup } = storeToRefs(dataAttributeGroup)
+  console.log(listAttributeGroup)
   const columns = [
     {
       title: 'Tên bộ thuộc tính',
@@ -233,8 +233,6 @@
     },
     {
       title: 'Người tạo',
-      dataIndex: 'fullname',
-      key: 'fullname',
     },
     {
       title: 'Ngày tạo',
@@ -243,7 +241,7 @@
     },
     {
       title: 'Ngày sửa',
-      dataIndex: 'address',
+      dataIndex: 'updated_at',
     },
     {
       title: 'Thao tác',
@@ -267,13 +265,13 @@
     isLoading.value = false
   }
   const handleDelete = () => {
-    isLoading.value = true
-    dataInventory.deleteInventoryAction(
-      Number(idSelected.value),
-      EndTimeLoading,
-      toast,
-      handleCloseConfirm
-    )
+    // isLoading.value = true
+    // dataAttributeGroup.deleteInventoryAction(
+    //   Number(idSelected.value),
+    //   EndTimeLoading,
+    //   toast,
+    //   handleCloseConfirm
+    // )
   }
   const selectedRowKeys = ref([])
   const onSelectChange = (selectedRowKeys1: any) => {

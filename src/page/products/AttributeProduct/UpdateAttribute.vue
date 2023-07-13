@@ -50,7 +50,6 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên kho"
-                          v-model="attribute.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -146,17 +145,7 @@
                         <span></span
                       ></label>
                       <div>
-                        <a-select
-                          class="form-control-input"
-                          placeholder="Chọn web"
-                        >
-                          <a-select-option
-                            v-for="(item, index) in listWeb"
-                            :key="index"
-                            :value="item.code"
-                            >{{ item.web_name }}</a-select-option
-                          >
-                        </a-select>
+                        <input type="text" class="form-control-input" />
                         <p
                           v-if="messageError?.contact_name"
                           class="text-red-600"
@@ -222,7 +211,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createAttribute()">
+          <button class="button-modal" @click="updateAttribute()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -248,7 +237,6 @@
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -260,10 +248,8 @@
   const isContact = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
-  const webCatalog = useWebCatalog()
-  webCatalog.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
+
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -274,19 +260,19 @@
     },
     {
       label: 'Ngày giờ',
-      value: 'date_time',
+      value: 'time',
     },
     {
       label: 'Hình ảnh',
-      value: 'varchar',
+      value: 'image',
     },
     {
       label: 'Nút bật tắt',
-      value: 'varchar',
+      value: 'switch',
     },
     {
       label: 'Nhiều lựa chọn',
-      value: 'varchar',
+      value: 'multiple',
     },
   ])
   const options2 = ref<SelectProps['options']>([
@@ -414,7 +400,7 @@
   const handleChangeWard = (value: number, name: any) => {
     attribute.address = name.title + ', ' + attribute.address
   }
-  const createAttribute = () => {
+  const updateAttribute = () => {
     let data = {
       title: attribute.title,
       code: attribute.code,
