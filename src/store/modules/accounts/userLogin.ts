@@ -11,6 +11,10 @@ export const userLogin = defineStore("UserLogin", {
         setDataLogin(payload: any) {
             localStorage.setItem("TOKEN", payload.token);
             localStorage.setItem("authenticated", 'true');
+            setTimeout(function () {
+                localStorage.removeItem('authenticated');
+                location.reload()
+            }, 21600000);
             this.dataLogin = payload
         },
 
@@ -32,6 +36,7 @@ export const userLogin = defineStore("UserLogin", {
         checkAuthenticated(router: any) {
             const authenticated = localStorage.getItem("authenticated");
             if (authenticated === null) {
+                alert("Hết phiên đăng nhập, vui lòng đăng nhập lại!!");
                 router.push("/login");
             }
             // else if (to.name === "Social" && authenticated === null) {

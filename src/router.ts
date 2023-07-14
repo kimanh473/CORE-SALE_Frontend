@@ -146,6 +146,13 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/update-group-inventory/:id',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/ManageGroupInventory/UpdateGroupInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/create-group-inventory',
     component: () => import('./page/settings/Shop-settings/ManageProduct/ManageGroupInventory/CreateGroupInventory.vue'),
     meta: {

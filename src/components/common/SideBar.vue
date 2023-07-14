@@ -27,9 +27,10 @@
         <div class="menu">
           <div class="menu flex-col overflow-hidden py-4 text-white/10">
             <menu-item
-              class="hover:bg-white/20 py-2 cursor-pointer"
+              class="hover:bg-white/10 py-2 cursor-pointer"
               v-for="(item, index) in menuTree"
               :key="index"
+              :class="{ active: isActived === index }"
               :label="item.label"
               :depth="0"
               :data="item.children1"
@@ -37,7 +38,9 @@
               :icon="item.icon"
               :smallLabel="item.smallLabel"
               :permission="item.permission"
-              v-on:click="menuParentClick(index, item.label)"
+              v-on:click="
+                menuParentClick(index, item.label), (isActived = index)
+              "
               @dblclick="showMenuChil = !showMenuChil"
             />
           </div>
@@ -164,6 +167,7 @@
           return ' grid grid-cols-1 gap-4 px-4'
         }
       }
+
       const menuParentClick = (index, title) => {
         showMenuChil.value = false
         menuParentIndex.value = index
@@ -175,7 +179,6 @@
       }
       const checkArray = (arr) => {
         if (arr != null) {
-          console.log(arr[0])
           if (arr[0] != undefined) {
             return arr[0].submenuGroup
           } else {
@@ -212,9 +215,9 @@
         if (
           this.checkArray(this.menuTree[this.menuParentIndex]?.children2) != ''
         ) {
-          return ' grid grid-cols-2 gap-4 px-5'
+          return ' grid grid-cols-2 gap-4 pl-5'
         } else {
-          return ' grid grid-cols-1 gap-0 px-5'
+          return ' grid grid-cols-1 gap-0 pl-5'
         }
       },
     },
@@ -222,7 +225,7 @@
       return {
         menuTree: [
           {
-            label: 'TỔNG QUAN',
+            label: 'TÔNG QUÁT',
             icon: 'fal fa-tachometer-alt',
             to: '/',
             permission: [''],
@@ -270,7 +273,7 @@
             to: '/products-list',
             permission: [''],
             smallLabel: 'SẢN PHẨM',
-            children11: [
+            children1: [
               {
                 icon: '',
                 label: 'Danh mục sản phẩm',
@@ -304,12 +307,12 @@
             children1: [],
           },
           {
-            label: 'MARKETING',
+            label: 'TIẾP THỊ',
             icon: 'fal fa-bullhorn',
             to: '/4',
             submenuGroup: '',
             permission: [''],
-            smallLabel: 'MARKETING',
+            smallLabel: 'TIẾP THỊ',
             children1: [
               {
                 icon: '',
@@ -521,7 +524,7 @@
               {
                 icon: '',
                 label: 'Người dùng',
-                to: '/list-user',
+                to: '/',
                 permission: [''],
                 submenuGroup: 'Hệ thống',
               },
@@ -557,6 +560,13 @@
                 icon: '',
                 label: 'Danh mục website',
                 to: '/list-web',
+                permission: [''],
+                submenuGroup: 'Hệ thống',
+              },
+              {
+                icon: '',
+                label: 'Tên miền',
+                to: '/',
                 permission: [''],
                 submenuGroup: 'Hệ thống',
               },
@@ -632,5 +642,8 @@
   }
   .menuChil.Show {
     transform: translateX(0);
+  }
+  .active {
+    background-color: rgb(255 255 255/0.2);
   }
 </style>

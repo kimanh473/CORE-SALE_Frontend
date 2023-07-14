@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllGroupInventoryApi, createGroupInventoryApi } from '../../../services/InventoryServices/groupInventory.service'
+import { getAllGroupInventoryApi, createGroupInventoryApi, deleteGroupInventoryApi } from '../../../services/InventoryServices/groupInventory.service'
 export const useGroupInventory = defineStore("GroupInventory", {
     state: () => ({
         listGroupInventory: null
@@ -42,6 +42,23 @@ export const useGroupInventory = defineStore("GroupInventory", {
                     this.messageError = err.response.data.messages
                     console.log(this.messageError);
                     console.log(err);
+                });
+        },
+        deleteGroupInventoryAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
+            deleteGroupInventoryApi(id)
+                .then((res) => {
+                    if (res.data.status == "success") {
+                        toast.success("Xóa thành công", 500);
+                    } else {
+                        toast.error(res.data.messages, 500);
+                    }
+                    EndTimeLoading();
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
                 });
         },
     },
