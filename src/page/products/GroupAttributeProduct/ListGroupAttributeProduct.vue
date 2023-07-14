@@ -29,7 +29,7 @@
         <div
           class="button-create-new relative group rounded-md px-2"
           title="Tạo mới web"
-          @click="CreateInventory()"
+          @click="CreateGroupAttribute()"
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới nhóm thuộc tính</p>
         </div>
@@ -305,8 +305,8 @@
   //     console.log(selected, selectedRows, changeRows)
   //   },
   // })
-  const CreateInventory = () => {
-    router.push('/create-inventory')
+  const CreateGroupAttribute = () => {
+    router.push('/create-group-attribute')
   }
   defineProps<{ isShowSearch: boolean }>()
 </script>

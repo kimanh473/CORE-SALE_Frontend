@@ -13,6 +13,13 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/create-group-attribute',
+    component: () => import('./page/products/GroupAttributeProduct/CreateGroupAttribute.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/list-attribute-group',
     component: () => import('./page/products/GroupAttributeProduct/ListGroupAttributeProduct.vue'),
     meta: {
@@ -141,6 +148,13 @@ const route: TRoute[] = [
   {
     path: '/list-group-inventory',
     component: () => import('./page/settings/Shop-settings/ManageProduct/ManageGroupInventory/ListGroupInventory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
+    path: '/update-group-inventory/:id',
+    component: () => import('./page/settings/Shop-settings/ManageProduct/ManageGroupInventory/UpdateGroupInventory.vue'),
     meta: {
       layout: "base-layout",
     },

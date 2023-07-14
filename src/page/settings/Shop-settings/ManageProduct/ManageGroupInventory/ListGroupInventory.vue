@@ -39,8 +39,8 @@
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdateInvent(record.id)">Sửa</a>&nbsp;|&nbsp;<a
-              @click="handleOpenDeleteInvent(record)"
+            <a @click="navigateUpdateGroupInventory(record.id)">Sửa</a
+            >&nbsp;|&nbsp;<a @click="handleOpenDeleteGroupInventory(record)"
               >Xóa</a
             >
           </template>
@@ -254,11 +254,11 @@
     },
   ]
 
-  const navigateUpdateInvent = (id: number) => {
-    router.push(`/update-inventory/${id}`)
+  const navigateUpdateGroupInventory = (id: number) => {
+    router.push(`/update-group-inventory/${id}`)
   }
   const idSelected = ref()
-  const handleOpenDeleteInvent = (record: any) => {
+  const handleOpenDeleteGroupInventory = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
   }
@@ -269,13 +269,13 @@
     isLoading.value = false
   }
   const handleDelete = () => {
-    // isLoading.value = true
-    // dataInventory.deleteInventoryAction(
-    //   Number(idSelected.value),
-    //   EndTimeLoading,
-    //   toast,
-    //   handleCloseConfirm
-    // )
+    isLoading.value = true
+    dataGroupInventory.deleteGroupInventoryAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirm
+    )
   }
   // const rowSelection = {
   //   onChange(selectedRowKeys: (string | number)[], selectedRows: DataItem[]) {
