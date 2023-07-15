@@ -3,7 +3,7 @@ import { getAllAttributeProductsApi, deleteAttributeApi } from '../../../service
 
 export const useAttributeProduct = defineStore("AttributeProduct", {
     state: () => ({
-        listAttributeProduct: [] as DataInventory[],
+        listAttributeProduct: [] as DataAttribute[],
     }),
     getters: {
         // getData: (state) => {

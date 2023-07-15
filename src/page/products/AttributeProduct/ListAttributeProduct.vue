@@ -219,8 +219,6 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const { listAttributeProduct } = storeToRefs(dataAttribute)
-  console.log(listAttributeProduct)
-
   const columns = [
     {
       title: 'Mã thuộc tính',

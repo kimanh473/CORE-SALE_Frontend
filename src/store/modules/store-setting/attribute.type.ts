@@ -5,4 +5,5 @@ interface DataAttribute {
     status: number
     json_attribute_detail: Array<String>
     created_at: string
+    attribute_code: string
 }
