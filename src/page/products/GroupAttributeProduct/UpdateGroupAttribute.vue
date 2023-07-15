@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-            <img src="../assets/images/btp.png" />
-          </div> -->
+              <img src="../assets/images/btp.png" />
+            </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới nhóm thuộc tính</p></template
+          ><p class="pl-5 text-[16px]">Cập nhật nhóm thuộc tính</p></template
         >
       </Header>
     </template>
@@ -19,10 +19,10 @@
           class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over flex"
         >
           <!-- <a-anchor class="w-[200px] h-[300px] border-2">
-              <a-anchor-link href="#infor-common" title="Thông tin chung" />
-              <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
-              <a-anchor-link href="#address" title="Địa chỉ" />
-            </a-anchor> -->
+                <a-anchor-link href="#infor-common" title="Thông tin chung" />
+                <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
+                <a-anchor-link href="#address" title="Địa chỉ" />
+              </a-anchor> -->
           <div id="infor-common" class="w-full ml-4">
             <h4
               class="form-section-title form-small cursor-pointer"
@@ -42,21 +42,16 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Thuộc web<span class="text-red-600">* </span>
+                        >Tên thuộc tính<span class="text-red-600">* </span>
                         <span></span
                       ></label>
                       <div>
-                        <a-select
+                        <input
+                          type="text"
                           class="form-control-input"
-                          placeholder="Chọn web"
-                        >
-                          <a-select-option
-                            v-for="(item, index) in listWeb"
-                            :key="index"
-                            :value="item.code"
-                            >{{ item.web_name }}</a-select-option
-                          >
-                        </a-select>
+                          placeholder="Nhập tên kho"
+                          v-model="attribute.title"
+                        />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
                         </p>
@@ -66,37 +61,15 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Tên<span class="text-red-600"></span
-                      ></label>
-                      <div>
-                        <input
-                          type="text"
-                          class="form-control-input"
-                          placeholder="Nhập tên nhóm thuộc tính"
-                          v-model="attribute.title"
-                        />
-                        <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-small">
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Dựa trên<span class="text-red-600"></span
+                        >Định dạng<span class="text-red-600"></span
                       ></label>
                       <div>
                         <a-select
                           class="form-control-input"
-                          placeholder="Chọn thuộc tính"
-                          mode="multiple"
+                          placeholder="Chọn định dạng"
+                          :options="options1"
+                          @change="handleChange"
                         >
-                          <a-select-option
-                            v-for="(item, index) in listAttributeProduct"
-                            :key="index"
-                            >{{ item.attribute_code }}</a-select-option
-                          >
                         </a-select>
                         <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
@@ -166,46 +139,71 @@
               </h4>
               <Transition name="slide-up">
                 <div v-show="isContact == true">
-                  <a-transfer
-                    v-model:target-keys="targetKeys"
-                    class="tree-transfer"
-                    :data-source="dataSource"
-                    :render="(item:any) => item.title"
-                    :show-select-all="false"
-                  >
-                    <template
-                      #children="{ direction, selectedKeys, onItemSelect }"
-                    >
-                      <a-tree
-                        v-if="direction === 'left'"
-                        block-node
-                        checkable
-                        check-strictly
-                        default-expand-all
-                        :checked-keys="[...selectedKeys, ...targetKeys]"
-                        :tree-data="treeData"
-                        @dragenter="onDragEnter"
-                        @check="
-                          (_ : any, props:any) => {
-                            onChecked(
-                              props,
-                              [...selectedKeys, ...targetKeys],
-                              onItemSelect
-                            )
-                          }
-                        "
-                        @select="
-                          (_ : any, props:any) => {
-                            onChecked(
-                              props,
-                              [...selectedKeys, ...targetKeys],
-                              onItemSelect
-                            )
-                          }
-                        "
-                      />
-                    </template>
-                  </a-transfer>
+                  <div class="form-small">
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Website áp dụng<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn web"
+                        >
+                          <a-select-option
+                            v-for="(item, index) in listWeb"
+                            :key="index"
+                            :value="item.code"
+                            >{{ item.web_name }}</a-select-option
+                          >
+                        </a-select>
+                        <p
+                          v-if="messageError?.contact_name"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_name[0] }}
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Giá trị duy nhất<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <a-switch v-model:checked="is_unique" />
+                        <p
+                          v-if="messageError?.contact_email"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_email[0] }}
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Kiểm tra tính hợp lệ<span class="text-red-600"
+                          >*
+                        </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn kiểu"
+                          :options="options2"
+                          @change="handleChange"
+                        >
+                        </a-select>
+                        <p
+                          v-if="messageError?.contact_phone"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_phone[0] }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </Transition>
               <div v-show="isContact == false">
@@ -224,7 +222,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createAttribute()">
+          <button class="button-modal" @click="createGroupAttribute()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -246,76 +244,11 @@
   import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../store/modules/inventory/product-invetory'
   import { storeToRefs } from 'pinia'
-  import { ref, reactive, computed } from 'vue'
+  import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
   import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
-  import type { TransferProps, TreeProps } from 'ant-design-vue'
-  import type { AntTreeNodeDragEnterEvent } from 'ant-design-vue/es/tree'
-  const tData: TransferProps['dataSource'] = [
-    { key: '0-0', title: '0-0' },
-    {
-      key: '0-1',
-      title: '0-1',
-      children: [
-        { key: '0-1-0', title: '0-1-0' },
-        { key: '0-1-1', title: '0-1-1' },
-      ],
-    },
-    { key: '0-2', title: '0-3' },
-  ]
-
-  const transferDataSource: TransferProps['dataSource'] = []
-  function flatten(list: TransferProps['dataSource'] = []) {
-    list.forEach((item) => {
-      transferDataSource.push(item)
-      flatten(item.children)
-    })
-  }
-  flatten(JSON.parse(JSON.stringify(tData)))
-
-  function isChecked(
-    selectedKeys: (string | number)[],
-    eventKey: string | number
-  ) {
-    return selectedKeys.indexOf(eventKey) !== -1
-  }
-  //@ts-ignore
-  function handleTreeData(
-    treeNodes: TransferProps['dataSource'],
-    targetKeys: string[] = []
-  ) {
-    return treeNodes.map(({ children, ...props }) => ({
-      ...props,
-      disabled: targetKeys.includes(props.key as string),
-      children: handleTreeData(children ?? [], targetKeys),
-    }))
-  }
-  const targetKeys = ref<string[]>([])
-
-  const dataSource = ref(transferDataSource)
-
-  const treeData = computed(() => {
-    return handleTreeData(tData, targetKeys.value)
-  })
-
-  const onChecked = (
-    e:
-      | Parameters<TreeProps['onCheck']>[1]
-      | Parameters<TreeProps['onSelect']>[1],
-    checkedKeys: string[],
-    onItemSelect: (n: any, c: boolean) => void
-  ) => {
-    const { eventKey } = e.node
-    onItemSelect(eventKey, !isChecked(checkedKeys, eventKey))
-  }
-  const onDragEnter = (info: AntTreeNodeDragEnterEvent) => {
-    console.log(info)
-    // expandedKeys 需要展开时
-    // expandedKeys.value = info.expandedKeys;
-  }
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -330,15 +263,62 @@
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
-  const dataAttribute = useAttributeProduct()
-  dataAttribute.getListAttributeAction()
-  const { listAttributeProduct } = storeToRefs(dataAttribute)
-  console.log(listAttributeProduct)
-
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const options1 = ref<SelectProps['options']>([
+    {
+      label: 'Text',
+      value: 'text',
+    },
+    {
+      label: 'Ngày giờ',
+      value: 'date_time',
+    },
+    {
+      label: 'Hình ảnh',
+      value: 'varchar',
+    },
+    {
+      label: 'Nút bật tắt',
+      value: 'varchar',
+    },
+    {
+      label: 'Nhiều lựa chọn',
+      value: 'varchar',
+    },
+  ])
+  const options2 = ref<SelectProps['options']>([
+    {
+      label: 'Không',
+      value: 'invalid',
+    },
+    {
+      label: 'Email',
+      value: 'email',
+    },
+    {
+      label: 'Url',
+      value: 'url',
+    },
+    {
+      label: 'Kí tự',
+      value: 'char',
+    },
+    {
+      label: 'Số nguyên',
+      value: 'integer',
+    },
+    {
+      label: 'Số thập phân',
+      value: 'decimal',
+    },
+    {
+      label: 'Kí tự hoặc số',
+      value: 'charOrNumber',
+    },
+  ])
   const attribute = reactive({
     title: '',
     type_code: [],
@@ -434,7 +414,7 @@
   const handleChangeWard = (value: number, name: any) => {
     attribute.address = name.title + ', ' + attribute.address
   }
-  const createAttribute = () => {
+  const createGroupAttribute = () => {
     let data = {
       title: attribute.title,
       code: attribute.code,

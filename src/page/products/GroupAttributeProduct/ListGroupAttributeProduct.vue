@@ -46,8 +46,8 @@
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdateInvent(record.id)">Sửa</a>&nbsp;|&nbsp;<a
-              @click="handleOpenDeleteInvent(record)"
+            <a @click="navigateUpdateGroupAttribute(record.id)">Sửa</a
+            >&nbsp;|&nbsp;<a @click="handleOpenDeleteGroupAttribute(record)"
               >Xóa</a
             >
           </template>
@@ -219,7 +219,6 @@
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listAttributeGroup } = storeToRefs(dataAttributeGroup)
-  console.log(listAttributeGroup)
   const columns = [
     {
       title: 'Tên bộ thuộc tính',
@@ -250,11 +249,11 @@
     },
   ]
 
-  const navigateUpdateInvent = (id: number) => {
-    router.push(`/update-inventory/${id}`)
+  const navigateUpdateGroupAttribute = (id: number) => {
+    router.push(`/update-group-attribute/${id}`)
   }
   const idSelected = ref()
-  const handleOpenDeleteInvent = (record: any) => {
+  const handleOpenDeleteGroupAttribute = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
   }
