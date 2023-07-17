@@ -13,6 +13,13 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/create-category',
+    component: () => import('./page/products/ProductCategory/CreateCategory.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/update-group-attribute/:id',
     component: () => import('./page/products/GroupAttributeProduct/UpdateGroupAttribute.vue'),
     meta: {

@@ -178,6 +178,7 @@
                     >
                       <a-tree
                         v-if="direction === 'left'"
+                        draggable
                         block-node
                         checkable
                         check-strictly
@@ -185,6 +186,7 @@
                         :checked-keys="[...selectedKeys, ...targetKeys]"
                         :tree-data="treeData"
                         @dragenter="onDragEnter"
+                        @drop="onDrop"
                         @check="
                           (_ : any, props:any) => {
                             onChecked(
@@ -248,12 +250,15 @@
   import { storeToRefs } from 'pinia'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
-  import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
   import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
   import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
-  import type { TransferProps, TreeProps } from 'ant-design-vue'
-  import type { AntTreeNodeDragEnterEvent } from 'ant-design-vue/es/tree'
+  import type { TransferProps } from 'ant-design-vue'
+  import type {
+    AntTreeNodeDragEnterEvent,
+    AntTreeNodeDropEvent,
+    TreeProps,
+  } from 'ant-design-vue/es/tree'
   const tData: TransferProps['dataSource'] = [
     { key: '0-0', title: '0-0' },
     {
@@ -300,6 +305,8 @@
   const treeData = computed(() => {
     return handleTreeData(tData, targetKeys.value)
   })
+  const gData = ref<TreeProps['treeData']>(treeData.value)
+  console.log(gData)
 
   const onChecked = (
     e:
@@ -315,6 +322,76 @@
     console.log(info)
     // expandedKeys 需要展开时
     // expandedKeys.value = info.expandedKeys;
+  }
+  const onDrop = (info: AntTreeNodeDropEvent) => {
+    console.log(info)
+    const dropKey = info.node.key
+    const dragKey = info.dragNode.key
+    const dropPos = info.node.pos.split('-')
+    const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1])
+    const loop = (
+      data: TreeProps['treeData'],
+      key: string | number,
+      callback: any
+    ) => {
+      data.forEach((item, index) => {
+        if (item.key === key) {
+          return callback(item, index, data)
+        }
+        if (item.children) {
+          return loop(item.children, key, callback)
+        }
+      })
+    }
+    const data = [...gData.value]
+
+    // Find dragObject
+    let dragObj: TreeProps
+    loop(
+      data,
+      dragKey,
+      (item: TreeProps, index: number, arr: TreeProps['treeData']) => {
+        arr.splice(index, 1)
+        dragObj = item
+      }
+    )
+    if (!info.dropToGap) {
+      // Drop on the content
+      loop(data, dropKey, (item: TreeProps) => {
+        item.children = item.children || []
+        /// where to insert 示例添加到头部，可以是随意位置
+        item.children.unshift(dragObj)
+      })
+    } else if (
+      (info.node.children || []).length > 0 && // Has children
+      info.node.expanded && // Is expanded
+      dropPosition === 1 // On the bottom gap
+    ) {
+      loop(data, dropKey, (item: TreeProps) => {
+        item.children = item.children || []
+        // where to insert 示例添加到头部，可以是随意位置
+        item.children.unshift(dragObj)
+      })
+    } else {
+      let ar: TreeProps['treeData'] = []
+      let i = 0
+      loop(
+        data,
+        dropKey,
+        (_item: TreeProps, index: number, arr: TreeProps['treeData']) => {
+          ar = arr
+          i = index
+        }
+      )
+      if (dropPosition === -1) {
+        //@ts-ignore
+        ar.splice(i, 0, dragObj)
+      } else {
+        //@ts-ignore
+        ar.splice(i + 1, 0, dragObj)
+      }
+    }
+    gData.value = data
   }
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
