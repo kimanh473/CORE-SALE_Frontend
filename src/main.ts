@@ -4,7 +4,7 @@ import './assets/style/tailwind.css'
 import './assets/style/global.css'
 import "./assets/plugins/fontawesome/css/all.css";
 import App from './App.vue'
-import router from './router'
+import router from './router/router'
 import { createPinia } from 'pinia'
 import 'ant-design-vue/dist/antd.css'
 import Antd from 'ant-design-vue';

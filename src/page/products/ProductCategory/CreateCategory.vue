@@ -191,6 +191,19 @@
                         ></textarea>
                       </div>
                     </div>
+                    <!-- <div class="form-small">
+                      <label for="" class="form-group-label">Điều kiện</label>
+                      <div>
+                        <textarea
+                          name=""
+                          id=""
+                          cols="30"
+                          rows="5"
+                          class="form-control-input"
+                          v-model="inventory.desc"
+                        ></textarea>
+                      </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -295,7 +308,14 @@
             {
               key: '0-0-0-1',
             },
-            { title: 'leaf', key: '0-0-0-2' },
+            {
+              title: 'leaf',
+              key: '0-0-0-2',
+              children: [
+                { title: 'leaf', key: '0-0-1-0' },
+                { title: 'leaf 1', key: '0-0-2-0' },
+              ],
+            },
           ],
         },
         {
