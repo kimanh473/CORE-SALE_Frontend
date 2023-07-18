@@ -524,7 +524,7 @@
               {
                 icon: '',
                 label: 'Người dùng',
-                to: '/',
+                to: '/list-user',
                 permission: [''],
                 submenuGroup: 'Hệ thống',
               },
