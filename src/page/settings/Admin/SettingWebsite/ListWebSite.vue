@@ -136,7 +136,6 @@
     dataWeb.getAllWebPaginateAction()
     // dataInventory.getListInventoryAction()
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

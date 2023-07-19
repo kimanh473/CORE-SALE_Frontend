@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-              <img src="../assets/images/btp.png" />
-            </div> -->
+                <img src="../assets/images/btp.png" />
+              </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới sản phẩm</p></template
+          ><p class="pl-5 text-[16px]">Cập nhật sản phẩm</p></template
         >
       </Header>
     </template>
@@ -49,8 +49,8 @@
                             v-model="product.title"
                           />
                           <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                      {{ messageError?.title[0] }}
+                    </p> -->
                         </div>
                       </div>
                     </div>
@@ -67,8 +67,8 @@
                             v-model="product.code"
                           />
                           <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                      {{ messageError?.title[0] }}
+                    </p> -->
                         </div>
                       </div>
                       <div>
@@ -84,8 +84,8 @@
                             v-model="product.code"
                           />
                           <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                      {{ messageError?.title[0] }}
+                    </p> -->
                         </div>
                       </div>
                     </div>
@@ -133,8 +133,8 @@
                             v-model="product.code"
                           />
                           <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                      {{ messageError?.title[0] }}
+                    </p> -->
                         </div>
                       </div>
                       <div>
@@ -149,8 +149,8 @@
                             v-model="product.code"
                           />
                           <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                      {{ messageError?.title[0] }}
+                    </p> -->
                         </div>
                       </div>
                     </div>
@@ -167,8 +167,8 @@
                             v-model="product.title"
                           />
                           <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                      {{ messageError?.title[0] }}
+                    </p> -->
                         </div>
                       </div>
                     </div>
@@ -187,8 +187,8 @@
                             class="form-control-input"
                           ></textarea>
                           <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                      {{ messageError?.title[0] }}
+                    </p> -->
                         </div>
                       </div>
                     </div>
@@ -233,8 +233,8 @@
                           >
                         </a-select>
                         <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
+                            {{ messageError?.title[0] }}
+                          </p> -->
                       </div>
                     </div>
                   </div>
@@ -250,8 +250,8 @@
                           placeholder="Nhập tên nhóm thuộc tính"
                         />
                         <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
+                            {{ messageError?.code[0] }}
+                          </p> -->
                       </div>
                     </div>
                   </div>
@@ -273,8 +273,8 @@
                           >
                         </a-select>
                         <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
+                            {{ messageError?.code[0] }}
+                          </p> -->
                       </div>
                     </div>
                   </div>

@@ -307,7 +307,6 @@
   const CreateGroupAttribute = () => {
     router.push('/create-group-attribute')
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

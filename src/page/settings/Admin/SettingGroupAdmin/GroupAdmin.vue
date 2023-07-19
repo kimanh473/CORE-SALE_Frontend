@@ -186,7 +186,6 @@
   const handleToAdmin = () => {
     router.push('/setting-admin-view')
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

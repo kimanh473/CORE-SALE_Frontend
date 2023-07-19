@@ -229,8 +229,6 @@
     console.log('selectedRowKeys changed: ', selectedRowKeys1)
     selectedRowKeys.value = selectedRowKeys1
   }
-
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

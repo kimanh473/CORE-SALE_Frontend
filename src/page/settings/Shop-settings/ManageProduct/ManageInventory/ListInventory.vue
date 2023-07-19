@@ -320,7 +320,6 @@
   const CreateInventory = () => {
     router.push('/create-inventory')
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

@@ -77,8 +77,6 @@
   const dataProduct = useProduct()
   dataProduct.getListProductAction(4, 1)
   const { listProduct } = storeToRefs(dataProduct)
-  console.log(listProduct)
-
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
@@ -89,21 +87,19 @@
     },
     {
       title: 'Ảnh',
-      dataIndex: 'web_name',
+      dataIndex: '',
     },
     {
       title: 'Tên',
-      dataIndex: 'status',
-      key: 'status',
-      slots: { customRender: 'switch' },
+      dataIndex: '',
     },
     {
       title: 'Loại sản phẩm',
-      dataIndex: `fullname`,
+      dataIndex: `type_id`,
     },
     {
       title: 'Nhóm thuộc tính',
-      dataIndex: 'created_at',
+      dataIndex: 'attribute_set_id',
     },
     {
       title: 'Thao tác',
@@ -118,7 +114,7 @@
     isLoading.value = false
   }
   const CreateProduct = () => {
-    router.push('/create-web')
+    router.push('/create-product')
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-web/${id}`)
@@ -138,7 +134,6 @@
     // dataWeb.getAllWebPaginateAction()
     // dataInventory.getListInventoryAction()
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

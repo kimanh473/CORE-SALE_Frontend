@@ -313,7 +313,6 @@
   const CreateAttribute = () => {
     router.push('/create-attribute-product')
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

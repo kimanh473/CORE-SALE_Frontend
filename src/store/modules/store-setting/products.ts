@@ -3,7 +3,7 @@ import { getAllProductsApi } from '../../../services/SettingStoreServices/produc
 
 export const useProduct = defineStore("Products", {
     state: () => ({
-        listProduct: [] as DataAttribute[],
+        listProduct: [] as DataProduct[],
     }),
     getters: {
         getListProduct: (state: any) => {
