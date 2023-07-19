@@ -138,7 +138,6 @@
   //   })
   //   import { useRouter } from 'vue-router'
   //   const router = useRouter()
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

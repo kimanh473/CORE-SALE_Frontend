@@ -9,8 +9,7 @@
     <template v-slot:header>
       <Header :is-show-search="false" />
     </template>
-    <template v-slot:content class="relative"
-      >
+    <template v-slot:content class="relative">
       <!-- <a-breadcrumb style="margin: 16px 0">
         <a-breadcrumb-item>User</a-breadcrumb-item>
         <a-breadcrumb-item>Bill</a-breadcrumb-item>
@@ -27,7 +26,6 @@
   import BaseLayout from '../layout/baseLayout.vue'
   import SideBar from '../components/common/SideBar.vue'
   import Header from '../components/common/Header.vue'
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

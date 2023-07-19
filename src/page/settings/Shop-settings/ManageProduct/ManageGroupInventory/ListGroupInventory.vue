@@ -316,7 +316,6 @@
   const CreateGroupInventory = () => {
     router.push('/create-group-inventory')
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

@@ -152,7 +152,7 @@
                       <a-upload
                         v-model:file-list="fileList"
                         list-type="picture-card"
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        action="//jsonplaceholder.typicode.com/posts/"
                         @preview="handlePreview"
                       >
                         <div v-if="fileList.length < 8">
@@ -161,8 +161,7 @@
                         </div>
                       </a-upload>
                       <a-modal
-                        :open="previewVisible"
-                        :title="previewTitle"
+                        :visible="previewVisible"
                         :footer="null"
                         @cancel="handleCancelImage"
                       >
@@ -386,7 +385,6 @@
   // }
   const dataInventory = useInventory()
   const { messageError } = storeToRefs(dataInventory)
-  console.log(messageError)
 
   const dataGroupInventory = useGroupInventory()
   const getListGroupInventory = () => {

@@ -139,7 +139,6 @@
     }
     systemSetting.updateSystemSettingAction(data, toast)
   }
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 <style>
   #components-layout-demo-side .logo {

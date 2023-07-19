@@ -5,7 +5,9 @@
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
-        <template v-slot:name><div class="pl-4 text-lg flex items-center">Danh mục sản phẩm</div>  </template>
+        <template v-slot:name
+          ><div class="pl-4 text-lg flex items-center">Danh mục sản phẩm</div>
+        </template>
       </Header>
     </template>
     <template v-slot:content>
@@ -247,7 +249,6 @@
   import BaseLayout from '../../layout/baseLayout.vue'
   import SideBar from '../../components/common/SideBar.vue'
   import Header from '../../components/common/Header.vue'
-  defineProps<{ isShowSearch: boolean }>()
 </script>
 
 <style></style>
