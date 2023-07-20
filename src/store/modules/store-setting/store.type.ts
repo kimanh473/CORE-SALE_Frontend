@@ -16,3 +16,28 @@ interface DataProduct {
     inventory_code: Array<String>
     details: Array<Object>
 }
+interface DataCategory {
+    id: number,
+    title: string,
+    code: string,
+    parent_id: string,
+    deep: string,
+    sub_ids: string,
+    images: string,
+    desc: string,
+    created_by_id: string,
+    updated_by_id: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+}
+interface child {
+    title: string,
+    key: string
+}
+interface TreeCategory {
+    title: string,
+    key: string,
+    children: Array<child>,
+}
+

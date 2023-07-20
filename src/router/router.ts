@@ -29,19 +29,26 @@ const route: TRoute[] = [
     },
   },
   {
-    path: '/update-group-attribute/:id',
-    component: () => import('../page/products/GroupAttributeProduct/UpdateGroupAttribute.vue'),
+    path: '/update-category',
+    component: () => import('../page/products/ProductCategory/UpdateCategory.vue'),
     meta: {
       layout: "base-layout",
     },
   },
-  {
-    path: '/create-group-attribute',
-    component: () => import('../page/products/GroupAttributeProduct/CreateGroupAttribute.vue'),
-    meta: {
-      layout: "base-layout",
-    },
-  },
+  // {
+  //   path: '/update-group-attribute/:id',
+  //   component: () => import('../page/products/GroupAttributeProduct/UpdateGroupAttribute.vue'),
+  //   meta: {
+  //     layout: "base-layout",
+  //   },
+  // },
+  // {
+  //   path: '/create-group-attribute',
+  //   component: () => import('../page/products/GroupAttributeProduct/CreateGroupAttribute.vue'),
+  //   meta: {
+  //     layout: "base-layout",
+  //   },
+  // },
   // {
   //   path: '/list-attribute-group',
   //   component: () => import('../page/products/GroupAttributeProduct/ListGroupAttributeProduct.vue'),

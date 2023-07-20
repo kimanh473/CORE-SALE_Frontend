@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-          <img src="../assets/images/btp.png" />
-        </div> -->
+            <img src="../assets/images/btp.png" />
+          </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới ngành hàng</p></template
+          ><p class="pl-5 text-[16px]">Sửa ngành hàng</p></template
         >
       </Header>
     </template>
@@ -28,11 +28,10 @@
               <a-switch v-model:checked="showIcon" />
             </div>
             <a-tree
-              class="w-[200px]"
               :show-line="showLine"
               :show-icon="showIcon"
               :default-expanded-keys="['0-0-0']"
-              :tree-data="listTreeCategory"
+              :tree-data="treeData"
               @select="onSelect"
             >
               <template #icon><carry-out-outlined /></template>
@@ -176,7 +175,7 @@
                   </div>
 
                   <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
-                    nhận -->
+                      nhận -->
                   <div>
                     <div class="form-small">
                       <label for="" class="form-group-label">Mô tả</label>
@@ -192,18 +191,18 @@
                       </div>
                     </div>
                     <!-- <div class="form-small">
-                      <label for="" class="form-group-label">Điều kiện</label>
-                      <div>
-                        <textarea
-                          name=""
-                          id=""
-                          cols="30"
-                          rows="5"
-                          class="form-control-input"
-                          v-model="inventory.desc"
-                        ></textarea>
-                      </div>
-                    </div> -->
+                        <label for="" class="form-group-label">Điều kiện</label>
+                        <div>
+                          <textarea
+                            name=""
+                            id=""
+                            cols="30"
+                            rows="5"
+                            class="form-control-input"
+                            v-model="inventory.desc"
+                          ></textarea>
+                        </div>
+                      </div> -->
                   </div>
                 </div>
               </div>
@@ -244,7 +243,6 @@
   import { useLocation } from '../../../store/modules/location/location'
   import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../store/modules/inventory/product-invetory'
-  import { useCategory } from '../../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -296,22 +294,62 @@
   }
   const showLine = ref<boolean>(true)
   const showIcon = ref<boolean>(false)
-  const dataCategory = useCategory()
-  dataCategory.getListProductAction()
-  const { listCategory, listTreeCategory } = storeToRefs(dataCategory)
-  console.log(listTreeCategory)
-  const treeData = [
+  const treeData = ref<TreeProps['treeData']>([
     {
       title: 'parent 1',
+      key: '0-0',
+      children: [
+        {
+          title: 'parent 1-0',
+          key: '0-0-0',
+          children: [
+            { title: 'leaf', key: '0-0-0-0' },
+            {
+              key: '0-0-0-1',
+            },
+            {
+              title: 'leaf',
+              key: '0-0-0-2',
+              children: [
+                { title: 'leaf', key: '0-0-1-0' },
+                { title: 'leaf 1', key: '0-0-2-0' },
+              ],
+            },
+          ],
+        },
+        {
+          title: 'parent 1-1',
+          key: '0-0-1',
+          children: [{ title: 'leaf', key: '0-0-1-0' }],
+        },
+        {
+          title: 'parent 1-2',
+          key: '0-0-2',
+          children: [
+            { title: 'leaf 1', key: '0-0-2-0' },
+            {
+              title: 'leaf 2',
+              key: '0-0-2-1',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'parent 2',
       key: '0-1',
       children: [
         {
           title: 'parent 2-0',
           key: '0-1-0',
+          children: [
+            { title: 'leaf', key: '0-1-0-0' },
+            { title: 'leaf', key: '0-1-0-1' },
+          ],
         },
       ],
     },
-  ]
+  ])
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info)
   }
@@ -345,7 +383,6 @@
   // ) {
   //   isReInput.value = false
   // }
-
   const dataInventory = useInventory()
   const { messageError } = storeToRefs(dataInventory)
 
