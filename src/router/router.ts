@@ -3,6 +3,7 @@ import product from "./ProductStore/Product"
 import attribute from "./ProductStore/AttributeProduct"
 import settingSale from "./Settings/SettingSale"
 import settingSystem from "./Settings/SettingSystem"
+import productUnit from './ProductStore/ProductUnit'
 type TRoute = {
   path: string
   component: () => Promise<any>
@@ -29,7 +30,7 @@ const route: TRoute[] = [
     },
   },
   {
-    path: '/update-category',
+    path: '/update-category/:id',
     component: () => import('../page/products/ProductCategory/UpdateCategory.vue'),
     meta: {
       layout: "base-layout",
@@ -176,6 +177,7 @@ LoadRoute(product)
 LoadRoute(attribute)
 LoadRoute(settingSale)
 LoadRoute(settingSystem)
+LoadRoute(productUnit)
 export default createRouter({
   history: createWebHistory(),
   routes: route

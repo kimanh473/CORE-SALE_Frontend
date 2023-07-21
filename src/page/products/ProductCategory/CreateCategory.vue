@@ -297,7 +297,7 @@
   const showLine = ref<boolean>(true)
   const showIcon = ref<boolean>(false)
   const dataCategory = useCategory()
-  dataCategory.getListProductAction()
+  dataCategory.getListCategoryAction()
   const { listCategory, listTreeCategory } = storeToRefs(dataCategory)
   console.log(listTreeCategory)
   const treeData = [
@@ -314,6 +314,7 @@
   ]
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info)
+    console.log(listTreeCategory)
   }
   const EndTimeLoading = () => {
     isLoading.value = false

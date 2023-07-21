@@ -243,6 +243,7 @@
   import { useLocation } from '../../../store/modules/location/location'
   import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../store/modules/inventory/product-invetory'
+  import { useCategory } from '../../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -383,6 +384,11 @@
   // ) {
   //   isReInput.value = false
   // }
+  const dataDetailCategory = useCategory()
+  dataDetailCategory.getDetailCategoryAction(12)
+  const { detailCategory } = storeToRefs(dataDetailCategory)
+  console.log(detailCategory)
+
   const dataInventory = useInventory()
   const { messageError } = storeToRefs(dataInventory)
 

@@ -40,4 +40,13 @@ interface TreeCategory {
     key: string,
     children: Array<child>,
 }
+interface DataUnit {
+    id: string
+    code: string
+    title: string
+    status: number
+    created_at: Array<String>
+    updated_at: Array<String>
+    product_unit_rates: Array<Object>
+}
 
