@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllCategoryApi, getDetailCategoryApi } from '../../../services/SettingStoreServices/category.service'
+import { getAllCategoryApi, getDetailCategoryApi, getAllCategoryTreeApi } from '../../../services/SettingStoreServices/category.service'
 
 export const useCategory = defineStore("Category", {
     state: () => ({
@@ -11,12 +11,24 @@ export const useCategory = defineStore("Category", {
         getListCategory: (state: any) => {
             return (payload: any) => {
                 state.listCategory = payload;
-                let deep0 = payload?.filter((item: any) => item.deep == '0')
-                state.listTreeCategory = deep0?.map((item: any) => ({
+            }
+        },
+        getListCategoryTree: (state: any) => {
+            return (payload: any) => {
+                state.listTreeCategory = payload.map((item: any) => ({
                     title: item.title,
-                    key: item.deep,
-                    children: payload?.filter((item1: any) => (item.id == item1.parent_id))
-                }))
+                    key: item.parent_id,
+                    children: item.child_depart.map((item1: any) => ({
+                        title: item1.title,
+                        key: item1.parent_id,
+                        children: item1.child_depart.map((item2: any) => ({
+                            title: item2.title,
+                            key: item2.parent_id,
+                            children: item2.child_depart
+                        }))
+                    }))
+                })
+                );
             }
         },
         getDetailCategory: (state: any) => {
@@ -30,8 +42,17 @@ export const useCategory = defineStore("Category", {
             await getAllCategoryApi()
                 .then((payload: any) => {
                     let res = payload?.data?.data
-                    console.log(res);
                     this.getListCategory(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getListCategoryTreeAction() {
+            await getAllCategoryTreeApi()
+                .then((payload: any) => {
+                    let res = payload?.data
+                    this.getListCategoryTree(res)
                 })
                 .catch((err) => {
                     console.log(err)

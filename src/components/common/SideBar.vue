@@ -291,7 +291,7 @@
               {
                 icon: '',
                 label: 'Đơn vị tính',
-                to: '/asset-groups',
+                to: '/list-product-unit',
                 submenuGroup: '',
                 permission: [''],
               },

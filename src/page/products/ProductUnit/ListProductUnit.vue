@@ -29,7 +29,7 @@
         <div
           class="button-create-new relative group rounded-md px-2"
           title="Tạo mới web"
-          @click="CreateGroupAttribute()"
+          @click="CreateProductUnit()"
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới đơn vị tính</p>
         </div>
@@ -46,8 +46,8 @@
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdateGroupAttribute(record.id)">Sửa</a
-            >&nbsp;|&nbsp;<a @click="handleOpenDeleteGroupAttribute(record)"
+            <a @click="navigateUpdateProductUnit(record.id)">Sửa</a
+            >&nbsp;|&nbsp;<a @click="handleOpenDeleteProductUnit(record)"
               >Xóa</a
             >
           </template>
@@ -255,11 +255,11 @@
     },
   ]
 
-  const navigateUpdateGroupAttribute = (id: number) => {
-    router.push(`/update-group-attribute/${id}`)
+  const navigateUpdateProductUnit = (id: number) => {
+    router.push(`/update-product-unit/${id}`)
   }
   const idSelected = ref()
-  const handleOpenDeleteGroupAttribute = (record: any) => {
+  const handleOpenDeleteProductUnit = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
   }
@@ -310,8 +310,8 @@
   //     console.log(selected, selectedRows, changeRows)
   //   },
   // })
-  const CreateGroupAttribute = () => {
-    router.push('/create-group-attribute')
+  const CreateProductUnit = () => {
+    router.push('/create-product-unit')
   }
 </script>
 <style>

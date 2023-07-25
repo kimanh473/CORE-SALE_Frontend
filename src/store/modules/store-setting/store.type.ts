@@ -32,12 +32,14 @@ interface DataCategory {
     deleted_at: string,
 }
 interface child {
+    id: number,
     title: string,
-    key: string
+    parent_id: string,
 }
 interface TreeCategory {
+    id: number,
     title: string,
-    key: string,
+    parent_id: string,
     children: Array<child>,
 }
 interface DataUnit {

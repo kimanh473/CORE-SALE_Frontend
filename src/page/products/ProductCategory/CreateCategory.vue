@@ -29,6 +29,7 @@
             </div>
             <a-tree
               class="w-[200px]"
+              block-node
               :show-line="showLine"
               :show-icon="showIcon"
               :default-expanded-keys="['0-0-0']"
@@ -297,7 +298,7 @@
   const showLine = ref<boolean>(true)
   const showIcon = ref<boolean>(false)
   const dataCategory = useCategory()
-  dataCategory.getListCategoryAction()
+  dataCategory.getListCategoryTreeAction()
   const { listCategory, listTreeCategory } = storeToRefs(dataCategory)
   console.log(listTreeCategory)
   const treeData = [
