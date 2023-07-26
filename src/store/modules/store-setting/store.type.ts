@@ -32,12 +32,14 @@ interface DataCategory {
     deleted_at: string,
 }
 interface child {
+    id: number,
     title: string,
-    key: string
+    parent_id: string,
 }
 interface TreeCategory {
+    id: number,
     title: string,
-    key: string,
+    parent_id: string,
     children: Array<child>,
 }
 interface DataUnit {
@@ -48,5 +50,17 @@ interface DataUnit {
     created_at: Array<String>
     updated_at: Array<String>
     product_unit_rates: Array<Object>
+}
+interface DataSpecification {
+    id: number,
+    code: string,
+    title: string,
+    unit: string,
+    desc: string,
+    created_by_id: string,
+    updated_by_id: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string
 }
 
