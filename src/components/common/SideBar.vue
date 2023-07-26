@@ -225,7 +225,7 @@
       return {
         menuTree: [
           {
-            label: 'TÔNG QUÁT',
+            label: 'TỔNG QUÁT',
             icon: 'fal fa-tachometer-alt',
             to: '/',
             permission: [''],
@@ -424,14 +424,14 @@
               {
                 icon: '',
                 label: 'Thông số',
-                to: '/list-category',
+                to: '/list-product-unit',
                 submenuGroup: 'Sản phẩm',
                 permission: [''],
               },
               {
                 icon: '',
                 label: 'Bảng kích cỡ thông số',
-                to: '/list-category',
+                to: '/list-specification',
                 submenuGroup: 'Sản phẩm',
                 permission: [''],
               },

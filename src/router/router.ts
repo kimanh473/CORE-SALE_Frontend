@@ -4,6 +4,7 @@ import attribute from "./ProductStore/AttributeProduct"
 import settingSale from "./Settings/SettingSale"
 import settingSystem from "./Settings/SettingSystem"
 import productUnit from './ProductStore/ProductUnit'
+import specification from './ProductStore/Specification'
 type TRoute = {
   path: string
   component: () => Promise<any>
@@ -178,6 +179,7 @@ LoadRoute(attribute)
 LoadRoute(settingSale)
 LoadRoute(settingSystem)
 LoadRoute(productUnit)
+LoadRoute(specification)
 export default createRouter({
   history: createWebHistory(),
   routes: route

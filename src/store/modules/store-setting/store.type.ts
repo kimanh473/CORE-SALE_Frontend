@@ -51,4 +51,16 @@ interface DataUnit {
     updated_at: Array<String>
     product_unit_rates: Array<Object>
 }
+interface DataSpecification {
+    id: number,
+    code: string,
+    title: string,
+    unit: string,
+    desc: string,
+    created_by_id: string,
+    updated_by_id: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string
+}
 
