@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import product from "./ProductStore/Product"
-import attribute from "./ProductStore/AttributeProduct"
+import product from "./Product/Product"
+import category from "./Product/Category"
+import attribute from "./Product/AttributeProduct"
 import settingSale from "./Settings/SettingSale"
 import settingSystem from "./Settings/SettingSystem"
-import productUnit from './ProductStore/ProductUnit'
-import specification from './ProductStore/Specification'
+import productUnit from './Product/ProductUnit'
+import specification from './Product/Specification'
 type TRoute = {
   path: string
   component: () => Promise<any>
@@ -180,6 +181,7 @@ LoadRoute(settingSale)
 LoadRoute(settingSystem)
 LoadRoute(productUnit)
 LoadRoute(specification)
+LoadRoute(category)
 export default createRouter({
   history: createWebHistory(),
   routes: route

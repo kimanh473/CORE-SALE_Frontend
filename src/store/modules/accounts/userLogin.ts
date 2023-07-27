@@ -11,10 +11,6 @@ export const userLogin = defineStore("UserLogin", {
         setDataLogin(payload: any) {
             localStorage.setItem("TOKEN", payload.token);
             localStorage.setItem("authenticated", 'true');
-            setTimeout(function () {
-                localStorage.removeItem('authenticated');
-                location.reload()
-            }, 21600000);
             this.dataLogin = payload
         },
 

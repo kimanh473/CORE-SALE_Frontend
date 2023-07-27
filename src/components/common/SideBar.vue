@@ -276,15 +276,15 @@
             children1: [
               {
                 icon: '',
-                label: 'Danh mục sản phẩm',
+                label: 'Quản lý sản phẩm',
                 to: '/products-list',
                 submenuGroup: '',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Loại sản phẩm',
-                to: '/asset-groups',
+                label: 'Ngành hàng',
+                to: '/category-list',
                 submenuGroup: '',
                 permission: [''],
               },
