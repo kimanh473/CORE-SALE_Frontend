@@ -10,25 +10,27 @@ export const useCategory = defineStore("Category", {
     getters: {
         getListCategory: (state: any) => {
             return (payload: any) => {
-                state.listCategory = payload;
+                state.listCategory = payload?.map((item: any) => ({
+                    id: item.id,
+                    label: item.title,
+                    value: item.code,
+                    parent_id: item.parent_id,
+                    deep: item.deep,
+                    sub_ids: item.sub_ids,
+                    images: item.images,
+                    desc: item.desc,
+                    created_by_id: item.created_by_id,
+                    updated_by_id: item.updated_by_id,
+                    created_at: item.created_at,
+                    updated_at: item.updated_at,
+                    deleted_at: item.deleted_at,
+                    key: item.key
+                }));
             }
         },
         getListCategoryTree: (state: any) => {
             return (payload: any) => {
-                state.listTreeCategory = payload.map((item: any) => ({
-                    title: item.title,
-                    key: item.parent_id,
-                    children: item.child_depart.map((item1: any) => ({
-                        title: item1.title,
-                        key: item1.parent_id,
-                        children: item1.child_depart.map((item2: any) => ({
-                            title: item2.title,
-                            key: item2.parent_id,
-                            children: item2.child_depart
-                        }))
-                    }))
-                })
-                );
+                state.listTreeCategory = payload
             }
         },
         getDetailCategory: (state: any) => {

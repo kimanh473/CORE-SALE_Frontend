@@ -9,7 +9,7 @@
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới ngành hàng</p></template
+          ><p class="pl-5 text-[16px]">Ngành hàng</p></template
         >
       </Header>
     </template>
@@ -20,12 +20,18 @@
         >
           <div>
             <div style="margin-bottom: 16px">
-              showLine:
+              <!-- showLine:
               <a-switch v-model:checked="showLine" />
               <br />
               <br />
               showIcon:
-              <a-switch v-model:checked="showIcon" />
+              <a-switch v-model:checked="showIcon" /> -->
+              <div
+                class="button-create-new relative group rounded-md px-2"
+                title="Tạo mới"
+              >
+                <p class="text-[14px] mt-1 px-1">Tạo mới ngành hàng</p>
+              </div>
             </div>
             <a-tree
               class="w-[200px]"
@@ -38,11 +44,7 @@
             >
               <template #icon><carry-out-outlined /></template>
               <template #title="{ dataRef }">
-                <template v-if="dataRef.key === '0-0-0-1'">
-                  <div>multiple line title</div>
-                  <div>multiple line title</div>
-                </template>
-                <template v-else>{{ dataRef.title }}</template>
+                {{ dataRef.title }}
               </template>
               <template #switcherIcon="{ dataRef, defaultIcon }">
                 <SmileTwoTone v-if="dataRef.key === '0-0-2'" />
@@ -77,7 +79,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập ngành hàng"
-                          v-model="inventory.title"
+                          v-model="category.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -103,25 +105,27 @@
                     ></label>
                     <div>
                       <a-select
+                        show-search
                         class="form-control-input"
                         placeholder="Chọn nhóm kho"
-                        v-model:value="inventory.type_code"
-                        @click.once="getListGroupInventory"
-                        mode="multiple"
+                        :options="listCategory"
+                        :filter-option="filterOption"
+                        v-model:value="parentSelected"
+                        @click.once="getListCategory"
                       >
-                        <a-select-option
-                          v-for="(item, index) in listGroupInventory"
+                        <!-- <a-select-option
+                          v-for="(item, index) in listCategory"
                           :key="index"
-                          :value="item.code"
+                          :value="item.id"
                           >{{ item.title }}</a-select-option
-                        >
+                        > -->
                       </a-select>
                       <p v-if="messageError?.type_code" class="text-red-600">
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
                   </div>
-                  <div class="form-small">
+                  <!-- <div class="form-small">
                     <label for="" class="form-group-label"
                       >Ngành hàng con<span class="text-red-600">* </span>
                       <span></span
@@ -130,7 +134,7 @@
                       <a-select
                         class="form-control-input"
                         placeholder="Chọn nhóm kho"
-                        v-model:value="inventory.type_code"
+                        v-model:value="category.type_code"
                         @click.once="getListGroupInventory"
                         mode="multiple"
                       >
@@ -145,7 +149,7 @@
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="form-small">
                     <label for="" class="form-group-label"
                       >Hình ảnh<span class="text-red-600">* </span> <span></span
@@ -188,7 +192,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
-                          v-model="inventory.desc"
+                          v-model="category.desc"
                         ></textarea>
                       </div>
                     </div>
@@ -201,7 +205,7 @@
                           cols="30"
                           rows="5"
                           class="form-control-input"
-                          v-model="inventory.desc"
+                          v-model="category.desc"
                         ></textarea>
                       </div>
                     </div> -->
@@ -224,7 +228,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createInventory()">
+          <button class="button-modal" @click="createCategory()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -242,9 +246,6 @@
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  import { useLocation } from '../../../store/modules/location/location'
-  import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
-  import { useInventory } from '../../../store/modules/inventory/product-invetory'
   import { useCategory } from '../../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
@@ -256,9 +257,7 @@
   // const selectedWard = ref(null)
   const router = useRouter()
   const toast = useToast()
-  const isAddress = ref(true)
   const isInfor = ref(true)
-  const isContact = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
   // const isReInput = ref<boolean>(true)
@@ -266,7 +265,9 @@
   import type { TreeProps } from 'ant-design-vue'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import type { UploadProps } from 'ant-design-vue'
-
+  const filterOption = (input: string, option: any) => {
+    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -296,121 +297,48 @@
       file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
   }
   const showLine = ref<boolean>(true)
-  const showIcon = ref<boolean>(false)
+  const showIcon = ref<boolean>(true)
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listCategory, listTreeCategory } = storeToRefs(dataCategory)
-  console.log(listTreeCategory)
-  const treeData = [
-    {
-      title: 'parent 1',
-      key: '0-1',
-      children: [
-        {
-          title: 'parent 2-0',
-          key: '0-1-0',
-        },
-      ],
-    },
-  ]
+  // const treeData = [
+  //   {
+  //     title: 'parent 1',
+  //     key: '0-1',
+  //     children: [
+  //       {
+  //         title: 'parent 2-0',
+  //         key: '0-1-0',
+  //       },
+  //     ],
+  //   },
+  // ]
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info)
-    console.log(listTreeCategory)
+    category.parent_id = info.node.parent_id
+    category.title = info.node.title
+    category.desc = info.node.desc
+    parentSelected.value = info.node.parent.node.title
+    console.log(info.node.parent.node.title)
   }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const inventory = reactive({
+  const parentSelected = ref()
+  const category = reactive({
     title: '',
-    type_code: [],
-    latitude: '',
-    longitude: '',
-    contact_name: '',
-    contact_email: '',
-    contact_phone: '',
-    address: null,
-    address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
-    address_detail: '',
-    code: '',
+    parent_id: '',
     desc: '',
   })
-  // if (
-  //   inventory.title != '' ||
-  //   inventory.latitude != '' ||
-  //   inventory.longitude != '' ||
-  //   inventory.contact_name != '' ||
-  //   inventory.contact_email != '' ||
-  //   inventory.contact_phone != ''
-  // ) {
-  //   isReInput.value = false
-  // }
-
-  const dataInventory = useInventory()
-  const { messageError } = storeToRefs(dataInventory)
-
-  const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
+  const messageError = ref()
+  const getListCategory = () => {
+    dataCategory.getListCategoryAction()
   }
-  const { listGroupInventory } = storeToRefs(dataGroupInventory)
-  // let options2 = ref<SelectProps['options']>([])
-  //   const sourceProduct = reactive({
-  //     title: 'nguồn A1',
-  //     code: 'SOURCEA',
-  //     latitude: '11',
-  //     longitude: '11',
-  //     contact: 'hoangthiyen',
-  //     contact_email: 'ttb@gmail.com',
-  //     contact_phone: '0123456789',
-  //     address_country_id: null,
-  //     address_district_id: null,
-  //     address_ward_id: null,
-  //     address_state_id: 1,
-  //     address_detail: 'viet nam',
-  //     desc: 'nguồn A tại hà nội',
-  //     use_direct: '0',
-  //   })
-  const dataLocation = useLocation()
-  const getDataCity = () => {
-    dataLocation.getListAllCityAction()
-  }
-  const { listAllCity, listAllDistrict, listAllWard } =
-    storeToRefs(dataLocation)
-  const handleChangeCity = (value: number, name: any) => {
-    dataLocation.getListAllDistrictAction(value)
-
-    inventory.address = name.title + ', ' + 'Việt Nam'
-  }
-  const handleChangeDistrict = (value: number, name: any) => {
-    dataLocation.getListAllWardAction(value)
-    inventory.address = name.title + ', ' + inventory.address
-  }
-  const handleChangeWard = (value: number, name: any) => {
-    inventory.address = name.title + ', ' + inventory.address
-  }
-
-  const createInventory = () => {
+  const createCategory = () => {
     let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
+      title: category.title,
+      desc: category.desc,
     }
-    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 
