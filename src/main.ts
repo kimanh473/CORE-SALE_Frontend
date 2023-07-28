@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 //import component
 import LoadingOverlay from "./components/loading/LoadingOverlay.vue";
+import ModalView from './components/modal/ModalView.vue';
 /* add icons to the library */
 const store = createPinia()
 createApp(App)
@@ -28,4 +29,5 @@ createApp(App)
     .use(Toast)
     .component('font-awesome-icon', FontAwesomeIcon)
     .component('loading-overlay', LoadingOverlay)
+    .component('modal-view', ModalView)
     .mount('#app')

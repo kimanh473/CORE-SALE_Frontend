@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllCategoryApi, getDetailCategoryApi, getAllCategoryTreeApi } from '../../../services/SettingStoreServices/category.service'
+import { getAllCategoryApi, getDetailCategoryApi, getAllCategoryTreeApi, createCategoryApi, updateCategoryApi, deleteCategoryApi } from '../../../services/SettingStoreServices/category.service'
 
 export const useCategory = defineStore("Category", {
     state: () => ({
@@ -11,9 +11,9 @@ export const useCategory = defineStore("Category", {
         getListCategory: (state: any) => {
             return (payload: any) => {
                 state.listCategory = payload?.map((item: any) => ({
-                    id: item.id,
+                    value: item.id,
                     label: item.title,
-                    value: item.code,
+                    code: item.code,
                     parent_id: item.parent_id,
                     deep: item.deep,
                     sub_ids: item.sub_ids,
@@ -69,6 +69,76 @@ export const useCategory = defineStore("Category", {
                 })
                 .catch((err) => {
                     console.log(err)
+                });
+        },
+        async createCategoryAction(
+            data: object,
+            toast: any,
+            handleClose: Function,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await createCategoryApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        handleClose()
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công")
+                        location.reload()
+                        EndTimeLoading()
+                    }
+                })
+                .catch((err) => {
+                    toast.error("Tạo mới thất bại");
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                });
+        },
+        async updateCategoryAction(
+            id: number,
+            data: object,
+            toast: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateCategoryApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công")
+                        location.reload()
+                        EndTimeLoading()
+                    }
+                })
+                .catch((err) => {
+                    toast.error("Cập nhật thất bại");
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                });
+        },
+        deleteCategoryAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
+            deleteCategoryApi(id)
+                .then((res) => {
+                    console.log(res.data.status);
+                    console.log(res.status);
+                    if (res.data.status == "success") {
+                        toast.success("Xóa thành công", 500);
+                    } else {
+                        toast.error(res.data.messages, 500);
+                    }
+                    EndTimeLoading();
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
                 });
         },
     },
