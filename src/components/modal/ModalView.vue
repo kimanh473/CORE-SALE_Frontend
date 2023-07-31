@@ -1,148 +1,130 @@
-<template>
-  <Transition name="modal-fade">
-    <div class="moda" v-if="isOpen">
-      <div
-        class="w-full h-full"
-        ref="modal__container"
-        id="modal__container"
-        :resizable="true"
-      >
-        <div class="modal__container absolute" @mousedown="dragMouseDown">
-          <div class="modal__header">
-            <div class="modal__close" @click="handleCloseDetail">
-              <i class="fal fa-times text-white"></i>
-            </div>
-          </div>
-          <div class="modal__body">
-            <slot></slot>
-          </div>
-          <div class="modal__footer"></div>
-        </div>
-      </div>
-    </div>
-  </Transition>
-</template>
-
 <script>
   export default {
-    data() {
-      return {
-        positions: {
-          clientX: undefined,
-          clientY: undefined,
-          movementX: 0,
-          movementY: 0,
-        },
-      }
-    },
-    props: {
-      isOpen: {
-        type: Boolean,
-      },
-      handleCloseDetail: {
-        type: Function,
-      },
-    },
+    name: 'modal-vue',
     methods: {
-      handleClose() {
-        this.handleClose()
-      },
-      dragMouseDown: function (event) {
-        // get the mouse cursor position at startup:
-        this.positions.clientX = event.clientX
-        this.positions.clientY = event.clientY
-        document.onmousemove = this.elementDrag
-        document.onmouseup = this.closeDragElement
-      },
-      elementDrag: function (event) {
-        this.positions.movementX = this.positions.clientX - event.clientX
-        this.positions.movementY = this.positions.clientY - event.clientY
-        this.positions.clientX = event.clientX
-        this.positions.clientY = event.clientY
-        // set the element's new position:
-        this.$refs.modal__container.style.top =
-          this.$refs.modal__container.offsetTop -
-          this.positions.movementY +
-          'px'
-        this.$refs.modal__container.style.left =
-          this.$refs.modal__container.offsetLeft -
-          this.positions.movementX +
-          'px'
-      },
-      closeDragElement() {
-        document.onmouseup = null
-        document.onmousemove = null
+      close() {
+        this.$emit('close')
       },
     },
   }
 </script>
 
-<style scoped>
-  .moda {
+<template>
+  <transition name="modal-fade">
+    <div class="modal-backdrop">
+      <div
+        class="modal"
+        role="dialog"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalDescription"
+      >
+        <header class="modal-header" id="modalTitle">
+          <slot name="header"></slot>
+          <div class="">
+            <!-- <button
+              type="button"
+              class="btn-close"
+              @click="close"
+              aria-label="Close modal"
+            >
+            </button> -->
+            <a class="btn-close" @click="close"
+              ><i class="fal fa-times fa-sm"></i
+            ></a>
+          </div>
+        </header>
+        <section class="modal-body" id="modalDescription">
+          <form>
+            <slot name="body"></slot>
+          </form>
+        </section>
+        <footer class="modal-footer">
+          <slot name="footer"></slot>
+        </footer>
+      </div>
+    </div>
+  </transition>
+</template>
+<style>
+  .modal-backdrop {
     position: fixed;
-    z-index: 9999;
-    left: 0;
     top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 0;
-    transition: opacity 0.4s linear;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
   }
-  .modal__container {
-    max-width: 1100px;
-    margin: auto;
-    margin-top: 20px;
-    background-color: #fff;
-    display: block;
-    border-radius: 8px;
-    animation: showModal linear 0.4s;
-    box-shadow: 2px 2px 20px 1px;
-    left: 50%;
-    top: 47%;
-    transform: translate(-50%, -50%);
-  }
-  .modal__header {
+
+  .modal {
+    background: #ffffff;
+    box-shadow: 0px 0px 0px 0px;
+    position: relative;
+    overflow-x: auto;
     display: flex;
-    justify-content: flex-end;
-    cursor: grabbing;
-    z-index: 100;
+    flex-direction: column;
+    max-width: 1000px;
+    max-height: 800px;
+    border-radius: 3px;
+    z-index: 999;
   }
-  .modal__close {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 50%;
+
+  .modal-footer {
+    padding: 10px;
+    display: flex;
+    z-index: 9;
+  }
+
+  .modal-header {
+    /* padding: 8px; */
+    padding: 5px;
+    position: relative;
+    border-bottom: 1px solid #eeeeee;
+    color: white;
+    justify-content: space-between;
+    background-color: var(--color-primary);
     text-align: center;
-    font-size: 16px;
-    position: absolute;
-    margin-top: 4px;
-    transition: opacity 0.2s ease-in-out, transform 0.3s ease;
+    display: flex;
+    z-index: 9;
   }
-  .modal__close:hover {
+
+  .modal-footer {
+    border-top: 1px solid #eeeeee;
+    flex-direction: column;
+  }
+
+  .modal-body {
+    position: relative;
+    overflow: hidden;
+    padding: 0px 12px 20px 12px;
+  }
+
+  .btn-close {
+    position: absolute;
+    right: 10px;
+    border: none;
+    font-size: 20px;
+    /* padding: 3px; */
     cursor: pointer;
-    color: rgba(0, 0, 0, 0.7);
+    /* font-weight: bold; */
+    color: white;
+    background: transparent;
+  }
+  .btn-close:hover {
     transform: scale(1.2);
   }
-  @keyframes showModal {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+  .btn-green {
+    color: white;
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: 3px;
+    width: 100px;
+    height: 35px;
   }
-  @keyframes hiddenModal {
-    100% {
-      opacity: 1;
-      transform: translateY(0px);
-    }
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-  }
+
   .modal-fade-enter,
   .modal-fade-leave-to {
     opacity: 0;
@@ -150,6 +132,6 @@
 
   .modal-fade-enter-active,
   .modal-fade-leave-active {
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease;
   }
 </style>

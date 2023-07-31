@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRouter } from 'vue-router'
+import router from '../router/router';
 const token = localStorage.getItem("TOKEN");
 // const API_URL = process.env.VUE_APP_API_URL;
 const httpClient = axios.create({
@@ -32,11 +32,11 @@ const httpClient = axios.create({
 // }
 // Interceptor for responses
 const responseInterceptor = (response: any) => {
-  console.log(response.data);
-  const router = useRouter()
   if (response.data.messages == 'Token has expired') {
-    console.log(router);
-    console.log(1);
+    router.push({ path: "/login" });
+    localStorage.removeItem('TOKEN')
+    localStorage.removeItem('authenticated')
+    window.location.reload()
   }
   return response;
 }
