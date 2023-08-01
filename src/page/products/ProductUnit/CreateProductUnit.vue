@@ -29,7 +29,25 @@
                     type="text"
                     class="form-control-input"
                     placeholder="Nhập tên đơn vị"
-                    v-model="invent.title"
+                    v-model="unit.title"
+                  />
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                </div>
+              </div>
+            </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Mã đơn vị<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    placeholder="Nhập mã đơn vị"
+                    v-model="unit.code"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                     {{ messageError?.title[0] }}
@@ -46,7 +64,7 @@
                   cols="30"
                   rows="5"
                   class="form-control-input"
-                  v-model="invent.desc"
+                  v-model="unit.desc"
                 ></textarea>
               </div>
             </div>
@@ -59,7 +77,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createGroupInventory()">
+          <button class="button-modal" @click="createProductUnit()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -78,9 +96,9 @@
   import Header from '../../../components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
+  import { useProductUnit } from '../../../store/modules/store-setting/product-unit'
   import { useRouter } from 'vue-router'
-  const dataGroupInventory = useGroupInventory()
+  const dataUnit = useProductUnit()
   const isLoading = ref<boolean>(false)
   const status = ref<boolean>(false)
   const toast = useToast()
@@ -88,23 +106,19 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const invent = reactive({
+  const unit = reactive({
     title: '',
     code: '',
     desc: '',
   })
-  const createGroupInventory = () => {
+  const createProductUnit = () => {
+    isLoading.value = true
     let data = {
-      title: invent.title,
-      code: invent.code,
-      desc: invent.desc,
+      title: unit.title,
+      code: unit.code,
+      status: status.value == true ? '1' : '0',
     }
-    dataGroupInventory.createGroupInventoryAction(
-      data,
-      toast,
-      router,
-      EndTimeLoading
-    )
+    dataUnit.createProductUnitAction(data, toast, router, EndTimeLoading)
   }
 </script>
 

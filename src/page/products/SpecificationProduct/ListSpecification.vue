@@ -28,10 +28,10 @@
         <div></div>
         <div
           class="button-create-new relative group rounded-md px-2"
-          title="Tạo mới web"
-          @click="CreateProductUnit()"
+          title="Tạo mới"
+          @click="handleToCreate()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới đơn vị tính</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới thông số</p>
         </div>
       </div>
       <a-table
@@ -46,10 +46,8 @@
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdateProductUnit(record.id)">Sửa</a
-            >&nbsp;|&nbsp;<a @click="handleOpenDeleteProductUnit(record)"
-              >Xóa</a
-            >
+            <a @click="navigateUpdateSpecification(record.id)">Sửa</a
+            >&nbsp;|&nbsp;<a @click="handleOpenDelete(record)">Xóa</a>
           </template>
         </template>
         <template #switch="{ text }">
@@ -231,19 +229,23 @@
   // const { listAttributeGroup } = storeToRefs(dataAttributeGroup)
   const columns = [
     {
-      title: 'Tên đơn vị',
+      title: 'Tên thông số',
       dataIndex: 'title',
     },
     {
-      title: 'Mô tả',
+      title: 'Mã thông số',
       dataIndex: 'code',
+    },
+    {
+      title: 'Mô tả',
+      dataIndex: 'desc',
     },
     {
       title: 'Kích hoạt',
     },
     {
       title: 'Người tạo',
-      dataIndex: 'updated_at',
+      dataIndex: 'created_by_id',
     },
     {
       title: 'Ngày tạo',
@@ -258,11 +260,11 @@
     },
   ]
 
-  const navigateUpdateProductUnit = (id: number) => {
-    router.push(`/update-product-unit/${id}`)
+  const navigateUpdateSpecification = (id: number) => {
+    router.push(`/update-specification/${id}`)
   }
   const idSelected = ref()
-  const handleOpenDeleteProductUnit = (record: any) => {
+  const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
   }
@@ -273,13 +275,13 @@
     isLoading.value = false
   }
   const handleDelete = () => {
-    // isLoading.value = true
-    // dataAttributeGroup.deleteInventoryAction(
-    //   Number(idSelected.value),
-    //   EndTimeLoading,
-    //   toast,
-    //   handleCloseConfirm
-    // )
+    isLoading.value = true
+    dataSpecification.deleteSpecificationAction(
+      Number(idSelected.value),
+      toast,
+      EndTimeLoading,
+      handleCloseConfirm
+    )
   }
   const selectedRowKeys = ref([])
   const onSelectChange = (selectedRowKeys1: any) => {
@@ -313,8 +315,8 @@
   //     console.log(selected, selectedRows, changeRows)
   //   },
   // })
-  const CreateProductUnit = () => {
-    router.push('/create-product-unit')
+  const handleToCreate = () => {
+    router.push('/create-specification')
   }
 </script>
 <style>

@@ -28,8 +28,8 @@
                   <input
                     type="text"
                     class="form-control-input"
-                    placeholder="Nhập tên đơn vị"
-                    v-model="invent.title"
+                    placeholder="Nhập thông số"
+                    v-model="specification.title"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                       {{ messageError?.title[0] }}
@@ -38,20 +38,57 @@
               </div>
             </div>
             <div class="form-small">
-              <label for="" class="form-group-label">Mô tả</label>
               <div>
-                <textarea
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="5"
-                  class="form-control-input"
-                  v-model="invent.desc"
-                ></textarea>
+                <label for="" class="form-group-label"
+                  >Mã thông số<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    placeholder="Nhập mã thông số"
+                    v-model="specification.code"
+                  />
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                      {{ messageError?.title[0] }}
+                    </p> -->
+                </div>
               </div>
             </div>
-
-            <a-switch v-model:checked="status" /> &nbsp; Kích hoạt
+            <div class="form-small">
+              <label for="" class="form-group-label">Đơn vị</label>
+              <div>
+                <input
+                  type="text"
+                  class="form-control-input"
+                  placeholder="Nhập đơn vị"
+                  v-model="specification.unit"
+                />
+                <!-- <p v-if="messageError?.title" class="text-red-600">
+                      {{ messageError?.title[0] }}
+                    </p> -->
+              </div>
+            </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Mô tả<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <textarea
+                    name=""
+                    id=""
+                    cols="30"
+                    rows="5"
+                    class="form-control-input"
+                    v-model="specification.desc"
+                  ></textarea>
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Transition>
@@ -59,7 +96,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createGroupInventory()">
+          <button class="button-modal" @click="createSpecification()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -78,9 +115,9 @@
   import Header from '../../../components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
+  import { useListSpecification } from '../../../store/modules/store-setting/specification'
   import { useRouter } from 'vue-router'
-  const dataGroupInventory = useGroupInventory()
+  const dataSpecification = useListSpecification()
   const isLoading = ref<boolean>(false)
   const status = ref<boolean>(false)
   const toast = useToast()
@@ -88,18 +125,20 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const invent = reactive({
+  const specification = reactive({
     title: '',
     code: '',
+    unit: '',
     desc: '',
   })
-  const createGroupInventory = () => {
+  const createSpecification = () => {
     let data = {
-      title: invent.title,
-      code: invent.code,
-      desc: invent.desc,
+      title: specification.title,
+      code: specification.code,
+      unit: specification.unit,
+      desc: specification.desc,
     }
-    dataGroupInventory.createGroupInventoryAction(
+    dataSpecification.createSpecificationAction(
       data,
       toast,
       router,

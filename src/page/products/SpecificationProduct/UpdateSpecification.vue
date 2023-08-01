@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-              <img src="../assets/images/btp.png" />
-            </div> -->
+                  <img src="../assets/images/btp.png" />
+                </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Sửa đơn vị tính</p></template
+          ><p class="pl-5 text-[16px]">Sửa thông số</p></template
         >
       </Header>
     </template>
@@ -22,58 +22,73 @@
             <div class="form-small">
               <div>
                 <label for="" class="form-group-label"
-                  >Tên đơn vị<span class="text-red-600">* </span> <span></span
+                  >Tên thông số<span class="text-red-600">* </span> <span></span
                 ></label>
                 <div>
                   <input
                     type="text"
                     class="form-control-input"
-                    placeholder="Nhập tên đơn vị"
-                    v-model="detailProductUnit.title"
+                    placeholder="Nhập thông số"
+                    v-model="detailSpecification.title"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
+                        {{ messageError?.title[0] }}
+                      </p> -->
                 </div>
               </div>
             </div>
             <div class="form-small">
               <div>
                 <label for="" class="form-group-label"
-                  >Mã đơn vị<span class="text-red-600">* </span> <span></span
+                  >Mã thông số<span class="text-red-600">* </span> <span></span
                 ></label>
                 <div>
                   <input
                     type="text"
                     class="form-control-input"
-                    placeholder="Nhập mã đơn vị"
-                    v-model="detailProductUnit.code"
+                    placeholder="Nhập mã thông số"
+                    v-model="detailSpecification.code"
                   />
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                        {{ messageError?.title[0] }}
+                      </p> -->
+                </div>
+              </div>
+            </div>
+            <div class="form-small">
+              <label for="" class="form-group-label">Đơn vị</label>
+              <div>
+                <input
+                  type="text"
+                  class="form-control-input"
+                  placeholder="Nhập đơn vị"
+                  v-model="detailSpecification.unit"
+                />
+                <!-- <p v-if="messageError?.title" class="text-red-600">
+                        {{ messageError?.title[0] }}
+                      </p> -->
+              </div>
+            </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Mô tả<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <textarea
+                    name=""
+                    id=""
+                    cols="30"
+                    rows="5"
+                    class="form-control-input"
+                    v-model="detailSpecification.desc"
+                  ></textarea>
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                     {{ messageError?.title[0] }}
                   </p> -->
                 </div>
               </div>
             </div>
-            <div class="form-small">
-              <label for="" class="form-group-label">Mô tả</label>
-              <div>
-                <textarea
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="5"
-                  class="form-control-input"
-                ></textarea>
-              </div>
-            </div>
-
-            <a-switch
-              v-model:checked="detailProductUnit.status"
-              :checkedValue="'1'"
-              :unCheckedValue="'0'"
-            />
-            &nbsp; Kích hoạt
           </div>
         </div>
       </Transition>
@@ -81,7 +96,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createProductUnit()">
+          <button class="button-modal" @click="updateSpecification()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -100,35 +115,31 @@
   import Header from '../../../components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useProductUnit } from '../../../store/modules/store-setting/product-unit'
+  import { useListSpecification } from '../../../store/modules/store-setting/specification'
   import { useRouter, useRoute } from 'vue-router'
   import { storeToRefs } from 'pinia'
-  const dataUnit = useProductUnit()
+  const dataSpecification = useListSpecification()
+  const route = useRoute()
+  dataSpecification.getDetailSpecificationAction(Number(route.params.id))
+  const { detailSpecification } = storeToRefs(dataSpecification)
+  console.log(detailSpecification)
+
   const isLoading = ref<boolean>(false)
   const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
-  const route = useRoute()
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  dataUnit.getDetailProductUnitAction(Number(route.params.id))
-  const { detailProductUnit } = storeToRefs(dataUnit)
-  console.log(detailProductUnit)
 
-  const unit = reactive({
-    title: '',
-    code: '',
-    desc: '',
-  })
-  const createProductUnit = () => {
-    isLoading.value = true
+  const updateSpecification = () => {
     let data = {
-      title: detailProductUnit.value.title,
-      code: detailProductUnit.value.code,
-      status: detailProductUnit.value.status,
+      title: detailSpecification.value.title,
+      code: detailSpecification.value.code,
+      unit: detailSpecification.value.unit,
+      desc: detailSpecification.value.desc,
     }
-    dataUnit.updateProductUnitAction(
+    dataSpecification.updateSpecificationAction(
       Number(route.params.id),
       data,
       toast,

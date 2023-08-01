@@ -122,11 +122,9 @@ export const useCategory = defineStore("Category", {
                     console.log(err);
                 });
         },
-        deleteCategoryAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
+        deleteCategoryAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {
             deleteCategoryApi(id)
                 .then((res) => {
-                    console.log(res.data.status);
-                    console.log(res.status);
                     if (res.data.status == "success") {
                         toast.success("Xóa thành công", 500);
                     } else {

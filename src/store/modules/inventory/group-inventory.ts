@@ -49,6 +49,7 @@ export const useGroupInventory = defineStore("GroupInventory", {
                 .then((res) => {
                     if (res.data.status == "success") {
                         toast.success("Xóa thành công", 500);
+                        this.getListGroupInventoryAction()
                     } else {
                         toast.error(res.data.messages, 500);
                     }

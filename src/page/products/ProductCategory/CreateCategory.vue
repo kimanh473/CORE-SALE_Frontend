@@ -18,7 +18,7 @@
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-end"
       >
         <div
-          class="button-create-new relative group rounded-md px-2"
+          class="button-delete relative group rounded-md px-2"
           title="Xóa"
           @click="handleOpenDelete()"
           v-if="idSelected != undefined"

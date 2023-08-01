@@ -295,6 +295,20 @@
                 submenuGroup: '',
                 permission: [''],
               },
+              {
+                icon: '',
+                label: 'Thông số',
+                to: '/list-specification',
+                submenuGroup: '',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Bảng kích cỡ thông số',
+                to: '/list-product-unit',
+                submenuGroup: '',
+                permission: [''],
+              },
             ],
           },
           {
