@@ -1406,7 +1406,7 @@
   import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
   import { useRouter, useRoute } from 'vue-router'
   import { useToast } from 'vue-toastification'
-  import { computed, reactive, ref } from 'vue'
+  import { computed, reactive, ref, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
   const route = useRoute()
@@ -1426,12 +1426,10 @@
   const dataAdminSetting = useAdminSetting()
   dataAdminSetting.getDetailPermissionGroupsAction(Number(route.params.id))
   const { detailGroupPermission } = storeToRefs(dataAdminSetting)
-  console.log(detailGroupPermission)
 
-  const getMatchingResults = (input: any) => {
-    const found = detailGroupPermission.value.json_string_roles.find(
-      (element: any) => element == input
-    )
+  const getMatchingResults = (input: any, roleList: Array<string>) => {
+    const found = roleList.find((element: any) => element == input)
+
     if (found == undefined || found == null) {
       return ''
     } else {
@@ -1455,9 +1453,15 @@
     isCheck: true,
     isShow: true,
   })
+  let temp = ''
+
+  watch(detailGroupPermission, () => {
+    temp = getMatchingResults('STORE_SETTING', detailGroupPermission.value)
+  })
+
   const role = reactive({
     //store
-    storeSetting: getMatchingResults('STORE_SETTING'),
+    storeSetting: temp,
     product: '',
     createProduct: '',
     updateProduct: '',
@@ -1466,6 +1470,7 @@
     importProduct: '',
     exportProduct: '',
   })
+
   const groupAdmin = reactive({
     title: '',
     is_admin: 'no',

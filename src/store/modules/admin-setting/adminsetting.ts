@@ -11,7 +11,8 @@ export const useAdminSetting = defineStore("AdminSetting", {
             return (payload: any) => state.listGroupPermission = payload
         },
         getDetailGroupPermission: (state: any) => {
-            return (payload: any) => state.detailGroupPermission = payload
+            return (payload: any) => 
+                state.detailGroupPermission = payload.json_string_roles
         },
         // getDetailRoles: (state: any) => {
         //     return (payload: any) => state.detailRole = Object.values(payload?.json_string_roles).map((item: any) => ({
@@ -35,6 +36,7 @@ export const useAdminSetting = defineStore("AdminSetting", {
             await getDetailPermissionGroupsApi(id)
                 .then((payload: any) => {
                     let res = payload?.data?.data
+                    
                     this.getDetailGroupPermission(res)
                     // this.getDetailRoles(res)
                 })
