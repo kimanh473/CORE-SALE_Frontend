@@ -1,9 +1,6 @@
 <template>
   <base-layout>
     <template v-slot:sidebar>
-      <!-- <div class="logo">
-              <img src="../assets/images/btp.png" />
-            </div> -->
       <SideBar />
     </template>
     <template v-slot:header>

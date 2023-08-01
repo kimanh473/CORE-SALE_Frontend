@@ -30,3 +30,14 @@ interface DataSystemSetting {
     MULTIPLE_PROMOTION_COUNT: Number
     MULTIPLE_PROMOTION_DISCOUNT: Number
 }
+interface DataAdminSetting {
+    id: number,
+    title: string,
+    is_admin: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+    json_string_roles: string[],
+    json_web_list: string[],
+    json_inventory_list: string[],
+}

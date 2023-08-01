@@ -1,9 +1,6 @@
 <template>
   <base-layout>
     <template v-slot:sidebar>
-      <!-- <div class="logo">
-                  <img src="../assets/images/btp.png" />
-                </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
@@ -122,7 +119,6 @@
   const route = useRoute()
   dataSpecification.getDetailSpecificationAction(Number(route.params.id))
   const { detailSpecification } = storeToRefs(dataSpecification)
-  console.log(detailSpecification)
 
   const isLoading = ref<boolean>(false)
   const status = ref<boolean>(false)
