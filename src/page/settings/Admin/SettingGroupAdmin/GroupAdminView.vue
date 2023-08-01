@@ -7,34 +7,75 @@
       <SideBar />
     </template>
     <template v-slot:header>
-      <Header :is-show-search="false"
-        ><div class="flex grow">
-          <div class="flex items-center">
-            <div class="flex items-center">
-              <Transition name="slide-fade">
+      <Header :is-show-search="false">
+        <!-- <Transition name="slide-fade">
                 <div
                   class="button-create relative group"
                   title="Tạo mới nhóm quyền"
                   @click="CreateGroupAdmin()"
                 ></div>
-              </Transition>
-              <p class="longText text-[#fff] mb-0">Danh sách nhóm quyền</p>
-              <div class="icon-filter-approval relative group"></div>
-            </div>
-          </div></div
-      ></Header>
+              </Transition> -->
+        <template v-slot:name
+          ><p class="pl-5 text-[16px]">Danh sách nhóm quyền</p></template
+        >
+      </Header>
     </template>
-    <template v-slot:content class="relative"
+    <!-- <template v-slot:content class="relative"
       ><a-table
+        row-key="id"
         :columns="columns"
         :data-source="listGroupPermission"
-        :row-selection="rowSelection"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+        }"
         :custom-row="rightClick"
-    /></template>
+    /></template> -->
+    <template v-slot:content class="relative">
+      <div
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+      >
+        <div></div>
+        <div
+          class="button-create-new relative group rounded-md px-2"
+          title="Tạo mới"
+          @click="handleToCreate()"
+        >
+          <p class="text-[14px] mt-1 px-1">Tạo mới nhóm người dùng</p>
+        </div>
+      </div>
+      <a-table
+        row-key="id"
+        :columns="columns"
+        :data-source="listGroupPermission"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+        }"
+        ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'id'">
+            <a @click="navigateToUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
+              @click="handleOpenConfirm(record)"
+              >Xóa</a
+            >
+          </template>
+          <!-- <template v-if="column.key === 'json_web_list'">
+            <div v-for="item in record.json_web_list" :key="item">
+              {{ item.toString() }}
+            </div>
+          </template>
+          <template v-if="column.key === 'json_inventory_list'">
+            <div v-for="item in record.json_inventory_list" :key="item">
+              {{ item.toString() }}
+            </div>
+          </template> -->
+        </template>
+      </a-table></template
+    >
     <template v-slot:footer>footer</template>
   </base-layout>
   <div>
-    <context-menu :isActive="isActiveAdminGroup"
+    <!-- <context-menu :isActive="isActiveAdminGroup"
       ><ul>
         <li @click.prevent="navigateToUpdate()">
           <i class="fal fa-edit"></i><a href="#">Sửa</a>
@@ -43,7 +84,7 @@
           <i class="fal fa-trash"></i><a href="#">Xóa</a>
         </li>
       </ul></context-menu
-    >
+    > -->
     <modal-delete
       :isOpen="isOpenConfirm"
       :handleCloseDetail="handleCloseConfirm"
@@ -107,82 +148,77 @@
       dataIndex: 'updated_at',
       key: 'updated_at',
     },
+    {
+      title: 'Website',
+      dataIndex: `web_list_name`,
+      key: 'web_list_name',
+    },
+    {
+      title: 'Kho',
+      dataIndex: 'inventory_list_name',
+      key: 'inventory_list_name',
+    },
+    {
+      title: 'Thao tác',
+      dataIndex: 'id',
+      key: 'id',
+    },
   ]
 
-  interface DataItem {
-    key: number
-    name: any
-    created_at: any
-    updated_at: any
+  // interface DataItem {
+  //   key: number
+  //   name: any
+  //   created_at: any
+  //   updated_at: any
+  // }
+  const selectedRowKeys = ref([])
+  const onSelectChange = (selectedRowKeys1: any) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys1)
+    selectedRowKeys.value = selectedRowKeys1
   }
-  const rowSelection = ref({
-    checkStrictly: false,
-    onChange: (
-      selectedRowKeys: (string | number)[],
-      selectedRows: DataItem[]
-    ) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      )
-    },
-    onSelect: (
-      record: DataItem,
-      selected: boolean,
-      selectedRows: DataItem[]
-    ) => {
-      console.log(record, selected, selectedRows)
-    },
-    onSelectAll: (
-      selected: boolean,
-      selectedRows: DataItem[],
-      changeRows: DataItem[]
-    ) => {
-      console.log(selected, selectedRows, changeRows)
-    },
-  })
-  const CreateGroupAdmin = () => {
+  const handleToCreate = () => {
     router.push('/create-group-admin')
   }
+  const idSelected = ref()
   const handleDelete = () => {
     getadminSetting.deletePermissionGroupsAction(
-      Number(groupPermission.value.id),
+      Number(idSelected.value),
       EndTimeLoading,
       toast,
       handleCloseConfirm
     )
     getadminSetting.getAllPermissionGroupsAction(10, 1)
   }
-  const rightClick = (record: any) => {
-    return {
-      oncontextmenu: (event: MouseEvent) => {
-        event.preventDefault()
-        console.log('Right-clicked row:', record)
-        groupPermission.value = record
-        var menu = document.getElementById('contextMenu')
-        menu.style.display = 'block'
-        FormatModalX(menu, event)
-        FormatModalY(menu, event)
-        // if (isActiveAdminGroup.value === true) {
-        //   isActiveAdminGroup.value = false
-        // } else {
-        //   var menu = document.getElementById('contextMenu')
-        //   menu.style.display = 'block'
-        //   FormatModalX(menu, e)
-        //   FormatModalY(menu, e)
-        // }
-      },
-    }
-  }
+  // const rightClick = (record: any) => {
+  //   return {
+  //     oncontextmenu: (event: MouseEvent) => {
+  //       event.preventDefault()
+  //       console.log('Right-clicked row:', record)
+  //       groupPermission.value = record
+  //       var menu = document.getElementById('contextMenu')
+  //       menu.style.display = 'block'
+  //       FormatModalX(menu, event)
+  //       FormatModalY(menu, event)
+  //       // if (isActiveAdminGroup.value === true) {
+  //       //   isActiveAdminGroup.value = false
+  //       // } else {
+  //       //   var menu = document.getElementById('contextMenu')
+  //       //   menu.style.display = 'block'
+  //       //   FormatModalX(menu, e)
+  //       //   FormatModalY(menu, e)
+  //       // }
+  //     },
+  //   }
+  // }
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
-  const handleOpenConfirm = () => {
+  const handleOpenConfirm = (record: any) => {
     isOpenConfirm.value = true
+    idSelected.value = record.id
   }
-  const navigateToUpdate = () => {
-    router.push(`/update-group-admin/${groupPermission.value.id}`)
+  const navigateToUpdate = (id: number) => {
+    router.push(`/update-group-admin/${id}`)
   }
   //   const selectedRowKeys = ref<DataItem['key'][]>([])
   //   const onSelectChange = (changableRowKeys: string[]) => {

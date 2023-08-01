@@ -1,9 +1,6 @@
 <template>
   <base-layout>
     <template v-slot:sidebar>
-      <!-- <div class="logo">
-                    <img src="../assets/images/btp.png" />
-                  </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
@@ -57,139 +54,6 @@
 
     <template v-slot:footer>footer</template>
   </base-layout>
-  <!-- <modal-view :isOpen="isOpenCreateInventory" :handleCloseDetail="handleClose">
-        <div>
-          <h1 class="header-modal">Tạo mới kho</h1>
-          <div
-            class="text-left p-2 min-h-[300px] max-h-[600px] min-w-[500px] overflow-y-auto format-scroll"
-          >
-            <div class="">
-              <label for="" class="form-group-label">Tên kho</label>
-              <div>
-                <input
-                  type="text"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập tên kho"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Loại kho</label>
-              <div>
-                <input
-                  type="text"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập mã phòng ban"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Quản lý kho</label>
-              <div>
-                <input
-                  type="text"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập mã phòng ban"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Số điện thoại</label>
-              <div>
-                <input
-                  type="text"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập mã phòng ban"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Địa chỉ</label>
-              <div>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập số"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Quốc gia</label>
-              <div>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập số"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Tỉnh/Thành phố</label>
-              <div>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập chiều rộng"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Quận/Huyện</label>
-              <div>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập chiều dài"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Xã/Phường/Thị trấn</label>
-              <div>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập chiều dài"
-                />
-              </div>
-            </div>
-            <div class="mt-2">
-              <label for="" class="form-group-label">Địa chỉ chi tiết</label>
-              <div>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  class="form-control-input"
-                  placeholder="Nhập địa chỉ"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="bg-button-modal">
-            <button class="button-modal">Cập nhật</button>
-            <button class="button-close-modal" @click="handleClose">Hủy bỏ</button>
-          </div>
-        </div>
-      </modal-view> -->
   <modal-delete
     :isOpen="isOpenConfirm"
     :handleCloseDetail="handleCloseConfirm"
@@ -204,7 +68,6 @@
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
   import { useListSpecification } from '../../../store/modules/store-setting/specification'
-  import { useProductUnit } from '../../../store/modules/store-setting/product-unit'
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -215,18 +78,10 @@
   const toast = useToast()
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
-  const dataUnit = useProductUnit()
-  dataUnit.getListProductUnitAction()
-  const { listProductUnit } = storeToRefs(dataUnit)
-  console.log(listProductUnit)
   const dataSpecification = useListSpecification()
   dataSpecification.getListSpecificationAction()
   const { listSpecification } = storeToRefs(dataSpecification)
-  console.log(listSpecification)
 
-  // const dataAttributeGroup = useAttributeGroup()
-  // dataAttributeGroup.getListAttributeGroupAction()
-  // const { listAttributeGroup } = storeToRefs(dataAttributeGroup)
   const columns = [
     {
       title: 'Tên thông số',
@@ -288,33 +143,6 @@
     console.log('selectedRowKeys changed: ', selectedRowKeys1)
     selectedRowKeys.value = selectedRowKeys1
   }
-  // const rowSelection = ref({
-  //   checkStrictly: false,
-  //   onChange: (
-  //     selectedRowKeys: (string | number)[],
-  //     selectedRows: DataItem[]
-  //   ) => {
-  //     console.log(
-  //       `selectedRowKeys: ${selectedRowKeys}`,
-  //       'selectedRows: ',
-  //       selectedRows
-  //     )
-  //   },
-  //   onSelect: (
-  //     record: DataItem,
-  //     selected: boolean,
-  //     selectedRows: DataItem[]
-  //   ) => {
-  //     console.log(record, selected, selectedRows)
-  //   },
-  //   onSelectAll: (
-  //     selected: boolean,
-  //     selectedRows: DataItem[],
-  //     changeRows: DataItem[]
-  //   ) => {
-  //     console.log(selected, selectedRows, changeRows)
-  //   },
-  // })
   const handleToCreate = () => {
     router.push('/create-specification')
   }

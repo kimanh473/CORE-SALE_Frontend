@@ -8,12 +8,9 @@
     </template>
     <template v-slot:header>
       <Header :is-show-search="false"
-        ><div class="flex grow">
-          <div class="flex items-center">
-            <button-create-admin></button-create-admin>
-            <p class="text-base text-[#fff] mb-0">Tạo nhóm người dùng mới</p>
-          </div>
-        </div></Header
+        ><template v-slot:name
+          ><p class="pl-5 text-[16px]">Tạo mới nhóm người dùng</p></template
+        ></Header
       >
     </template>
     <template v-slot:content class="relative">
@@ -32,7 +29,7 @@
                     id=""
                     class="form-control-input"
                     placeholder="Nhóm nhân sự"
-                    v-model="title"
+                    v-model="groupAdmin.title"
                   />
                 </div>
               </div>
@@ -46,7 +43,7 @@
                   type="checkbox"
                   value=""
                   class="w-4 h-4"
-                  v-model="is_admin"
+                  v-model="groupAdmin.is_admin"
                 />
                 <label
                   for="isAdminGroup"
@@ -59,11 +56,11 @@
               <div class="flex items-center">
                 <input
                   id="defaultGroup"
-                  true-value="1"
-                  false-value="0"
+                  true-value="yes"
+                  false-value="no"
                   type="checkbox"
                   class="w-4 h-4"
-                  v-model="is_default"
+                  v-model="groupAdmin.is_default"
                 />
                 <label
                   for="defaultGroup"
@@ -90,6 +87,7 @@
                             type="checkbox"
                             true-value="STORE_SETTING"
                             false-value=""
+                            v-model="role.storeSetting"
                           />
                         </td>
                         <td class="cellTable font-medium pl-0">
@@ -110,6 +108,8 @@
                             type="checkbox"
                             true-value="CATALOG_PRODUCT"
                             false-value=""
+                            v-model="role.product"
+                            :disabled="role.storeSetting != 'STORE_SETTING'"
                           />
                         </td>
                         <td>Danh mục sản phẩm</td>
@@ -119,6 +119,11 @@
                             type="checkbox"
                             true-value="CATALOG_PRODUCT_CREATE"
                             false-value=""
+                            v-model="role.createProduct"
+                            :disabled="
+                              role.storeSetting != 'STORE_SETTING' ||
+                              role.product != 'CATALOG_PRODUCT'
+                            "
                           />
                         </td>
                         <td class="cellTable text-center">
@@ -126,6 +131,11 @@
                             type="checkbox"
                             true-value="CATALOG_PRODUCT_UPDATE"
                             false-value=""
+                            v-model="role.updateProduct"
+                            :disabled="
+                              role.storeSetting != 'STORE_SETTING' ||
+                              role.product != 'CATALOG_PRODUCT'
+                            "
                           />
                         </td>
                         <td class="cellTable text-center">
@@ -133,6 +143,11 @@
                             type="checkbox"
                             true-value="CATALOG_PRODUCT_DELETE"
                             false-value=""
+                            v-model="role.deleteProduct"
+                            :disabled="
+                              role.storeSetting != 'STORE_SETTING' ||
+                              role.product != 'CATALOG_PRODUCT'
+                            "
                           />
                         </td>
                         <td class="cellTable text-center">
@@ -140,6 +155,11 @@
                             type="checkbox"
                             true-value="CATALOG_PRODUCT_PRINT"
                             false-value=""
+                            v-model="role.printProduct"
+                            :disabled="
+                              role.storeSetting != 'STORE_SETTING' ||
+                              role.product != 'CATALOG_PRODUCT'
+                            "
                           />
                         </td>
                         <td class="cellTable text-center">
@@ -147,6 +167,11 @@
                             type="checkbox"
                             true-value="CATALOG_PRODUCT_IMPORT"
                             false-value=""
+                            v-model="role.importProduct"
+                            :disabled="
+                              role.storeSetting != 'STORE_SETTING' ||
+                              role.product != 'CATALOG_PRODUCT'
+                            "
                           />
                         </td>
                         <td class="cellTable text-center">
@@ -154,6 +179,11 @@
                             type="checkbox"
                             true-value="CATALOG_PRODUCT_EXPORT"
                             false-value=""
+                            v-model="role.exportProduct"
+                            :disabled="
+                              role.storeSetting != 'STORE_SETTING' ||
+                              role.product != 'CATALOG_PRODUCT'
+                            "
                           />
                         </td>
                         <td></td>
@@ -165,6 +195,7 @@
                             type="checkbox"
                             true-value="PERSONNEL_PROFILE"
                             false-value=""
+                            :disabled="role.storeSetting != 'STORE_SETTING'"
                           />
                         </td>
                         <td>Khách hàng</td>
@@ -220,6 +251,7 @@
                             type="checkbox"
                             true-value="PERSONNEL_PROFILE"
                             false-value=""
+                            :disabled="role.storeSetting != 'STORE_SETTING'"
                           />
                         </td>
                         <td>Bán hàng</td>
@@ -275,6 +307,7 @@
                             type="checkbox"
                             true-value="PERSONNEL_PROFILE"
                             false-value=""
+                            :disabled="role.storeSetting != 'STORE_SETTING'"
                           />
                         </td>
                         <td>Marketing</td>
@@ -330,6 +363,7 @@
                             type="checkbox"
                             true-value="PERSONNEL_PROFILE"
                             false-value=""
+                            :disabled="role.storeSetting != 'STORE_SETTING'"
                           />
                         </td>
                         <td>Giỏ hàng</td>
@@ -385,6 +419,7 @@
                             type="checkbox"
                             true-value="PERSONNEL_PROFILE"
                             false-value=""
+                            :disabled="role.storeSetting != 'STORE_SETTING'"
                           />
                         </td>
                         <td>Cài đặt gian hàng</td>
@@ -1324,8 +1359,7 @@
                   <input
                     class="mt-[3px]"
                     type="checkbox"
-                    true-value="PERSONNEL_PROFILE_IMPORT"
-                    false-value=""
+                    @change="checkWeb(item.code, $event)"
                   />
                 </div>
               </div>
@@ -1341,8 +1375,7 @@
                   <input
                     class="mt-[3px]"
                     type="checkbox"
-                    true-value="PERSONNEL_PROFILE_IMPORT"
-                    false-value=""
+                    @change="checkInventory(item.code, $event)"
                   />
                 </div></div
             ></a-tab-pane>
@@ -1352,12 +1385,15 @@
     <template class="p-0" v-slot:footer
       ><div class="bg-gray-100 pb-2 pl-2">
         <div class="text-left">
-          <button class="button-modal">Tạo mới</button>
+          <button class="button-modal" @click="createGroupAdmin">
+            Tạo mới
+          </button>
           <button class="button-close-modal">Hủy bỏ</button>
         </div>
       </div></template
     >
   </base-layout>
+  <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
 <script setup lang="ts">
@@ -1367,14 +1403,18 @@
   import TableResponsive from '../../../../components/common/TableResponsive.vue'
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { useInventory } from '../../../../store/modules/inventory/product-invetory'
+  import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
   import { useRouter } from 'vue-router'
+  import { useToast } from 'vue-toastification'
   import { reactive, ref } from 'vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
+  const toast = useToast()
+  const isLoading = ref<boolean>(false)
+  const EndTimeLoading = () => {
+    isLoading.value = false
+  }
   const isInfor = ref(true)
-  const is_admin = ref('no')
-  const title = ref('')
-  const is_default = 0
   const activeKey = ref('1')
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
@@ -1382,6 +1422,7 @@
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { listInventory } = storeToRefs(dataInventory)
+  const dataAdminSetting = useAdminSetting()
   const table = reactive({
     header: [
       '',
@@ -1399,6 +1440,67 @@
     isCheck: true,
     isShow: true,
   })
+  const role = reactive({
+    //store
+    storeSetting: '',
+    product: '',
+    createProduct: '',
+    updateProduct: '',
+    deleteProduct: '',
+    printProduct: '',
+    importProduct: '',
+    exportProduct: '',
+  })
+  const groupAdmin = reactive({
+    title: '',
+    is_admin: 'no',
+    is_default: 'no',
+    string_roles: [],
+    web_list: [],
+    inventory_list: [],
+  })
+  const arrayInvent = ref([])
+  const arrayWeb = ref([])
+  const checkInventory = (code: any, event: any) => {
+    if (event.target.checked == true) {
+      arrayInvent.value.push(code)
+    } else if (event.target.checked == false) {
+      arrayInvent.value = groupAdmin.inventory_list.filter(
+        (item) => item != code
+      )
+    }
+  }
+  const checkWeb = (code: any, event: any) => {
+    if (event.target.checked == true) {
+      arrayWeb.value.push(code)
+    } else if (event.target.checked == false) {
+      arrayWeb.value = groupAdmin.web_list.filter((item) => item != code)
+    }
+  }
+  const createGroupAdmin = () => {
+    groupAdmin.string_roles.push(
+      role.storeSetting,
+      role.product,
+      role.createProduct,
+      role.updateProduct,
+      role.deleteProduct,
+      role.printProduct,
+      role.importProduct,
+      role.exportProduct
+    )
+    let arr = groupAdmin.string_roles.filter(
+      (item) => item != '' && item != null
+    )
+    let data = {
+      title: groupAdmin.title,
+      is_admin: groupAdmin.is_admin,
+      is_default: groupAdmin.is_default,
+      string_roles: arr,
+      web_list: arrayWeb.value,
+      inventory_list: arrayInvent.value,
+    }
+    dataAdminSetting.createPermissionAction(data, toast, router, EndTimeLoading)
+  }
   // const listView = [
   //   {
   //     code: 'PERSONNEL_PROFILE_VIEW_ALL',
