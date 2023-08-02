@@ -8,6 +8,9 @@ const getDetailPermissionGroupsApi = (id: number) => {
 const createPermissionGroupsApi = (data: object) => {
     return httpClient.post(`/setting/permission-group/create`, data);
 };
+const updatePermissionGroupsApi = (id: number, data: object) => {
+    return httpClient.post(`/setting/permission-group/update/${id}`, data);
+};
 const deletePermissionGroupsApi = (id: Number) => {
     return httpClient.post(`setting/permission-group/delete/${id}`);
 };
@@ -15,5 +18,6 @@ export {
     getAllPermissionGroupsApi,
     deletePermissionGroupsApi,
     createPermissionGroupsApi,
-    getDetailPermissionGroupsApi
+    getDetailPermissionGroupsApi,
+    updatePermissionGroupsApi
 };

@@ -87,6 +87,7 @@
                             type="checkbox"
                             true-value="STORE_SETTING"
                             false-value=""
+                            @change="changeCheckbox()"
                             v-model="role.storeSetting"
                           />
                         </td>
@@ -109,6 +110,7 @@
                             true-value="CATALOG_PRODUCT"
                             false-value=""
                             v-model="role.product"
+                            @change="changeCheckbox()"
                             :disabled="role.storeSetting != 'STORE_SETTING'"
                           />
                         </td>
@@ -1359,7 +1361,11 @@
                   <input
                     class="mt-[3px]"
                     type="checkbox"
-                    @change="checkWeb(item.code, $event)"
+                    :true-value="item.code"
+                    false-value=""
+                    :value="item.code"
+                    :checked="checkedWeb(item.code)"
+                    @change="changeWeb(item.code, $event)"
                   />
                 </div>
               </div>
@@ -1375,7 +1381,11 @@
                   <input
                     class="mt-[3px]"
                     type="checkbox"
-                    @change="checkInventory(item.code, $event)"
+                    :true-value="item.code"
+                    false-value=""
+                    :value="item.code"
+                    :checked="checkedInvent(item.code)"
+                    @change="changeInventory(item.code, $event)"
                   />
                 </div></div
             ></a-tab-pane>
@@ -1386,7 +1396,7 @@
       ><div class="bg-gray-100 pb-2 pl-2">
         <div class="text-left">
           <button class="button-modal" @click="createGroupAdmin">
-            Tạo mới
+            Cập nhật
           </button>
           <button class="button-close-modal">Hủy bỏ</button>
         </div>
@@ -1406,7 +1416,7 @@
   import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
   import { useRouter, useRoute } from 'vue-router'
   import { useToast } from 'vue-toastification'
-  import { computed, reactive, ref } from 'vue'
+  import { computed, reactive, ref, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
   const route = useRoute()
@@ -1424,20 +1434,89 @@
   dataInventory.getListInventoryAction()
   const { listInventory } = storeToRefs(dataInventory)
   const dataAdminSetting = useAdminSetting()
-  dataAdminSetting.getDetailPermissionGroupsAction(Number(route.params.id))
-  const { detailGroupPermission } = storeToRefs(dataAdminSetting)
-  console.log(detailGroupPermission)
-
-  const getMatchingResults = (input: any) => {
-    const found = detailGroupPermission.value.json_string_roles.find(
-      (element: any) => element == input
-    )
+  const role = reactive({
+    //store
+    storeSetting: '',
+    product: '',
+    createProduct: '',
+    updateProduct: '',
+    deleteProduct: '',
+    printProduct: '',
+    importProduct: '',
+    exportProduct: '',
+  })
+  const getMatchingResults = (input: any, roleList: string[]) => {
+    const found = roleList?.find((element: any) => element == input)
     if (found == undefined || found == null) {
       return ''
     } else {
       return found
     }
   }
+  const groupAdmin = reactive({
+    title: '',
+    is_admin: 'no',
+    string_roles: [],
+    web_list: [],
+    inventory_list: [],
+  })
+  const arrayInvent = ref([])
+  const arrayWeb = ref([])
+  const changeInventory = (code: any, event: any) => {
+    if (event.target.checked == true) {
+      arrayInvent.value.push(code)
+    } else if (event.target.checked == false) {
+      arrayInvent.value = groupAdmin.inventory_list.filter(
+        (item) => item != code
+      )
+    }
+  }
+  const getListWeb = (webList: string[], inventList: string[]) => {
+    arrayWeb.value = webList
+    arrayInvent.value = inventList
+  }
+  const changeWeb = (code: any, event: any) => {
+    if (event.target.checked == true) {
+      arrayWeb.value.push(code)
+    } else if (event.target.checked == false) {
+      arrayWeb.value = groupAdmin.web_list.filter((item) => item != code)
+    }
+  }
+  const checkedWeb = (code: string) => {
+    if (arrayWeb.value.indexOf(code) > -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const checkedInvent = (code: string) => {
+    if (arrayInvent.value.indexOf(code) > -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const changeCheckbox = () => {
+    if (role.storeSetting == '') {
+      role.product = ''
+    }
+    if (role.product == '') {
+      role.createProduct = ''
+      role.updateProduct = ''
+      role.deleteProduct = ''
+      role.printProduct = ''
+      role.importProduct = ''
+      role.exportProduct = ''
+    }
+  }
+  dataAdminSetting.getDetailPermissionGroupsAction(
+    Number(route.params.id),
+    role,
+    getMatchingResults,
+    getListWeb
+  )
+  const { detailGroupPermission } = storeToRefs(dataAdminSetting)
+
   const table = reactive({
     header: [
       '',
@@ -1455,42 +1534,15 @@
     isCheck: true,
     isShow: true,
   })
-  const role = reactive({
-    //store
-    storeSetting: getMatchingResults('STORE_SETTING'),
-    product: '',
-    createProduct: '',
-    updateProduct: '',
-    deleteProduct: '',
-    printProduct: '',
-    importProduct: '',
-    exportProduct: '',
-  })
-  const groupAdmin = reactive({
-    title: '',
-    is_admin: 'no',
-    string_roles: [],
-    web_list: [],
-    inventory_list: [],
-  })
-  const arrayInvent = ref([])
-  const arrayWeb = ref([])
-  const checkInventory = (code: any, event: any) => {
-    if (event.target.checked == true) {
-      arrayInvent.value.push(code)
-    } else if (event.target.checked == false) {
-      arrayInvent.value = groupAdmin.inventory_list.filter(
-        (item) => item != code
-      )
-    }
-  }
-  const checkWeb = (code: any, event: any) => {
-    if (event.target.checked == true) {
-      arrayWeb.value.push(code)
-    } else if (event.target.checked == false) {
-      arrayWeb.value = groupAdmin.web_list.filter((item) => item != code)
-    }
-  }
+
+  // watch(detailGroupPermission.value, (newValue, oldValue) => {
+  //   const data = computed(() => detailGroupPermission.value)
+  //   temp.value = getMatchingResults(
+  //     'STORE_SETTING',
+  //     data.value.json_string_roles
+  //   )
+  //   return newValue
+  // })
 
   const createGroupAdmin = () => {
     groupAdmin.string_roles.push(
@@ -1507,13 +1559,20 @@
       (item) => item != '' && item != null
     )
     let data = {
-      title: groupAdmin.title,
-      is_admin: groupAdmin.is_admin,
+      title: detailGroupPermission.value.title,
+      is_admin: detailGroupPermission.value.is_admin,
       string_roles: arr,
       web_list: arrayWeb.value,
       inventory_list: arrayInvent.value,
     }
-    dataAdminSetting.createPermissionAction(data, toast, router, EndTimeLoading)
+
+    dataAdminSetting.updateGroupPermissionAction(
+      Number(route.params.id),
+      data,
+      toast,
+      router,
+      EndTimeLoading
+    )
   }
   // const listView = [
   //   {

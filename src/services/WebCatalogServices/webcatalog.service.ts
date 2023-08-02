@@ -11,6 +11,10 @@ const getAllWebIndexsApi = () => {
 const createWebApi = (data: object) => {
     return httpClient.post(`/setting/catalog-website/create`, data);
 };
+//sửa web
+const updateWebApi = (id: number, data: object) => {
+    return httpClient.post(`/setting/catalog-website/update/${id}`, data);
+};
 // chi tiết web
 const detailWebApi = (id: number) => {
     return httpClient.get(`/setting/catalog-website/show/${id}`);
@@ -25,5 +29,6 @@ export {
     getAllWebIndexsApi,
     deleteWebApi,
     createWebApi,
-    detailWebApi
+    detailWebApi,
+    updateWebApi
 };

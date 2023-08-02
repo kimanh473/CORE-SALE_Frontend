@@ -71,7 +71,12 @@
                 </div>
               </div>
             </div>
-            <a-switch v-model:checked="detailWeb.status" /> &nbsp; Kích hoạt
+            <a-switch
+              v-model:checked="detailWeb.status"
+              checkedValue="1"
+              uncheckedValue="0"
+            />
+            &nbsp; Kích hoạt
           </div>
         </div>
       </Transition>
@@ -99,7 +104,7 @@
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { storeToRefs } from 'pinia'
   const isLoading = ref<boolean>(false)
   const toast = useToast()
@@ -107,6 +112,7 @@
     isLoading.value = false
   }
   const route = useRoute()
+  const router = useRouter()
   const dataWeb = useWebCatalog()
   dataWeb.getDetailWebAction(Number(route.params.id))
   const { detailWeb } = storeToRefs(dataWeb)
@@ -117,7 +123,13 @@
       url: detailWeb.value.url,
       status: detailWeb.value.status == true ? '1' : '0',
     }
-    dataWeb.createWebAction(data, toast, EndTimeLoading)
+    dataWeb.updateWebAction(
+      Number(route.params.id),
+      data,
+      toast,
+      router,
+      EndTimeLoading
+    )
   }
 </script>
 

@@ -41,3 +41,13 @@ interface DataAdminSetting {
     json_web_list: string[],
     json_inventory_list: string[],
 }
+interface RoleList {
+    storeSetting: string,
+    product: string,
+    createProduct: string,
+    updateProduct: string,
+    deleteProduct: string,
+    printProduct: string,
+    importProduct: string,
+    exportProduct: string,
+}

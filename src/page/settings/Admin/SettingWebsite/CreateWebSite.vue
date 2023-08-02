@@ -101,11 +101,13 @@
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
+  import { useRouter } from 'vue-router'
   const isLoading = ref<boolean>(false)
   const toast = useToast()
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const router = useRouter()
   const dataWeb = useWebCatalog()
   const web = reactive({
     web_name: '',
@@ -120,7 +122,7 @@
       url: web.url,
       status: web.status,
     }
-    dataWeb.createWebAction(data, toast, EndTimeLoading)
+    dataWeb.createWebAction(data, toast, router, EndTimeLoading)
   }
 </script>
 
