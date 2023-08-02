@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllWebCatalogsApi, getAllWebIndexsApi, createWebApi, detailWebApi, deleteWebApi } from '../../../services/WebCatalogServices/webcatalog.service'
+import { getAllWebCatalogsApi, getAllWebIndexsApi, createWebApi, detailWebApi, deleteWebApi, updateWebApi } from '../../../services/WebCatalogServices/webcatalog.service'
 export const useWebCatalog = defineStore("WebCatalog", {
     state: () => ({
         listWeb: [] as DataWeb[],
@@ -18,7 +18,8 @@ export const useWebCatalog = defineStore("WebCatalog", {
                 id: item.id,
                 code: item.code,
                 web_name: item.web_name,
-                status: item.status,
+                url: item.url,
+                status: item.status == '1' ? 'Đang kích hoạt' : 'Chưa kích hoạt',
                 fullname: item.user_created.fullname,
                 created_at: item.created_at.substring(0, 10),
             }))
@@ -47,6 +48,7 @@ export const useWebCatalog = defineStore("WebCatalog", {
         async createWebAction(
             data: Object,
             toast: any,
+            router: any,
             EndTimeLoading: Function,
             // handleCloseCreate: Function
         ) {
@@ -57,15 +59,42 @@ export const useWebCatalog = defineStore("WebCatalog", {
                         EndTimeLoading();
                     } else {
                         toast.success("Tạo mới thành công");
-                        location.reload();
+                        router.push('/list-web')
                         // handleCloseCreate();
                         EndTimeLoading();
                     }
                 })
                 .catch((err) => {
                     toast.error("Tạo mới thất bại");
-                    this.messageError = err.response.data.messages
-                    console.log(this.messageError);
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                });
+        },
+        async updateWebAction(
+            id: number,
+            data: Object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateWebApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công");
+                        router.push('/list-web')
+                        // handleCloseCreate();
+                        EndTimeLoading();
+                    }
+                })
+                .catch((err) => {
+                    toast.error("Cập nhật thất bại");
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
                     console.log(err);
                 });
         },
@@ -85,6 +114,7 @@ export const useWebCatalog = defineStore("WebCatalog", {
                     if (res.data.status == "success") {
                         EndTimeLoading;
                         toast.success("Xóa thành công");
+                        this.getAllWebPaginateAction()
                     } else {
                         toast.error(res.data.messages);
                     }

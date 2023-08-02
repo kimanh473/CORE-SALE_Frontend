@@ -45,7 +45,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên kho"
-                          v-model="inventory.title"
+                          v-model="user.title"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -61,7 +61,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập mã kho"
-                          v-model="inventory.code"
+                          v-model="user.code"
                         />
                         <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
@@ -77,7 +77,7 @@
                       <a-select
                         class="form-control-input"
                         placeholder="Chọn vị trí"
-                        v-model:value="inventory.type_code"
+                        v-model:value="user.type_code"
                         @click.once="getListGroupInventory"
                       >
                         <a-select-option
@@ -99,7 +99,7 @@
                       <a-select
                         class="form-control-input"
                         placeholder="Chọn phòng ban"
-                        v-model:value="inventory.type_code"
+                        v-model:value="user.type_code"
                         @click.once="getListGroupInventory"
                       >
                         <a-select-option
@@ -124,7 +124,7 @@
                           type="email"
                           class="form-control-input"
                           placeholder="Nhập email"
-                          v-model="inventory.contact_email"
+                          v-model="user.contact_email"
                         />
                         <p
                           v-if="messageError?.contact_email"
@@ -144,7 +144,7 @@
                           type="number"
                           class="form-control-input"
                           placeholder="Nhập số điện thoại"
-                          v-model="inventory.contact_phone"
+                          v-model="user.contact_phone"
                         />
                         <p
                           v-if="messageError?.contact_phone"
@@ -195,7 +195,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên liên lạc"
-                          v-model="inventory.contact_name"
+                          v-model="user.contact_name"
                         />
                         <p
                           v-if="messageError?.contact_name"
@@ -215,7 +215,7 @@
                           type="password"
                           class="form-control-input"
                           placeholder="Nhập mật khẩu"
-                          v-model="inventory.contact_email"
+                          v-model="user.contact_email"
                         />
                         <p
                           v-if="messageError?.contact_email"
@@ -233,13 +233,11 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn nhóm"
-                          v-model:value="inventory.type_code"
-                          @click.once="getListGroupInventory"
+                          v-model:value="user.type_code"
                         >
                           <a-select-option
-                            v-for="(item, index) in listGroupInventory"
+                            v-for="(item, index) in listGroupPermission"
                             :key="index"
-                            :value="item.code"
                             >{{ item.title }}</a-select-option
                           >
                         </a-select>
@@ -258,7 +256,7 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn website"
-                          v-model:value="inventory.type_code"
+                          v-model:value="user.type_code"
                           @click.once="getListGroupInventory"
                         >
                           <a-select-option
@@ -284,11 +282,10 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn kho"
-                          v-model:value="inventory.type_code"
-                          @click.once="getListGroupInventory"
+                          v-model:value="user.type_code"
                         >
                           <a-select-option
-                            v-for="(item, index) in listGroupInventory"
+                            v-for="(item, index) in listInventory"
                             :key="index"
                             :value="item.code"
                             >{{ item.title }}</a-select-option
@@ -1649,6 +1646,7 @@
   import { useGroupInventory } from '../../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../../store/modules/inventory/product-invetory'
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
+  import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -1668,6 +1666,10 @@
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
+  const dataAdminSetting = useAdminSetting()
+  dataAdminSetting.getAllPermissionGroupsAction(10, 1)
+  const { listGroupPermission } = storeToRefs(dataAdminSetting)
+  console.log(listGroupPermission)
 
   // const isReInput = ref<boolean>(true)
   const table = reactive({
@@ -1690,7 +1692,7 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const inventory = reactive({
+  const user = reactive({
     title: '',
     type_code: [],
     latitude: '',
@@ -1708,15 +1710,16 @@
     desc: '',
   })
   // if (
-  //   inventory.title != '' ||
-  //   inventory.latitude != '' ||
-  //   inventory.longitude != '' ||
-  //   inventory.contact_name != '' ||
-  //   inventory.contact_email != '' ||
-  //   inventory.contact_phone != ''
+  //   user.title != '' ||
+  //   user.latitude != '' ||
+  //   user.longitude != '' ||
+  //   user.contact_name != '' ||
+  //   user.contact_email != '' ||
+  //   user.contact_phone != ''
   // ) {
   //   isReInput.value = false
   // }
+
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { messageError, listInventory } = storeToRefs(dataInventory)
@@ -1753,32 +1756,32 @@
   const handleChangeCity = (value: number, name: any) => {
     dataLocation.getListAllDistrictAction(value)
 
-    inventory.address = name.title + ', ' + 'Việt Nam'
+    user.address = name.title + ', ' + 'Việt Nam'
   }
   const handleChangeDistrict = (value: number, name: any) => {
     dataLocation.getListAllWardAction(value)
-    inventory.address = name.title + ', ' + inventory.address
+    user.address = name.title + ', ' + user.address
   }
   const handleChangeWard = (value: number, name: any) => {
-    inventory.address = name.title + ', ' + inventory.address
+    user.address = name.title + ', ' + user.address
   }
   const createInventory = () => {
     let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
+      title: user.title,
+      code: user.code,
+      type_code: user.type_code,
+      latitude: user.latitude,
+      longitude: user.longitude,
+      contact_name: user.contact_name,
+      contact_email: user.contact_email,
+      contact_phone: user.contact_phone,
+      address: user.address,
+      address_country_id: user.address_country_id,
+      address_district_id: user.address_district_id,
+      address_ward_id: user.address_ward_id,
+      address_state_id: user.address_state_id,
+      address_detail: user.address_detail,
+      desc: user.desc,
     }
     dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }

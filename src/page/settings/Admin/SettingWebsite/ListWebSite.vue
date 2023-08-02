@@ -77,6 +77,8 @@
   const dataWeb = useWebCatalog()
   dataWeb.getAllWebPaginateAction()
   const { listWebPaginate } = storeToRefs(dataWeb)
+  console.log(listWebPaginate)
+
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
@@ -90,10 +92,13 @@
       dataIndex: 'web_name',
     },
     {
+      title: 'URL',
+      dataIndex: 'url',
+    },
+    {
       title: 'Kích hoạt',
       dataIndex: 'status',
       key: 'status',
-      slots: { customRender: 'switch' },
     },
     {
       title: 'Người tạo',
