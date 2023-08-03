@@ -37,7 +37,7 @@ export const useAdminSetting = defineStore("AdminSetting", {
                 .then((payload: any) => {
                     let res = payload?.data?.data
                     this.getDetailGroupPermission(res)
-                    getListWeb(res.json_web_list, res.json_inventory_list)
+                    getListWeb(res?.json_web_list, res?.json_inventory_list)
                     role.storeSetting = getMatchingResults('STORE_SETTING', res.json_string_roles)
                     role.product = getMatchingResults('CATALOG_PRODUCT', res.json_string_roles)
                     role.createProduct = getMatchingResults('CATALOG_PRODUCT_CREATE', res.json_string_roles)
@@ -47,6 +47,7 @@ export const useAdminSetting = defineStore("AdminSetting", {
                     role.importProduct = getMatchingResults('CATALOG_PRODUCT_IMPORT', res.json_string_roles)
                     role.exportProduct = getMatchingResults('CATALOG_PRODUCT_EXPORT', res.json_string_roles)
                     // this.getDetailRoles(res)
+
                 })
                 .catch((err) => {
                     console.log(err)

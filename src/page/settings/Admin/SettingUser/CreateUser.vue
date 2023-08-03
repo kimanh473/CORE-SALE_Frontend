@@ -44,8 +44,8 @@
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập tên kho"
-                          v-model="user.title"
+                          placeholder="Nhập mã nhân sự"
+                          v-model="user.code"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -60,8 +60,8 @@
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập mã kho"
-                          v-model="user.code"
+                          placeholder="Nhập tên nhân sự"
+                          v-model="user.fullname"
                         />
                         <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
@@ -69,7 +69,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="grid grid-cols-2 gap-2 form-small">
+                  <!-- <div class="grid grid-cols-2 gap-2 form-small">
                     <div>
                       <label for="" class="form-group-label"
                         >Vị trí<span class="text-red-600">* </span> <span></span
@@ -113,18 +113,39 @@
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Email<span class="text-red-600">* </span> <span></span
+                        >Email cá nhân<span class="text-red-600">* </span>
+                        <span></span
                       ></label>
                       <div>
                         <input
                           type="email"
                           class="form-control-input"
                           placeholder="Nhập email"
-                          v-model="user.contact_email"
+                          v-model="user.email_personal"
+                        />
+                        <p
+                          v-if="messageError?.contact_email"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_email[0] }}
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Email công ty<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <input
+                          type="email"
+                          class="form-control-input"
+                          placeholder="Nhập email"
+                          v-model="user.email_company"
                         />
                         <p
                           v-if="messageError?.contact_email"
@@ -144,7 +165,7 @@
                           type="number"
                           class="form-control-input"
                           placeholder="Nhập số điện thoại"
-                          v-model="user.contact_phone"
+                          v-model="user.phone"
                         />
                         <p
                           v-if="messageError?.contact_phone"
@@ -165,7 +186,8 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên nguồn*, Mã *, Mặc định ( nút bật tắt) Mô tả
+                Mã nhân sự*, Tên nhân sự *, Vị trí, Phòng ban, Email, Số điện
+                thoại
               </h2>
             </div>
 
@@ -195,7 +217,7 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên liên lạc"
-                          v-model="user.contact_name"
+                          v-model="user.username"
                         />
                         <p
                           v-if="messageError?.contact_name"
@@ -215,7 +237,27 @@
                           type="password"
                           class="form-control-input"
                           placeholder="Nhập mật khẩu"
-                          v-model="user.contact_email"
+                          v-model="user.password"
+                        />
+                        <p
+                          v-if="messageError?.contact_email"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_email[0] }}
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Nhập lại mật khẩu<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <input
+                          type="password"
+                          class="form-control-input"
+                          placeholder="Nhập mật khẩu"
+                          v-model="user.password_confirmation"
                         />
                         <p
                           v-if="messageError?.contact_email"
@@ -232,39 +274,21 @@
                         ></label>
                         <a-select
                           class="form-control-input"
+                          v-model:value="user.group_id"
                           placeholder="Chọn nhóm"
-                          v-model:value="user.type_code"
+                          :options="
+                            listGroupPermission.map((item) => ({
+                              label: item.title,
+                              value: item.id,
+                            }))
+                          "
+                          @change="changeGroupAdmin"
                         >
-                          <a-select-option
+                          <!-- <a-select-option
                             v-for="(item, index) in listGroupPermission"
                             :key="index"
                             >{{ item.title }}</a-select-option
-                          >
-                        </a-select>
-                        <p
-                          v-if="messageError?.contact_phone"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_phone[0] }}
-                        </p>
-                      </div>
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Website<span class="text-red-600">* </span>
-                          <span></span
-                        ></label>
-                        <a-select
-                          class="form-control-input"
-                          placeholder="Chọn website"
-                          v-model:value="user.type_code"
-                          @click.once="getListGroupInventory"
-                        >
-                          <a-select-option
-                            v-for="(item, index) in listGroupInventory"
-                            :key="index"
-                            :value="item.code"
-                            >{{ item.title }}</a-select-option
-                          >
+                          > -->
                         </a-select>
                         <p
                           v-if="messageError?.contact_phone"
@@ -274,33 +298,8 @@
                         </p>
                       </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2 form-small">
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Kho<span class="text-red-600">* </span> <span></span
-                        ></label>
-                        <a-select
-                          class="form-control-input"
-                          placeholder="Chọn kho"
-                          v-model:value="user.type_code"
-                        >
-                          <a-select-option
-                            v-for="(item, index) in listInventory"
-                            :key="index"
-                            :value="item.code"
-                            >{{ item.title }}</a-select-option
-                          >
-                        </a-select>
-                        <p
-                          v-if="messageError?.contact_phone"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_phone[0] }}
-                        </p>
-                      </div>
-                    </div>
-                    <a-switch v-model:checked="checked" /> &nbsp; Quản trị hệ
-                    thống
+                    <!-- <a-switch v-model:checked="checked" /> &nbsp; Tùy chỉnh
+                    quyền -->
                   </div>
                 </div>
               </Transition>
@@ -345,6 +344,9 @@
                                     type="checkbox"
                                     true-value="STORE_SETTING"
                                     false-value=""
+                                    @change="changeCheckbox()"
+                                    v-model="role.storeSetting"
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -365,6 +367,9 @@
                                     type="checkbox"
                                     true-value="CATALOG_PRODUCT"
                                     false-value=""
+                                    v-model="role.product"
+                                    @change="changeCheckbox()"
+                                    disabled
                                   />
                                 </td>
                                 <td>Danh mục sản phẩm</td>
@@ -374,6 +379,8 @@
                                     type="checkbox"
                                     true-value="CATALOG_PRODUCT_CREATE"
                                     false-value=""
+                                    v-model="role.createProduct"
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -381,6 +388,8 @@
                                     type="checkbox"
                                     true-value="CATALOG_PRODUCT_UPDATE"
                                     false-value=""
+                                    v-model="role.updateProduct"
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -388,6 +397,8 @@
                                     type="checkbox"
                                     true-value="CATALOG_PRODUCT_DELETE"
                                     false-value=""
+                                    v-model="role.deleteProduct"
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -395,6 +406,8 @@
                                     type="checkbox"
                                     true-value="CATALOG_PRODUCT_PRINT"
                                     false-value=""
+                                    v-model="role.printProduct"
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -402,6 +415,8 @@
                                     type="checkbox"
                                     true-value="CATALOG_PRODUCT_IMPORT"
                                     false-value=""
+                                    v-model="role.importProduct"
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -409,6 +424,8 @@
                                     type="checkbox"
                                     true-value="CATALOG_PRODUCT_EXPORT"
                                     false-value=""
+                                    v-model="role.exportProduct"
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -420,6 +437,9 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    :disabled="
+                                      role.storeSetting != 'STORE_SETTING'
+                                    "
                                   />
                                 </td>
                                 <td>Khách hàng</td>
@@ -429,6 +449,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -436,6 +457,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -443,6 +465,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -450,6 +473,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -457,6 +481,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -464,6 +489,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -475,6 +501,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Bán hàng</td>
@@ -484,6 +511,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -491,6 +519,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -498,6 +527,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -505,6 +535,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -512,6 +543,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -519,6 +551,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -530,6 +563,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Marketing</td>
@@ -539,6 +573,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -546,6 +581,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -553,6 +589,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -560,6 +597,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -567,6 +605,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -574,6 +613,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -585,6 +625,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Giỏ hàng</td>
@@ -594,6 +635,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -601,6 +643,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -608,6 +651,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -615,6 +659,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -622,6 +667,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -629,6 +675,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -640,6 +687,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Cài đặt gian hàng</td>
@@ -649,6 +697,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -656,6 +705,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -663,6 +713,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -670,6 +721,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -677,6 +729,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -684,6 +737,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -697,6 +751,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -717,6 +772,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Quản lý sản phẩm</td>
@@ -726,6 +782,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -733,6 +790,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -740,6 +798,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -747,6 +806,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -754,6 +814,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -761,6 +822,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -772,6 +834,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Quản lý ngành hàng</td>
@@ -781,6 +844,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -788,6 +852,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -795,6 +860,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -802,6 +868,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -809,6 +876,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -816,6 +884,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -828,6 +897,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -848,6 +918,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Danh sách khách hàng</td>
@@ -857,6 +928,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -864,6 +936,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -871,6 +944,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -878,6 +952,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -885,6 +960,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -892,6 +968,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -903,6 +980,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Chăm sóc khách hàng</td>
@@ -912,6 +990,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -919,6 +998,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -926,6 +1006,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -933,6 +1014,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -940,6 +1022,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -947,6 +1030,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -960,6 +1044,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -980,6 +1065,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Quản lý đơn hàng</td>
@@ -989,6 +1075,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -996,6 +1083,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1003,6 +1091,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1010,6 +1099,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1017,6 +1107,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1024,6 +1115,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1035,6 +1127,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Hóa đơn</td>
@@ -1044,6 +1137,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1051,6 +1145,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1058,6 +1153,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1065,6 +1161,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1072,6 +1169,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1079,6 +1177,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1090,6 +1189,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Hóa đơn vận chuyển</td>
@@ -1099,6 +1199,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1106,6 +1207,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1113,6 +1215,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1120,6 +1223,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1127,6 +1231,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1134,6 +1239,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1145,6 +1251,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Công nợ</td>
@@ -1154,6 +1261,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1161,6 +1269,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1168,6 +1277,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1175,6 +1285,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1182,6 +1293,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1189,6 +1301,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1201,6 +1314,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -1221,6 +1335,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Mã giảm giá</td>
@@ -1230,6 +1345,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1237,6 +1353,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1244,6 +1361,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1251,6 +1369,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1258,6 +1377,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1265,6 +1385,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1276,6 +1397,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Chiến dịch khuyến mãi</td>
@@ -1285,6 +1407,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1292,6 +1415,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1299,6 +1423,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1306,6 +1431,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1313,6 +1439,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1320,6 +1447,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1331,6 +1459,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Quảng cáo</td>
@@ -1340,6 +1469,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1347,6 +1477,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1354,6 +1485,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1361,6 +1493,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1368,6 +1501,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1375,6 +1509,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1386,6 +1521,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Đánh giá</td>
@@ -1395,6 +1531,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1402,6 +1539,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1409,6 +1547,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1416,6 +1555,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1423,6 +1563,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1430,6 +1571,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1441,6 +1583,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Kết nối</td>
@@ -1450,6 +1593,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1457,6 +1601,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1464,6 +1609,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1471,6 +1617,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1478,6 +1625,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1485,6 +1633,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1497,6 +1646,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -1517,6 +1667,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td>Danh sách nội dung</td>
@@ -1526,6 +1677,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1533,6 +1685,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1540,6 +1693,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1547,6 +1701,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1554,6 +1709,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1561,6 +1717,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
+                                    disabled
                                   />
                                 </td>
                                 <td></td>
@@ -1581,8 +1738,11 @@
                           <input
                             class="mt-[3px]"
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_IMPORT"
+                            :true-value="item.code"
                             false-value=""
+                            :value="item.code"
+                            :checked="checkedWeb(item.code)"
+                            @change="changeWeb(item.code, $event)"
                           />
                         </div>
                       </div>
@@ -1598,8 +1758,11 @@
                           <input
                             class="mt-[3px]"
                             type="checkbox"
-                            true-value="PERSONNEL_PROFILE_IMPORT"
+                            :true-value="item.code"
                             false-value=""
+                            :value="item.code"
+                            :checked="checkedInvent(item.code)"
+                            @change="changeInventory(item.code, $event)"
                           />
                         </div></div
                     ></a-tab-pane>
@@ -1611,8 +1774,7 @@
                   @click="isAddress = !isAddress"
                   class="cursor-pointer form-group-label"
                 >
-                  Vĩ độ* Kinh độ* Quốc gia*, Tỉnh/Thành phố*, Quận/Huyện*, Địa
-                  chỉ cụ thể*
+                  Thông tin quyền*
                 </h2>
               </div>
             </div>
@@ -1623,9 +1785,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createInventory()">
-            Cập nhật
-          </button>
+          <button class="button-modal" @click="createUser()">Tạo mới</button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
             Hủy bỏ
           </button>
@@ -1642,11 +1802,11 @@
   import Header from '../../../../components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
   import TableResponsive from '../../../../components/common/TableResponsive.vue'
-  import { useLocation } from '../../../../store/modules/location/location'
   import { useGroupInventory } from '../../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../../store/modules/inventory/product-invetory'
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
+  import { useUserSetting } from '../../../../store/modules/users/users'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -1663,14 +1823,91 @@
   const checked = ref<boolean>(false)
   const activeKey = ref('1')
   const isLoading = ref<boolean>(false)
+  const dataUser = useUserSetting()
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
+  console.log(listWeb)
   const dataAdminSetting = useAdminSetting()
   dataAdminSetting.getAllPermissionGroupsAction(10, 1)
-  const { listGroupPermission } = storeToRefs(dataAdminSetting)
+  const { listGroupPermission, detailGroupPermission } =
+    storeToRefs(dataAdminSetting)
   console.log(listGroupPermission)
-
+  const role = reactive({
+    //store
+    storeSetting: '',
+    product: '',
+    createProduct: '',
+    updateProduct: '',
+    deleteProduct: '',
+    printProduct: '',
+    importProduct: '',
+    exportProduct: '',
+  })
+  const getMatchingResults = (input: any, roleList: string[]) => {
+    const found = roleList?.find((element: any) => element == input)
+    if (found == undefined || found == null) {
+      return ''
+    } else {
+      return found
+    }
+  }
+  const groupAdmin = reactive({
+    title: '',
+    is_admin: 'no',
+    string_roles: [],
+    web_list: [],
+    inventory_list: [],
+  })
+  const arrayInvent = ref([])
+  const arrayWeb = ref([])
+  const changeInventory = (code: any, event: any) => {
+    if (event.target.checked == true) {
+      arrayInvent.value.push(code)
+    } else if (event.target.checked == false) {
+      arrayInvent.value = groupAdmin.inventory_list.filter(
+        (item) => item != code
+      )
+    }
+  }
+  const getListWeb = (webList: string[], inventList: string[]) => {
+    arrayWeb.value = webList
+    arrayInvent.value = inventList
+  }
+  const changeWeb = (code: any, event: any) => {
+    if (event.target.checked == true) {
+      arrayWeb.value.push(code)
+    } else if (event.target.checked == false) {
+      arrayWeb.value = groupAdmin.web_list.filter((item) => item != code)
+    }
+  }
+  const checkedWeb = (code: string) => {
+    if (arrayWeb.value.indexOf(code) > -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const checkedInvent = (code: string) => {
+    if (arrayInvent.value.indexOf(code) > -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const changeCheckbox = () => {
+    if (role.storeSetting == '') {
+      role.product = ''
+    }
+    if (role.product == '') {
+      role.createProduct = ''
+      role.updateProduct = ''
+      role.deleteProduct = ''
+      role.printProduct = ''
+      role.importProduct = ''
+      role.exportProduct = ''
+    }
+  }
   // const isReInput = ref<boolean>(true)
   const table = reactive({
     header: [
@@ -1693,37 +1930,20 @@
     isLoading.value = false
   }
   const user = reactive({
-    title: '',
-    type_code: [],
-    latitude: '',
-    longitude: '',
-    contact_name: '',
-    contact_email: '',
-    contact_phone: '',
-    address: null,
-    address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
-    address_detail: '',
     code: '',
-    desc: '',
+    username: '',
+    fullname: '',
+    group_id: '',
+    password: '',
+    password_confirmation: '',
+    email_company: '',
+    email_personal: '',
+    phone: '',
   })
-  // if (
-  //   user.title != '' ||
-  //   user.latitude != '' ||
-  //   user.longitude != '' ||
-  //   user.contact_name != '' ||
-  //   user.contact_email != '' ||
-  //   user.contact_phone != ''
-  // ) {
-  //   isReInput.value = false
-  // }
 
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { messageError, listInventory } = storeToRefs(dataInventory)
-  console.log(messageError)
 
   const dataGroupInventory = useGroupInventory()
   const getListGroupInventory = () => {
@@ -1747,43 +1967,30 @@
   //     desc: 'nguồn A tại hà nội',
   //     use_direct: '0',
   //   })
-  const dataLocation = useLocation()
-  const getDataCity = () => {
-    dataLocation.getListAllCityAction()
-  }
-  const { listAllCity, listAllDistrict, listAllWard } =
-    storeToRefs(dataLocation)
-  const handleChangeCity = (value: number, name: any) => {
-    dataLocation.getListAllDistrictAction(value)
 
-    user.address = name.title + ', ' + 'Việt Nam'
+  const changeGroupAdmin = (value: string) => {
+    user.group_id = value
+    dataAdminSetting.getDetailPermissionGroupsAction(
+      Number(value),
+      role,
+      getMatchingResults,
+      getListWeb
+    )
   }
-  const handleChangeDistrict = (value: number, name: any) => {
-    dataLocation.getListAllWardAction(value)
-    user.address = name.title + ', ' + user.address
-  }
-  const handleChangeWard = (value: number, name: any) => {
-    user.address = name.title + ', ' + user.address
-  }
-  const createInventory = () => {
+
+  const createUser = () => {
     let data = {
-      title: user.title,
       code: user.code,
-      type_code: user.type_code,
-      latitude: user.latitude,
-      longitude: user.longitude,
-      contact_name: user.contact_name,
-      contact_email: user.contact_email,
-      contact_phone: user.contact_phone,
-      address: user.address,
-      address_country_id: user.address_country_id,
-      address_district_id: user.address_district_id,
-      address_ward_id: user.address_ward_id,
-      address_state_id: user.address_state_id,
-      address_detail: user.address_detail,
-      desc: user.desc,
+      username: user.username,
+      fullname: user.fullname,
+      group_id: user.group_id,
+      password: user.password,
+      password_confirmation: user.password_confirmation,
+      email_company: user.email_company,
+      email_personal: user.email_personal,
+      phone: user.phone,
     }
-    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+    dataUser.createUserAction(data, toast, router, EndTimeLoading)
   }
 </script>
 
