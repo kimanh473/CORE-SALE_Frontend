@@ -11,9 +11,13 @@ const updateUserApi = (id: number, data: object) => {
 const getDetailUsersApi = (id: number) => {
     return httpClient.get(`/user/account/show/${id}`);
 };
+const deleteUserApi = (id: number) => {
+    return httpClient.post(`/user/account/delete/${id}`);
+};
 export {
     getAllUsersApi,
     createUserApi,
     getDetailUsersApi,
-    updateUserApi
+    updateUserApi,
+    deleteUserApi
 };

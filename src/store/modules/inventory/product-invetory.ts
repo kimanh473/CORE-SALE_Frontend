@@ -16,7 +16,7 @@ export const useInventory = defineStore("Inventory", {
                 id: item.id,
                 title: item.title,
                 code: item.code,
-                status: item.status == null || item.status == '0' ? false : true,
+                status: item.status == null || item.status == '0' ? 'Chưa kích hoạt' : 'Đang kích hoạt',
                 json_type_code: item.json_type_code.map((item: any) => item + ' '),
                 address: item.address,
                 fullname: item.user_created.fullname,
@@ -73,10 +73,11 @@ export const useInventory = defineStore("Inventory", {
                     }
                 })
                 .catch((err) => {
-                    toast.error("Tạo mới thất bại");
                     this.messageError = err.response.data.messages
-                    console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         async updateInventoryAction(
@@ -98,10 +99,11 @@ export const useInventory = defineStore("Inventory", {
                     }
                 })
                 .catch((err) => {
-                    toast.error("Cập nhật thất bại");
                     this.messageError = err.response.data.messages
-                    console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         deleteInventoryAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {

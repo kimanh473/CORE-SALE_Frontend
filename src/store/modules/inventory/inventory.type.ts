@@ -44,3 +44,14 @@ interface DetailErorr {
     address_detail: string,
     desc: string,
 }
+interface DetailGroupInvent {
+    id: number,
+    code: string,
+    title: string,
+    created_by_id: string,
+    updated_by_id: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+    desc: string
+}

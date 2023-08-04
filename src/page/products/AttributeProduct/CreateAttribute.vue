@@ -49,8 +49,8 @@
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập tên kho"
-                          v-model="attribute.title"
+                          placeholder="Nhập tên thuộc tính"
+                          v-model="attribute.attribute_model"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -240,7 +240,7 @@
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  import { useLocation } from '../../../store/modules/location/location'
+  // import { useLocation } from '../../../store/modules/location/location'
   import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../store/modules/inventory/product-invetory'
   import { storeToRefs } from 'pinia'
@@ -279,14 +279,17 @@
     {
       label: 'Hình ảnh',
       value: 'varchar',
+      type: 'gallery',
     },
     {
       label: 'Nút bật tắt',
-      value: 'varchar',
+      value: 'switch',
+      type: 'varchar',
     },
     {
       label: 'Nhiều lựa chọn',
-      value: 'varchar',
+      value: 'multiple',
+      type: 'varchar',
     },
   ])
   const options2 = ref<SelectProps['options']>([
@@ -320,21 +323,21 @@
     },
   ])
   const attribute = reactive({
-    title: '',
-    type_code: [],
-    latitude: '',
-    longitude: '',
-    contact_name: '',
-    contact_email: '',
-    contact_phone: '',
-    address: null,
-    address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
-    address_detail: '',
-    code: '',
-    desc: '',
+    attribute_code: 'image',
+    attribute_model: '',
+    backend_model: '',
+    backend_type: 'gallery',
+    backend_table: '',
+    frontend_model: '',
+    frontend_input: 'text',
+    frontend_label: 'Hình ảnh',
+    frontend_class: '',
+    source_model: '',
+    is_required: '1',
+    is_user_defined: '0',
+    default_value: '',
+    is_unique: '0',
+    note: '',
   })
   // if (
   //   inventory.title != '' ||
@@ -396,43 +399,43 @@
   //     desc: 'nguồn A tại hà nội',
   //     use_direct: '0',
   //   })
-  const dataLocation = useLocation()
-  const getDataCity = () => {
-    dataLocation.getListAllCityAction()
-  }
-  const { listAllCity, listAllDistrict, listAllWard } =
-    storeToRefs(dataLocation)
-  const handleChangeCity = (value: number, name: any) => {
-    dataLocation.getListAllDistrictAction(value)
+  // const dataLocation = useLocation()
+  // const getDataCity = () => {
+  //   dataLocation.getListAllCityAction()
+  // }
+  // const { listAllCity, listAllDistrict, listAllWard } =
+  //   storeToRefs(dataLocation)
+  // const handleChangeCity = (value: number, name: any) => {
+  //   dataLocation.getListAllDistrictAction(value)
 
-    attribute.address = name.title + ', ' + 'Việt Nam'
-  }
-  const handleChangeDistrict = (value: number, name: any) => {
-    dataLocation.getListAllWardAction(value)
-    attribute.address = name.title + ', ' + attribute.address
-  }
-  const handleChangeWard = (value: number, name: any) => {
-    attribute.address = name.title + ', ' + attribute.address
-  }
+  //   attribute.address = name.title + ', ' + 'Việt Nam'
+  // }
+  // const handleChangeDistrict = (value: number, name: any) => {
+  //   dataLocation.getListAllWardAction(value)
+  //   attribute.address = name.title + ', ' + attribute.address
+  // }
+  // const handleChangeWard = (value: number, name: any) => {
+  //   attribute.address = name.title + ', ' + attribute.address
+  // }
   const createAttribute = () => {
     let data = {
-      title: attribute.title,
-      code: attribute.code,
-      type_code: attribute.type_code,
-      latitude: attribute.latitude,
-      longitude: attribute.longitude,
-      contact_name: attribute.contact_name,
-      contact_email: attribute.contact_email,
-      contact_phone: attribute.contact_phone,
-      address: attribute.address,
-      address_country_id: attribute.address_country_id,
-      address_district_id: attribute.address_district_id,
-      address_ward_id: attribute.address_ward_id,
-      address_state_id: attribute.address_state_id,
-      address_detail: attribute.address_detail,
-      desc: attribute.desc,
+      attribute_code: 'image',
+      attribute_model: '',
+      backend_model: '',
+      backend_type: 'gallery',
+      backend_table: '',
+      frontend_model: '',
+      frontend_input: 'text',
+      frontend_label: 'Hình ảnh',
+      frontend_class: '',
+      source_model: '',
+      is_required: '1',
+      is_user_defined: '0',
+      default_value: '',
+      is_unique: '0',
+      note: '',
     }
-    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 

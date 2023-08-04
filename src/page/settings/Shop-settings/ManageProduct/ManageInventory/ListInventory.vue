@@ -50,10 +50,8 @@
             >
           </template>
         </template>
-        <template #switch="{ text }">
-          <a-switch :checked="text" />
-        </template> </a-table
-    ></template>
+      </a-table></template
+    >
 
     <template v-slot:footer>footer</template>
   </base-layout>
@@ -237,7 +235,6 @@
       title: 'Kích hoạt',
       dataIndex: 'status',
       key: 'status',
-      slots: { customRender: 'switch' },
     },
     {
       title: 'Thuộc nhóm kho',

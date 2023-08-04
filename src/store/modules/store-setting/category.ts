@@ -82,19 +82,21 @@ export const useCategory = defineStore("Category", {
                 .then((res) => {
                     if (res.data.status == "failed") {
                         toast.error(res.data.messages)
-                        handleClose()
                         EndTimeLoading();
                     } else {
                         toast.success("Tạo mới thành công")
-                        location.reload()
+                        handleClose()
+                        this.getListCategoryTreeAction()
                         EndTimeLoading()
                     }
                 })
                 .catch((err) => {
-                    toast.error("Tạo mới thất bại");
                     // this.messageError = err.response.data.messages
                     // console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         async updateCategoryAction(
@@ -111,15 +113,17 @@ export const useCategory = defineStore("Category", {
                         EndTimeLoading();
                     } else {
                         toast.success("Cập nhật thành công")
-                        location.reload()
+                        this.getListCategoryTreeAction()
                         EndTimeLoading()
                     }
                 })
                 .catch((err) => {
-                    toast.error("Cập nhật thất bại");
                     // this.messageError = err.response.data.messages
                     // console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         deleteCategoryAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {

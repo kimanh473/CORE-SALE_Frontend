@@ -56,10 +56,12 @@ export const useListSpecification = defineStore("ListSpecification", {
                     }
                 })
                 .catch((err) => {
-                    toast.error("Tạo mới thất bại");
                     // this.messageError = err.response.data.messages
                     // console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         async updateSpecificationAction(
@@ -82,10 +84,12 @@ export const useListSpecification = defineStore("ListSpecification", {
                     }
                 })
                 .catch((err) => {
-                    toast.error("Cập nhật thất bại");
                     // this.messageError = err.response.data.messages
                     // console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         deleteSpecificationAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {
