@@ -30,7 +30,7 @@
           title="Tạo mới"
           @click="openModalCreate()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới ngành hàng</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới ngành hàng con</p>
         </div>
       </div>
       <Transition :duration="550" name="nested">
@@ -132,6 +132,7 @@
                         :filter-option="filterOption"
                         v-model:value="parentSelected"
                         @click.once="getListCategory"
+                        @change="handleChange"
                       >
                         <!-- <a-select-option
                           v-for="(item, index) in listCategory"
@@ -283,7 +284,7 @@
               type="text"
               class="form-control-input"
               placeholder="Nhập ngành hàng"
-              v-model="category.title"
+              v-model="category.titleCreate"
             />
             <p v-if="messageError?.title" class="text-red-600">
               {{ messageError?.title[0] }}
@@ -313,8 +314,9 @@
             placeholder="Chọn ngành hàng"
             :options="listCategory"
             :filter-option="filterOption"
-            v-model:value="parentSelected"
+            v-model:value="category.parentSelectedCreate"
             @click.once="getListCategory"
+            @change="handleChangeCreate"
           >
             <!-- <a-select-option
                           v-for="(item, index) in listCategory"
@@ -391,7 +393,7 @@
               cols="30"
               rows="5"
               class="form-control-input"
-              v-model="category.desc"
+              v-model="category.descCreate"
             ></textarea>
           </div>
         </div>
@@ -516,24 +518,40 @@
   //     ],
   //   },
   // ]
+  const category = reactive({
+    title: '',
+    parent_id: '',
+    parent_id_create: '',
+    desc: '',
+    titleCreate: '',
+    descCreate: '',
+    parentSelectedCreate: '',
+  })
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info)
     category.parent_id = info.node.parent_id
     category.title = info.node.title
     category.desc = info.node.desc
     parentSelected.value = info.node.parent.node.title
+    category.parentSelectedCreate = info.node.title
     idSelected.value = info.node.id
+    category.parent_id_create = info.node.id
   }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+
+  const parentIdSelectChange = ref()
+  const handleChange = (value: string) => {
+    parentIdSelectChange.value = value
+  }
+  const handleChangeCreate = (value: string) => {
+    category.parent_id_create = value
+    console.log(category.parent_id_create)
+  }
   const idSelected = ref()
   const parentSelected = ref()
-  const category = reactive({
-    title: '',
-    parent_id: '',
-    desc: '',
-  })
+
   const messageError = ref()
   const getListCategory = () => {
     dataCategory.getListCategoryAction()
@@ -542,7 +560,7 @@
     let data = {
       title: category.title,
       desc: category.desc,
-      parent_id: category.parent_id,
+      parent_id: parentIdSelectChange.value,
     }
     dataCategory.updateCategoryAction(
       idSelected.value,
@@ -553,9 +571,9 @@
   }
   const createCategory = () => {
     let data = {
-      title: category.title,
-      desc: category.desc,
-      parent_id: parentSelected.value,
+      title: category.titleCreate,
+      desc: category.descCreate,
+      parent_id: category.parent_id_create,
     }
     dataCategory.createCategoryAction(data, toast, handleClose, EndTimeLoading)
   }

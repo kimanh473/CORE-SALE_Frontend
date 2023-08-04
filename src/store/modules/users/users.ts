@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllUsersApi, createUserApi, getDetailUsersApi, updateUserApi } from '../../../services/UserServices/user.service'
+import { getAllUsersApi, createUserApi, getDetailUsersApi, updateUserApi, deleteUserApi } from '../../../services/UserServices/user.service'
 export const useUserSetting = defineStore("UserSetting", {
     state: () => ({
         listUsers: [] as DataUser[],
@@ -54,10 +54,12 @@ export const useUserSetting = defineStore("UserSetting", {
                     }
                 })
                 .catch((err) => {
-                    toast.error("Tạo mới thất bại");
                     // this.messageError = err.response.data.messages
                     // console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         async updateUserAction(
@@ -75,15 +77,35 @@ export const useUserSetting = defineStore("UserSetting", {
                         EndTimeLoading();
                     } else {
                         toast.success("Cập nhật thành công")
-                        router.push('/list-specification')
+                        router.push('/list-user')
                         EndTimeLoading()
                     }
                 })
                 .catch((err) => {
-                    toast.error("Cập nhật thất bại");
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                     // this.messageError = err.response.data.messages
                     // console.log(this.messageError);
+                });
+        },
+        deleteUserAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {
+            deleteUserApi(id)
+                .then((res) => {
+                    if (res.data.status == "success") {
+                        toast.success("Xóa thành công", 500);
+                        this.getAllListUsersAction()
+                    } else {
+                        toast.error(res.data.messages, 500);
+                    }
+                    EndTimeLoading();
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
                     console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
                 });
         },
     },

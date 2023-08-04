@@ -1,19 +1,37 @@
 import { defineStore } from "pinia";
-import { getAllGroupInventoryApi, createGroupInventoryApi, deleteGroupInventoryApi } from '../../../services/InventoryServices/groupInventory.service'
+import { getAllGroupInventoryApi, createGroupInventoryApi, deleteGroupInventoryApi, getDetailGroupInventoryApi, updateGroupInventoryApi } from '../../../services/InventoryServices/groupInventory.service'
 export const useGroupInventory = defineStore("GroupInventory", {
     state: () => ({
-        listGroupInventory: null
+        listGroupInventory: [] as DetailGroupInvent[],
+        detailGroupInventory: {} as DetailGroupInvent
     }),
-    getters: {},
-    actions: {
-        getListGroupInventory(payload: any) {
-            this.listGroupInventory = payload.data
-
+    getters: {
+        getListGroupInventory: (state: any) => {
+            return (payload: any) => state.listGroupInventory = payload
         },
+        getDetailGroupInventory: (state: any) => {
+            return (payload: any) => state.detailGroupInventory = payload
+        },
+    },
+    actions: {
+        // getListGroupInventory(payload: any) {
+        //     this.listGroupInventory = payload.data
+        // },
         getListGroupInventoryAction() {
             getAllGroupInventoryApi()
                 .then((payload: any) => {
-                    this.getListGroupInventory(payload.data)
+                    let res = payload?.data?.data
+                    this.getListGroupInventory(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getDetailGroupInventoryAction(id: number) {
+            await getDetailGroupInventoryApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailGroupInventory(res)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -33,15 +51,44 @@ export const useGroupInventory = defineStore("GroupInventory", {
                         EndTimeLoading();
                     } else {
                         toast.success("Tạo mới thành công");
-                        router.push('/list-inventory');
+                        router.push('/list-group-inventory');
                         EndTimeLoading();
                     }
                 })
                 .catch((err) => {
-                    toast.error("Tạo mới thất bại");
                     this.messageError = err.response.data.messages
-                    console.log(this.messageError);
                     console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+        async updateGroupInventoryAction(
+            id: number,
+            data: Object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateGroupInventoryApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công");
+                        router.push('/list-group-inventory')
+                        // handleCloseCreate();
+                        EndTimeLoading();
+                    }
+                })
+                .catch((err) => {
+                    this.messageError = err.response.data.messages
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
         deleteGroupInventoryAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {

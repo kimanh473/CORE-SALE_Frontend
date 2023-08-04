@@ -29,7 +29,7 @@
                     type="text"
                     class="form-control-input"
                     placeholder="Nhập tên kho"
-                    v-model="invent.title"
+                    v-model="detailGroupInventory.title"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                     {{ messageError?.title[0] }}
@@ -47,7 +47,7 @@
                     type="text"
                     class="form-control-input"
                     placeholder="Nhập mã kho"
-                    v-model="invent.code"
+                    v-model="detailGroupInventory.code"
                   />
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                     {{ messageError?.title[0] }}
@@ -64,7 +64,7 @@
                   cols="30"
                   rows="5"
                   class="form-control-input"
-                  v-model="invent.desc"
+                  v-model="detailGroupInventory.desc"
                 ></textarea>
               </div>
             </div>
@@ -76,7 +76,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createGroupInventory()">
+          <button class="button-modal" @click="updateGroupInventory()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="this.$router.go(-1)">
@@ -93,29 +93,30 @@
   import BaseLayout from '../../../../../layout/baseLayout.vue'
   import SideBar from '../../../../../components/common/SideBar.vue'
   import Header from '../../../../../components/common/Header.vue'
-  import { ref, reactive } from 'vue'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useGroupInventory } from '../../../../../store/modules/inventory/group-inventory'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
+  import { storeToRefs } from 'pinia'
   const dataGroupInventory = useGroupInventory()
+  const route = useRoute()
+  dataGroupInventory.getDetailGroupInventoryAction(Number(route.params.id))
+  const { detailGroupInventory } = storeToRefs(dataGroupInventory)
+
   const isLoading = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const invent = reactive({
-    title: '',
-    code: '',
-    desc: '',
-  })
-  const createGroupInventory = () => {
+  const updateGroupInventory = () => {
     let data = {
-      title: invent.title,
-      code: invent.code,
-      desc: invent.desc,
+      title: detailGroupInventory.value.title,
+      code: detailGroupInventory.value.code,
+      desc: detailGroupInventory.value.desc,
     }
-    dataGroupInventory.createGroupInventoryAction(
+    dataGroupInventory.updateGroupInventoryAction(
+      Number(route.params.id),
       data,
       toast,
       router,

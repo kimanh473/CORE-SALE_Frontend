@@ -227,6 +227,10 @@
                         </p>
                       </div>
                     </div>
+                    <div class="pt-3">
+                      <a-switch v-model:checked="isActive" /> &nbsp; Kích hoạt
+                      tài khoản
+                    </div>
                     <div class="grid grid-cols-2 gap-2 form-small">
                       <div>
                         <label for="" class="form-group-label"
@@ -258,8 +262,8 @@
                         </p>
                       </div>
                     </div>
-                    <!-- <a-switch v-model:checked="checked" /> &nbsp; Tùy chỉnh
-                    quyền -->
+                    <a-switch v-model:checked="isChangePermission" /> &nbsp; Tùy
+                    chỉnh quyền
                   </div>
                 </div>
               </Transition>
@@ -273,20 +277,17 @@
               </div>
             </div>
             <div class="inner">
-              <h4
-                class="form-section-title form-small cursor-pointer"
-                @click="isAddress = !isAddress"
-              >
-                <span v-show="isAddress == true">
+              <h4 class="form-section-title form-small cursor-pointer">
+                <span v-show="isChangePermission == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
                 </span>
-                <span v-show="isAddress == false"
+                <span v-show="isChangePermission == false"
                   ><i class="fas fa-chevron-right cursor-pointer"></i
                 ></span>
                 Thông tin quyền
               </h4>
               <Transition name="slide-up">
-                <div v-show="isAddress == true">
+                <div v-show="isChangePermission == true">
                   <a-tabs
                     v-model:activeKey="activeKey"
                     animated
@@ -1729,9 +1730,9 @@
                   </a-tabs>
                 </div>
               </Transition>
-              <div v-show="isAddress == false">
+              <div v-show="isChangePermission == false">
                 <h2
-                  @click="isAddress = !isAddress"
+                  @click="isChangePermission = !isChangePermission"
                   class="cursor-pointer form-group-label"
                 >
                   Thông tin quyền*
@@ -1778,16 +1779,22 @@
   const router = useRouter()
   const route = useRoute()
   const toast = useToast()
-  const isAddress = ref<boolean>(true)
+  const isChangePermission = ref<boolean>(false)
   const isInfor = ref<boolean>(true)
   const isContact = ref<boolean>(true)
-  const checked = ref<boolean>(false)
+  const isActive = ref<boolean>(true)
   const activeKey = ref('1')
   const isLoading = ref<boolean>(false)
   const dataUser = useUserSetting()
   const { detailUser } = storeToRefs(dataUser)
-  dataUser.getDetailUserAction(Number(route.params.id))
-  console.log(detailUser)
+  dataUser.getDetailUserAction(Number(route.params.id)).then(() => {
+    dataAdminSetting.getDetailPermissionGroupsAction(
+      Number(detailUser.value.group_id),
+      role,
+      getMatchingResults,
+      getListWeb
+    )
+  })
 
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
@@ -1899,8 +1906,6 @@
     username: '',
     fullname: '',
     group_id: '',
-    password: '',
-    password_confirmation: '',
     email_company: '',
     email_personal: '',
     phone: '',
@@ -1932,12 +1937,7 @@
   //     desc: 'nguồn A tại hà nội',
   //     use_direct: '0',
   //   })
-  dataAdminSetting.getDetailPermissionGroupsAction(
-    Number(detailUser.value.group_id),
-    role,
-    getMatchingResults,
-    getListWeb
-  )
+
   const changeGroupAdmin = (value: string) => {
     user.group_id = value
     dataAdminSetting.getDetailPermissionGroupsAction(
@@ -1962,19 +1962,46 @@
     let arr = groupAdmin.string_roles.filter(
       (item) => item != '' && item != null
     )
-    let data = {
-      code: detailUser.value.code,
-      username: detailUser.value.username,
-      fullname: detailUser.value.fullname,
-      group_id: detailUser.value.group_id,
-      password: detailUser.value.password,
-      password_confirmation: detailUser.value.password_confirmation,
-      email_company: detailUser.value.email_company,
-      email_personal: detailUser.value.email_personal,
-      phone: detailUser.value.phone,
-      string_roles: arr,
+    if (isChangePermission.value == true) {
+      let data = {
+        code: detailUser.value.code,
+        username: detailUser.value.username,
+        fullname: detailUser.value.fullname,
+        group_id: detailUser.value.group_id,
+        status: isActive.value === true ? 'ACTIVE' : 'INACTIVE',
+        email_company: detailUser.value.email_company,
+        email_personal: detailUser.value.email_personal,
+        phone: detailUser.value.phone,
+        inherit_roles: 'no',
+        string_roles: arr,
+      }
+      dataUser.updateUserAction(
+        Number(route.params.id),
+        data,
+        toast,
+        router,
+        EndTimeLoading
+      )
+    } else {
+      let data = {
+        code: detailUser.value.code,
+        username: detailUser.value.username,
+        fullname: detailUser.value.fullname,
+        group_id: detailUser.value.group_id,
+        status: isActive.value === true ? 'ACTIVE' : 'INACTIVE',
+        email_company: detailUser.value.email_company,
+        email_personal: detailUser.value.email_personal,
+        phone: detailUser.value.phone,
+        inherit_roles: 'yes',
+      }
+      dataUser.updateUserAction(
+        Number(route.params.id),
+        data,
+        toast,
+        router,
+        EndTimeLoading
+      )
     }
-    console.log(data)
   }
 </script>
 

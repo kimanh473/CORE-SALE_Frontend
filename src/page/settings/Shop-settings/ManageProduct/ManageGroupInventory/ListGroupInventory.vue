@@ -22,7 +22,19 @@
       </Header>
     </template>
     <template v-slot:content class="relative">
-      <div class="rounded flex justify-between">
+      <div
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+      >
+        <div></div>
+        <div
+          class="button-create-new relative group rounded-md px-2"
+          title="Tạo mới kho"
+          @click="CreateGroupInventory()"
+        >
+          <p class="text-[14px] mt-1 px-1">Tạo mới nhóm kho</p>
+        </div>
+      </div>
+      <!-- <div class="rounded flex justify-between">
         <div></div>
         <div
           class="button-create-new relative group rounded-sm px-3 text-[var(--color-text)]"
@@ -31,11 +43,16 @@
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới</p>
         </div>
-      </div>
+      </div> -->
       <a-table
+        row-key="id"
         class="!p-[10px]"
         :columns="columns"
         :data-source="listGroupInventory"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+        }"
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
@@ -276,6 +293,11 @@
       toast,
       handleCloseConfirm
     )
+  }
+  const selectedRowKeys = ref([])
+  const onSelectChange = (selectedRowKeys1: any) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys1)
+    selectedRowKeys.value = selectedRowKeys1
   }
   // const rowSelection = {
   //   onChange(selectedRowKeys: (string | number)[], selectedRows: DataItem[]) {

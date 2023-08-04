@@ -43,7 +43,7 @@
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
             <a @click="navigateToUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
-              @click="handleOpenDeleteInvent(record)"
+              @click="handleOpenDeleteUser(record)"
               >Xóa</a
             >
           </template>
@@ -184,13 +184,13 @@
     router.push('/create-user')
   }
   const handleDelete = () => {
-    // getadminSetting.deletePermissionGroupsAction(
-    //   Number(groupPermission.value.id),
-    //   EndTimeLoading,
-    //   toast,
-    //   handleCloseConfirm
-    // )
-    // getadminSetting.getAllPermissionGroupsAction(10, 1)
+    isLoading.value = true
+    getUserSetting.deleteUserAction(
+      Number(idSelected.value),
+      toast,
+      EndTimeLoading,
+      handleCloseConfirm
+    )
   }
   //   const rightClick = (record: any) => {
   //     return {
@@ -220,7 +220,7 @@
     router.push(`/update-user/${id}`)
   }
   const idSelected = ref()
-  const handleOpenDeleteInvent = (record: any) => {
+  const handleOpenDeleteUser = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
   }
