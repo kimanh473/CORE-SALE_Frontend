@@ -1483,14 +1483,14 @@
     }
   }
   const checkedWeb = (code: string) => {
-    if (arrayWeb.value.indexOf(code) > -1) {
+    if (arrayWeb?.value?.indexOf(code) > -1) {
       return true
     } else {
       return false
     }
   }
   const checkedInvent = (code: string) => {
-    if (arrayInvent.value.indexOf(code) > -1) {
+    if (arrayInvent?.value?.indexOf(code) > -1) {
       return true
     } else {
       return false

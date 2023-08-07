@@ -82,10 +82,19 @@
     </a>
   </div>
   <teleport to="#app">
-    <modal-view
+    <ModalView
       class="hidden"
       :isOpen="isOpenDetail"
       :handleCloseDetail="handleCloseDetail"
+    >
+    </ModalView>
+  </teleport>
+  <div class="modal-custom">
+    <a-modal
+      :visible="isOpenDetail"
+      :footer="null"
+      @cancel="handleCloseDetail"
+      class="rounded-tl-lg rounded-tr-lg"
     >
       <div>
         <h1 class="header-modal">đổi mật khẩu đăng nhập</h1>
@@ -145,22 +154,23 @@
           </button>
         </div>
       </div>
-    </modal-view>
-  </teleport>
+    </a-modal>
+  </div>
 </template>
 
 <script setup lang="ts">
   import { reactive, ref } from 'vue'
   import { useRouter } from 'vue-router'
   // import { useStore } from 'vuex'
-  // import { useToast } from 'vue-toastification'
+  import { useToast } from 'vue-toastification'
   // import { useUserProfile } from '@/store/modules/user/userProfile'
   // import { storeToRefs } from 'pinia'
   const router = useRouter()
+  import { usePasswordSetting } from '../../store/modules/accounts/password'
   // const store = useStore()
-  // const toast = useToast()
+  const toast = useToast()
   const isOpenDetail = ref(false)
-  // const profile = useUserProfile()
+  const passSetting = usePasswordSetting()
   // const { userProfile, avatar } = storeToRefs(profile)
   const format = ref(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
@@ -179,6 +189,7 @@
   }
   const handleOpenDetail = () => {
     isOpenDetail.value = true
+    console.log(isOpenDetail)
   }
   const handleCloseDetail = () => {
     isOpenDetail.value = false
@@ -201,30 +212,22 @@
     // rootStyle.setProperty('--color-primary', color)
   }
   const changePasswordSocial = () => {
-    // const data = {
-    //   current_password: changePassword.current_password,
-    //   password: changePassword.password,
-    //   password_confirmation: changePassword.password_confirmation,
-    // }
-    // if (format.value.test(data.password)) {
-    //   if (data.password == data.password_confirmation) {
-    //     profile.ChangePasswordAction({
-    //       data,
-    //       toast,
-    //       handleCloseDetail,
-    //     })
-    //   } else {
-    //     toast.error('Xác nhận mật khẩu không đúng')
-    //   }
-    // } else {
-    //   toast.error(
-    //     'Mật khẩu tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt'
-    //   )
-    // }
+    const data = {
+      current_password: changePassword.current_password,
+      password: changePassword.password,
+      password_confirmation: changePassword.password_confirmation,
+    }
+    console.log(data)
+
+    if (data.password == data.password_confirmation) {
+      passSetting.changePassAction(data, toast, router, handleCloseDetail)
+    } else {
+      toast.error('Xác nhận mật khẩu không đúng')
+    }
   }
 </script>
 
-<style scoped>
+<style>
   .options-body {
     flex-grow: 1;
     overflow: auto;

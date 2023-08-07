@@ -13,7 +13,7 @@
   const layout = computed(() =>
     route.meta.layout ? route.meta.layout : 'base-layout'
   )
-  userlog.checkAuthenticated(router)
+  // userlog.checkAuthenticated(router)
 </script>
 <style scoped>
   #app {
@@ -25,6 +25,5 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-  
   }
 </style>

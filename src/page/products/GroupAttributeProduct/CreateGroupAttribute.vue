@@ -229,7 +229,7 @@
           <button class="button-modal" @click="createAttribute()">
             Cập nhật
           </button>
-          <button class="button-close-modal" @click="this.$router.go(-1)">
+          <button class="button-close-modal" @click="router.go(-1)">
             Hủy bỏ
           </button>
         </div>

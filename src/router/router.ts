@@ -126,6 +126,13 @@ const route: TRoute[] = [
     },
   },
   {
+    path: '/confirm-email',
+    component: () => import('../page/accounts/ConfirmEmail.vue'),
+    meta: {
+      layout: "base-layout",
+    },
+  },
+  {
     path: '/forgot-pass',
     component: () => import('../page/accounts/ForgotPass.vue'),
     meta: {

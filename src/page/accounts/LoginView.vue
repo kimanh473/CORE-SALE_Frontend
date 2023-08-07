@@ -52,7 +52,7 @@
             </div>
             <a
               class="text-sm font-medium text-gray-700 hover:text-red-500 hover:underline cursor-pointer"
-              @click.prevent=""
+              @click.prevent="navigateToConfirmEmail"
               >Quên mật khẩu?</a
             >
           </div>
@@ -71,6 +71,9 @@
   </section>
 </template>
 <script setup lang="ts">
+  defineOptions({
+    name: 'Login',
+  })
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   //   import { useStore } from 'vuex'
@@ -93,6 +96,9 @@
   }
   let errorMsg = ref('')
 
+  const navigateToConfirmEmail = () => {
+    router.push('/confirm-email')
+  }
   const login = () => {
     if (savePassword.value == true) {
       const dataUser = {

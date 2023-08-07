@@ -115,6 +115,7 @@ export const useAdminSetting = defineStore("AdminSetting", {
                     if (res.data.status == "success") {
                         EndTimeLoading;
                         toast.success("Xóa thành công");
+                        this.getAllPermissionGroupsAction()
                     } else {
                         toast.error(res.data.messages);
                     }
