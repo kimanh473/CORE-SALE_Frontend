@@ -7,12 +7,6 @@
       class="bg-white w-full md:max-w-md lg:max-w-full md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center"
     >
       <div class="w-full h-100">
-        <h1 class="flex text-3xl font-bold justify-center text-red-600">
-          PHẦN MỀM NHÂN SỰ
-        </h1>
-        <h1 class="flex text-3xl font-bold justify-center text-red-600">
-          TẬP ĐOÀN BÁCH TƯỜNG PHÁT
-        </h1>
         <h1 class="text-xl md:text-2xl font-bold leading-tight mt-5 uppercase">
           đặt lại mật khẩu
         </h1>
@@ -25,6 +19,7 @@
               id="email"
               placeholder="Nhập email cá nhân"
               class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+              v-model="personEmail"
               required
             />
           </div>
@@ -37,6 +32,7 @@
               placeholder="Nhập mật khẩu"
               minlength="6"
               class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+              v-model="resetPassword.password"
               required
             />
           </div>
@@ -51,6 +47,7 @@
               placeholder="Nhập lại mật khẩu"
               minlength="6"
               class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+              v-model="resetPassword.password_confirmation"
               required
             />
           </div>
@@ -64,6 +61,7 @@
               id="capcha"
               placeholder="Nhập mã xác thực"
               class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+              v-model="resetPassword.code"
               required
             />
           </div>
@@ -76,7 +74,7 @@
             </router-link> -->
           </div>
           <button
-            @click.prevent=""
+            @click.prevent="onSubmit"
             class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-4"
           >
             Xác nhận
@@ -92,49 +90,51 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   //   import { useStore } from 'vuex'
-  //   import { useRouter } from 'vue-router'
-  //   import { useToast } from 'vue-toastification'
+  import { useRouter } from 'vue-router'
+  import { useToast } from 'vue-toastification'
   import bg_BTP from '../../assets/images/bg-BTP.jpg'
+  import { storeToRefs } from 'pinia'
+  import { usePasswordSetting } from '../../store/modules/accounts/password'
   //   const store = useStore()
-  //   const router = useRouter()
-  //   const toast = useToast()
+  const router = useRouter()
+  const toast = useToast()
   const img = ref(bg_BTP)
-  //   const format = ref(
-  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  //   )
-  //   setTimeout(() => {
-  //     isLoading.value = false
-  //   }, 800)
-  //   const personEmail = computed(() => store.state.ForgotPassword.email)
-  //   const resetPassword = reactive({
-  //     email: personEmail.value,
-  //     password: '',
-  //     password_confirmation: '',
-  //     code: '',
-  //   })
-  //   const onSubmit = () => {
-  //     const data = {
-  //       email: resetPassword.email,
-  //       password: resetPassword.password,
-  //       password_confirmation: resetPassword.password_confirmation,
-  //       code: resetPassword.code,
-  //     }
-  //     if (format.value.test(data.password)) {
-  //       if (data.password == data.password_confirmation) {
-  //         store.dispatch('ForgotPassword/ChangePasswordAction', {
-  //           data: data,
-  //           router,
-  //           toast,
-  //         })
-  //       } else {
-  //         toast.error('Nhập lại mật khẩu không đúng')
-  //       }
-  //     } else {
-  //       toast.error(
-  //         'Mật khẩu tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt'
-  //       )
-  //     }
-  //   }
+  // const format = ref(
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  // )
+  const isLoading = ref<boolean>(false)
+  const passSetting = usePasswordSetting()
+  const { personEmail } = storeToRefs(passSetting)
+  const resetPassword = reactive({
+    password: '',
+    password_confirmation: '',
+    code: '',
+  })
+  const onSubmit = () => {
+    const data = {
+      email: personEmail.value,
+      password: resetPassword.password,
+      password_confirmation: resetPassword.password_confirmation,
+      code: resetPassword.code,
+    }
+    console.log(data)
+    passSetting.changePassByEmailConfirmAction(data, toast, router)
+    // if (format.value.test(data.password)) {
+    //   if (data.password == data.password_confirmation) {
+    //     store.dispatch('ForgotPassword/ChangePasswordAction', {
+    //       data: data,
+    //       router,
+    //       toast,
+    //     })
+    //   } else {
+    //     toast.error('Nhập lại mật khẩu không đúng')
+    //   }
+    // } else {
+    //   toast.error(
+    //     'Mật khẩu tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt'
+    //   )
+    // }
+  }
 </script>

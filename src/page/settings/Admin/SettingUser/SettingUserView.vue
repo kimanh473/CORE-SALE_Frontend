@@ -39,6 +39,7 @@
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
         }"
+        :custom-row="rightClick"
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
@@ -53,16 +54,32 @@
     <template v-slot:footer>footer</template>
   </base-layout>
   <div>
-    <!-- <context-menu :isActive="isActiveAdminGroup"
+    <context-menu :isActive="isActiveAdminGroup"
       ><ul>
-        <li @click.prevent="navigateToUpdate()">
-          <i class="fal fa-edit"></i><a href="#">Sửa</a>
+        <li
+          v-if="groupPermission?.status == 'ACTIVE'"
+          @click.prevent="
+            changeStatusAccount(
+              Number(groupPermission.id),
+              groupPermission.status
+            )
+          "
+        >
+          <i class="fal fa-lock"></i><a href="#">Khóa tài khoản</a>
         </li>
-        <li @click.prevent="handleOpenConfirm()">
-          <i class="fal fa-trash"></i><a href="#">Xóa</a>
+        <li
+          v-if="groupPermission?.status == 'BLOCK'"
+          @click.prevent="
+            changeStatusAccount(
+              Number(groupPermission.id),
+              groupPermission.status
+            )
+          "
+        >
+          <i class="fal fa-unlock"></i><a href="#">Mở khóa tài khoản</a>
         </li>
       </ul></context-menu
-    > -->
+    >
     <modal-delete
       :isOpen="isOpenConfirm"
       :handleCloseDetail="handleCloseConfirm"
@@ -80,9 +97,13 @@
   import Header from '../../../../components/common/Header.vue'
   //   import TableResponsive from '@/components/common/TableResponsive.vue'
   import { useUserSetting } from '../../../../store/modules/users/users'
-
+  import { usePasswordSetting } from '../../../../store/modules/accounts/password'
+  import {
+    FormatModalX,
+    FormatModalY,
+  } from '../../../../components/constants/FormatAll'
   import { useRouter } from 'vue-router'
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   import ContextMenu from '../../../../components/common/ContextMenu.vue'
   import ModalDelete from '../../../../components/modal/ModalConfirmDelelte.vue'
   import { useToast } from 'vue-toastification'
@@ -94,6 +115,7 @@
   const isOpenConfirm = ref<boolean>(false)
   const isActiveAdminGroup = ref<boolean>(false)
   const getUserSetting = useUserSetting()
+  const passSetting = usePasswordSetting()
   getUserSetting.getAllListUsersAction()
   const { listUsers } = storeToRefs(getUserSetting)
   const EndTimeLoading = () => {
@@ -121,6 +143,11 @@
       key: 'fullname',
     },
     {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: '',
+    },
+    {
       title: 'Vị trí',
       dataIndex: '',
       key: '',
@@ -146,13 +173,13 @@
       key: 'id',
     },
   ]
-
   interface DataItem {
     key: number
     name: any
     created_at: any
     updated_at: any
   }
+  const groupPermission = ref()
   const rowSelection = ref({
     checkStrictly: false,
     onChange: (
@@ -192,27 +219,35 @@
       handleCloseConfirm
     )
   }
-  //   const rightClick = (record: any) => {
-  //     return {
-  //       oncontextmenu: (event: MouseEvent) => {
-  //         event.preventDefault()
-  //         console.log('Right-clicked row:', record)
-  //         groupPermission.value = record
-  //         var menu = document.getElementById('contextMenu')
-  //         menu.style.display = 'block'
-  //         FormatModalX(menu, event)
-  //         FormatModalY(menu, event)
-  //         // if (isActiveAdminGroup.value === true) {
-  //         //   isActiveAdminGroup.value = false
-  //         // } else {
-  //         //   var menu = document.getElementById('contextMenu')
-  //         //   menu.style.display = 'block'
-  //         //   FormatModalX(menu, e)
-  //         //   FormatModalY(menu, e)
-  //         // }
-  //       },
-  //     }
-  //   }
+  const rightClick = (record: any) => {
+    return {
+      oncontextmenu: (event: MouseEvent) => {
+        event.preventDefault()
+        console.log('Right-clicked row:', record)
+        groupPermission.value = record
+        var menu = document.getElementById('contextMenu')
+        menu.style.display = 'block'
+        FormatModalX(menu, event)
+        FormatModalY(menu, event)
+        // if (isActiveAdminGroup.value === true) {
+        //   isActiveAdminGroup.value = false
+        // } else {
+        //   var menu = document.getElementById('contextMenu')
+        //   menu.style.display = 'block'
+        //   FormatModalX(menu, e)
+        //   FormatModalY(menu, e)
+        // }
+      },
+    }
+  }
+  const changeStatusAccount = (id: number, status: string) => {
+    isLoading.value = true
+    let data = {
+      user_id: id,
+      status: status,
+    }
+    passSetting.changeStatusAccountAction(data, toast, EndTimeLoading)
+  }
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }

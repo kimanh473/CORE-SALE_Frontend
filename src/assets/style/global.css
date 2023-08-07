@@ -1453,6 +1453,19 @@ body {
     cursor: pointer;
     transition: all linear 0.3s;
   }
+/* custom ant design vue */
   .ant-checkbox-inner {
     position: absolute !important;
+  }
+  .ant-modal-body {
+    padding: 0 !important;
+  }
+  .ant-modal-close-x{
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 32px !important;
+  }
+  .ant-modal-content{
+    border-top-left-radius:8px !important;
+    border-top-right-radius:8px !important;
   }

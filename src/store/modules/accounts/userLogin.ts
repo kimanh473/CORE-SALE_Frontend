@@ -29,15 +29,15 @@ export const userLogin = defineStore("UserLogin", {
                     console.log(err)
                 });
         },
-        checkAuthenticated(router: any) {
-            const authenticated = localStorage.getItem("authenticated");
-            if (authenticated === null) {
-                alert("Hết phiên đăng nhập, vui lòng đăng nhập lại!!");
-                router.push("/login");
-            }
-            // else if (to.name === "Social" && authenticated === null) {
-            //     router.push("/login");
-            // }
-        },
+        // checkAuthenticated(router: any) {
+        //     const authenticated = localStorage.getItem("authenticated");
+        //     if (authenticated === null) {
+        //         alert("Hết phiên đăng nhập, vui lòng đăng nhập lại!!");
+        //         router.push("/login");
+        //     }
+        //     // else if (to.name === "Social" && authenticated === null) {
+        //     //     router.push("/login");
+        //     // }
+        // },
     },
 })
