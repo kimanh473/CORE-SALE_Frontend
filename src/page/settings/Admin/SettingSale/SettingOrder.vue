@@ -185,6 +185,8 @@
   import { ref } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useToast } from 'vue-toastification'
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
   const toast = useToast()
   const activeKey = ref('1')
   const systemSetting = useSystemSetting()
