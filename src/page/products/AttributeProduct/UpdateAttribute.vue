@@ -49,7 +49,8 @@
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập tên kho"
+                          placeholder="Nhập tên thuộc tính"
+                          v-model="attribute.attribute_model"
                         />
                         <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
@@ -119,7 +120,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên nguồn*, Mã *, Mặc định ( nút bật tắt) Mô tả
+                Tên thuộc tính*, Định dạng *
               </h2>
             </div>
 
@@ -145,7 +146,17 @@
                         <span></span
                       ></label>
                       <div>
-                        <input type="text" class="form-control-input" />
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn web"
+                        >
+                          <a-select-option
+                            v-for="(item, index) in listWeb"
+                            :key="index"
+                            :value="item.code"
+                            >{{ item.web_name }}</a-select-option
+                          >
+                        </a-select>
                         <p
                           v-if="messageError?.contact_name"
                           class="text-red-600"
@@ -200,7 +211,7 @@
                   @click="isContact = !isContact"
                   class="cursor-pointer form-group-label"
                 >
-                  Tên liên lạc *, Email*, *Số điện thoại
+                  Website áp dụng *, Giá trị duy nhất*, *Kiểm tra tính hợp lệ
                 </h2>
               </div>
             </div>
@@ -211,7 +222,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="updateAttribute()">
+          <button class="button-modal" @click="createAttribute()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="router.go(-1)">
@@ -229,7 +240,7 @@
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  import { useLocation } from '../../../store/modules/location/location'
+  // import { useLocation } from '../../../store/modules/location/location'
   import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
   import { useInventory } from '../../../store/modules/inventory/product-invetory'
   import { storeToRefs } from 'pinia'
@@ -237,6 +248,7 @@
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
+  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -248,8 +260,10 @@
   const isContact = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
+  const webCatalog = useWebCatalog()
+  webCatalog.getAllWebCatalogAction()
+  const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
-
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -260,19 +274,22 @@
     },
     {
       label: 'Ngày giờ',
-      value: 'time',
+      value: 'date_time',
     },
     {
       label: 'Hình ảnh',
-      value: 'image',
+      value: 'varchar',
+      type: 'gallery',
     },
     {
       label: 'Nút bật tắt',
       value: 'switch',
+      type: 'varchar',
     },
     {
       label: 'Nhiều lựa chọn',
       value: 'multiple',
+      type: 'varchar',
     },
   ])
   const options2 = ref<SelectProps['options']>([
@@ -306,21 +323,21 @@
     },
   ])
   const attribute = reactive({
-    title: '',
-    type_code: [],
-    latitude: '',
-    longitude: '',
-    contact_name: '',
-    contact_email: '',
-    contact_phone: '',
-    address: null,
-    address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
-    address_detail: '',
-    code: '',
-    desc: '',
+    attribute_code: 'image',
+    attribute_model: '',
+    backend_model: '',
+    backend_type: 'gallery',
+    backend_table: '',
+    frontend_model: '',
+    frontend_input: 'text',
+    frontend_label: 'Hình ảnh',
+    frontend_class: '',
+    source_model: '',
+    is_required: '1',
+    is_user_defined: '0',
+    default_value: '',
+    is_unique: '0',
+    note: '',
   })
   // if (
   //   inventory.title != '' ||
@@ -382,43 +399,43 @@
   //     desc: 'nguồn A tại hà nội',
   //     use_direct: '0',
   //   })
-  const dataLocation = useLocation()
-  const getDataCity = () => {
-    dataLocation.getListAllCityAction()
-  }
-  const { listAllCity, listAllDistrict, listAllWard } =
-    storeToRefs(dataLocation)
-  const handleChangeCity = (value: number, name: any) => {
-    dataLocation.getListAllDistrictAction(value)
+  // const dataLocation = useLocation()
+  // const getDataCity = () => {
+  //   dataLocation.getListAllCityAction()
+  // }
+  // const { listAllCity, listAllDistrict, listAllWard } =
+  //   storeToRefs(dataLocation)
+  // const handleChangeCity = (value: number, name: any) => {
+  //   dataLocation.getListAllDistrictAction(value)
 
-    attribute.address = name.title + ', ' + 'Việt Nam'
-  }
-  const handleChangeDistrict = (value: number, name: any) => {
-    dataLocation.getListAllWardAction(value)
-    attribute.address = name.title + ', ' + attribute.address
-  }
-  const handleChangeWard = (value: number, name: any) => {
-    attribute.address = name.title + ', ' + attribute.address
-  }
-  const updateAttribute = () => {
+  //   attribute.address = name.title + ', ' + 'Việt Nam'
+  // }
+  // const handleChangeDistrict = (value: number, name: any) => {
+  //   dataLocation.getListAllWardAction(value)
+  //   attribute.address = name.title + ', ' + attribute.address
+  // }
+  // const handleChangeWard = (value: number, name: any) => {
+  //   attribute.address = name.title + ', ' + attribute.address
+  // }
+  const createAttribute = () => {
     let data = {
-      title: attribute.title,
-      code: attribute.code,
-      type_code: attribute.type_code,
-      latitude: attribute.latitude,
-      longitude: attribute.longitude,
-      contact_name: attribute.contact_name,
-      contact_email: attribute.contact_email,
-      contact_phone: attribute.contact_phone,
-      address: attribute.address,
-      address_country_id: attribute.address_country_id,
-      address_district_id: attribute.address_district_id,
-      address_ward_id: attribute.address_ward_id,
-      address_state_id: attribute.address_state_id,
-      address_detail: attribute.address_detail,
-      desc: attribute.desc,
+      attribute_code: 'image',
+      attribute_model: '',
+      backend_model: '',
+      backend_type: 'gallery',
+      backend_table: '',
+      frontend_model: '',
+      frontend_input: 'text',
+      frontend_label: 'Hình ảnh',
+      frontend_class: '',
+      source_model: '',
+      is_required: '1',
+      is_user_defined: '0',
+      default_value: '',
+      is_unique: '0',
+      note: '',
     }
-    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 

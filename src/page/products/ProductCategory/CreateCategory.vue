@@ -273,7 +273,7 @@
       >
       <a-button key="back" @click="handleClose">Hủy</a-button>
     </template>
-    <div>
+    <div class="p-[24px]">
       <div class="grid grid-cols-2 gap-2 form-small">
         <div>
           <label for="" class="form-group-label"

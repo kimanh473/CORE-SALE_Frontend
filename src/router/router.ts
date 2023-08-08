@@ -6,6 +6,9 @@ import settingSale from "./Settings/SettingSale"
 import settingSystem from "./Settings/SettingSystem"
 import productUnit from './Product/ProductUnit'
 import specification from './Product/Specification'
+import inventory from './Inventory/Inventory'
+import groupInventory from './Inventory/GroupInventory'
+import tax from './Product/Tax'
 type TRoute = {
   path: string
   component: () => Promise<any>
@@ -75,48 +78,8 @@ const route: TRoute[] = [
   // },
 
 
-  {
-    path: '/update-inventory/:id',
-    component: () => import('../page/settings/Shop-settings/ManageProduct/ManageInventory/UpdateInventory.vue'),
-    meta: {
-      layout: "base-layout",
-    },
-  },
-  {
-    path: '/create-inventory',
-    component: () => import('../page/settings/Shop-settings/ManageProduct/ManageInventory/CreateInventory.vue'),
-    meta: {
-      layout: "base-layout",
-    },
-  },
-  {
-    path: '/list-inventory',
-    component: () => import('../page/settings/Shop-settings/ManageProduct/ManageInventory/ListInventory.vue'),
-    meta: {
-      layout: "base-layout",
-    },
-  },
-  {
-    path: '/list-group-inventory',
-    component: () => import('../page/settings/Shop-settings/ManageProduct/ManageGroupInventory/ListGroupInventory.vue'),
-    meta: {
-      layout: "base-layout",
-    },
-  },
-  {
-    path: '/update-group-inventory/:id',
-    component: () => import('../page/settings/Shop-settings/ManageProduct/ManageGroupInventory/UpdateGroupInventory.vue'),
-    meta: {
-      layout: "base-layout",
-    },
-  },
-  {
-    path: '/create-group-inventory',
-    component: () => import('../page/settings/Shop-settings/ManageProduct/ManageGroupInventory/CreateGroupInventory.vue'),
-    meta: {
-      layout: "base-layout",
-    },
-  },
+
+
 
   {
     path: '/login',
@@ -182,6 +145,9 @@ LoadRoute(settingSystem)
 LoadRoute(productUnit)
 LoadRoute(specification)
 LoadRoute(category)
+LoadRoute(inventory)
+LoadRoute(groupInventory)
+LoadRoute(tax)
 export default createRouter({
   history: createWebHistory(),
   routes: route

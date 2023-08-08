@@ -302,6 +302,13 @@
                 submenuGroup: '',
                 permission: [''],
               },
+              {
+                icon: '',
+                label: 'Thuế',
+                to: '/list-tax',
+                submenuGroup: '',
+                permission: [''],
+              },
               // {
               //   icon: '',
               //   label: 'Bảng kích cỡ thông số',

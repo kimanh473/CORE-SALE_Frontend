@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { sendEmailForgotPassApi, changePassByEmailConfirmApi, changePassApi, changeStatusAccountApi } from '../../../services/AccountServices/password.service'
+import { sendEmailForgotPassApi, changePassByEmailConfirmApi, changePassApi, changeStatusAccountApi, resetPassApi } from '../../../services/AccountServices/password.service'
 export const usePasswordSetting = defineStore("PasswordSetting", {
     state: () => ({
         personEmail: ''
@@ -71,6 +71,26 @@ export const usePasswordSetting = defineStore("PasswordSetting", {
                     console.log(res);
                     if (res?.data?.status == 'success') {
                         toast.success(res?.data?.messages);
+                        EndTimeLoading()
+                    } else {
+                        EndTimeLoading()
+                        toast.warning(res.data.messages.title);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                    EndTimeLoading()
+                });
+        },
+        resetPasswordAction(id: number, data: any, toast: any, EndTimeLoading: Function, handleCloseDetail: Function) {
+            resetPassApi(id, data)
+                .then((res: any) => {
+                    if (res?.data?.status == 'success') {
+                        toast.success(res?.data?.messages);
+                        handleCloseDetail()
                         EndTimeLoading()
                     } else {
                         EndTimeLoading()
