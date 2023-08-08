@@ -120,7 +120,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên nguồn*, Mã *, Mặc định ( nút bật tắt) Mô tả
+                Tên thuộc tính*, Định dạng *
               </h2>
             </div>
 
@@ -211,7 +211,7 @@
                   @click="isContact = !isContact"
                   class="cursor-pointer form-group-label"
                 >
-                  Tên liên lạc *, Email*, *Số điện thoại
+                  Website áp dụng *, Giá trị duy nhất*, *Kiểm tra tính hợp lệ
                 </h2>
               </div>
             </div>

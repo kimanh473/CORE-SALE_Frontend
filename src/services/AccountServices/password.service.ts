@@ -11,6 +11,9 @@ const changePassApi = (data: object) => {
 const changeStatusAccountApi = (data: object) => {
     return httpClient.post(`/user/account/change-status`, data);
 };
+const resetPassApi = (id: number, data: object) => {
+    return httpClient.post(`/user/account/reset-password/${id}`, data);
+};
 // const updateSystemSettingApi = (data: any) => {
 //     return httpClient.post(`/setting/create-value-json`, data);
 // };
@@ -18,6 +21,7 @@ export {
     sendEmailForgotPassApi,
     changePassByEmailConfirmApi,
     changePassApi,
-    changeStatusAccountApi
+    changeStatusAccountApi,
+    resetPassApi
     // updateSystemSettingApi,
 };

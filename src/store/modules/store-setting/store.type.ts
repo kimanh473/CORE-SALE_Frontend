@@ -63,4 +63,17 @@ interface DataSpecification {
     updated_at: string,
     deleted_at: string
 }
+interface DataTax {
+    id: number,
+    title: string,
+    code: string,
+    tax_rate: string,
+    desc: string,
+    status: string,
+    created_by_id: string,
+    updated_by_id: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+}
 

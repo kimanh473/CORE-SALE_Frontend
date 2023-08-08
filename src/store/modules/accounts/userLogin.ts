@@ -10,6 +10,8 @@ export const userLogin = defineStore("UserLogin", {
 
         setDataLogin(payload: any) {
             localStorage.setItem("TOKEN", payload.token);
+            console.log(payload);
+            localStorage.setItem("role", payload?.roles[0]);
             localStorage.setItem("authenticated", 'true');
             this.dataLogin = payload
         },

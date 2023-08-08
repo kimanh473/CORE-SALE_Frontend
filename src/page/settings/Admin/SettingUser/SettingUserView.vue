@@ -56,8 +56,11 @@
   <div>
     <context-menu :isActive="isActiveAdminGroup"
       ><ul>
+        <li @click.prevent="handleOpenResetPass" v-if="role == 'ADMIN'">
+          <i class="fal fa-key"></i><a href="#">Reset mật khẩu</a>
+        </li>
         <li
-          v-if="groupPermission?.status == 'ACTIVE'"
+          v-if="groupPermission?.status == 'ACTIVE' && role == 'ADMIN'"
           @click.prevent="
             changeStatusAccount(
               Number(groupPermission.id),
@@ -68,7 +71,7 @@
           <i class="fal fa-lock"></i><a href="#">Khóa tài khoản</a>
         </li>
         <li
-          v-if="groupPermission?.status == 'BLOCK'"
+          v-if="groupPermission?.status == 'BLOCK' && role == 'ADMIN'"
           @click.prevent="
             changeStatusAccount(
               Number(groupPermission.id),
@@ -87,7 +90,54 @@
     >
     </modal-delete>
   </div>
-
+  <a-modal
+    :visible="isOpenResetPass"
+    :footer="null"
+    @cancel="handleCloseDetail"
+    class="rounded-tl-lg rounded-tr-lg"
+  >
+    <div>
+      <h1 class="header-modal">Reset mật khẩu - {{ fullnameReset }}</h1>
+      <div class="text-left p-2 w-[520px]">
+        <div class="form-small">
+          <label for="" class="form-group-label"
+            >Mật khẩu mới <span class="text-red-600">*</span></label
+          >
+          <div>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control-input"
+              placeholder="Ít nhất 4 ký tự"
+              v-model="changePassword.password"
+            />
+          </div>
+        </div>
+        <div class="form-small">
+          <label for="" class="form-group-label"
+            >Xác nhận mật khẩu mới <span class="text-red-600">*</span></label
+          >
+          <div>
+            <input
+              type="password"
+              id="password_confirmation"
+              name="password_confirmation"
+              class="form-control-input"
+              placeholder="Gõ lại mật khẩu mới"
+              v-model="changePassword.password_confirmation"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="bg-button-modal">
+        <button class="button-modal" @click="resetPassword()">Cập nhật</button>
+        <button class="button-close-modal" @click="handleCloseDetail">
+          Hủy bỏ
+        </button>
+      </div>
+    </div>
+  </a-modal>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
@@ -103,7 +153,7 @@
     FormatModalY,
   } from '../../../../components/constants/FormatAll'
   import { useRouter } from 'vue-router'
-  import { ref, computed } from 'vue'
+  import { ref, reactive } from 'vue'
   import ContextMenu from '../../../../components/common/ContextMenu.vue'
   import ModalDelete from '../../../../components/modal/ModalConfirmDelelte.vue'
   import { useToast } from 'vue-toastification'
@@ -113,6 +163,7 @@
   const toast = useToast()
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const isOpenResetPass = ref<boolean>(false)
   const isActiveAdminGroup = ref<boolean>(false)
   const getUserSetting = useUserSetting()
   const passSetting = usePasswordSetting()
@@ -121,6 +172,7 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const role = localStorage.getItem('role')
   const columns = [
     {
       title: 'Tài khoản',
@@ -180,6 +232,7 @@
     updated_at: any
   }
   const groupPermission = ref()
+  const fullnameReset = ref()
   const rowSelection = ref({
     checkStrictly: false,
     onChange: (
@@ -207,6 +260,10 @@
       console.log(selected, selectedRows, changeRows)
     },
   })
+  const changePassword = reactive({
+    password: '',
+    password_confirmation: '',
+  })
   const CreateUser = () => {
     router.push('/create-user')
   }
@@ -225,6 +282,8 @@
         event.preventDefault()
         console.log('Right-clicked row:', record)
         groupPermission.value = record
+        fullnameReset.value = record?.fullname
+        idSelected.value = record?.id
         var menu = document.getElementById('contextMenu')
         menu.style.display = 'block'
         FormatModalX(menu, event)
@@ -247,6 +306,36 @@
       status: status,
     }
     passSetting.changeStatusAccountAction(data, toast, EndTimeLoading)
+  }
+  const handleOpenResetPass = () => {
+    isOpenResetPass.value = true
+  }
+  const handleCloseDetail = () => {
+    isOpenResetPass.value = false
+    changePassword.password = ''
+    changePassword.password_confirmation = ''
+  }
+  const resetPassword = () => {
+    let data = {
+      password: changePassword.password,
+    }
+    if (
+      changePassword.password != '' &&
+      changePassword.password == changePassword.password_confirmation
+    ) {
+      isLoading.value = true
+      passSetting.resetPasswordAction(
+        Number(idSelected.value),
+        data,
+        toast,
+        EndTimeLoading,
+        handleCloseDetail
+      )
+    } else if (changePassword.password == '') {
+      toast.error('Vui lòng nhập mật khẩu')
+    } else {
+      toast.error('Xác nhận mật khẩu phải trùng với mật khẩu mới')
+    }
   }
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false

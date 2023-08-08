@@ -26,7 +26,7 @@ const attribute = [
         beforeEnter: requireAuth,
     },
     {
-        path: '/update-attribute-product',
+        path: '/update-attribute-product/:id',
         component: () => import('../../page/products/AttributeProduct/UpdateAttribute.vue'),
         meta: {
             layout: "base-layout",

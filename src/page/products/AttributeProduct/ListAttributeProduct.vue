@@ -256,7 +256,7 @@
   ]
 
   const navigateUpdateInvent = (id: number) => {
-    router.push(`/update-inventory/${id}`)
+    router.push(`/update-attribute-product/${id}`)
   }
   const idSelected = ref()
   const handleOpenDeleteInvent = (record: any) => {
