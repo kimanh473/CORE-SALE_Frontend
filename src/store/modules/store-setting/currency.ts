@@ -1,50 +1,79 @@
 import { defineStore } from "pinia";
-import { getAllUsersApi, createUserApi, getDetailUsersApi, updateUserApi, deleteUserApi } from '../../../services/UserServices/user.service'
-import { changeStatusAccountApi } from '../../../services/AccountServices/password.service'
+import { getListCurrencyApi, createCurrencyApi, deleteCurrencyApi, getDetailCurrencyApi, updateCurrencyApi, getListCurrencyInternationalApi } from '../../../services/SettingStoreServices/currency.service'
 
-export const useUserSetting = defineStore("UserSetting", {
+export const useListCurrency = defineStore("ListCurrency", {
     state: () => ({
-        listUsers: [] as DataUser[],
-        detailUser: {} as DataUser
+        listCurrency: [] as DataCurrency[],
+        detailCurrency: {} as DataCurrency,
+        listCurrencyInternational: [] as DataCurrencyInternational[]
     }),
     getters: {
-        getListUsers: (state: any) => {
-            return (payload: any) => state.listUsers = payload
+        getListCurrency: (state: any) => {
+            return (payload: any) => state.listCurrency = payload?.map((item: DataCurrency) => ({
+                id: item.id,
+                title: item.title,
+                code: item.code,
+                rate: item.rate + '%',
+                is_default: item.is_default == '1' ? 'Có' : 'Không',
+                status: item.status == '1' ? 'Đang kích hoạt' : 'Chưa kích hoạt',
+                created_by_id: item.created_by_id,
+                updated_by_id: item.updated_by_id,
+                created_at: item.created_at,
+                updated_at: item.updated_at,
+                deleted_at: item.deleted_at,
+            }))
         },
-        getDetailUsers: (state: any) => {
-            return (payload: any) => state.detailUser = payload
+        getDetailCurrency: (state: any) => {
+            return (payload: any) => state.detailCurrency = payload
         },
+        getListCurrencyInternational: (state: any) => {
+            return (payload: any) => state.listCurrencyInternational = payload?.map((item: DataCurrencyInternational) => ({
+                value: item.code,
+                label: item.title
+            }))
+        }
+
     },
     actions: {
-        getAllListUsersAction() {
-            getAllUsersApi()
-                .then((payload: any) => {
-                    let res = payload?.data?.data?.data
-                    console.log(res);
-                    this.getListUsers(res)
-                })
-                .catch((err) => {
-                    console.log(err)
-                });
-        },
-        async getDetailUserAction(id: number) {
-            await getDetailUsersApi(id)
+        async getListCurrencyInternationalAction() {
+            await getListCurrencyInternationalApi()
                 .then((payload: any) => {
                     let res = payload?.data?.data
-                    this.getDetailUsers(res)
+                    console.log(res);
+                    this.getListCurrencyInternational(res)
                 })
                 .catch((err) => {
                     console.log(err)
                 });
         },
-        async createUserAction(
+        async getListCurrencyAction() {
+            await getListCurrencyApi()
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getListCurrency(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getDetailCurrencyAction(id: number) {
+            await getDetailCurrencyApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailCurrency(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async createCurrencyAction(
             data: object,
             toast: any,
             router: any,
             EndTimeLoading: Function,
             // handleCloseCreate: Function
         ) {
-            await createUserApi(data)
+            await createCurrencyApi(data)
                 .then((res) => {
                     if (res.data.status == "failed") {
                         toast.error(res.data.messages)
@@ -52,7 +81,7 @@ export const useUserSetting = defineStore("UserSetting", {
                     } else {
                         toast.success("Tạo mới thành công")
                         EndTimeLoading()
-                        router.push('/list-user')
+                        router.push('/list-currency')
                     }
                 })
                 .catch((err) => {
@@ -64,7 +93,7 @@ export const useUserSetting = defineStore("UserSetting", {
                     toast.error(errMess[0]);
                 });
         },
-        async updateUserAction(
+        async updateCurrencyAction(
             id: number,
             data: object,
             toast: any,
@@ -72,32 +101,32 @@ export const useUserSetting = defineStore("UserSetting", {
             EndTimeLoading: Function,
             // handleCloseCreate: Function
         ) {
-            await updateUserApi(id, data)
+            await updateCurrencyApi(id, data)
                 .then((res) => {
                     if (res.data.status == "failed") {
                         toast.error(res.data.messages)
                         EndTimeLoading();
                     } else {
                         toast.success("Cập nhật thành công")
-                        router.push('/list-user')
+                        router.push('/list-currency')
                         EndTimeLoading()
                     }
                 })
                 .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
                     console.log(err);
                     let arrMess = err.response.data.messages;
                     let errMess = arrMess[Object.keys(arrMess)[0]]
                     toast.error(errMess[0]);
-                    // this.messageError = err.response.data.messages
-                    // console.log(this.messageError);
                 });
         },
-        deleteUserAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {
-            deleteUserApi(id)
+        deleteCurrencyAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {
+            deleteCurrencyApi(id)
                 .then((res) => {
                     if (res.data.status == "success") {
                         toast.success("Xóa thành công", 500);
-                        this.getAllListUsersAction()
+                        this.getListCurrencyAction()
                     } else {
                         toast.error(res.data.messages, 500);
                     }
@@ -108,27 +137,6 @@ export const useUserSetting = defineStore("UserSetting", {
                     console.log(err);
                     handleCloseConfirm();
                     EndTimeLoading();
-                });
-        },
-        changeStatusAccountAction(data: any, toast: any, EndTimeLoading: Function) {
-            changeStatusAccountApi(data)
-                .then((res: any) => {
-                    console.log(res);
-                    if (res?.data?.status == 'success') {
-                        toast.success('Thay đổi trạng thái tài khoản thành công');
-                        this.getAllListUsersAction()
-                        EndTimeLoading()
-                    } else {
-                        EndTimeLoading()
-                        toast.warning(res.data.messages.title);
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                    let arrMess = err.response.data.messages;
-                    let errMess = arrMess[Object.keys(arrMess)[0]]
-                    toast.error(errMess[0]);
-                    EndTimeLoading()
                 });
         },
     },

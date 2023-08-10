@@ -9,7 +9,9 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0 text-xl font-bold">Danh sách thuế</p>
+              <p class="longText pl-5 mb-0 text-xl font-bold">
+                Danh sách tiền tệ
+              </p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -26,14 +28,14 @@
           title="Tạo mới"
           @click="handleToCreate()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới thuế</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới tiền tệ</p>
         </div>
       </div>
       <a-table
         row-key="id"
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listTax"
+        :data-source="listCurrency"
         :rowSelection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
@@ -67,8 +69,7 @@
   import BaseLayout from '../../../layout/baseLayout.vue'
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
-  import { useListSpecification } from '../../../store/modules/store-setting/specification'
-  import { useListTax } from '../../../store/modules/store-setting/tax'
+  import { useListCurrency } from '../../../store/modules/store-setting/currency'
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -79,34 +80,25 @@
   const toast = useToast()
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
-  const dataTax = useListTax()
-  dataTax.getListTaxAction()
-  const { listTax } = storeToRefs(dataTax)
-  const dataSpecification = useListSpecification()
-  dataSpecification.getListSpecificationAction()
-  const { listSpecification } = storeToRefs(dataSpecification)
-
+  const dataCurrency = useListCurrency()
+  dataCurrency.getListCurrencyAction()
+  const { listCurrency } = storeToRefs(dataCurrency)
   const columns = [
     {
-      title: 'Tên loại thuế',
+      title: 'Đơn vị tiền tệ',
       dataIndex: 'title',
     },
     {
-      title: 'Mã loại thuế',
+      title: 'Ký hiệu',
       dataIndex: 'code',
     },
-    {
-      title: 'Mức thuế suất',
-      dataIndex: 'tax_rate',
-    },
-
     {
       title: 'Kích hoạt',
       dataIndex: 'status',
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'desc',
+      title: 'Mặc định',
+      dataIndex: 'is_default',
     },
     {
       title: 'Người tạo',
@@ -126,7 +118,7 @@
   ]
 
   const navigateUpdate = (id: number) => {
-    router.push(`/update-tax/${id}`)
+    router.push(`/update-currency/${id}`)
   }
   const idSelected = ref()
   const handleOpenDelete = (record: any) => {
@@ -141,7 +133,7 @@
   }
   const handleDelete = () => {
     isLoading.value = true
-    dataTax.deleteTaxAction(
+    dataCurrency.deleteCurrencyAction(
       Number(idSelected.value),
       toast,
       EndTimeLoading,
@@ -154,7 +146,7 @@
     selectedRowKeys.value = selectedRowKeys1
   }
   const handleToCreate = () => {
-    router.push('/create-tax')
+    router.push('/create-currency')
   }
 </script>
 <style>

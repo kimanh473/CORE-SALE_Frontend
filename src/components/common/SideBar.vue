@@ -309,6 +309,13 @@
                 submenuGroup: '',
                 permission: [''],
               },
+              {
+                icon: '',
+                label: 'Tiền tệ',
+                to: '/list-currency',
+                submenuGroup: '',
+                permission: [''],
+              },
               // {
               //   icon: '',
               //   label: 'Bảng kích cỡ thông số',

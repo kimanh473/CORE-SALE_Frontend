@@ -76,4 +76,20 @@ interface DataTax {
     updated_at: string,
     deleted_at: string,
 }
-
+interface DataCurrency {
+    id: number,
+    code: string,
+    title: string,
+    status: string,
+    created_by_id: string,
+    updated_by_id: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+    rate: string,
+    is_default: string
+}
+interface DataCurrencyInternational {
+    title: string,
+    code: string
+}

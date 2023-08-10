@@ -303,9 +303,9 @@
     isLoading.value = true
     let data = {
       user_id: id,
-      status: status,
+      status: status == 'BLOCK' ? 'ACTIVE' : 'BLOCK',
     }
-    passSetting.changeStatusAccountAction(data, toast, EndTimeLoading)
+    getUserSetting.changeStatusAccountAction(data, toast, EndTimeLoading)
   }
   const handleOpenResetPass = () => {
     isOpenResetPass.value = true

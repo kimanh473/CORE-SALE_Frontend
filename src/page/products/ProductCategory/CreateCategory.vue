@@ -506,6 +506,7 @@
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listCategory, listTreeCategory } = storeToRefs(dataCategory)
+
   // const treeData = [
   //   {
   //     title: 'parent 1',
