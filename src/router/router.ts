@@ -9,6 +9,7 @@ import specification from './Product/Specification'
 import inventory from './Inventory/Inventory'
 import groupInventory from './Inventory/GroupInventory'
 import tax from './Product/Tax'
+import customerProfile from './Customer/Profile'
 type TRoute = {
   path: string
   component: () => Promise<any>
@@ -148,6 +149,7 @@ LoadRoute(category)
 LoadRoute(inventory)
 LoadRoute(groupInventory)
 LoadRoute(tax)
+LoadRoute(customerProfile)
 export default createRouter({
   history: createWebHistory(),
   routes: route
