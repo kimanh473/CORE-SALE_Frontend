@@ -24,7 +24,7 @@
         <div
             class="button-create-new relative group rounded-md px-2"
             title="Tạo mới web"
-            @click="CreateWebsite()"
+            @click="CreateCustomerProfile()"
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới thông tin khách hàng</p>
         </div>
@@ -112,8 +112,8 @@ const handleCloseConfirm = () => {
 const EndTimeLoading = () => {
   isLoading.value = false
 }
-const CreateWebsite = () => {
-  router.push('/create-web')
+const CreateCustomerProfile = () => {
+  router.push('/create-customer-profile')
 }
 const navigateUpdate = (id: number) => {
   router.push(`/update-web/${id}`)

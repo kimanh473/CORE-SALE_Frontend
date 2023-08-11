@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import { GetAllCustomerProfileApi } from '../../../services/CustomerProfileServices/customerProfile.services'
+import { getAllCustomerProfileApi, createCustomerProfileApi} from '../../../services/CustomerProfileServices/customerProfile.services'
+import {createWebApi} from "@/services/WebCatalogServices/webcatalog.service";
 export const useCustomerProfile = defineStore("CustomerProfile", {
     state: () => ({
         listCustomerProfile: [] as DataCustomerProfile[]
@@ -20,16 +21,46 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
 
     actions: {
         getAllCustomerProfilePaginateAction() {
-            GetAllCustomerProfileApi()
+            getAllCustomerProfileApi()
                 .then((payload: any) => {
                     let res = payload?.data?.data?.data;
-                    console.log(res);
                     this.getListCustomerProfilePagination(res)
                 })
                 .catch((err) => {
                     console.log(err)
                 });
         },
+
+        async createCustomerProfileAction(
+            data: Object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await createCustomerProfileApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công");
+                        router.push('/list-customer-profile')
+                        // handleCloseCreate();
+                        EndTimeLoading();
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+
+
     }
 
 })
