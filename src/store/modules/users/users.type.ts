@@ -8,4 +8,7 @@ interface DataUser {
     email_company: string,
     email_personal: string,
     phone: string,
+    status: string,
+    web_list: Array<string>,
+    inventory_list: Array<string>
 }

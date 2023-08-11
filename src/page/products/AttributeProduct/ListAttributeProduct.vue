@@ -46,8 +46,8 @@
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdateInvent(record.id)">Sửa</a>&nbsp;|&nbsp;<a
-              @click="handleOpenDeleteInvent(record)"
+            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
+              @click="handleOpenDelete(record)"
               >Xóa</a
             >
           </template>
@@ -219,6 +219,8 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const { listAttributeProduct } = storeToRefs(dataAttribute)
+  console.log(listAttributeProduct)
+
   const columns = [
     {
       title: 'Mã thuộc tính',
@@ -237,8 +239,8 @@
     },
     {
       title: 'Phạm vi',
-      dataIndex: 'created_at',
-      key: 'created_at',
+      dataIndex: 'backend_type',
+      key: 'backend_type',
     },
     {
       title: 'Giá trị duy nhất',
@@ -246,7 +248,7 @@
     },
     {
       title: 'Có thể tìm kiếm được',
-      dataIndex: 'address',
+      dataIndex: 'is_user_defined',
     },
     {
       title: 'Thao tác',
@@ -255,11 +257,11 @@
     },
   ]
 
-  const navigateUpdateInvent = (id: number) => {
+  const navigateUpdate = (id: number) => {
     router.push(`/update-attribute-product/${id}`)
   }
   const idSelected = ref()
-  const handleOpenDeleteInvent = (record: any) => {
+  const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
   }

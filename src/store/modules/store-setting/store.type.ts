@@ -1,11 +1,25 @@
 interface DataAttribute {
-    id: number
-    title: string
-    code: string
-    status: number
-    json_attribute_detail: Array<String>
-    created_at: string
-    attribute_code: string
+    id: number,
+    entity_type_id: string,
+    attribute_code: string,
+    attribute_model: string,
+    backend_model: string,
+    backend_type: string,
+    backend_table: string,
+    frontend_model: string,
+    frontend_input: string,
+    frontend_label: string,
+    frontend_class: string,
+    source_model: string,
+    is_required: string,
+    is_user_defined: string,
+    default_value: string,
+    is_unique: string,
+    note: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+    option_detail: Array<string>
 }
 interface DataProduct {
     id: string

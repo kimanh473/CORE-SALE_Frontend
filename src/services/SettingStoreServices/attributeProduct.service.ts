@@ -3,11 +3,21 @@ import httpClient from "../services";
 const getAllAttributeProductsApi = () => {
     return httpClient.get(`/setting/product-attribute/index`);
 };
+//Chi tiết thuộc tính
+const getDetailAttributeProductsApi = (id: number) => {
+    return httpClient.get(`/setting/product-attribute/show/${id}`);
+};
+//Thêm mới thuộc tính
+const createAttributeApi = (data: object) => {
+    return httpClient.post(`/setting/product-attribute/create`, data);
+};
 //Xóa thuộc tính
 const deleteAttributeApi = (id: number) => {
     return httpClient.post(`/setting/product-attribute/delete/${id}`);
 };
 export {
     getAllAttributeProductsApi,
-    deleteAttributeApi
+    createAttributeApi,
+    deleteAttributeApi,
+    getDetailAttributeProductsApi
 };

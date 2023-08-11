@@ -84,6 +84,7 @@ export const useInventory = defineStore("Inventory", {
             id: number,
             data: Object,
             toast: any,
+            router: any,
             EndTimeLoading: Function,
             // handleCloseCreate: Function
         ) {
@@ -95,11 +96,12 @@ export const useInventory = defineStore("Inventory", {
                     } else {
                         toast.success("Cập nhật thành công");
                         // handleCloseCreate();
+                        router.push('/list-inventory')
                         EndTimeLoading();
                     }
                 })
                 .catch((err) => {
-                    this.messageError = err.response.data.messages
+                    this.messageError = err.response?.data?.messages
                     console.log(err);
                     let arrMess = err.response.data.messages;
                     let errMess = arrMess[Object.keys(arrMess)[0]]

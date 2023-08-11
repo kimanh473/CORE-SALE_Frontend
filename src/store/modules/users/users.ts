@@ -27,11 +27,20 @@ export const useUserSetting = defineStore("UserSetting", {
                     console.log(err)
                 });
         },
-        async getDetailUserAction(id: number) {
+        async getDetailUserAction(id: number, role: RoleList, getMatchingResults: Function, getListWeb: Function) {
             await getDetailUsersApi(id)
                 .then((payload: any) => {
                     let res = payload?.data?.data
                     this.getDetailUsers(res)
+                    getListWeb(res?.json_web_list, res?.json_inventory_list)
+                    role.storeSetting = getMatchingResults('STORE_SETTING', res.json_string_roles)
+                    role.product = getMatchingResults('CATALOG_PRODUCT', res.json_string_roles)
+                    role.createProduct = getMatchingResults('CATALOG_PRODUCT_CREATE', res.json_string_roles)
+                    role.updateProduct = getMatchingResults('CATALOG_PRODUCT_UPDATE', res.json_string_roles)
+                    role.deleteProduct = getMatchingResults('CATALOG_PRODUCT_DELETE', res.json_string_roles)
+                    role.printProduct = getMatchingResults('CATALOG_PRODUCT_PRINT', res.json_string_roles)
+                    role.importProduct = getMatchingResults('CATALOG_PRODUCT_IMPORT', res.json_string_roles)
+                    role.exportProduct = getMatchingResults('CATALOG_PRODUCT_EXPORT', res.json_string_roles)
                 })
                 .catch((err) => {
                     console.log(err)
