@@ -33,7 +33,8 @@
       </div>
       <a-table
         row-key="id"
-        class="!p-[10px]"
+        sticky
+        class="!p-[10px] ant-table-striped"
         :columns="columns"
         :data-source="listCurrency"
         :rowSelection="{
@@ -41,7 +42,94 @@
           onChange: onSelectChange,
         }"
         bordered
-        ><template #bodyCell="{ column, record }">
+        :scroll="{ x: 1300, y: 1000 }"
+        :row-class-name="
+          (_record, index) => (index % 2 === 1 ? 'table-striped' : null)
+        "
+      >
+        <template #headerCell="{ column }">
+          <template v-if="column.key === 'name'">
+            <span>{{ column.title }}</span>
+          </template>
+        </template>
+
+        <template
+          #customFilterDropdown="{
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            column,
+          }"
+        >
+          <div style="padding: 8px; text-align: right">
+            <a-input
+              ref="searchInput"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            <a-button
+              type="primary"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+            >
+              <template #icon><SearchOutlined /></template>
+              Lọc
+            </a-button>
+          </div>
+        </template>
+        <template #customFilterIcon="{ filtered }">
+          <search-outlined
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
+        </template>
+
+        <template #bodyCell="{ column, record }" ali>
+          <span
+            v-if="state.searchText && state.searchedColumn === column.dataIndex"
+          >
+            <template
+              v-for="(fragment, i) in record.title
+                .toString()
+                .split(
+                  new RegExp(
+                    `(?<=${state.searchText})|(?=${state.searchText})`,
+                    'i'
+                  )
+                )"
+            >
+              <mark
+                v-if="fragment.toLowerCase() === state.searchText.toLowerCase()"
+                :key="i"
+                class="highlight"
+              >
+                {{ fragment }}
+              </mark>
+              <template v-else>{{ fragment }}</template>
+            </template>
+          </span>
+
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === 1" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
+          <template v-if="column.key === 'is_default'">
+            <a-tag v-if="record.is_default === 1" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
+
+          <template v-if="column.key === 'created_by_id'">
+            {{ record.created_by?.fullname }}
+          </template>
+
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -66,6 +154,9 @@
 </template>
 
 <script setup lang="ts">
+  import { SearchOutlined } from '@ant-design/icons-vue'
+  import type { TableColumnsType } from 'ant-design-vue'
+
   import BaseLayout from '../../../layout/baseLayout.vue'
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
@@ -83,26 +174,74 @@
   const dataCurrency = useListCurrency()
   dataCurrency.getListCurrencyAction()
   const { listCurrency } = storeToRefs(dataCurrency)
-  const columns = [
+  const state = reactive({
+    searchText: '',
+    searchedColumn: '',
+  })
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm()
+    state.searchText = selectedKeys[0]
+    state.searchedColumn = dataIndex
+  }
+
+  const handleReset = (clearFilters) => {
+    clearFilters({ confirm: true })
+    state.searchText = ''
+  }
+
+  const searchInput = ref()
+  const columns = ref<TableColumnsType>([
     {
       title: 'Đơn vị tiền tệ',
       dataIndex: 'title',
+      fixed: 'left',
+      width: 250,
+      key: 'name',
+      customFilterDropdown: true,
+      onFilter: (value, record) =>
+        record.title.toString().toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
     },
     {
       title: 'Ký hiệu',
       dataIndex: 'code',
+      key: 'code',
+    },
+    {
+      title: 'Symbol',
+      dataIndex: 'symbol',
+    },
+    {
+      title: 'Symbol 2',
+      dataIndex: 'symbol2',
+    },
+    {
+      title: 'Phần thập phân',
+      dataIndex: 'decimal_number',
     },
     {
       title: 'Kích hoạt',
       dataIndex: 'status',
+      align: 'center',
+      key: 'status',
     },
     {
       title: 'Mặc định',
       dataIndex: 'is_default',
+      key: 'is_default',
+      align: 'center',
     },
     {
       title: 'Người tạo',
       dataIndex: 'created_by_id',
+      key: 'created_by_id',
     },
     {
       title: 'Ngày tạo',
@@ -114,8 +253,10 @@
       title: 'Thao tác',
       dataIndex: 'id',
       key: 'id',
+      fixed: 'right',
+      width: 100,
     },
-  ]
+  ]);
 
   const navigateUpdate = (id: number) => {
     router.push(`/update-currency/${id}`)
@@ -190,5 +331,11 @@
     font-family: 'Font Awesome 5 Pro';
     content: '\f067';
     font-weight: 500;
+  }
+</style>
+<style scoped>
+  .highlight {
+    background-color: rgb(255, 192, 105);
+    padding: 0px;
   }
 </style>

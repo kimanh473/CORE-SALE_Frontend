@@ -2,8 +2,9 @@ import axios from 'axios';
 import router from '../router/router';
 const token = localStorage.getItem("TOKEN");
 // const API_URL = process.env.VUE_APP_API_URL;
+const API_URL = import.meta.env.VITE_APP_BASE_API;
 const httpClient = axios.create({
-  baseURL: 'http://coresale-betest.btpholdings.vn:2000/api/v1',
+  baseURL: API_URL,
   headers: { Authorization: `Bearer ${token}` },
 });
 // catch error
