@@ -174,7 +174,7 @@
                           :key="index"
                           class="flex"
                       >
-                        <div class="form-large">
+                        <div class="form-large border-b-[1px] border-slate-300 ">
 
                           <div class="">
                             <label for="" class="form-group-label"
@@ -259,7 +259,7 @@
                                 </p>
                               </div>
                             </div>
-                            <div class ="flex-1 mr-5">
+                            <div class ="flex-1">
                               <label for="" class="form-group-label"
                               >Xã/Phường/Thị trấn<span class="text-red-600">* </span>
                                 <span></span
@@ -293,7 +293,7 @@
                           </div>
 
 
-                          <div>
+                          <div class="mb-5">
                             <label for="" class="form-group-label"
                             >Địa chỉ cụ thể<span class="text-red-600"> </span>
                               <span></span
@@ -310,7 +310,6 @@
                             </div>
                           </div>
                         </div>
-
 
                         <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
                           nhận -->
