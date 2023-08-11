@@ -44,7 +44,7 @@
         bordered
         :scroll="{ x: 1300, y: 1000 }"
         :row-class-name="
-          (_record, index) => (index % 2 === 1 ? 'table-striped' : null)
+          (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
         "
       >
         <template #headerCell="{ column }">
@@ -69,7 +69,7 @@
               :value="selectedKeys[0]"
               style="width: 188px; margin-bottom: 8px; display: block"
               @change="
-                (e) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+                (e: any) => setSelectedKeys(e.target.value ? [e.target.value] : [])
               "
               @pressEnter="
                 handleSearch(selectedKeys, confirm, column.dataIndex)
@@ -155,7 +155,7 @@
 
 <script setup lang="ts">
   import { SearchOutlined } from '@ant-design/icons-vue'
-  import type { TableColumnsType } from 'ant-design-vue'
+  // import type { TableColumnsType } from 'ant-design-vue'
 
   import BaseLayout from '../../../layout/baseLayout.vue'
   import SideBar from '../../../components/common/SideBar.vue'
@@ -179,19 +179,19 @@
     searchedColumn: '',
   })
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+  const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
     confirm()
     state.searchText = selectedKeys[0]
     state.searchedColumn = dataIndex
   }
 
-  const handleReset = (clearFilters) => {
+  const handleReset = (clearFilters: any) => {
     clearFilters({ confirm: true })
     state.searchText = ''
   }
 
   const searchInput = ref()
-  const columns = ref<TableColumnsType>([
+  const columns = [
     {
       title: 'Đơn vị tiền tệ',
       dataIndex: 'title',
@@ -199,9 +199,9 @@
       width: 250,
       key: 'name',
       customFilterDropdown: true,
-      onFilter: (value, record) =>
+      onFilter: (value: any, record: any) =>
         record.title.toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible) => {
+      onFilterDropdownOpenChange: (visible: boolean) => {
         if (visible) {
           setTimeout(() => {
             searchInput.value.focus()
@@ -256,7 +256,7 @@
       fixed: 'right',
       width: 100,
     },
-  ]);
+  ]
 
   const navigateUpdate = (id: number) => {
     router.push(`/update-currency/${id}`)
