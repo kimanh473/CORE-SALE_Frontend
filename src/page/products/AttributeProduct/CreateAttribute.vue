@@ -50,11 +50,30 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên thuộc tính"
-                          v-model="attribute.attribute_model"
+                          v-model="attribute.frontend_label"
                         />
-                        <p v-if="messageError?.title" class="text-red-600">
+                        <!-- <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
-                        </p>
+                        </p> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-small">
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Mã thuộc tính<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control-input"
+                          placeholder="Nhập mã thuộc tính"
+                          v-model="attribute.attribute_code"
+                        />
+                        <!-- <p v-if="messageError?.title" class="text-red-600">
+                          {{ messageError?.title[0] }}
+                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -71,9 +90,9 @@
                           @change="handleChange"
                         >
                         </a-select>
-                        <p v-if="messageError?.code" class="text-red-600">
+                        <!-- <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
-                        </p>
+                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -83,8 +102,8 @@
                   >
                     <h1>Quản lý lựa chọn</h1>
                     <div class="flex">
-                      <p class="pr-[100px]">Tiêu đề</p>
-                      <p>Mặc định</p>
+                      <p class="pr-[100px]">Ưu tiên</p>
+                      <p>Tiêu đề</p>
                     </div>
                     <div
                       v-for="(item, index) in dataOption"
@@ -92,10 +111,17 @@
                       class="flex"
                     >
                       <div class="pr-[100px]">
-                        <a-checkbox
-                          v-model="item.defaultOption"
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
                           class="!pl-[16px]"
-                        ></a-checkbox>
+                        ></a-checkbox> -->
+                        <input
+                          type="checkbox"
+                          v-model="item.status"
+                          class="ml-[14px]"
+                          true-value="1"
+                          false-value="0"
+                        />
                       </div>
                       <div class="flex items-end">
                         <a-input
@@ -140,44 +166,44 @@
               <Transition name="slide-up">
                 <div v-show="isContact == true">
                   <div class="form-small">
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Website áp dụng<span class="text-red-600">* </span>
-                        <span></span
-                      ></label>
-                      <div>
-                        <a-select
-                          class="form-control-input"
-                          placeholder="Chọn web"
-                        >
-                          <a-select-option
-                            v-for="(item, index) in listWeb"
-                            :key="index"
-                            :value="item.code"
-                            >{{ item.web_name }}</a-select-option
-                          >
-                        </a-select>
-                        <p
-                          v-if="messageError?.contact_name"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_name[0] }}
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Giá trị duy nhất<span class="text-red-600">* </span>
-                        <span></span
-                      ></label>
-                      <div>
-                        <a-switch v-model:checked="is_unique" />
-                        <p
+                    <div class="flex">
+                      <div class="pr-6">
+                        <label for="" class="form-group-label"
+                          >Giá trị duy nhất<span class="text-red-600">* </span>
+                          <span></span
+                        ></label>
+                        <div>
+                          <a-switch
+                            v-model:checked="attribute.is_unique"
+                            checkedValue="1"
+                            unCheckedValue="0"
+                          />
+                          <!-- <p
                           v-if="messageError?.contact_email"
                           class="text-red-600"
                         >
                           {{ messageError?.contact_email[0] }}
-                        </p>
+                        </p> -->
+                        </div>
+                      </div>
+                      <div>
+                        <label for="" class="form-group-label"
+                          >Bắt buộc<span class="text-red-600">* </span>
+                          <span></span
+                        ></label>
+                        <div>
+                          <a-switch
+                            v-model:checked="attribute.is_unique"
+                            checkedValue="1"
+                            unCheckedValue="0"
+                          />
+                          <!-- <p
+                          v-if="messageError?.contact_email"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_email[0] }}
+                        </p> -->
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -192,15 +218,14 @@
                           class="form-control-input"
                           placeholder="Chọn kiểu"
                           :options="options2"
-                          @change="handleChange"
                         >
                         </a-select>
-                        <p
+                        <!-- <p
                           v-if="messageError?.contact_phone"
                           class="text-red-600"
                         >
                           {{ messageError?.contact_phone[0] }}
-                        </p>
+                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -241,14 +266,13 @@
   import Header from '../../../components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
   // import { useLocation } from '../../../store/modules/location/location'
-  import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
-  import { useInventory } from '../../../store/modules/inventory/product-invetory'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
   import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
+  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -261,6 +285,7 @@
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
+  const dataAttribute = useAttributeProduct()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
@@ -270,6 +295,10 @@
   const options1 = ref<SelectProps['options']>([
     {
       label: 'Text',
+      value: 'varchar',
+    },
+    {
+      label: 'TextArea',
       value: 'text',
     },
     {
@@ -278,18 +307,15 @@
     },
     {
       label: 'Hình ảnh',
-      value: 'varchar',
-      type: 'gallery',
+      value: 'gallery',
     },
     {
       label: 'Nút bật tắt',
       value: 'switch',
-      type: 'varchar',
     },
     {
       label: 'Nhiều lựa chọn',
-      value: 'multiple',
-      type: 'varchar',
+      value: 'selection',
     },
   ])
   const options2 = ref<SelectProps['options']>([
@@ -323,17 +349,17 @@
     },
   ])
   const attribute = reactive({
-    attribute_code: 'image',
+    attribute_code: '',
     attribute_model: '',
     backend_model: '',
-    backend_type: 'gallery',
+    backend_type: '',
     backend_table: '',
     frontend_model: '',
-    frontend_input: 'text',
-    frontend_label: 'Hình ảnh',
+    frontend_input: '',
+    frontend_label: '',
     frontend_class: '',
     source_model: '',
-    is_required: '1',
+    is_required: '0',
     is_user_defined: '0',
     default_value: '',
     is_unique: '0',
@@ -349,39 +375,28 @@
   // ) {
   //   isReInput.value = false
   // }
-  const dataInventory = useInventory()
-  const { messageError } = storeToRefs(dataInventory)
   const showManageChoice = ref<Boolean>(false)
   const handleChange = (value: string) => {
-    if (value == 'multiple') {
+    if (value == 'selection') {
       showManageChoice.value = true
     } else {
       showManageChoice.value = false
     }
+    attribute.backend_type = value
+    console.log(attribute.backend_type)
   }
-  const is_unique = ref<boolean>(false)
-  const dataOption = reactive([
-    {
-      defaultOption: false,
-      title: '',
-    },
-  ])
+  const dataOption = reactive([])
 
   const addOptions = () => {
     const data = {
-      defaultOption: false,
       title: '',
+      status: '0',
     }
     dataOption.push(data)
   }
   const removeOptions = (index: number) => {
     dataOption.splice(index, 1)
   }
-  const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
-  }
-  const { listGroupInventory } = storeToRefs(dataGroupInventory)
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
@@ -419,22 +434,25 @@
   // }
   const createAttribute = () => {
     let data = {
-      attribute_code: 'image',
+      attribute_code: attribute.attribute_code,
       attribute_model: '',
       backend_model: '',
-      backend_type: 'gallery',
+      backend_type: attribute.backend_type,
       backend_table: '',
       frontend_model: '',
-      frontend_input: 'text',
-      frontend_label: 'Hình ảnh',
+      frontend_input: '',
+      frontend_label: attribute.frontend_label,
       frontend_class: '',
       source_model: '',
-      is_required: '1',
+      is_required: '0',
       is_user_defined: '0',
       default_value: '',
-      is_unique: '0',
+      is_unique: attribute.is_unique,
       note: '',
+      option_detail: dataOption,
     }
+    console.log(data)
+    dataAttribute.createAttributeAction(data, toast, router, EndTimeLoading)
     // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>

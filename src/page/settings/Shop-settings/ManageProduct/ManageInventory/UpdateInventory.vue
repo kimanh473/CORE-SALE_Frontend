@@ -543,6 +543,7 @@
       Number(detailInventory.value.id),
       data,
       toast,
+      router,
       EndTimeLoading
     )
   }

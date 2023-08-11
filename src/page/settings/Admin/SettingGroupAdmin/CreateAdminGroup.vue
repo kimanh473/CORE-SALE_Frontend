@@ -1388,7 +1388,9 @@
           <button class="button-modal" @click="createGroupAdmin">
             Tạo mới
           </button>
-          <button class="button-close-modal">Hủy bỏ</button>
+          <button class="button-close-modal" @click="router.go(-1)">
+            Hủy bỏ
+          </button>
         </div>
       </div></template
     >

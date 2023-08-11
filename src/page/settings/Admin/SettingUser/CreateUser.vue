@@ -437,9 +437,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    :disabled="
-                                      role.storeSetting != 'STORE_SETTING'
-                                    "
+                                    disabled
                                   />
                                 </td>
                                 <td>Khách hàng</td>
