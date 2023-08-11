@@ -92,10 +92,14 @@ interface DataTax {
 }
 interface DataCurrency {
     id: number,
+    decimal_number?: number,
     code: string,
     title: string,
     status: string,
+    symbol?: string,
+    symbol2?: string,
     created_by_id: string,
+    created_by: object,
     updated_by_id: string,
     created_at: string,
     updated_at: string,

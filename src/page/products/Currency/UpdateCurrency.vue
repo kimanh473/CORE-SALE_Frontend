@@ -63,6 +63,51 @@
                 </div>
               </div>
             </div>
+
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Symbol<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    v-model="detailCurrency.symbol"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Symbol2<span class="text-red-600"> </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    v-model="detailCurrency.symbol2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Số thập phân<span class="text-red-600"> </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    v-model="detailCurrency.decimal_number"
+                  />
+                </div>
+              </div>
+            </div>
+
             <!-- <div class="form-small">
                 <label for="" class="form-group-label">Mức thuế suất</label>
                 <div>
@@ -168,11 +213,15 @@
     is_default: 0,
   })
   const createCurrency = () => {
+    console.log(detailCurrency.value)
     let data = {
       title: detailCurrency.value.title,
       code: detailCurrency.value.code,
       status: detailCurrency.value.status,
       is_default: detailCurrency.value.is_default,
+      symbol: detailCurrency.value.symbol,
+      symbol2: detailCurrency.value.symbol2,
+      decimal_number: detailCurrency.value.decimal_number,
     }
     dataCurrency.updateCurrencyAction(
       Number(route.params.id),
