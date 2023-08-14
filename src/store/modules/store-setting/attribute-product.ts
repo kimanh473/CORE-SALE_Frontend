@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllAttributeProductsApi, deleteAttributeApi, createAttributeApi, getDetailAttributeProductsApi } from '../../../services/SettingStoreServices/attributeProduct.service'
+import { getAllAttributeProductsApi, deleteAttributeApi, createAttributeApi, getDetailAttributeProductsApi, updateAttributeApi } from '../../../services/SettingStoreServices/attributeProduct.service'
 
 export const useAttributeProduct = defineStore("AttributeProduct", {
     state: () => ({
@@ -89,31 +89,34 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                     toast.error(errMess[0]);
                 });
         },
-        //     async updateInventoryAction(
-        //         id: number,
-        //         data: Object,
-        //         toast: any,
-        //         EndTimeLoading: Function,
-        //         // handleCloseCreate: Function
-        //     ) {
-        //         await updateInventoryApi(id, data)
-        //             .then((res) => {
-        //                 if (res.data.status == "failed") {
-        //                     toast.error(res.data.messages);
-        //                     EndTimeLoading();
-        //                 } else {
-        //                     toast.success("Cập nhật thành công");
-        //                     // handleCloseCreate();
-        //                     EndTimeLoading();
-        //                 }
-        //             })
-        //             .catch((err) => {
-        //                 toast.error("Cập nhật thất bại");
-        //                 this.messageError = err.response.data.messages
-        //                 console.log(this.messageError);
-        //                 console.log(err);
-        //             });
-        //     },
+        async updateProductUnitAction(
+            id: number,
+            data: object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateAttributeApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công")
+                        router.push('/list-attribute-product')
+                        EndTimeLoading()
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
         deleteAttributeAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
             deleteAttributeApi(id)
                 .then((res) => {

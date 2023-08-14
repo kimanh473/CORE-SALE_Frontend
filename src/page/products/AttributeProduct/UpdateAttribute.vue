@@ -9,7 +9,7 @@
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới thuộc tính</p></template
+          ><p class="pl-5 text-[16px]">Cập nhật thuộc tính</p></template
         >
       </Header>
     </template>
@@ -84,11 +84,13 @@
                       ></label>
                       <div>
                         <a-select
+                          autofocus
                           class="form-control-input"
                           placeholder="Chọn định dạng"
                           :options="options1"
                           v-model:value="detailAttribute.backend_type"
-                          @change="handleChange"
+                          @select="handleChange"
+                          @focus="focusOnSelect(detailAttribute.backend_type)"
                         >
                         </a-select>
                         <!-- <p v-if="messageError?.code" class="text-red-600">
@@ -105,6 +107,35 @@
                     <div class="flex">
                       <p class="pr-[100px]">Ưu tiên</p>
                       <p>Tiêu đề</p>
+                    </div>
+                    <div
+                      v-for="(item, index) in detailAttribute.option_detail"
+                      :key="index"
+                      class="flex"
+                    >
+                      <div class="pr-[100px]">
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                        <input
+                          type="checkbox"
+                          v-model="item.status"
+                          class="ml-[14px]"
+                          true-value="1"
+                          false-value="0"
+                        />
+                      </div>
+                      <div class="flex items-end">
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                        <i
+                          @click="removeOptionsOld(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
+                      </div>
                     </div>
                     <div
                       v-for="(item, index) in dataOption"
@@ -135,7 +166,7 @@
                         ></i>
                       </div>
                     </div>
-                    <div @click="addOptions">
+                    <div @click="addOptions()">
                       <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
                   </div>
@@ -194,7 +225,7 @@
                         ></label>
                         <div>
                           <a-switch
-                            v-model:checked="detailAttribute.is_unique"
+                            v-model:checked="detailAttribute.is_required"
                             checkedValue="1"
                             unCheckedValue="0"
                           />
@@ -355,23 +386,23 @@
       value: 'charOrNumber',
     },
   ])
-  const attribute = reactive({
-    attribute_code: '',
-    attribute_model: '',
-    backend_model: '',
-    backend_type: '',
-    backend_table: '',
-    frontend_model: '',
-    frontend_input: '',
-    frontend_label: '',
-    frontend_class: '',
-    source_model: '',
-    is_required: '0',
-    is_user_defined: '0',
-    default_value: '',
-    is_unique: '0',
-    note: '',
-  })
+  // const attribute = reactive({
+  //   attribute_code: '',
+  //   attribute_model: '',
+  //   backend_model: '',
+  //   backend_type: '',
+  //   backend_table: '',
+  //   frontend_model: '',
+  //   frontend_input: '',
+  //   frontend_label: '',
+  //   frontend_class: '',
+  //   source_model: '',
+  //   is_required: '0',
+  //   is_user_defined: '0',
+  //   default_value: '',
+  //   is_unique: '0',
+  //   note: '',
+  // })
   // if (
   //   inventory.title != '' ||
   //   inventory.latitude != '' ||
@@ -389,8 +420,15 @@
     } else {
       showManageChoice.value = false
     }
-    attribute.backend_type = value
-    console.log(attribute.backend_type)
+    detailAttribute.value.backend_type = value
+  }
+  const focusOnSelect = (type: string) => {
+    if (type == 'selection') {
+      console.log(type)
+      showManageChoice.value = true
+    } else {
+      showManageChoice.value = false
+    }
   }
   const dataOption = reactive([])
 
@@ -403,6 +441,9 @@
   }
   const removeOptions = (index: number) => {
     dataOption.splice(index, 1)
+  }
+  const removeOptionsOld = (index: number) => {
+    detailAttribute.value.option_detail.splice(index, 1)
   }
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
@@ -441,25 +482,32 @@
   // }
   const createAttribute = () => {
     let data = {
-      attribute_code: attribute.attribute_code,
+      attribute_code: detailAttribute.value.attribute_code,
       attribute_model: '',
       backend_model: '',
-      backend_type: attribute.backend_type,
+      backend_type: detailAttribute.value.backend_type,
       backend_table: '',
       frontend_model: '',
       frontend_input: '',
-      frontend_label: attribute.frontend_label,
+      frontend_label: detailAttribute.value.frontend_label,
       frontend_class: '',
       source_model: '',
       is_required: '0',
       is_user_defined: '0',
       default_value: '',
-      is_unique: attribute.is_unique,
+      is_unique: detailAttribute.value.is_unique,
       note: '',
-      option_detail: dataOption,
+      options_old: detailAttribute.value.option_detail,
+      options_new: dataOption,
     }
     console.log(data)
-    // dataAttribute.createAttributeAction(data, toast, router, EndTimeLoading)
+    dataAttribute.updateProductUnitAction(
+      Number(route.params.id),
+      data,
+      toast,
+      router,
+      EndTimeLoading
+    )
   }
 </script>
 

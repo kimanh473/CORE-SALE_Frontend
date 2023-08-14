@@ -19,7 +19,18 @@ interface DataAttribute {
     created_at: string,
     updated_at: string,
     deleted_at: string,
-    option_detail: Array<string>
+    options_new: Array<dataDetailNew>
+    options_old: Array<dataDetailOld>
+    option_detail: Array<dataDetailOld>
+}
+interface dataDetailOld {
+    id: number,
+    title: string,
+    status: string,
+}
+interface dataDetailNew {
+    title: string,
+    status: string,
 }
 interface DataProduct {
     id: string

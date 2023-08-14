@@ -201,12 +201,12 @@
     },
     {
       title: 'Vị trí',
-      dataIndex: '',
+      dataIndex: 'position_title',
       key: '',
     },
     {
       title: 'Phòng ban',
-      dataIndex: '',
+      dataIndex: 'department_title',
       key: '',
     },
     {

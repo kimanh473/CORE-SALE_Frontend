@@ -15,7 +15,7 @@ export const usePasswordSetting = defineStore("PasswordSetting", {
                 .then((res: any) => {
                     if (res?.data?.status == 'success') {
                         router.push('/forgot-pass')
-                        toast.success(res?.data?.messages);
+                        toast.success(res?.data?.message);
                         this.getPersonEmail(data?.email)
                     } else {
                         toast.warning(res.data.messages.title);

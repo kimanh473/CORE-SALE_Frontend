@@ -69,51 +69,57 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="grid grid-cols-2 gap-2 form-small">
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Vị trí<span class="text-red-600">* </span> <span></span
-                      ></label>
-                      <a-select
-                        class="form-control-input"
-                        placeholder="Chọn vị trí"
-                        v-model:value="user.type_code"
-                        @click.once="getListGroupInventory"
-                      >
-                        <a-select-option
-                          v-for="(item, index) in listGroupInventory"
-                          :key="index"
-                          :value="item.code"
-                          >{{ item.title }}</a-select-option
-                        >
-                      </a-select>
-                      <p v-if="messageError?.type_code" class="text-red-600">
-                        {{ messageError?.type_code[0] }}
-                      </p>
-                    </div>
+                  <div class="grid grid-cols-2 gap-2 form-small">
                     <div>
                       <label for="" class="form-group-label"
                         >Phòng ban<span class="text-red-600">* </span>
                         <span></span
                       ></label>
                       <a-select
+                        show-search
                         class="form-control-input"
                         placeholder="Chọn phòng ban"
-                        v-model:value="user.type_code"
-                        @click.once="getListGroupInventory"
+                        v-model:value="departmentSelected"
+                        :options="listDepartment"
+                        @click.once="getListDepartment"
+                        :filter-option="filterOption"
                       >
-                        <a-select-option
-                          v-for="(item, index) in listGroupInventory"
+                        <!-- <a-select-option
+                          v-for="(item, index) in listCategory"
                           :key="index"
-                          :value="item.code"
+                          :value="item.id"
                           >{{ item.title }}</a-select-option
-                        >
+                        > -->
                       </a-select>
                       <p v-if="messageError?.type_code" class="text-red-600">
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
-                  </div> -->
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Vị trí<span class="text-red-600">* </span> <span></span
+                      ></label>
+                      <a-select
+                        show-search
+                        class="form-control-input"
+                        placeholder="Chọn vị trí"
+                        v-model:value="positionSelected"
+                        :options="listPosition"
+                        @click.once="getListPosition"
+                        :filter-option="filterOption"
+                      >
+                        <!-- <a-select-option
+                          v-for="(item, index) in listCategory"
+                          :key="index"
+                          :value="item.id"
+                          >{{ item.title }}</a-select-option
+                        > -->
+                      </a-select>
+                      <p v-if="messageError?.type_code" class="text-red-600">
+                        {{ messageError?.type_code[0] }}
+                      </p>
+                    </div>
+                  </div>
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
@@ -1811,6 +1817,8 @@
   import { useInventory } from '../../../../store/modules/inventory/product-invetory'
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
+  import { usePosition } from '../../../../store/modules/admin-setting/position'
+  import { useDepartment } from '../../../../store/modules/admin-setting/department'
   import { useUserSetting } from '../../../../store/modules/users/users'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
@@ -1829,6 +1837,22 @@
   const isContact = ref<boolean>(true)
   const activeKey = ref('1')
   const isLoading = ref<boolean>(false)
+  const dataPosition = usePosition()
+  const { listPosition } = storeToRefs(dataPosition)
+  const filterOption = (input: string, option: any) => {
+    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
+  const dataDepartment = useDepartment()
+  const { listDepartment } = storeToRefs(dataDepartment)
+  const getListPosition = () => {
+    dataPosition.getListPositionAction()
+    console.log(listPosition)
+  }
+  const getListDepartment = () => {
+    dataDepartment.getListDepartmentAction()
+  }
+  const positionSelected = ref()
+  const departmentSelected = ref()
   const role = reactive({
     //store
     storeSetting: '',

@@ -50,6 +50,7 @@ export const useProductUnit = defineStore("ProductUnit", {
                     let arrMess = err.response.data.messages;
                     let errMess = arrMess[Object.keys(arrMess)[0]]
                     toast.error(errMess[0]);
+                    EndTimeLoading()
                 });
         },
         async updateProductUnitAction(
@@ -78,6 +79,7 @@ export const useProductUnit = defineStore("ProductUnit", {
                     let arrMess = err.response.data.messages;
                     let errMess = arrMess[Object.keys(arrMess)[0]]
                     toast.error(errMess[0]);
+                    EndTimeLoading()
                 });
         },
         async getDetailProductUnitAction(id: number) {

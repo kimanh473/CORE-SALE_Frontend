@@ -113,6 +113,7 @@ export const useInventory = defineStore("Inventory", {
                 .then((res) => {
                     if (res.data.status == "success") {
                         toast.success("Xóa thành công", 500);
+                        this.getListInventoryAction()
                     } else {
                         toast.error(res.data.messages, 500);
                     }
