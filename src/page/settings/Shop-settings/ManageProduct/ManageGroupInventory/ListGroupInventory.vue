@@ -55,6 +55,10 @@
         }"
         bordered
         ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdateGroupInventory(record.id)">Sửa</a
             >&nbsp;|&nbsp;<a @click="handleOpenDeleteGroupInventory(record)"
@@ -247,17 +251,19 @@
     },
 
     {
-      title: 'Kho thuộc',
-      dataIndex: '',
+      title: 'Kích hoạt',
+      dataIndex: 'status',
+      align: 'center',
+      key: 'status',
     },
     {
       title: 'Mô tả',
-      dataIndex: '',
+      dataIndex: 'desc',
     },
     {
       title: 'Người tạo',
-      dataIndex: 'fullname',
-      key: 'fullname',
+      dataIndex: 'created_by_id',
+      key: 'created_by_id',
     },
     {
       title: 'Ngày tạo',

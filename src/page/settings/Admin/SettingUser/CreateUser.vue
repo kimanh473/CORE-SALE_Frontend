@@ -9,7 +9,7 @@
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới nhân sự</p></template
+          ><p class="pl-5 text-[16px]">Tạo mới người dùng</p></template
         >
       </Header>
     </template>

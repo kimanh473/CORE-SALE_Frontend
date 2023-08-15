@@ -75,11 +75,16 @@
                     </div>
                   </div>
                   <div class="form-small">
-                    <label for="" class="form-group-label"
-                      >Nhóm kho<span class="text-red-600">* </span> <span></span
-                    ></label>
-                    <div>
-                      <a-select
+                    <div
+                      v-for="(item, index) in listGroupInventory"
+                      :key="index"
+                    >
+                      <label for="" class="form-group-label"
+                        >{{ item.title }}<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <!-- <a-select
                         class="form-control-input"
                         placeholder="Chọn nhóm kho"
                         v-model:value="inventory.type_code"
@@ -91,10 +96,20 @@
                           :value="item.code"
                           >{{ item.title }}</a-select-option
                         >
-                      </a-select>
-                      <p v-if="messageError?.type_code" class="text-red-600">
-                        {{ messageError?.type_code[0] }}
-                      </p>
+                      </a-select> -->
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn định dạng"
+                          :options="selectGroupInvent"
+                          v-model:value="inventory.type_code[index]"
+                          @click="getDetailGroupInventory(item.id)"
+                          @change="handleChange"
+                        >
+                        </a-select>
+                        <p v-if="messageError?.type_code" class="text-red-600">
+                          {{ messageError?.type_code[0] }}
+                        </p>
+                      </div>
                     </div>
                     <a-switch
                       v-model:checked="inventory.status"
@@ -454,6 +469,7 @@
   const filterOption = (input: string, option: any) => {
     return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
   }
+
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -490,10 +506,16 @@
   console.log(messageError)
 
   const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
+  dataGroupInventory.getListGroupInventoryAction()
+  const optionGroup = ref([])
+  const { listGroupInventory, detailGroupInventory, selectGroupInvent } =
+    storeToRefs(dataGroupInventory)
+  const getDetailGroupInventory = (id: number) => {
+    dataGroupInventory.getDetailGroupInventoryAction(id)
   }
-  const { listGroupInventory } = storeToRefs(dataGroupInventory)
+
+  console.log(selectGroupInvent)
+
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
@@ -514,6 +536,13 @@
   const dataLocation = useLocation()
   const getDataCity = () => {
     dataLocation.getListAllCityAction()
+  }
+  const dataOp = ref([])
+
+  const handleChange = (value: any, option: any) => {
+    console.log(value)
+    console.log(option)
+    option.map((item: any, index: number) => ({}))
   }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
@@ -548,7 +577,17 @@
       desc: inventory.desc,
       status: inventory.status,
     }
-    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+    console.log(dataOp.value)
+    console.log(inventory.type_code)
+
+    let dataOption = dataOp.value.filter((item: any) => {
+      inventory.type_code.includes(item.id) == true
+    })
+    console.log(dataOption)
+
+    console.log(data)
+
+    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 

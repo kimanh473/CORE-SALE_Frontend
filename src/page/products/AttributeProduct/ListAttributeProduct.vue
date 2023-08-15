@@ -44,7 +44,69 @@
           onChange: onSelectChange,
         }"
         bordered
-        ><template #bodyCell="{ column, record }">
+      >
+        <template
+          #customFilterDropdown="{
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            column,
+          }"
+        >
+          <div style="padding: 8px; text-align: right">
+            <a-input
+              ref="searchInput"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e: any) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            <a-button
+              type="primary"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+            >
+              <template #icon><SearchOutlined /></template>
+              Lọc
+            </a-button>
+          </div>
+        </template>
+        <template #customFilterIcon="{ filtered }">
+          <search-outlined
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
+        </template>
+        <template #bodyCell="{ column, record }">
+          <span
+            v-if="state.searchText && state.searchedColumn === column.dataIndex"
+          >
+            <template
+              v-for="(fragment, i) in record.frontend_label
+                .toString()
+                .split(
+                  new RegExp(
+                    `(?<=${state.searchText})|(?=${state.searchText})`,
+                    'i'
+                  )
+                )"
+            >
+              <mark
+                v-if="fragment.toLowerCase() === state.searchText.toLowerCase()"
+                :key="i"
+                class="bg-yellow-500 p-0"
+              >
+                {{ fragment }}
+              </mark>
+              <template v-else>{{ fragment }}</template>
+            </template>
+          </span>
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -209,6 +271,7 @@
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
+  import { SearchOutlined } from '@ant-design/icons-vue'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
   const route = useRoute()
@@ -220,7 +283,17 @@
   dataAttribute.getListAttributeAction()
   const { listAttributeProduct } = storeToRefs(dataAttribute)
   console.log(listAttributeProduct)
+  const state = reactive({
+    searchText: '',
+    searchedColumn: '',
+  })
 
+  const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+    confirm()
+    state.searchText = selectedKeys[0]
+    state.searchedColumn = dataIndex
+  }
+  const searchInput = ref()
   const columns = [
     {
       title: 'Mã thuộc tính',
@@ -229,6 +302,19 @@
     {
       title: 'Tên',
       dataIndex: 'frontend_label',
+      customFilterDropdown: true,
+      onFilter: (value: any, record: any) =>
+        record.frontend_label
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
       // sorter: (a: DataInventory, b: DataInventory) =>
       //   a.title.localeCompare(b.title),
     },

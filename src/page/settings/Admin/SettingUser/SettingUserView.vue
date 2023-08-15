@@ -8,15 +8,10 @@
     </template>
     <template v-slot:header>
       <Header :is-show-search="false"
-        ><div class="flex grow">
-          <div class="flex items-center">
-            <div class="flex items-center">
-              <Transition name="slide-fade"> </Transition>
-              <p class="longText text-[#fff] mb-0">Danh sách người dùng</p>
-              <div class="icon-filter-approval relative group"></div>
-            </div>
-          </div></div
-      ></Header>
+        ><template v-slot:name
+          ><p class="pl-5 text-[16px]">Danh sách người dùng</p></template
+        ></Header
+      >
     </template>
     <template v-slot:content class="relative"
       ><div
@@ -41,7 +36,68 @@
         }"
         :custom-row="rightClick"
         bordered
-        ><template #bodyCell="{ column, record }">
+        ><template
+          #customFilterDropdown="{
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            column,
+          }"
+        >
+          <div style="padding: 8px; text-align: right">
+            <a-input
+              ref="searchInput"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e: any) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            <a-button
+              type="primary"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+            >
+              <template #icon><SearchOutlined /></template>
+              Lọc
+            </a-button>
+          </div>
+        </template>
+        <template #customFilterIcon="{ filtered }">
+          <search-outlined
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          />
+        </template>
+        <template #bodyCell="{ column, record }">
+          <span
+            v-if="state.searchText && state.searchedColumn === column.dataIndex"
+          >
+            <template
+              v-for="(fragment, i) in record.fullname
+                .toString()
+                .split(
+                  new RegExp(
+                    `(?<=${state.searchText})|(?=${state.searchText})`,
+                    'i'
+                  )
+                )"
+            >
+              <mark
+                v-if="fragment.toLowerCase() === state.searchText.toLowerCase()"
+                :key="i"
+                class="bg-yellow-500 p-0"
+              >
+                {{ fragment }}
+              </mark>
+              <template v-else>{{ fragment }}</template>
+            </template>
+          </span>
           <template v-if="column.key === 'id'">
             <a @click="navigateToUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDeleteUser(record)"
@@ -152,6 +208,7 @@
     FormatModalX,
     FormatModalY,
   } from '../../../../components/constants/FormatAll'
+  import { SearchOutlined } from '@ant-design/icons-vue'
   import { useRouter } from 'vue-router'
   import { ref, reactive } from 'vue'
   import ContextMenu from '../../../../components/common/ContextMenu.vue'
@@ -173,6 +230,7 @@
     isLoading.value = false
   }
   const role = localStorage.getItem('role')
+  const searchInput = ref()
   const columns = [
     {
       title: 'Tài khoản',
@@ -193,6 +251,18 @@
       title: 'Tên',
       dataIndex: 'fullname',
       key: 'fullname',
+      fixed: 'left',
+      width: 250,
+      customFilterDropdown: true,
+      onFilter: (value: any, record: any) =>
+        record.fullname.toString().toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
     },
     {
       title: 'Trạng thái',
@@ -306,6 +376,15 @@
       status: status == 'BLOCK' ? 'ACTIVE' : 'BLOCK',
     }
     getUserSetting.changeStatusAccountAction(data, toast, EndTimeLoading)
+  }
+  const state = reactive({
+    searchText: '',
+    searchedColumn: '',
+  })
+  const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+    confirm()
+    state.searchText = selectedKeys[0]
+    state.searchedColumn = dataIndex
   }
   const handleOpenResetPass = () => {
     isOpenResetPass.value = true

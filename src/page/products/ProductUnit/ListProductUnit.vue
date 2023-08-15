@@ -41,7 +41,12 @@
           onChange: onSelectChange,
         }"
         bordered
-        ><template #bodyCell="{ column, record }">
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdateProductUnit(record.id)">Sửa</a
             >&nbsp;|&nbsp;<a @click="handleOpenDeleteProductUnit(record)"
@@ -96,6 +101,8 @@
     {
       title: 'Kích hoạt',
       dataIndex: 'status',
+      align: 'center',
+      key: 'status',
     },
     {
       title: 'Người tạo',
