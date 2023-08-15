@@ -100,10 +100,9 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn định dạng"
-                          :options="selectGroupInvent"
-                          v-model:value="inventory.type_code[index]"
-                          @click="getDetailGroupInventory(item.id)"
-                          @change="handleChange"
+                          :options="item?.options"
+                          v-model:value="inventory.type_code[item.id]"
+                          :fieldNames="{ label: 'title', value: 'id' }"
                         >
                         </a-select>
                         <p v-if="messageError?.type_code" class="text-red-600">
@@ -466,6 +465,8 @@
   // const checked = ref(false)
   const isLoading = ref<boolean>(false)
   // const isReInput = ref<boolean>(true)
+
+  const jsonTypeCode = ref([])
   const filterOption = (input: string, option: any) => {
     return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
   }
@@ -577,8 +578,31 @@
       desc: inventory.desc,
       status: inventory.status,
     }
-    console.log(dataOp.value)
-    console.log(inventory.type_code)
+
+    console.log('Submitted data: ', listGroupInventory.value)
+
+    jsonTypeCode.value = [...listGroupInventory.value]
+
+    console.log('jsonTypeCode data: ', jsonTypeCode.value, inventory.type_code)
+
+    let st = []
+    jsonTypeCode.value.map((t, option_id) => {
+      console.log('Map0', option_id)
+      t.options.map((t2, i2) => {
+        console.log(option_id, t.id, i2)
+        if (inventory.type_code[t.id] && inventory.type_code[t.id] == t2.id) {
+          //   console.log('Keep ', t.id,i2, t2)
+          st.push(t2)
+        } else {
+          //   console.log("rm ", t.id, i2,  t2)
+          //   t.options.splice(i2,1)
+        }
+      })
+    })
+
+    console.log('ST', st)
+
+    console.log('jsonTypeCode.value', jsonTypeCode.value)
 
     let dataOption = dataOp.value.filter((item: any) => {
       inventory.type_code.includes(item.id) == true
