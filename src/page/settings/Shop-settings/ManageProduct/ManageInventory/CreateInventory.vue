@@ -100,9 +100,12 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn định dạng"
-                          :options="selectGroupInvent"
+                          :options="item.options.map((item:any)=>({
+                            label:item.title,
+                            value :item.id,
+                            status:item.status
+                          }))"
                           v-model:value="inventory.type_code[index]"
-                          @click="getDetailGroupInventory(item.id)"
                           @change="handleChange"
                         >
                         </a-select>
@@ -473,6 +476,21 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const type_code = reactive([
+    {
+      id: '',
+      code: '',
+      title: '',
+      status: '1',
+      options: [
+        {
+          id: '',
+          title: '',
+          status: '',
+        },
+      ],
+    },
+  ])
   const inventory = reactive({
     title: '',
     type_code: [],
@@ -508,13 +526,9 @@
   const dataGroupInventory = useGroupInventory()
   dataGroupInventory.getListGroupInventoryAction()
   const optionGroup = ref([])
-  const { listGroupInventory, detailGroupInventory, selectGroupInvent } =
+  const { listGroupInventory, detailGroupInventory } =
     storeToRefs(dataGroupInventory)
-  const getDetailGroupInventory = (id: number) => {
-    dataGroupInventory.getDetailGroupInventoryAction(id)
-  }
-
-  console.log(selectGroupInvent)
+  console.log(listGroupInventory)
 
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
@@ -542,7 +556,6 @@
   const handleChange = (value: any, option: any) => {
     console.log(value)
     console.log(option)
-    option.map((item: any, index: number) => ({}))
   }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
@@ -577,14 +590,6 @@
       desc: inventory.desc,
       status: inventory.status,
     }
-    console.log(dataOp.value)
-    console.log(inventory.type_code)
-
-    let dataOption = dataOp.value.filter((item: any) => {
-      inventory.type_code.includes(item.id) == true
-    })
-    console.log(dataOption)
-
     console.log(data)
 
     // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)

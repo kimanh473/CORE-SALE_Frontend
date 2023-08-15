@@ -53,6 +53,9 @@
           onChange: onSelectChange,
         }"
         ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'create_user'">
+            <p>{{ record.created_user.fullname }}</p>
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateToUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenConfirm(record)"
@@ -150,8 +153,8 @@
     },
     {
       title: 'Người tạo',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'create_user',
+      key: 'create_user',
     },
     {
       title: 'Ngày tạo',
