@@ -6,7 +6,7 @@
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới tiền tệ</p></template
+          ><p class="pl-5 text-[16px]">Cập nhật tiền tệ</p></template
         >
       </Header>
     </template>

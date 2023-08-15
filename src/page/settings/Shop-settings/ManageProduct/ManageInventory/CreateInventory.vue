@@ -59,8 +59,8 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Mã kho<span class="text-red-600"></span
-                      ></label>
+                        >Mã kho<span class="text-red-600">*</span></label
+                      >
                       <div>
                         <input
                           type="text"
@@ -84,7 +84,6 @@
                         placeholder="Chọn nhóm kho"
                         v-model:value="inventory.type_code"
                         @click.once="getListGroupInventory"
-                        mode="multiple"
                       >
                         <a-select-option
                           v-for="(item, index) in listGroupInventory"
@@ -97,6 +96,12 @@
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
+                    <a-switch
+                      v-model:checked="inventory.status"
+                      checkedValue="1"
+                      unCheckedValue="0"
+                    />
+                    &nbsp; Kích hoạt &nbsp;
                   </div>
 
                   <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
@@ -289,11 +294,13 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
                           @click.once="getDataCity"
                           v-model:value="inventory.address_state_id"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllCity"
@@ -318,10 +325,12 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn quận/huyện"
                           @change="handleChangeDistrict"
                           v-model:value="inventory.address_district_id"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllDistrict"
@@ -346,10 +355,12 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
                           v-model:value="inventory.address_ward_id"
                           @change="handleChangeWard"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllWard"
@@ -369,7 +380,7 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Địa chỉ cụ thể<span class="text-red-600"> </span>
+                        >Địa chỉ cụ thể<span class="text-red-600">*</span>
                         <span></span
                       ></label>
                       <div>
@@ -440,7 +451,9 @@
   // const checked = ref(false)
   const isLoading = ref<boolean>(false)
   // const isReInput = ref<boolean>(true)
-
+  const filterOption = (input: string, option: any) => {
+    return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -460,6 +473,7 @@
     address_detail: '',
     code: '',
     desc: '',
+    status: '',
   })
   // if (
   //   inventory.title != '' ||
@@ -532,6 +546,7 @@
       address_state_id: inventory.address_state_id,
       address_detail: inventory.address_detail,
       desc: inventory.desc,
+      status: inventory.status,
     }
     dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }

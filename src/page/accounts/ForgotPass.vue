@@ -66,12 +66,11 @@
             />
           </div>
           <div class="text-right mt-2">
-            <!-- <router-link :to="{ name: 'Login', params: {} }">
-              <a
-                class="text-sm font-medium text-gray-700 hover:text-red-500 hover:underline"
-                >Quay lại trang đăng nhập</a
-              >
-            </router-link> -->
+            <a
+              href="/login"
+              class="text-sm font-medium text-gray-700 hover:text-red-500 hover:underline"
+              >Quay lại trang đăng nhập</a
+            >
           </div>
           <button
             @click.prevent="onSubmit"

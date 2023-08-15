@@ -54,8 +54,8 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Tên nhân sự<span class="text-red-600"></span
-                      ></label>
+                        >Tên nhân sự<span class="text-red-600">*</span></label
+                      >
                       <div>
                         <input
                           type="text"
@@ -69,51 +69,57 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="grid grid-cols-2 gap-2 form-small">
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Vị trí<span class="text-red-600">* </span> <span></span
-                      ></label>
-                      <a-select
-                        class="form-control-input"
-                        placeholder="Chọn vị trí"
-                        v-model:value="user.type_code"
-                        @click.once="getListGroupInventory"
-                      >
-                        <a-select-option
-                          v-for="(item, index) in listGroupInventory"
-                          :key="index"
-                          :value="item.code"
-                          >{{ item.title }}</a-select-option
-                        >
-                      </a-select>
-                      <p v-if="messageError?.type_code" class="text-red-600">
-                        {{ messageError?.type_code[0] }}
-                      </p>
-                    </div>
+                  <div class="grid grid-cols-2 gap-2 form-small">
                     <div>
                       <label for="" class="form-group-label"
                         >Phòng ban<span class="text-red-600">* </span>
                         <span></span
                       ></label>
                       <a-select
+                        show-search
                         class="form-control-input"
                         placeholder="Chọn phòng ban"
-                        v-model:value="user.type_code"
-                        @click.once="getListGroupInventory"
+                        v-model:value="departmentSelected"
+                        :options="listDepartment"
+                        @click.once="getListDepartment"
+                        :filter-option="filterOption"
                       >
-                        <a-select-option
-                          v-for="(item, index) in listGroupInventory"
+                        <!-- <a-select-option
+                          v-for="(item, index) in listCategory"
                           :key="index"
-                          :value="item.code"
+                          :value="item.id"
                           >{{ item.title }}</a-select-option
-                        >
+                        > -->
                       </a-select>
                       <p v-if="messageError?.type_code" class="text-red-600">
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
-                  </div> -->
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Vị trí<span class="text-red-600">* </span> <span></span
+                      ></label>
+                      <a-select
+                        show-search
+                        class="form-control-input"
+                        placeholder="Chọn vị trí"
+                        v-model:value="positionSelected"
+                        :options="listPosition"
+                        @click.once="getListPosition"
+                        :filter-option="filterOption"
+                      >
+                        <!-- <a-select-option
+                          v-for="(item, index) in listCategory"
+                          :key="index"
+                          :value="item.id"
+                          >{{ item.title }}</a-select-option
+                        > -->
+                      </a-select>
+                      <p v-if="messageError?.type_code" class="text-red-600">
+                        {{ messageError?.type_code[0] }}
+                      </p>
+                    </div>
+                  </div>
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
@@ -1804,6 +1810,8 @@
   import { useInventory } from '../../../../store/modules/inventory/product-invetory'
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
+  import { usePosition } from '../../../../store/modules/admin-setting/position'
+  import { useDepartment } from '../../../../store/modules/admin-setting/department'
   import { useUserSetting } from '../../../../store/modules/users/users'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
@@ -1825,12 +1833,14 @@
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
-  console.log(listWeb)
   const dataAdminSetting = useAdminSetting()
   dataAdminSetting.getAllPermissionGroupsAction(10, 1)
   const { listGroupPermission, detailGroupPermission } =
     storeToRefs(dataAdminSetting)
-  console.log(listGroupPermission)
+  const dataPosition = usePosition()
+  const { listPosition } = storeToRefs(dataPosition)
+  const dataDepartment = useDepartment()
+  const { listDepartment } = storeToRefs(dataDepartment)
   const role = reactive({
     //store
     storeSetting: '',
@@ -1927,6 +1937,8 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const positionSelected = ref()
+  const departmentSelected = ref()
   const user = reactive({
     code: '',
     username: '',
@@ -1938,14 +1950,20 @@
     email_personal: '',
     phone: '',
   })
-
+  const filterOption = (input: string, option: any) => {
+    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { messageError, listInventory } = storeToRefs(dataInventory)
 
   const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
+  const getListPosition = () => {
+    dataPosition.getListPositionAction()
+    console.log(listPosition)
+  }
+  const getListDepartment = () => {
+    dataDepartment.getListDepartmentAction()
   }
   const { listGroupInventory } = storeToRefs(dataGroupInventory)
   // let options2 = ref<SelectProps['options']>([])
@@ -1987,7 +2005,11 @@
       email_company: user.email_company,
       email_personal: user.email_personal,
       phone: user.phone,
+      department_id: departmentSelected.value,
+      position_id: positionSelected.value,
     }
+    console.log(data)
+
     dataUser.createUserAction(data, toast, router, EndTimeLoading)
   }
 </script>

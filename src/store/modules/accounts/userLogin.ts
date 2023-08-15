@@ -27,7 +27,9 @@ export const userLogin = defineStore("UserLogin", {
                     }
                 })
                 .catch((err) => {
-                    console.log(err)
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    useToast().error(errMess[0]);
                 });
         },
         // checkAuthenticated(router: any) {

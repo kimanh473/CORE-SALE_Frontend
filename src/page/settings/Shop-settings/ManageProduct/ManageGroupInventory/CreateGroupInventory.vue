@@ -56,6 +56,24 @@
               </div>
             </div>
             <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Định dạng<span class="text-red-600"></span
+                ></label>
+                <div>
+                  <a-select
+                    class="form-control-input"
+                    placeholder="Chọn định dạng"
+                    :options="options1"
+                  >
+                  </a-select>
+                  <!-- <p v-if="messageError?.code" class="text-red-600">
+                          {{ messageError?.code[0] }}
+                        </p> -->
+                </div>
+              </div>
+            </div>
+            <div class="form-small">
               <label for="" class="form-group-label">Mô tả</label>
               <div>
                 <textarea
@@ -97,6 +115,7 @@
   import { useToast } from 'vue-toastification'
   import { useGroupInventory } from '../../../../../store/modules/inventory/group-inventory'
   import { useRouter } from 'vue-router'
+  import type { SelectProps } from 'ant-design-vue'
   const dataGroupInventory = useGroupInventory()
   const isLoading = ref<boolean>(false)
   const toast = useToast()
@@ -104,16 +123,32 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const options1 = ref<SelectProps['options']>([
+    {
+      label: 'Text',
+      value: 'varchar',
+    },
+    {
+      label: 'Đúng/Sai',
+      value: 'boolean',
+    },
+    {
+      label: 'Nhiều lựa chọn',
+      value: 'selection',
+    },
+  ])
   const invent = reactive({
     title: '',
     code: '',
     desc: '',
+    format: '',
   })
   const createGroupInventory = () => {
     let data = {
       title: invent.title,
       code: invent.code,
       desc: invent.desc,
+      format: invent.format,
     }
     dataGroupInventory.createGroupInventoryAction(
       data,
