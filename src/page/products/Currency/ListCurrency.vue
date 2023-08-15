@@ -109,7 +109,7 @@
               <mark
                 v-if="fragment.toLowerCase() === state.searchText.toLowerCase()"
                 :key="i"
-                class="highlight"
+                class="bg-yellow-500 p-0"
               >
                 {{ fragment }}
               </mark>
@@ -333,9 +333,4 @@
     font-weight: 500;
   }
 </style>
-<style scoped>
-  .highlight {
-    background-color: rgb(255, 192, 105);
-    padding: 0px;
-  }
-</style>
+<style></style>

@@ -80,8 +80,8 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Định dạng<span class="text-red-600"></span
-                      ></label>
+                        >Định dạng<span class="text-red-600">*</span></label
+                      >
                       <div>
                         <a-select
                           class="form-control-input"
@@ -169,7 +169,7 @@
                     <div class="flex">
                       <div class="pr-6">
                         <label for="" class="form-group-label"
-                          >Giá trị duy nhất<span class="text-red-600">* </span>
+                          >Giá trị duy nhất<span class="text-red-600"></span>
                           <span></span
                         ></label>
                         <div>
@@ -188,7 +188,7 @@
                       </div>
                       <div>
                         <label for="" class="form-group-label"
-                          >Bắt buộc<span class="text-red-600">* </span>
+                          >Bắt buộc<span class="text-red-600"> </span>
                           <span></span
                         ></label>
                         <div>
@@ -208,9 +208,7 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Kiểm tra tính hợp lệ<span class="text-red-600"
-                          >*
-                        </span>
+                        >Kiểm tra tính hợp lệ<span class="text-red-600"> </span>
                         <span></span
                       ></label>
                       <div>

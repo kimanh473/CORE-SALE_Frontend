@@ -56,6 +56,82 @@
               </div>
             </div>
             <div class="form-small">
+              <div class="border border-gray-800 w-[500px] p-4">
+                <h1>Quản lý lựa chọn</h1>
+                <div class="flex">
+                  <p class="pr-[100px]">Ưu tiên</p>
+                  <p>Tiêu đề</p>
+                </div>
+                <div
+                  v-for="(item, index) in detailGroupInventory.options"
+                  :key="index"
+                  class="flex"
+                >
+                  <div class="pr-[100px]">
+                    <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                    <input
+                      type="checkbox"
+                      v-model="item.status"
+                      class="ml-[14px]"
+                      true-value="1"
+                      false-value="0"
+                    />
+                  </div>
+                  <div class="flex items-end">
+                    <a-input
+                      v-model:value="item.title"
+                      placeholder="Nhập tiêu đề"
+                    ></a-input>
+                    <i
+                      @click="removeOptionsOld(index)"
+                      class="fal fa-times icon-close"
+                    ></i>
+                  </div>
+                </div>
+                <div
+                  v-for="(item, index) in dataOption"
+                  :key="index"
+                  class="flex"
+                >
+                  <div class="pr-[100px]">
+                    <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                    <input
+                      type="checkbox"
+                      v-model="item.status"
+                      class="ml-[14px]"
+                      true-value="1"
+                      false-value="0"
+                    />
+                  </div>
+                  <div class="flex items-end">
+                    <a-input
+                      v-model:value="item.title"
+                      placeholder="Nhập tiêu đề"
+                    ></a-input>
+                    <i
+                      @click="removeOptions(index)"
+                      class="fal fa-times icon-close"
+                    ></i>
+                  </div>
+                </div>
+                <div @click="addOptions">
+                  <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                </div>
+              </div>
+            </div>
+            <a-switch
+              v-model:checked="detailGroupInventory.status"
+              checkedValue="1"
+              unCheckedValue="0"
+            />
+            &nbsp; Kích hoạt
+            <div class="form-small">
               <label for="" class="form-group-label">Mô tả</label>
               <div>
                 <textarea
@@ -93,7 +169,7 @@
   import BaseLayout from '../../../../../layout/baseLayout.vue'
   import SideBar from '../../../../../components/common/SideBar.vue'
   import Header from '../../../../../components/common/Header.vue'
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useGroupInventory } from '../../../../../store/modules/inventory/group-inventory'
   import { useRouter, useRoute } from 'vue-router'
@@ -102,6 +178,21 @@
   const route = useRoute()
   dataGroupInventory.getDetailGroupInventoryAction(Number(route.params.id))
   const { detailGroupInventory } = storeToRefs(dataGroupInventory)
+  const dataOption = reactive([])
+
+  const addOptions = () => {
+    const data = {
+      title: '',
+      status: '0',
+    }
+    dataOption.push(data)
+  }
+  const removeOptionsOld = (index: number) => {
+    detailGroupInventory.value.options.splice(index, 1)
+  }
+  const removeOptions = (index: number) => {
+    dataOption.splice(index, 1)
+  }
 
   const isLoading = ref<boolean>(false)
   const toast = useToast()
@@ -114,6 +205,9 @@
       title: detailGroupInventory.value.title,
       code: detailGroupInventory.value.code,
       desc: detailGroupInventory.value.desc,
+      status: detailGroupInventory.value.status,
+      options_old: detailGroupInventory.value.options,
+      options_new: dataOption,
     }
     dataGroupInventory.updateGroupInventoryAction(
       Number(route.params.id),
