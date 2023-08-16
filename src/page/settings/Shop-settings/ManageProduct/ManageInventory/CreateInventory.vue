@@ -560,58 +560,20 @@
     inventory.address = name.title + ', ' + inventory.address
   }
   const createInventory = () => {
-    let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
-      status: inventory.status,
-    }
-
-    console.log('Submitted data: ', listGroupInventory.value)
-
-    jsonTypeCode.value = [...listGroupInventory.value]
-
-    console.log('jsonTypeCode data: ', jsonTypeCode.value, inventory.type_code)
-
+    let data = Object.assign(inventory)
     let st = []
-    jsonTypeCode.value.map((t, option_id) => {
-      console.log('Map0', option_id)
+    listGroupInventory.value.map((t, option_id) => {
       t.options.map((t2, i2) => {
-        console.log(option_id, t.id, i2)
         if (inventory.type_code[t.id] && inventory.type_code[t.id] == t2.id) {
-          //   console.log('Keep ', t.id,i2, t2)
-          st.push(t2)
-        } else {
-          //   console.log("rm ", t.id, i2,  t2)
-          //   t.options.splice(i2,1)
+          st[t.id] = { ...t }
+          st[t.id].options = []
+          st[t.id].options.push(t2)
         }
       })
     })
+    data.type_code = st.filter((val) => val)
 
-    console.log('ST', st)
-
-    console.log('jsonTypeCode.value', jsonTypeCode.value)
-
-    let dataOption = dataOp.value.filter((item: any) => {
-      inventory.type_code.includes(item.id) == true
-    })
-    console.log(dataOption)
-
-    console.log(data)
-
-    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 
