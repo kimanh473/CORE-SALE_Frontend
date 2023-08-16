@@ -561,7 +561,7 @@
   }
   const createInventory = () => {
     let data = Object.assign(inventory)
-    let st = []
+    let st: any = []
     listGroupInventory.value.map((t, option_id) => {
       t.options.map((t2, i2) => {
         if (inventory.type_code[t.id] && inventory.type_code[t.id] == t2.id) {
@@ -571,7 +571,7 @@
         }
       })
     })
-    data.type_code = st.filter((val) => val)
+    data.type_code = st.filter((val: any) => val)
 
     dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
