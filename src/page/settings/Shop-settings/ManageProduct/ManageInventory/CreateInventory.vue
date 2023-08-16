@@ -100,13 +100,9 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn định dạng"
-                          :options="item.options.map((item:any)=>({
-                            label:item.title,
-                            value :item.id,
-                            status:item.status
-                          }))"
-                          v-model:value="inventory.type_code[index]"
-                          @change="handleChange"
+                          :options="item?.options"
+                          v-model:value="inventory.type_code[item.id]"
+                          :fieldNames="{ label: 'title', value: 'id' }"
                         >
                         </a-select>
                         <p v-if="messageError?.type_code" class="text-red-600">
@@ -469,6 +465,8 @@
   // const checked = ref(false)
   const isLoading = ref<boolean>(false)
   // const isReInput = ref<boolean>(true)
+
+  const jsonTypeCode = ref([])
   const filterOption = (input: string, option: any) => {
     return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
   }
@@ -572,27 +570,20 @@
     inventory.address = name.title + ', ' + inventory.address
   }
   const createInventory = () => {
-    let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
-      status: inventory.status,
-    }
-    console.log(data)
+    let data = Object.assign(inventory)
+    let st: any = []
+    listGroupInventory.value.map((t, option_id) => {
+      t.options.map((t2, i2) => {
+        if (inventory.type_code[t.id] && inventory.type_code[t.id] == t2.id) {
+          st[t.id] = { ...t }
+          st[t.id].options = []
+          st[t.id].options.push(t2)
+        }
+      })
+    })
+    data.type_code = st.filter((val: any) => val)
 
-    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+    dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 
