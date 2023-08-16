@@ -63,6 +63,49 @@
                 </div>
               </div>
             </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Symbol<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    v-model="currency.symbol"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Symbol2<span class="text-red-600"> </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    v-model="currency.symbol2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Số thập phân<span class="text-red-600"> </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control-input"
+                    v-model="currency.decimal_number"
+                  />
+                </div>
+              </div>
+            </div>
             <!-- <div class="form-small">
               <label for="" class="form-group-label">Mức thuế suất</label>
               <div>
@@ -164,6 +207,9 @@
     code: '',
     status: 0,
     is_default: 0,
+    symbol: '',
+    symbol2: '',
+    decimal_number: '',
   })
   const createCurrency = () => {
     let data = {
@@ -171,6 +217,9 @@
       code: currencyCode.value,
       status: currency.status,
       is_default: currency.is_default,
+      symbol: currency.symbol,
+      symbol2: currency.symbol2,
+      decimal_number: currency.decimal_number,
     }
     dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
   }

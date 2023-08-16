@@ -31,7 +31,13 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                 backend_type: item.backend_type,
                 is_unique: item.is_unique == '1' ? 'Có' : 'Không',
                 is_user_defined: item.is_user_defined == '1' ? 'Có' : 'Không',
+                user_created:item.user_created,
+                created_at:item.created_at,
+                updated_at:item.updated_at,
+                user_updated:item.user_updated
+
             }))
+            
         },
         getDetailAttribute: (state: any) => {
             return (payload: any) => state.detailAttribute = payload

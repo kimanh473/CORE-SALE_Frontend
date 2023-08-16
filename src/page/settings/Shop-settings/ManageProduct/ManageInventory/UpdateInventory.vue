@@ -69,7 +69,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-small">
+                  <!-- <div class="form-small">
                     <label for="" class="form-group-label"
                       >Nhóm kho<span class="text-red-600">* </span> <span></span
                     ></label>
@@ -92,8 +92,52 @@
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
+                  </div> -->
+                  <div class="form-small">
+                    <div
+                      v-for="(item, index) in listGroupInventory"
+                      :key="index"
+                    >
+                      <label for="" class="form-group-label"
+                        >{{ item.title }}<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <!-- <a-select
+                        class="form-control-input"
+                        placeholder="Chọn nhóm kho"
+                        v-model:value="inventory.type_code"
+                        @click.once="getListGroupInventory"
+                      >
+                        <a-select-option
+                          v-for="(item, index) in listGroupInventory"
+                          :key="index"
+                          :value="item.code"
+                          >{{ item.title }}</a-select-option
+                        >
+                      </a-select> -->
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn định dạng"
+                          :options="item?.options"
+                          v-model:value="
+                            detailInventory.json_type_code[item.id]
+                          "
+                          :fieldNames="{ label: 'title', value: 'id' }"
+                        >
+                        </a-select>
+                        <p v-if="messageError?.type_code" class="text-red-600">
+                          {{ messageError?.type_code[0] }}
+                        </p>
+                      </div>
+                    </div>
+                    <a-switch
+                      v-model:checked="detailInventory.status"
+                      checkedValue="1"
+                      unCheckedValue="0"
+                    />
+                    &nbsp; Kích hoạt &nbsp;
                   </div>
-
                   <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
                     nhận -->
                   <div>
@@ -287,7 +331,7 @@
                           show-search
                           class="form-control-input"
                           placeholder="Chọn tỉnh/thành phố"
-                          @change="handleChangeCity"
+                          @select="handleChangeCity"
                           @click.once="getDataCity"
                           v-model:value="detailInventory.address_state_id"
                           :filter-option="filterOption"
@@ -318,7 +362,7 @@
                           show-search
                           class="form-control-input"
                           placeholder="Chọn quận/huyện"
-                          @change="handleChangeDistrict"
+                          @select="handleChangeDistrict"
                           v-model:value="detailInventory.address_district_id"
                           :filter-option="filterOption"
                         >
@@ -349,7 +393,7 @@
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
                           v-model:value="detailInventory.address_ward_id"
-                          @change="handleChangeWard"
+                          @select="handleChangeWard"
                           :filter-option="filterOption"
                         >
                           <a-select-option
@@ -479,12 +523,17 @@
   dataInventory.getDetailInventoryAction(Number(route.params.id))
   const { messageError, detailInventory } = storeToRefs(dataInventory)
 
+  console.log(detailInventory)
+  // const selectGroup = computed(() =>
+  //   detailInventory.value.json_type_code.map((item: any) => ({
+
+  //   }))
+  // )
+
   // const inventData: DetailInvent = computed(()=>det)
 
   const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
-  }
+  dataGroupInventory.getListGroupInventoryAction()
   const { listGroupInventory } = storeToRefs(dataGroupInventory)
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
@@ -511,14 +560,12 @@
   dataLocation.getListAllWardAction(
     Number(detailInventory.value?.address_district_id)
   )
-  const getDataCity = () => {
-    dataLocation.getListAllCityAction()
-  }
+  const getDataCity = () => {}
+  dataLocation.getListAllCityAction()
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
   const handleChangeCity = (value: number, name: any) => {
     dataLocation.getListAllDistrictAction(value)
-
     detailInventory.value.address = name.title + ', ' + 'Việt Nam'
   }
   const handleChangeDistrict = (value: number, name: any) => {

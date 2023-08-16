@@ -12,7 +12,7 @@ interface DetailInvent {
     id: string,
     title: string,
     code: string,
-    json_type_code: object,
+    json_type_code: any,
     latitude: string,
     longitude: string,
     contact_name: string,
@@ -25,6 +25,8 @@ interface DetailInvent {
     address_state_id: string,
     address_detail: string,
     desc: string,
+    status:string,
+    inventGroup:string
 }
 interface DetailErorr {
     id: string,

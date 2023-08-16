@@ -124,14 +124,14 @@
               </div> -->
             <a-switch
               v-model:checked="detailCurrency.status"
-              checkedValue="1"
-              unCheckedValue="0"
+              :checkedValue="1"
+              :unCheckedValue="0"
             />
             &nbsp; Kích hoạt &nbsp;
             <a-switch
               v-model:checked="detailCurrency.is_default"
-              checkedValue="1"
-              unCheckedValue="0"
+              :checkedValue="1"
+              :unCheckedValue="0"
             />
             &nbsp; Đặt làm mặc định
 

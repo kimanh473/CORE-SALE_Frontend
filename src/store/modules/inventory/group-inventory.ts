@@ -18,8 +18,8 @@ export const useGroupInventory = defineStore("GroupInventory", {
         // getListGroupInventory(payload: any) {
         //     this.listGroupInventory = payload.data
         // },
-        getListGroupInventoryAction() {
-            getAllGroupInventoryApi()
+       async getListGroupInventoryAction() {
+           await getAllGroupInventoryApi()
                 .then((payload: any) => {
                     let res = payload?.data?.data
                     this.getListGroupInventory(res)
