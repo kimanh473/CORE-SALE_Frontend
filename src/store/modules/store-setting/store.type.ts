@@ -22,6 +22,8 @@ interface DataAttribute {
     options_new: Array<dataDetailNew>
     options_old: Array<dataDetailOld>
     option_detail: Array<dataDetailOld>
+    user_created:object,
+    user_updated:object
 }
 interface dataDetailOld {
     id: number,
@@ -100,6 +102,7 @@ interface DataTax {
     created_at: string,
     updated_at: string,
     deleted_at: string,
+    user_created:object
 }
 interface DataCurrency {
     id: number,

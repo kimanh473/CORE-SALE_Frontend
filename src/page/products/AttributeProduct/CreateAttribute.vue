@@ -193,7 +193,7 @@
                         ></label>
                         <div>
                           <a-switch
-                            v-model:checked="attribute.is_unique"
+                            v-model:checked="attribute.is_required"
                             checkedValue="1"
                             unCheckedValue="0"
                           />
@@ -312,8 +312,12 @@
       value: 'switch',
     },
     {
-      label: 'Nhiều lựa chọn',
+      label: 'Lựa chọn',
       value: 'selection',
+    },
+    {
+      label: 'Nhiều lựa chọn',
+      value: 'multiple_select',
     },
   ])
   const options2 = ref<SelectProps['options']>([
@@ -442,7 +446,7 @@
       frontend_label: attribute.frontend_label,
       frontend_class: '',
       source_model: '',
-      is_required: '0',
+      is_required: attribute.is_required,
       is_user_defined: '0',
       default_value: '',
       is_unique: attribute.is_unique,

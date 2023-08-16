@@ -84,6 +84,12 @@
           />
         </template>
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'user_created'">
+            {{ record.user_created?.username }}
+          </template>
+          <template v-if="column.key === 'user_updated'">
+            {{ record.user_updated?.username }}
+          </template>
           <span
             v-if="state.searchText && state.searchedColumn === column.dataIndex"
           >
@@ -107,6 +113,7 @@
               <template v-else>{{ fragment }}</template>
             </template>
           </span>
+
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -324,7 +331,7 @@
       key: 'is_required',
     },
     {
-      title: 'Phạm vi',
+      title: 'Định dạng',
       dataIndex: 'backend_type',
       key: 'backend_type',
     },
@@ -332,9 +339,27 @@
       title: 'Giá trị duy nhất',
       dataIndex: 'is_unique',
     },
+    // {
+    //   title: 'Có thể tìm kiếm được',
+    //   dataIndex: 'is_user_defined',
+    // },
     {
-      title: 'Có thể tìm kiếm được',
-      dataIndex: 'is_user_defined',
+      title: 'Người tạo',
+      dataIndex: 'user_created',
+      key: 'user_created',
+    },
+    {
+      title: 'Người sửa',
+      dataIndex: 'user_updated',
+      key: 'user_updated',
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created_at',
+    },
+    {
+      title: 'Ngày sửa',
+      dataIndex: 'updated_at',
     },
     {
       title: 'Thao tác',

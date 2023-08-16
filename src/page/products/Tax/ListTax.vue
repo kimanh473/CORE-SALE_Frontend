@@ -40,6 +40,9 @@
         }"
         bordered
         ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'user_created'">
+            {{ record.user_created?.fullname }}
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -110,7 +113,8 @@
     },
     {
       title: 'Người tạo',
-      dataIndex: 'created_by_id',
+      dataIndex: 'user_created',
+      key: 'user_created',
     },
     {
       title: 'Ngày tạo',

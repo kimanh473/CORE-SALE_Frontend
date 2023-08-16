@@ -238,8 +238,8 @@
     },
     {
       title: 'Thuộc nhóm kho',
-      dataIndex: `json_type_code`,
-      key: 'json_type_code',
+      dataIndex: `inventGroup`,
+      key: 'inventGroup',
       slots: { customRender: 'group' },
     },
     {
