@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { getAllCustomerProfileApi, createCustomerProfileApi} from '../../../services/CustomerProfileServices/customerProfile.services'
-import {createWebApi} from "@/services/WebCatalogServices/webcatalog.service";
+import { getAllCustomerProfileApi, createCustomerProfileApi, updateCustomerProfileApi, deleteCustomerProfileApi} from '../../../services/CustomerProfileServices/customerProfile.services'
+import {updateInventoryApi} from "@/services/InventoryServices/inventory.service";
+
 export const useCustomerProfile = defineStore("CustomerProfile", {
     state: () => ({
         listCustomerProfile: [] as DataCustomerProfile[]
@@ -60,6 +61,51 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                 });
         },
 
+        async updateCustomerProfileAction(
+            id: number,
+            data: Object,
+            toast: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateCustomerProfileApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công");
+                        // handleCloseCreate();
+                        EndTimeLoading();
+                    }
+                })
+                .catch((err) => {
+                    this.messageError = err.response.data.messages
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+
+        deleteCustomerProfileAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {
+            deleteCustomerProfileApi(id)
+                .then((res) => {
+                    if (res.data.status == "success") {
+                        toast.success("Xóa thành công", 500);
+                        this.getAllCustomerProfilePaginateAction()
+                    } else {
+                        toast.error(res.data.messages, 500);
+                    }
+                    EndTimeLoading();
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
+                });
+        },
 
     }
 

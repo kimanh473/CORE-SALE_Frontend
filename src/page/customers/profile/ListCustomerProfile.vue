@@ -103,8 +103,13 @@ const columns = [
   },
   {
     title: 'Địa chỉ',
-    dataIndex: 'address_detail',
-  }
+    dataIndex: 'detail_delivery_address',
+  },
+  {
+    title: 'Thao tác',
+    dataIndex: 'id',
+    key: 'id',
+  },
 ]
 const handleCloseConfirm = () => {
   isOpenConfirm.value = false
@@ -116,7 +121,7 @@ const CreateCustomerProfile = () => {
   router.push('/create-customer-profile')
 }
 const navigateUpdate = (id: number) => {
-  router.push(`/update-web/${id}`)
+  router.push(`/update-customer-profile/${id}`)
 }
 const idSelected = ref()
 const handleOpenDelete = (record: any) => {
@@ -124,8 +129,15 @@ const handleOpenDelete = (record: any) => {
   idSelected.value = record.id
 }
 const handleDelete = () => {
-
+  isLoading.value = true
+  dataCustomerProfile.deleteCustomerProfileAction(
+      Number(idSelected.value),
+      toast,
+      EndTimeLoading,
+      handleCloseConfirm
+  )
 }
+
 </script>
 <style>
 #components-layout-demo-side .logo {

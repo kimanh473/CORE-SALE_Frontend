@@ -9,7 +9,6 @@ const customerProfile = [
         },
         beforeEnter: requireAuth,
     },
-
     {
         path: '/create-customer-profile',
         component: () => import('../../page/customers/profile/CreateCustomerProfile.vue'),
@@ -18,6 +17,14 @@ const customerProfile = [
         },
         beforeEnter: requireAuth,
     },
+    {
+        path: '/update-customer-profile/:id',
+        component: () => import('../../page/customers/profile/UpdateCustomerProfile.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    }
 
 ]
 
