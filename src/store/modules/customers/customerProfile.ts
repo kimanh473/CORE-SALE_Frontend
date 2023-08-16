@@ -15,7 +15,9 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                 birth_day: item.birth_day,
                 gender: item.gender,
                 phone: item.phone,
-                address_detail: item.address_detail,
+                detail_delivery_address: item.detail_delivery_address,
+                delivery_address: item.delivery_address,
+                list_address: item.list_address,
             }))
         },
     },

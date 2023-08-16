@@ -5,5 +5,7 @@ interface DataCustomerProfile {
     birth_day: string
     gender: string
     phone: string
-    address_detail: string
+    detail_delivery_address: []
+    delivery_address: string
+    list_address: string
 }

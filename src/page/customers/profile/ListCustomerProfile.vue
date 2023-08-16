@@ -103,7 +103,7 @@ const columns = [
   },
   {
     title: 'Địa chỉ',
-    dataIndex: 'detail_delivery_address',
+    dataIndex: 'list_address',
   },
   {
     title: 'Thao tác',
