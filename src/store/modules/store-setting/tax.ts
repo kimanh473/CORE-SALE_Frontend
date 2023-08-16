@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
-import { getListTaxApi, createTaxApi, deleteTaxApi } from '../../../services/SettingStoreServices/tax.service'
+import { getListTaxApi, createTaxApi, deleteTaxApi, getDetailTaxApi, updateTaxApi } from '../../../services/SettingStoreServices/tax.service'
 
 export const useListTax = defineStore("ListTax", {
     state: () => ({
         listTax: [] as DataTax[],
+        detailTax: {} as DataTax
     }),
     getters: {
         getListTax: (state: any) => {
@@ -21,6 +22,9 @@ export const useListTax = defineStore("ListTax", {
                 deleted_at: item.deleted_at,
             }))
         },
+        getDetailTax: (state: any) => {
+            return (payload: any) => state.detailTax = payload
+        }
 
     },
     actions: {
@@ -28,9 +32,17 @@ export const useListTax = defineStore("ListTax", {
             await getListTaxApi()
                 .then((payload: any) => {
                     let res = payload?.data?.data?.data
-                    console.log(res);
-
                     this.getListTax(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getDetailTaxAction(id: number) {
+            await getDetailTaxApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailTax(res)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -52,6 +64,34 @@ export const useListTax = defineStore("ListTax", {
                         toast.success("Tạo mới thành công")
                         EndTimeLoading()
                         router.push('/list-tax')
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+        async updateTaxAction(
+            id: number,
+            data: object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateTaxApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công")
+                        router.push('/list-tax')
+                        EndTimeLoading()
                     }
                 })
                 .catch((err) => {

@@ -9,7 +9,7 @@
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới thuộc tính</p></template
+          ><p class="pl-5 text-[16px]">Cập nhật thuộc tính</p></template
         >
       </Header>
     </template>
@@ -50,30 +50,52 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tên thuộc tính"
-                          v-model="attribute.attribute_model"
+                          v-model="detailAttribute.frontend_label"
                         />
-                        <p v-if="messageError?.title" class="text-red-600">
+                        <!-- <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
-                        </p>
+                        </p> -->
                       </div>
                     </div>
                   </div>
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Định dạng<span class="text-red-600"></span
+                        >Mã thuộc tính<span class="text-red-600">* </span>
+                        <span></span
                       ></label>
                       <div>
+                        <input
+                          type="text"
+                          class="form-control-input"
+                          placeholder="Nhập mã thuộc tính"
+                          v-model="detailAttribute.attribute_code"
+                        />
+                        <!-- <p v-if="messageError?.title" class="text-red-600">
+                          {{ messageError?.title[0] }}
+                        </p> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-small">
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Định dạng<span class="text-red-600">*</span></label
+                      >
+                      <div>
                         <a-select
+                          autofocus
                           class="form-control-input"
                           placeholder="Chọn định dạng"
                           :options="options1"
-                          @change="handleChange"
+                          v-model:value="detailAttribute.backend_type"
+                          @select="handleChange"
+                          @focus="focusOnSelect(detailAttribute.backend_type)"
                         >
                         </a-select>
-                        <p v-if="messageError?.code" class="text-red-600">
+                        <!-- <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
-                        </p>
+                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -83,8 +105,37 @@
                   >
                     <h1>Quản lý lựa chọn</h1>
                     <div class="flex">
-                      <p class="pr-[100px]">Tiêu đề</p>
-                      <p>Mặc định</p>
+                      <p class="pr-[100px]">Ưu tiên</p>
+                      <p>Tiêu đề</p>
+                    </div>
+                    <div
+                      v-for="(item, index) in detailAttribute.option_detail"
+                      :key="index"
+                      class="flex"
+                    >
+                      <div class="pr-[100px]">
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                        <input
+                          type="checkbox"
+                          v-model="item.status"
+                          class="ml-[14px]"
+                          true-value="1"
+                          false-value="0"
+                        />
+                      </div>
+                      <div class="flex items-end">
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                        <i
+                          @click="removeOptionsOld(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
+                      </div>
                     </div>
                     <div
                       v-for="(item, index) in dataOption"
@@ -92,10 +143,17 @@
                       class="flex"
                     >
                       <div class="pr-[100px]">
-                        <a-checkbox
-                          v-model="item.defaultOption"
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
                           class="!pl-[16px]"
-                        ></a-checkbox>
+                        ></a-checkbox> -->
+                        <input
+                          type="checkbox"
+                          v-model="item.status"
+                          class="ml-[14px]"
+                          true-value="1"
+                          false-value="0"
+                        />
                       </div>
                       <div class="flex items-end">
                         <a-input
@@ -108,7 +166,7 @@
                         ></i>
                       </div>
                     </div>
-                    <div @click="addOptions">
+                    <div @click="addOptions()">
                       <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
                   </div>
@@ -140,51 +198,49 @@
               <Transition name="slide-up">
                 <div v-show="isContact == true">
                   <div class="form-small">
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Website áp dụng<span class="text-red-600">* </span>
-                        <span></span
-                      ></label>
-                      <div>
-                        <a-select
-                          class="form-control-input"
-                          placeholder="Chọn web"
-                        >
-                          <a-select-option
-                            v-for="(item, index) in listWeb"
-                            :key="index"
-                            :value="item.code"
-                            >{{ item.web_name }}</a-select-option
-                          >
-                        </a-select>
-                        <p
-                          v-if="messageError?.contact_name"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_name[0] }}
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Giá trị duy nhất<span class="text-red-600">* </span>
-                        <span></span
-                      ></label>
-                      <div>
-                        <a-switch v-model:checked="is_unique" />
-                        <p
+                    <div class="flex">
+                      <div class="pr-6">
+                        <label for="" class="form-group-label"
+                          >Giá trị duy nhất<span class="text-red-600"> </span>
+                          <span></span
+                        ></label>
+                        <div>
+                          <a-switch
+                            v-model:checked="detailAttribute.is_unique"
+                            checkedValue="1"
+                            unCheckedValue="0"
+                          />
+                          <!-- <p
                           v-if="messageError?.contact_email"
                           class="text-red-600"
                         >
                           {{ messageError?.contact_email[0] }}
-                        </p>
+                        </p> -->
+                        </div>
+                      </div>
+                      <div>
+                        <label for="" class="form-group-label"
+                          >Bắt buộc<span class="text-red-600"> </span>
+                          <span></span
+                        ></label>
+                        <div>
+                          <a-switch
+                            v-model:checked="detailAttribute.is_required"
+                            checkedValue="1"
+                            unCheckedValue="0"
+                          />
+                          <!-- <p
+                          v-if="messageError?.contact_email"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_email[0] }}
+                        </p> -->
+                        </div>
                       </div>
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Kiểm tra tính hợp lệ<span class="text-red-600"
-                          >*
-                        </span>
+                        >Kiểm tra tính hợp lệ<span class="text-red-600"> </span>
                         <span></span
                       ></label>
                       <div>
@@ -192,15 +248,14 @@
                           class="form-control-input"
                           placeholder="Chọn kiểu"
                           :options="options2"
-                          @change="handleChange"
                         >
                         </a-select>
-                        <p
+                        <!-- <p
                           v-if="messageError?.contact_phone"
                           class="text-red-600"
                         >
                           {{ messageError?.contact_phone[0] }}
-                        </p>
+                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -241,19 +296,20 @@
   import Header from '../../../components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
   // import { useLocation } from '../../../store/modules/location/location'
-  import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
-  import { useInventory } from '../../../store/modules/inventory/product-invetory'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
+  import { useRoute } from 'vue-router'
   import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
+  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
   // const selectedWard = ref(null)
   const router = useRouter()
+  const route = useRoute()
   const toast = useToast()
   const isAddress = ref(true)
   const isInfor = ref(true)
@@ -261,6 +317,11 @@
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
+  const dataAttribute = useAttributeProduct()
+  dataAttribute.getDetailAttributeAction(Number(route.params.id))
+  const { detailAttribute } = storeToRefs(dataAttribute)
+  console.log(detailAttribute)
+
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
@@ -270,6 +331,10 @@
   const options1 = ref<SelectProps['options']>([
     {
       label: 'Text',
+      value: 'varchar',
+    },
+    {
+      label: 'TextArea',
       value: 'text',
     },
     {
@@ -278,23 +343,20 @@
     },
     {
       label: 'Hình ảnh',
-      value: 'varchar',
-      type: 'gallery',
+      value: 'gallery',
     },
     {
       label: 'Nút bật tắt',
       value: 'switch',
-      type: 'varchar',
     },
     {
       label: 'Nhiều lựa chọn',
-      value: 'multiple',
-      type: 'varchar',
+      value: 'selection',
     },
   ])
   const options2 = ref<SelectProps['options']>([
     {
-      label: 'Không',
+      label: 'Không hợp lệ',
       value: 'invalid',
     },
     {
@@ -322,23 +384,23 @@
       value: 'charOrNumber',
     },
   ])
-  const attribute = reactive({
-    attribute_code: 'image',
-    attribute_model: '',
-    backend_model: '',
-    backend_type: 'gallery',
-    backend_table: '',
-    frontend_model: '',
-    frontend_input: 'text',
-    frontend_label: 'Hình ảnh',
-    frontend_class: '',
-    source_model: '',
-    is_required: '1',
-    is_user_defined: '0',
-    default_value: '',
-    is_unique: '0',
-    note: '',
-  })
+  // const attribute = reactive({
+  //   attribute_code: '',
+  //   attribute_model: '',
+  //   backend_model: '',
+  //   backend_type: '',
+  //   backend_table: '',
+  //   frontend_model: '',
+  //   frontend_input: '',
+  //   frontend_label: '',
+  //   frontend_class: '',
+  //   source_model: '',
+  //   is_required: '0',
+  //   is_user_defined: '0',
+  //   default_value: '',
+  //   is_unique: '0',
+  //   note: '',
+  // })
   // if (
   //   inventory.title != '' ||
   //   inventory.latitude != '' ||
@@ -349,39 +411,38 @@
   // ) {
   //   isReInput.value = false
   // }
-  const dataInventory = useInventory()
-  const { messageError } = storeToRefs(dataInventory)
   const showManageChoice = ref<Boolean>(false)
   const handleChange = (value: string) => {
-    if (value == 'multiple') {
+    if (value == 'selection') {
+      showManageChoice.value = true
+    } else {
+      showManageChoice.value = false
+    }
+    detailAttribute.value.backend_type = value
+  }
+  const focusOnSelect = (type: string) => {
+    if (type == 'selection') {
+      console.log(type)
       showManageChoice.value = true
     } else {
       showManageChoice.value = false
     }
   }
-  const is_unique = ref<boolean>(false)
-  const dataOption = reactive([
-    {
-      defaultOption: false,
-      title: '',
-    },
-  ])
+  const dataOption = reactive([])
 
   const addOptions = () => {
     const data = {
-      defaultOption: false,
       title: '',
+      status: '0',
     }
     dataOption.push(data)
   }
   const removeOptions = (index: number) => {
     dataOption.splice(index, 1)
   }
-  const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
+  const removeOptionsOld = (index: number) => {
+    detailAttribute.value.option_detail.splice(index, 1)
   }
-  const { listGroupInventory } = storeToRefs(dataGroupInventory)
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
@@ -419,23 +480,32 @@
   // }
   const createAttribute = () => {
     let data = {
-      attribute_code: 'image',
+      attribute_code: detailAttribute.value.attribute_code,
       attribute_model: '',
       backend_model: '',
-      backend_type: 'gallery',
+      backend_type: detailAttribute.value.backend_type,
       backend_table: '',
       frontend_model: '',
-      frontend_input: 'text',
-      frontend_label: 'Hình ảnh',
+      frontend_input: '',
+      frontend_label: detailAttribute.value.frontend_label,
       frontend_class: '',
       source_model: '',
-      is_required: '1',
+      is_required: '0',
       is_user_defined: '0',
       default_value: '',
-      is_unique: '0',
+      is_unique: detailAttribute.value.is_unique,
       note: '',
+      options_old: detailAttribute.value.option_detail,
+      options_new: dataOption,
     }
-    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+    console.log(data)
+    dataAttribute.updateProductUnitAction(
+      Number(route.params.id),
+      data,
+      toast,
+      router,
+      EndTimeLoading
+    )
   }
 </script>
 

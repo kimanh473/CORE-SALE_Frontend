@@ -59,8 +59,8 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Mã kho<span class="text-red-600"></span
-                      ></label>
+                        >Mã kho<span class="text-red-600">*</span></label
+                      >
                       <div>
                         <input
                           type="text"
@@ -75,16 +75,20 @@
                     </div>
                   </div>
                   <div class="form-small">
-                    <label for="" class="form-group-label"
-                      >Nhóm kho<span class="text-red-600">* </span> <span></span
-                    ></label>
-                    <div>
-                      <a-select
+                    <div
+                      v-for="(item, index) in listGroupInventory"
+                      :key="index"
+                    >
+                      <label for="" class="form-group-label"
+                        >{{ item.title }}<span class="text-red-600">* </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <!-- <a-select
                         class="form-control-input"
                         placeholder="Chọn nhóm kho"
                         v-model:value="inventory.type_code"
                         @click.once="getListGroupInventory"
-                        mode="multiple"
                       >
                         <a-select-option
                           v-for="(item, index) in listGroupInventory"
@@ -92,11 +96,26 @@
                           :value="item.code"
                           >{{ item.title }}</a-select-option
                         >
-                      </a-select>
-                      <p v-if="messageError?.type_code" class="text-red-600">
-                        {{ messageError?.type_code[0] }}
-                      </p>
+                      </a-select> -->
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn định dạng"
+                          :options="item?.options"
+                          v-model:value="inventory.type_code[item.id]"
+                          :fieldNames="{ label: 'title', value: 'id' }"
+                        >
+                        </a-select>
+                        <p v-if="messageError?.type_code" class="text-red-600">
+                          {{ messageError?.type_code[0] }}
+                        </p>
+                      </div>
                     </div>
+                    <a-switch
+                      v-model:checked="inventory.status"
+                      checkedValue="1"
+                      unCheckedValue="0"
+                    />
+                    &nbsp; Kích hoạt &nbsp;
                   </div>
 
                   <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
@@ -289,11 +308,13 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
                           @click.once="getDataCity"
                           v-model:value="inventory.address_state_id"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllCity"
@@ -318,10 +339,12 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn quận/huyện"
                           @change="handleChangeDistrict"
                           v-model:value="inventory.address_district_id"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllDistrict"
@@ -346,10 +369,12 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
                           v-model:value="inventory.address_ward_id"
                           @change="handleChangeWard"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllWard"
@@ -369,7 +394,7 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Địa chỉ cụ thể<span class="text-red-600"> </span>
+                        >Địa chỉ cụ thể<span class="text-red-600">*</span>
                         <span></span
                       ></label>
                       <div>
@@ -441,6 +466,11 @@
   const isLoading = ref<boolean>(false)
   // const isReInput = ref<boolean>(true)
 
+  const jsonTypeCode = ref([])
+  const filterOption = (input: string, option: any) => {
+    return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
+
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -460,6 +490,7 @@
     address_detail: '',
     code: '',
     desc: '',
+    status: '',
   })
   // if (
   //   inventory.title != '' ||
@@ -476,10 +507,16 @@
   console.log(messageError)
 
   const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
+  dataGroupInventory.getListGroupInventoryAction()
+  const optionGroup = ref([])
+  const { listGroupInventory, detailGroupInventory, selectGroupInvent } =
+    storeToRefs(dataGroupInventory)
+  const getDetailGroupInventory = (id: number) => {
+    dataGroupInventory.getDetailGroupInventoryAction(id)
   }
-  const { listGroupInventory } = storeToRefs(dataGroupInventory)
+
+  console.log(selectGroupInvent)
+
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
@@ -501,6 +538,13 @@
   const getDataCity = () => {
     dataLocation.getListAllCityAction()
   }
+  const dataOp = ref([])
+
+  const handleChange = (value: any, option: any) => {
+    console.log(value)
+    console.log(option)
+    option.map((item: any, index: number) => ({}))
+  }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
   const handleChangeCity = (value: number, name: any) => {
@@ -516,23 +560,19 @@
     inventory.address = name.title + ', ' + inventory.address
   }
   const createInventory = () => {
-    let data = {
-      title: inventory.title,
-      code: inventory.code,
-      type_code: inventory.type_code,
-      latitude: inventory.latitude,
-      longitude: inventory.longitude,
-      contact_name: inventory.contact_name,
-      contact_email: inventory.contact_email,
-      contact_phone: inventory.contact_phone,
-      address: inventory.address,
-      address_country_id: inventory.address_country_id,
-      address_district_id: inventory.address_district_id,
-      address_ward_id: inventory.address_ward_id,
-      address_state_id: inventory.address_state_id,
-      address_detail: inventory.address_detail,
-      desc: inventory.desc,
-    }
+    let data = Object.assign(inventory)
+    let st: any = []
+    listGroupInventory.value.map((t, option_id) => {
+      t.options.map((t2, i2) => {
+        if (inventory.type_code[t.id] && inventory.type_code[t.id] == t2.id) {
+          st[t.id] = { ...t }
+          st[t.id].options = []
+          st[t.id].options.push(t2)
+        }
+      })
+    })
+    data.type_code = st.filter((val: any) => val)
+
     dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>

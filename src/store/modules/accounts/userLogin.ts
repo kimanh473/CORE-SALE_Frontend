@@ -10,7 +10,6 @@ export const userLogin = defineStore("UserLogin", {
 
         setDataLogin(payload: any) {
             localStorage.setItem("TOKEN", payload.token);
-            console.log(payload);
             localStorage.setItem("role", payload?.roles[0]);
             localStorage.setItem("authenticated", 'true');
             this.dataLogin = payload
@@ -28,7 +27,9 @@ export const userLogin = defineStore("UserLogin", {
                     }
                 })
                 .catch((err) => {
-                    console.log(err)
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    useToast().error(errMess[0]);
                 });
         },
         // checkAuthenticated(router: any) {

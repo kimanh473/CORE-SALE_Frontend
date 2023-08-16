@@ -53,5 +53,13 @@ interface DetailGroupInvent {
     created_at: string,
     updated_at: string,
     deleted_at: string,
-    desc: string
+    desc: string,
+    status: string,
+    options: Array<optionGroupInvent>
+}
+interface optionGroupInvent {
+    id: number,
+    title: string,
+    status: string,
+    pivot: any
 }

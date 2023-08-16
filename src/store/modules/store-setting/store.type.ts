@@ -1,11 +1,36 @@
 interface DataAttribute {
-    id: number
-    title: string
-    code: string
-    status: number
-    json_attribute_detail: Array<String>
-    created_at: string
-    attribute_code: string
+    id: number,
+    entity_type_id: string,
+    attribute_code: string,
+    attribute_model: string,
+    backend_model: string,
+    backend_type: string,
+    backend_table: string,
+    frontend_model: string,
+    frontend_input: string,
+    frontend_label: string,
+    frontend_class: string,
+    source_model: string,
+    is_required: string,
+    is_user_defined: string,
+    default_value: string,
+    is_unique: string,
+    note: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+    options_new: Array<dataDetailNew>
+    options_old: Array<dataDetailOld>
+    option_detail: Array<dataDetailOld>
+}
+interface dataDetailOld {
+    id: number,
+    title: string,
+    status: string,
+}
+interface dataDetailNew {
+    title: string,
+    status: string,
 }
 interface DataProduct {
     id: string
@@ -76,4 +101,24 @@ interface DataTax {
     updated_at: string,
     deleted_at: string,
 }
-
+interface DataCurrency {
+    id: number,
+    decimal_number?: number,
+    code: string,
+    title: string,
+    status: string,
+    symbol?: string,
+    symbol2?: string,
+    created_by_id: string,
+    created_by: object,
+    updated_by_id: string,
+    created_at: string,
+    updated_at: string,
+    deleted_at: string,
+    rate: string,
+    is_default: string
+}
+interface DataCurrencyInternational {
+    title: string,
+    code: string
+}

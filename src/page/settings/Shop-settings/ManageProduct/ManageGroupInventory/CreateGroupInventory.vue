@@ -56,6 +56,53 @@
               </div>
             </div>
             <div class="form-small">
+              <div class="border border-gray-800 w-[500px] p-4">
+                <h1>Quản lý lựa chọn</h1>
+                <div class="flex">
+                  <p class="pr-[100px]">Ưu tiên</p>
+                  <p>Tiêu đề</p>
+                </div>
+                <div
+                  v-for="(item, index) in dataOption"
+                  :key="index"
+                  class="flex"
+                >
+                  <div class="pr-[100px]">
+                    <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                    <input
+                      type="checkbox"
+                      v-model="item.status"
+                      class="ml-[14px]"
+                      true-value="1"
+                      false-value="0"
+                    />
+                  </div>
+                  <div class="flex items-end">
+                    <a-input
+                      v-model:value="item.title"
+                      placeholder="Nhập tiêu đề"
+                    ></a-input>
+                    <i
+                      @click="removeOptions(index)"
+                      class="fal fa-times icon-close"
+                    ></i>
+                  </div>
+                </div>
+                <div @click="addOptions">
+                  <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                </div>
+              </div>
+            </div>
+            <a-switch
+              v-model:checked="invent.status"
+              checkedValue="1"
+              unCheckedValue="0"
+            />
+            &nbsp; Kích hoạt
+            <div class="form-small">
               <label for="" class="form-group-label">Mô tả</label>
               <div>
                 <textarea
@@ -104,17 +151,34 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const dataOption = reactive([])
+
+  const addOptions = () => {
+    const data = {
+      title: '',
+      status: '0',
+    }
+    dataOption.push(data)
+  }
+  const removeOptions = (index: number) => {
+    dataOption.splice(index, 1)
+  }
+
   const invent = reactive({
     title: '',
     code: '',
     desc: '',
+    status: '0',
   })
   const createGroupInventory = () => {
     let data = {
       title: invent.title,
       code: invent.code,
       desc: invent.desc,
+      status: invent.status,
+      options: dataOption,
     }
+
     dataGroupInventory.createGroupInventoryAction(
       data,
       toast,

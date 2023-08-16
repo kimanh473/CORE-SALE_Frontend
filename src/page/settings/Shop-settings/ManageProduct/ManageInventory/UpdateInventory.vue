@@ -54,8 +54,8 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Mã kho<span class="text-red-600"></span
-                      ></label>
+                        >Mã kho<span class="text-red-600">*</span></label
+                      >
                       <div>
                         <input
                           type="text"
@@ -284,11 +284,13 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
                           @click.once="getDataCity"
                           v-model:value="detailInventory.address_state_id"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllCity"
@@ -313,10 +315,12 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn quận/huyện"
                           @change="handleChangeDistrict"
                           v-model:value="detailInventory.address_district_id"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllDistrict"
@@ -341,10 +345,12 @@
                       ></label>
                       <div>
                         <a-select
+                          show-search
                           class="form-control-input"
                           placeholder="Chọn xã/phường/thị trấn"
                           v-model:value="detailInventory.address_ward_id"
                           @change="handleChangeWard"
+                          :filter-option="filterOption"
                         >
                           <a-select-option
                             v-for="(item, index) in listAllWard"
@@ -364,7 +370,7 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Địa chỉ cụ thể<span class="text-red-600"> </span>
+                        >Địa chỉ cụ thể<span class="text-red-600">*</span>
                         <span></span
                       ></label>
                       <div>
@@ -436,6 +442,9 @@
   // const checked = ref(false)
   const isLoading = ref<boolean>(false)
   // const isReInput = ref<boolean>(true)
+  const filterOption = (input: string, option: any) => {
+    return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -543,6 +552,7 @@
       Number(detailInventory.value.id),
       data,
       toast,
+      router,
       EndTimeLoading
     )
   }

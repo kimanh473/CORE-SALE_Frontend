@@ -17,5 +17,13 @@ const tax = [
         },
         beforeEnter: requireAuth,
     },
+    {
+        path: '/update-tax/:id',
+        component: () => import('../../page/products/Tax/UpdateTax.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    },
 ]
 export default tax;

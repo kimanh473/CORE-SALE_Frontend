@@ -34,7 +34,6 @@
               placeholder="Nhập mật khẩu"
               minlength="6"
               class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
-              required
               v-model="user.password"
             />
           </div>
@@ -106,7 +105,7 @@
         password: user.password,
         isCheck: savePassword.value,
       }
-      // localStorage.setItem('dataUser', JSON.stringify(dataUser))
+      localStorage.setItem('dataUser', JSON.stringify(dataUser))
       // store.dispatch('userLogin/UserLoginAction', user)
       userlog.LoginAction(user, router)
     } else {

@@ -1,9 +1,6 @@
 <template>
   <base-layout>
     <template v-slot:sidebar>
-      <!-- <div class="logo">
-                  <img src="../assets/images/btp.png" />
-                </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
@@ -13,7 +10,7 @@
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
               <p class="longText pl-5 mb-0 text-xl font-bold">
-                Danh sách thuộc tính sản phẩm
+                Danh sách tiền tệ
               </p>
               <div class="icon-filter-approval relative group"></div>
             </div>
@@ -29,22 +26,33 @@
         <div
           class="button-create-new relative group rounded-md px-2"
           title="Tạo mới"
-          @click="CreateAttribute()"
+          @click="handleToCreate()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới thuộc tính</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới tiền tệ</p>
         </div>
       </div>
       <a-table
         row-key="id"
-        class="!p-[10px]"
+        sticky
+        class="!p-[10px] ant-table-striped"
         :columns="columns"
-        :data-source="listAttributeProduct"
+        :data-source="listCurrency"
         :rowSelection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
         }"
         bordered
+        :scroll="{ x: 1300, y: 1000 }"
+        :row-class-name="
+          (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
+        "
       >
+        <template #headerCell="{ column }">
+          <template v-if="column.key === 'name'">
+            <span>{{ column.title }}</span>
+          </template>
+        </template>
+
         <template
           #customFilterDropdown="{
             setSelectedKeys,
@@ -83,12 +91,13 @@
             :style="{ color: filtered ? '#108ee9' : undefined }"
           />
         </template>
-        <template #bodyCell="{ column, record }">
+
+        <template #bodyCell="{ column, record }" ali>
           <span
             v-if="state.searchText && state.searchedColumn === column.dataIndex"
           >
             <template
-              v-for="(fragment, i) in record.frontend_label
+              v-for="(fragment, i) in record.title
                 .toString()
                 .split(
                   new RegExp(
@@ -107,6 +116,20 @@
               <template v-else>{{ fragment }}</template>
             </template>
           </span>
+
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === 1" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
+          <template v-if="column.key === 'is_default'">
+            <a-tag v-if="record.is_default === 1" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
+
+          <template v-if="column.key === 'created_by_id'">
+            {{ record.created_by?.fullname }}
+          </template>
+
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -121,139 +144,6 @@
 
     <template v-slot:footer>footer</template>
   </base-layout>
-  <!-- <modal-view :isOpen="isOpenCreateInventory" :handleCloseDetail="handleClose">
-      <div>
-        <h1 class="header-modal">Tạo mới kho</h1>
-        <div
-          class="text-left p-2 min-h-[300px] max-h-[600px] min-w-[500px] overflow-y-auto format-scroll"
-        >
-          <div class="">
-            <label for="" class="form-group-label">Tên kho</label>
-            <div>
-              <input
-                type="text"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập tên kho"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Loại kho</label>
-            <div>
-              <input
-                type="text"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập mã phòng ban"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Quản lý kho</label>
-            <div>
-              <input
-                type="text"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập mã phòng ban"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Số điện thoại</label>
-            <div>
-              <input
-                type="text"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập mã phòng ban"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Địa chỉ</label>
-            <div>
-              <input
-                type="number"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập số"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Quốc gia</label>
-            <div>
-              <input
-                type="number"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập số"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Tỉnh/Thành phố</label>
-            <div>
-              <input
-                type="number"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập chiều rộng"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Quận/Huyện</label>
-            <div>
-              <input
-                type="number"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập chiều dài"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Xã/Phường/Thị trấn</label>
-            <div>
-              <input
-                type="number"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập chiều dài"
-              />
-            </div>
-          </div>
-          <div class="mt-2">
-            <label for="" class="form-group-label">Địa chỉ chi tiết</label>
-            <div>
-              <input
-                type="number"
-                name=""
-                id=""
-                class="form-control-input"
-                placeholder="Nhập địa chỉ"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="bg-button-modal">
-          <button class="button-modal">Cập nhật</button>
-          <button class="button-close-modal" @click="handleClose">Hủy bỏ</button>
-        </div>
-      </div>
-    </modal-view> -->
   <modal-delete
     :isOpen="isOpenConfirm"
     :handleCloseDetail="handleCloseConfirm"
@@ -264,14 +154,16 @@
 </template>
 
 <script setup lang="ts">
+  import { SearchOutlined } from '@ant-design/icons-vue'
+  // import type { TableColumnsType } from 'ant-design-vue'
+
   import BaseLayout from '../../../layout/baseLayout.vue'
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
+  import { useListCurrency } from '../../../store/modules/store-setting/currency'
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { SearchOutlined } from '@ant-design/icons-vue'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
   const route = useRoute()
@@ -279,10 +171,9 @@
   const toast = useToast()
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
-  const dataAttribute = useAttributeProduct()
-  dataAttribute.getListAttributeAction()
-  const { listAttributeProduct } = storeToRefs(dataAttribute)
-  console.log(listAttributeProduct)
+  const dataCurrency = useListCurrency()
+  dataCurrency.getListCurrencyAction()
+  const { listCurrency } = storeToRefs(dataCurrency)
   const state = reactive({
     searchText: '',
     searchedColumn: '',
@@ -293,21 +184,23 @@
     state.searchText = selectedKeys[0]
     state.searchedColumn = dataIndex
   }
+
+  const handleReset = (clearFilters: any) => {
+    clearFilters({ confirm: true })
+    state.searchText = ''
+  }
+
   const searchInput = ref()
   const columns = [
     {
-      title: 'Mã thuộc tính',
-      dataIndex: 'attribute_code',
-    },
-    {
-      title: 'Tên',
-      dataIndex: 'frontend_label',
+      title: 'Đơn vị tiền tệ',
+      dataIndex: 'title',
+      fixed: 'left',
+      width: 250,
+      key: 'name',
       customFilterDropdown: true,
       onFilter: (value: any, record: any) =>
-        record.frontend_label
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase()),
+        record.title.toString().toLowerCase().includes(value.toLowerCase()),
       onFilterDropdownOpenChange: (visible: boolean) => {
         if (visible) {
           setTimeout(() => {
@@ -315,36 +208,58 @@
           }, 100)
         }
       },
-      // sorter: (a: DataInventory, b: DataInventory) =>
-      //   a.title.localeCompare(b.title),
     },
     {
-      title: 'Bắt buộc',
-      dataIndex: 'is_required',
-      key: 'is_required',
+      title: 'Ký hiệu',
+      dataIndex: 'code',
+      key: 'code',
     },
     {
-      title: 'Phạm vi',
-      dataIndex: 'backend_type',
-      key: 'backend_type',
+      title: 'Symbol',
+      dataIndex: 'symbol',
     },
     {
-      title: 'Giá trị duy nhất',
-      dataIndex: 'is_unique',
+      title: 'Symbol 2',
+      dataIndex: 'symbol2',
     },
     {
-      title: 'Có thể tìm kiếm được',
-      dataIndex: 'is_user_defined',
+      title: 'Phần thập phân',
+      dataIndex: 'decimal_number',
     },
+    {
+      title: 'Kích hoạt',
+      dataIndex: 'status',
+      align: 'center',
+      key: 'status',
+    },
+    {
+      title: 'Mặc định',
+      dataIndex: 'is_default',
+      key: 'is_default',
+      align: 'center',
+    },
+    {
+      title: 'Người tạo',
+      dataIndex: 'created_by_id',
+      key: 'created_by_id',
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created_at',
+      key: 'created_at',
+    },
+
     {
       title: 'Thao tác',
       dataIndex: 'id',
       key: 'id',
+      fixed: 'right',
+      width: 100,
     },
   ]
 
   const navigateUpdate = (id: number) => {
-    router.push(`/update-attribute-product/${id}`)
+    router.push(`/update-currency/${id}`)
   }
   const idSelected = ref()
   const handleOpenDelete = (record: any) => {
@@ -359,10 +274,10 @@
   }
   const handleDelete = () => {
     isLoading.value = true
-    dataAttribute.deleteAttributeAction(
+    dataCurrency.deleteCurrencyAction(
       Number(idSelected.value),
-      EndTimeLoading,
       toast,
+      EndTimeLoading,
       handleCloseConfirm
     )
   }
@@ -371,35 +286,8 @@
     console.log('selectedRowKeys changed: ', selectedRowKeys1)
     selectedRowKeys.value = selectedRowKeys1
   }
-  // const rowSelection = ref({
-  //   checkStrictly: false,
-  //   onChange: (
-  //     selectedRowKeys: (string | number)[],
-  //     selectedRows: DataItem[]
-  //   ) => {
-  //     console.log(
-  //       `selectedRowKeys: ${selectedRowKeys}`,
-  //       'selectedRows: ',
-  //       selectedRows
-  //     )
-  //   },
-  //   onSelect: (
-  //     record: DataItem,
-  //     selected: boolean,
-  //     selectedRows: DataItem[]
-  //   ) => {
-  //     console.log(record, selected, selectedRows)
-  //   },
-  //   onSelectAll: (
-  //     selected: boolean,
-  //     selectedRows: DataItem[],
-  //     changeRows: DataItem[]
-  //   ) => {
-  //     console.log(selected, selectedRows, changeRows)
-  //   },
-  // })
-  const CreateAttribute = () => {
-    router.push('/create-attribute-product')
+  const handleToCreate = () => {
+    router.push('/create-currency')
   }
 </script>
 <style>
@@ -445,3 +333,4 @@
     font-weight: 500;
   }
 </style>
+<style></style>

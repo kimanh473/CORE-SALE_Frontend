@@ -1395,10 +1395,12 @@
     <template class="p-0" v-slot:footer
       ><div class="bg-gray-100 pb-2 pl-2">
         <div class="text-left">
-          <button class="button-modal" @click="createGroupAdmin">
+          <button class="button-modal" @click="updateGroupAdmin">
             Cập nhật
           </button>
-          <button class="button-close-modal">Hủy bỏ</button>
+          <button class="button-close-modal" @click="router.go(-1)">
+            Hủy bỏ
+          </button>
         </div>
       </div></template
     >
@@ -1544,7 +1546,7 @@
   //   return newValue
   // })
 
-  const createGroupAdmin = () => {
+  const updateGroupAdmin = () => {
     groupAdmin.string_roles.push(
       role.storeSetting,
       role.product,

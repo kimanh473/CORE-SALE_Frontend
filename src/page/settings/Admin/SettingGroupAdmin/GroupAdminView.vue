@@ -139,16 +139,6 @@
       key: 'title',
     },
     {
-      title: 'Ngày tạo',
-      dataIndex: 'created_at',
-      key: 'created_at',
-    },
-    {
-      title: 'Ngày cập nhật',
-      dataIndex: 'updated_at',
-      key: 'updated_at',
-    },
-    {
       title: 'Website',
       dataIndex: `web_list_name`,
       key: 'web_list_name',
@@ -157,6 +147,21 @@
       title: 'Kho',
       dataIndex: 'inventory_list_name',
       key: 'inventory_list_name',
+    },
+    {
+      title: 'Người tạo',
+      dataIndex: '',
+      key: '',
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'created_at',
+      key: 'created_at',
+    },
+    {
+      title: 'Ngày cập nhật',
+      dataIndex: 'updated_at',
+      key: 'updated_at',
     },
     {
       title: 'Thao tác',

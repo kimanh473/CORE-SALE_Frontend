@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
-import { getAllAttributeProductsApi, deleteAttributeApi } from '../../../services/SettingStoreServices/attributeProduct.service'
+import { getAllAttributeProductsApi, deleteAttributeApi, createAttributeApi, getDetailAttributeProductsApi, updateAttributeApi } from '../../../services/SettingStoreServices/attributeProduct.service'
 
 export const useAttributeProduct = defineStore("AttributeProduct", {
     state: () => ({
         listAttributeProduct: [] as DataAttribute[],
+        detailAttribute: {} as DataAttribute
     }),
     getters: {
         // getData: (state) => {
@@ -22,7 +23,18 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
         //     }))
         // },
         getListAttribute: (state: any) => {
-            return (payload: any) => state.listAttributeProduct = payload
+            return (payload: any) => state.listAttributeProduct = payload?.map((item: DataAttribute) => ({
+                id: item.id,
+                attribute_code: item.attribute_code,
+                frontend_label: item.frontend_label,
+                is_required: item.is_required == '1' ? 'Có' : 'Không',
+                backend_type: item.backend_type,
+                is_unique: item.is_unique == '1' ? 'Có' : 'Không',
+                is_user_defined: item.is_user_defined == '1' ? 'Có' : 'Không',
+            }))
+        },
+        getDetailAttribute: (state: any) => {
+            return (payload: any) => state.detailAttribute = payload
         }
     },
     actions: {
@@ -42,66 +54,69 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                     console.log(err)
                 });
         },
-        //     getDetailInventoryAction(id: number) {
-        //         detailInventoryApi(id)
-        //             .then((payload: any) => {
-        //                 let res = payload?.data?.data
-        //                 this.getDetailInventory(res)
-        //             })
-        //             .catch((err) => {
-        //                 console.log(err)
-        //             });
-        //     },
-        //     async createInventoryAction(
-        //         data: Object,
-        //         toast: any,
-        //         router: any,
-        //         EndTimeLoading: Function,
-        //         // handleCloseCreate: Function
-        //     ) {
-        //         await createInventoryApi(data)
-        //             .then((res) => {
-        //                 if (res.data.status == "failed") {
-        //                     toast.error(res.data.messages);
-        //                     EndTimeLoading();
-        //                 } else {
-        //                     toast.success("Tạo mới thành công");
-        //                     router.push('/list-inventory');
-        //                     EndTimeLoading();
-        //                 }
-        //             })
-        //             .catch((err) => {
-        //                 toast.error("Tạo mới thất bại");
-        //                 this.messageError = err.response.data.messages
-        //                 console.log(this.messageError);
-        //                 console.log(err);
-        //             });
-        //     },
-        //     async updateInventoryAction(
-        //         id: number,
-        //         data: Object,
-        //         toast: any,
-        //         EndTimeLoading: Function,
-        //         // handleCloseCreate: Function
-        //     ) {
-        //         await updateInventoryApi(id, data)
-        //             .then((res) => {
-        //                 if (res.data.status == "failed") {
-        //                     toast.error(res.data.messages);
-        //                     EndTimeLoading();
-        //                 } else {
-        //                     toast.success("Cập nhật thành công");
-        //                     // handleCloseCreate();
-        //                     EndTimeLoading();
-        //                 }
-        //             })
-        //             .catch((err) => {
-        //                 toast.error("Cập nhật thất bại");
-        //                 this.messageError = err.response.data.messages
-        //                 console.log(this.messageError);
-        //                 console.log(err);
-        //             });
-        //     },
+        async getDetailAttributeAction(id: number) {
+            await getDetailAttributeProductsApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailAttribute(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async createAttributeAction(
+            data: Object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await createAttributeApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công");
+                        router.push('/list-attribute-product');
+                        EndTimeLoading();
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+        async updateProductUnitAction(
+            id: number,
+            data: object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateAttributeApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công")
+                        router.push('/list-attribute-product')
+                        EndTimeLoading()
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
         deleteAttributeAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
             deleteAttributeApi(id)
                 .then((res) => {

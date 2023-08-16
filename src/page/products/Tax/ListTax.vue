@@ -41,8 +41,10 @@
         bordered
         ><template #bodyCell="{ column, record }">
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdateSpecification(record.id)">Sửa</a
-            >&nbsp;|&nbsp;<a @click="handleOpenDelete(record)">Xóa</a>
+            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
+              @click="handleOpenDelete(record)"
+              >Xóa</a
+            >
           </template>
         </template>
         <template #switch="{ text }">
@@ -123,8 +125,8 @@
     },
   ]
 
-  const navigateUpdateSpecification = (id: number) => {
-    router.push(`/update-specification/${id}`)
+  const navigateUpdate = (id: number) => {
+    router.push(`/update-tax/${id}`)
   }
   const idSelected = ref()
   const handleOpenDelete = (record: any) => {

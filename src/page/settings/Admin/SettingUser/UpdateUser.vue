@@ -69,51 +69,57 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="grid grid-cols-2 gap-2 form-small">
-                    <div>
-                      <label for="" class="form-group-label"
-                        >Vị trí<span class="text-red-600">* </span> <span></span
-                      ></label>
-                      <a-select
-                        class="form-control-input"
-                        placeholder="Chọn vị trí"
-                        v-model:value="user.type_code"
-                        @click.once="getListGroupInventory"
-                      >
-                        <a-select-option
-                          v-for="(item, index) in listGroupInventory"
-                          :key="index"
-                          :value="item.code"
-                          >{{ item.title }}</a-select-option
-                        >
-                      </a-select>
-                      <p v-if="messageError?.type_code" class="text-red-600">
-                        {{ messageError?.type_code[0] }}
-                      </p>
-                    </div>
+                  <div class="grid grid-cols-2 gap-2 form-small">
                     <div>
                       <label for="" class="form-group-label"
                         >Phòng ban<span class="text-red-600">* </span>
                         <span></span
                       ></label>
                       <a-select
+                        show-search
                         class="form-control-input"
                         placeholder="Chọn phòng ban"
-                        v-model:value="user.type_code"
-                        @click.once="getListGroupInventory"
+                        v-model:value="departmentSelected"
+                        :options="listDepartment"
+                        @click.once="getListDepartment"
+                        :filter-option="filterOption"
                       >
-                        <a-select-option
-                          v-for="(item, index) in listGroupInventory"
+                        <!-- <a-select-option
+                          v-for="(item, index) in listCategory"
                           :key="index"
-                          :value="item.code"
+                          :value="item.id"
                           >{{ item.title }}</a-select-option
-                        >
+                        > -->
                       </a-select>
                       <p v-if="messageError?.type_code" class="text-red-600">
                         {{ messageError?.type_code[0] }}
                       </p>
                     </div>
-                  </div> -->
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Vị trí<span class="text-red-600">* </span> <span></span
+                      ></label>
+                      <a-select
+                        show-search
+                        class="form-control-input"
+                        placeholder="Chọn vị trí"
+                        v-model:value="positionSelected"
+                        :options="listPosition"
+                        @click.once="getListPosition"
+                        :filter-option="filterOption"
+                      >
+                        <!-- <a-select-option
+                          v-for="(item, index) in listCategory"
+                          :key="index"
+                          :value="item.id"
+                          >{{ item.title }}</a-select-option
+                        > -->
+                      </a-select>
+                      <p v-if="messageError?.type_code" class="text-red-600">
+                        {{ messageError?.type_code[0] }}
+                      </p>
+                    </div>
+                  </div>
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
@@ -228,8 +234,12 @@
                       </div>
                     </div>
                     <div class="pt-3">
-                      <a-switch v-model:checked="isActive" /> &nbsp; Kích hoạt
-                      tài khoản
+                      <a-switch
+                        v-model:checked="detailUser.status"
+                        checkedValue="ACTIVE"
+                        unCheckedValue="BLOCK"
+                      />
+                      &nbsp; Kích hoạt tài khoản
                     </div>
                     <div class="grid grid-cols-2 gap-2 form-small">
                       <div>
@@ -262,8 +272,8 @@
                         </p>
                       </div>
                     </div>
-                    <a-switch v-model:checked="isChangePermission" /> &nbsp; Tùy
-                    chỉnh quyền
+                    <a-switch v-model:checked="isChangePermissionInfo" /> &nbsp;
+                    Tùy chỉnh quyền
                   </div>
                 </div>
               </Transition>
@@ -277,7 +287,10 @@
               </div>
             </div>
             <div class="inner">
-              <h4 class="form-section-title form-small cursor-pointer">
+              <h4
+                @click="isChangePermission = !isChangePermission"
+                class="form-section-title form-small cursor-pointer"
+              >
                 <span v-show="isChangePermission == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
                 </span>
@@ -307,7 +320,7 @@
                                     false-value=""
                                     @change="changeCheckbox()"
                                     v-model="role.storeSetting"
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -330,7 +343,10 @@
                                     false-value=""
                                     v-model="role.product"
                                     @change="changeCheckbox()"
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING'
+                                    "
                                   />
                                 </td>
                                 <td>Danh mục sản phẩm</td>
@@ -341,7 +357,11 @@
                                     true-value="CATALOG_PRODUCT_CREATE"
                                     false-value=""
                                     v-model="role.createProduct"
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING' ||
+                                      role.product != 'CATALOG_PRODUCT'
+                                    "
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -350,7 +370,11 @@
                                     true-value="CATALOG_PRODUCT_UPDATE"
                                     false-value=""
                                     v-model="role.updateProduct"
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING' ||
+                                      role.product != 'CATALOG_PRODUCT'
+                                    "
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -359,7 +383,11 @@
                                     true-value="CATALOG_PRODUCT_DELETE"
                                     false-value=""
                                     v-model="role.deleteProduct"
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING' ||
+                                      role.product != 'CATALOG_PRODUCT'
+                                    "
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -368,7 +396,11 @@
                                     true-value="CATALOG_PRODUCT_PRINT"
                                     false-value=""
                                     v-model="role.printProduct"
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING' ||
+                                      role.product != 'CATALOG_PRODUCT'
+                                    "
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -377,7 +409,11 @@
                                     true-value="CATALOG_PRODUCT_IMPORT"
                                     false-value=""
                                     v-model="role.importProduct"
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING' ||
+                                      role.product != 'CATALOG_PRODUCT'
+                                    "
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -386,7 +422,11 @@
                                     true-value="CATALOG_PRODUCT_EXPORT"
                                     false-value=""
                                     v-model="role.exportProduct"
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING' ||
+                                      role.product != 'CATALOG_PRODUCT'
+                                    "
                                   />
                                 </td>
                                 <td></td>
@@ -399,6 +439,7 @@
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
                                     :disabled="
+                                      isChangePermissionInfo == false ||
                                       role.storeSetting != 'STORE_SETTING'
                                     "
                                   />
@@ -410,7 +451,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -418,7 +459,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -426,7 +467,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -434,7 +475,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -442,7 +483,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -450,7 +491,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -462,7 +503,10 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING'
+                                    "
                                   />
                                 </td>
                                 <td>Bán hàng</td>
@@ -472,7 +516,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -480,7 +524,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -488,7 +532,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -496,7 +540,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -504,7 +548,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -512,7 +556,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -524,7 +568,10 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING'
+                                    "
                                   />
                                 </td>
                                 <td>Marketing</td>
@@ -534,7 +581,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -542,7 +589,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -550,7 +597,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -558,7 +605,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -566,7 +613,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -574,7 +621,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -586,7 +633,10 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="
+                                      isChangePermissionInfo == false ||
+                                      role.storeSetting != 'STORE_SETTING'
+                                    "
                                   />
                                 </td>
                                 <td>Giỏ hàng</td>
@@ -596,7 +646,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -604,7 +654,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -612,7 +662,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -620,7 +670,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -628,7 +678,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -636,7 +686,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -648,7 +698,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Cài đặt gian hàng</td>
@@ -658,7 +708,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -666,7 +716,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -674,7 +724,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -682,7 +732,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -690,7 +740,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -698,7 +748,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -712,7 +762,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -733,7 +783,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Quản lý sản phẩm</td>
@@ -743,7 +793,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -751,7 +801,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -759,7 +809,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -767,7 +817,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -775,7 +825,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -783,7 +833,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -795,7 +845,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Quản lý ngành hàng</td>
@@ -805,7 +855,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -813,7 +863,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -821,7 +871,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -829,7 +879,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -837,7 +887,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -845,7 +895,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -858,7 +908,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -879,7 +929,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Danh sách khách hàng</td>
@@ -889,7 +939,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -897,7 +947,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -905,7 +955,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -913,7 +963,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -921,7 +971,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -929,7 +979,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -941,7 +991,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Chăm sóc khách hàng</td>
@@ -951,7 +1001,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -959,7 +1009,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -967,7 +1017,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -975,7 +1025,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -983,7 +1033,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -991,7 +1041,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1005,7 +1055,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -1026,7 +1076,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Quản lý đơn hàng</td>
@@ -1036,7 +1086,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1044,7 +1094,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1052,7 +1102,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1060,7 +1110,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1068,7 +1118,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1076,7 +1126,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1088,7 +1138,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Hóa đơn</td>
@@ -1098,7 +1148,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1106,7 +1156,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1114,7 +1164,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1122,7 +1172,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1130,7 +1180,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1138,7 +1188,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1150,7 +1200,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Hóa đơn vận chuyển</td>
@@ -1160,7 +1210,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1168,7 +1218,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1176,7 +1226,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1184,7 +1234,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1192,7 +1242,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1200,7 +1250,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1212,7 +1262,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Công nợ</td>
@@ -1222,7 +1272,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1230,7 +1280,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1238,7 +1288,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1246,7 +1296,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1254,7 +1304,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1262,7 +1312,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1275,7 +1325,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -1296,7 +1346,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Mã giảm giá</td>
@@ -1306,7 +1356,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1314,7 +1364,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1322,7 +1372,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1330,7 +1380,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1338,7 +1388,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1346,7 +1396,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1358,7 +1408,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Chiến dịch khuyến mãi</td>
@@ -1368,7 +1418,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1376,7 +1426,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1384,7 +1434,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1392,7 +1442,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1400,7 +1450,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1408,7 +1458,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1420,7 +1470,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Quảng cáo</td>
@@ -1430,7 +1480,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1438,7 +1488,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1446,7 +1496,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1454,7 +1504,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1462,7 +1512,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1470,7 +1520,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1482,7 +1532,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Đánh giá</td>
@@ -1492,7 +1542,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1500,7 +1550,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1508,7 +1558,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1516,7 +1566,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1524,7 +1574,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1532,7 +1582,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1544,7 +1594,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Kết nối</td>
@@ -1554,7 +1604,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1562,7 +1612,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1570,7 +1620,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1578,7 +1628,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1586,7 +1636,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1594,7 +1644,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1607,7 +1657,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable font-medium pl-0">
@@ -1628,7 +1678,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td>Danh sách nội dung</td>
@@ -1638,7 +1688,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_CREATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1646,7 +1696,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_UPDATE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1654,7 +1704,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_DELETE"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1662,7 +1712,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_PRINT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1670,7 +1720,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_IMPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td class="cellTable text-center">
@@ -1678,7 +1728,7 @@
                                     type="checkbox"
                                     true-value="PERSONNEL_PROFILE_EXPORT"
                                     false-value=""
-                                    disabled
+                                    :disabled="isChangePermissionInfo == false"
                                   />
                                 </td>
                                 <td></td>
@@ -1689,7 +1739,7 @@
                         </div></div
                     ></a-tab-pane>
                     <a-tab-pane key="2" tab="Phân quyền website">
-                      <div class="flex">
+                      <div class="grid grid-cols-4 gap-4">
                         <div
                           v-for="(item, index) in listWeb"
                           :key="index"
@@ -1709,7 +1759,7 @@
                       </div>
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="Phân quyền kho"
-                      ><div class="flex">
+                      ><div class="grid grid-cols-4 gap-4">
                         <div
                           v-for="(item, index) in listInventory"
                           :key="index"
@@ -1767,6 +1817,8 @@
   import { useInventory } from '../../../../store/modules/inventory/product-invetory'
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
   import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
+  import { usePosition } from '../../../../store/modules/admin-setting/position'
+  import { useDepartment } from '../../../../store/modules/admin-setting/department'
   import { useUserSetting } from '../../../../store/modules/users/users'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
@@ -1779,32 +1831,28 @@
   const router = useRouter()
   const route = useRoute()
   const toast = useToast()
-  const isChangePermission = ref<boolean>(false)
+  const isChangePermission = ref<boolean>(true)
+  const isChangePermissionInfo = ref<boolean>(false)
   const isInfor = ref<boolean>(true)
   const isContact = ref<boolean>(true)
-  const isActive = ref<boolean>(true)
   const activeKey = ref('1')
   const isLoading = ref<boolean>(false)
-  const dataUser = useUserSetting()
-  const { detailUser } = storeToRefs(dataUser)
-  dataUser.getDetailUserAction(Number(route.params.id)).then(() => {
-    dataAdminSetting.getDetailPermissionGroupsAction(
-      Number(detailUser.value.group_id),
-      role,
-      getMatchingResults,
-      getListWeb
-    )
-  })
-
-  const webCatalog = useWebCatalog()
-  webCatalog.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(webCatalog)
-  console.log(listWeb)
-  const dataAdminSetting = useAdminSetting()
-  dataAdminSetting.getAllPermissionGroupsAction(10, 1)
-  const { listGroupPermission, detailGroupPermission } =
-    storeToRefs(dataAdminSetting)
-  console.log(listGroupPermission)
+  const dataPosition = usePosition()
+  const { listPosition } = storeToRefs(dataPosition)
+  const filterOption = (input: string, option: any) => {
+    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
+  const dataDepartment = useDepartment()
+  const { listDepartment } = storeToRefs(dataDepartment)
+  const getListPosition = () => {
+    dataPosition.getListPositionAction()
+    console.log(listPosition)
+  }
+  const getListDepartment = () => {
+    dataDepartment.getListDepartmentAction()
+  }
+  const positionSelected = ref()
+  const departmentSelected = ref()
   const role = reactive({
     //store
     storeSetting: '',
@@ -1824,6 +1872,18 @@
       return found
     }
   }
+  const dataUser = useUserSetting()
+  const { detailUser } = storeToRefs(dataUser)
+  console.log(detailUser)
+
+  const webCatalog = useWebCatalog()
+  webCatalog.getAllWebCatalogAction()
+  const { listWeb } = storeToRefs(webCatalog)
+  const dataAdminSetting = useAdminSetting()
+  dataAdminSetting.getAllPermissionGroupsAction(10, 1)
+  const { listGroupPermission, detailGroupPermission } =
+    storeToRefs(dataAdminSetting)
+
   const groupAdmin = reactive({
     title: '',
     is_admin: 'no',
@@ -1842,10 +1902,17 @@
       )
     }
   }
-  const getListWeb = (webList: string[], inventList: string[]) => {
+  const getListWeb = (webList: any, inventList: any) => {
     arrayWeb.value = webList
     arrayInvent.value = inventList
+    console.log(arrayWeb.value)
   }
+  dataUser.getDetailUserAction(
+    Number(route.params.id),
+    role,
+    getMatchingResults,
+    getListWeb
+  )
   const changeWeb = (code: any, event: any) => {
     if (event.target.checked == true) {
       arrayWeb.value.push(code)
@@ -1962,18 +2029,20 @@
     let arr = groupAdmin.string_roles.filter(
       (item) => item != '' && item != null
     )
-    if (isChangePermission.value == true) {
+    if (isChangePermissionInfo.value == true) {
       let data = {
         code: detailUser.value.code,
         username: detailUser.value.username,
         fullname: detailUser.value.fullname,
         group_id: detailUser.value.group_id,
-        status: isActive.value === true ? 'ACTIVE' : 'INACTIVE',
+        status: detailUser.value.status,
         email_company: detailUser.value.email_company,
         email_personal: detailUser.value.email_personal,
         phone: detailUser.value.phone,
         inherit_roles: 'no',
         string_roles: arr,
+        web_list: arrayWeb.value,
+        inventory_list: arrayInvent.value,
       }
       dataUser.updateUserAction(
         Number(route.params.id),
@@ -1988,7 +2057,7 @@
         username: detailUser.value.username,
         fullname: detailUser.value.fullname,
         group_id: detailUser.value.group_id,
-        status: isActive.value === true ? 'ACTIVE' : 'INACTIVE',
+        status: detailUser.value.status,
         email_company: detailUser.value.email_company,
         email_personal: detailUser.value.email_personal,
         phone: detailUser.value.phone,
