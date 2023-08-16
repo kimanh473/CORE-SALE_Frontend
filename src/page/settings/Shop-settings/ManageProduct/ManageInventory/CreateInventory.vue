@@ -474,6 +474,21 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const type_code = reactive([
+    {
+      id: '',
+      code: '',
+      title: '',
+      status: '1',
+      options: [
+        {
+          id: '',
+          title: '',
+          status: '',
+        },
+      ],
+    },
+  ])
   const inventory = reactive({
     title: '',
     type_code: [],
@@ -509,13 +524,9 @@
   const dataGroupInventory = useGroupInventory()
   dataGroupInventory.getListGroupInventoryAction()
   const optionGroup = ref([])
-  const { listGroupInventory, detailGroupInventory, selectGroupInvent } =
+  const { listGroupInventory, detailGroupInventory } =
     storeToRefs(dataGroupInventory)
-  const getDetailGroupInventory = (id: number) => {
-    dataGroupInventory.getDetailGroupInventoryAction(id)
-  }
-
-  console.log(selectGroupInvent)
+  console.log(listGroupInventory)
 
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
@@ -543,7 +554,6 @@
   const handleChange = (value: any, option: any) => {
     console.log(value)
     console.log(option)
-    option.map((item: any, index: number) => ({}))
   }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)

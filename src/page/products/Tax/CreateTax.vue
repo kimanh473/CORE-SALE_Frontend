@@ -54,7 +54,9 @@
               </div>
             </div>
             <div class="form-small">
-              <label for="" class="form-group-label">Mức thuế suất</label>
+              <label for="" class="form-group-label"
+                >Mức thuế suất<span class="text-red-600">* </span></label
+              >
               <div>
                 <input
                   type="number"
@@ -76,7 +78,7 @@
             <div class="form-small">
               <div>
                 <label for="" class="form-group-label"
-                  >Mô tả<span class="text-red-600">* </span> <span></span
+                  >Mô tả<span class="text-red-600"> </span> <span></span
                 ></label>
                 <div>
                   <textarea
