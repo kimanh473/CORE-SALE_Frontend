@@ -176,11 +176,17 @@
   </base-layout>
   <a-modal :visible="isOpenConfirmDefault" @cancel="handleClose" width="550px">
     <template #title>
-      <p class="m-0">Đơn vị tiền tệ A đã được cài làm mặc định</p>
+      <p class="m-0">
+        Đơn vị tiền tệ {{ defaultCurrency }} đã được cài làm mặc định
+      </p>
       <p class="m-0">Bạn có muốn tiếp tục thay đổi?</p>
     </template>
     <template #footer>
-      <a-button key="submit" type="primary" :loading="isLoading"
+      <a-button
+        key="submit"
+        type="primary"
+        :loading="isLoading"
+        @click="confirmCreateCurrency"
         >Xác nhận</a-button
       >
       <a-button key="back" @click="handleClose">Hủy</a-button>
@@ -203,7 +209,8 @@
   const getDataCurrency = () => {
     dataCurrency.getListCurrencyInternationalAction()
   }
-  const { listCurrencyInternational } = storeToRefs(dataCurrency)
+  const { listCurrencyInternational, defaultCurrency, defaultStatus } =
+    storeToRefs(dataCurrency)
   const isLoading = ref<boolean>(false)
   const status = ref<boolean>(false)
   const toast = useToast()
@@ -231,7 +238,7 @@
   const handleClose = () => {
     isOpenConfirmDefault.value = false
   }
-  const createCurrency = () => {
+  const confirmCreateCurrency = () => {
     let data = {
       title: currencyTitle.value,
       code: currencyCode.value,
@@ -241,8 +248,24 @@
       symbol2: currency.symbol2,
       decimal_number: currency.decimal_number,
     }
-    isOpenConfirmDefault.value = true
-    // dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
+    dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
+  }
+  const createCurrency = () => {
+    dataCurrency.getDefaultCurrencyAction()
+    let data = {
+      title: currencyTitle.value,
+      code: currencyCode.value,
+      status: currency.status,
+      is_default: currency.is_default,
+      symbol: currency.symbol,
+      symbol2: currency.symbol2,
+      decimal_number: currency.decimal_number,
+    }
+    if (defaultStatus.value == 'true' && currency.is_default == 1) {
+      isOpenConfirmDefault.value = true
+    } else {
+      dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
+    }
   }
 </script>
 

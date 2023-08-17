@@ -6,6 +6,7 @@ import {
   getDetailCurrencyApi,
   updateCurrencyApi,
   getListCurrencyInternationalApi,
+  checkDefaultCurrencyApi
 } from '../../../services/SettingStoreServices/currency.service'
 
 export const useListCurrency = defineStore('ListCurrency', {
@@ -13,42 +14,61 @@ export const useListCurrency = defineStore('ListCurrency', {
     listCurrency: [] as DataCurrency[],
     detailCurrency: {} as DataCurrency,
     listCurrencyInternational: [] as DataCurrencyInternational[],
+    defaultCurrency: '',
+    defaultStatus: ''
   }),
   getters: {
     getListCurrency: (state: any) => {
       return (payload: any) =>
-        (state.listCurrency = payload?.map((item: DataCurrency) => ({
-          id: item.id,
-          title: item.title,
-          code: item.code,
-          symbol: item.symbol,
-          symbol2: item.symbol2,
-          decimal_number: item.decimal_number,
-          rate: item.rate + '%',
-          is_default: item.is_default, // == '1' ? 'Có' : 'Không',
-          status: item.status, // == '1' ? 'Đang kích hoạt' : 'Chưa kích hoạt',
-          created_by_id: item.created_by_id,
-          created_by: item?.created_by,
-          updated_by_id: item.updated_by_id,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-          deleted_at: item.deleted_at,
-        })))
+      (state.listCurrency = payload?.map((item: DataCurrency) => ({
+        id: item.id,
+        title: item.title,
+        code: item.code,
+        symbol: item.symbol,
+        symbol2: item.symbol2,
+        decimal_number: item.decimal_number,
+        rate: item.rate + '%',
+        is_default: item.is_default, // == '1' ? 'Có' : 'Không',
+        status: item.status, // == '1' ? 'Đang kích hoạt' : 'Chưa kích hoạt',
+        created_by_id: item.created_by_id,
+        created_by: item?.created_by,
+        updated_by_id: item.updated_by_id,
+        created_at: item.created_at,
+        updated_at: item.updated_at,
+        deleted_at: item.deleted_at,
+      })))
     },
     getDetailCurrency: (state: any) => {
       return (payload: any) => (state.detailCurrency = payload)
     },
     getListCurrencyInternational: (state: any) => {
       return (payload: any) =>
-        (state.listCurrencyInternational = payload?.map(
-          (item: DataCurrencyInternational) => ({
-            value: item.code,
-            label: item.title,
-          })
-        ))
+      (state.listCurrencyInternational = payload?.map(
+        (item: DataCurrencyInternational) => ({
+          value: item.code,
+          label: item.title,
+        })
+      ))
+    },
+    getDefaultCurrency: (state: any) => {
+      return (payload: any) => {
+        state.defaultStatus = payload.status.toString()
+        state.defaultCurrency = payload.data
+      }
     },
   },
   actions: {
+    async getDefaultCurrencyAction() {
+      await checkDefaultCurrencyApi()
+        .then((payload: any) => {
+          let res = payload?.data
+          console.log(res)
+          this.getDefaultCurrency(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     async getListCurrencyInternationalAction() {
       await getListCurrencyInternationalApi()
         .then((payload: any) => {
