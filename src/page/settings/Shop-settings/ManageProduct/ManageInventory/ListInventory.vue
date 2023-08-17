@@ -236,12 +236,12 @@
       dataIndex: 'status',
       key: 'status',
     },
-    {
-      title: 'Thuộc nhóm kho',
-      dataIndex: `inventGroup`,
-      key: 'inventGroup',
-      slots: { customRender: 'group' },
-    },
+    // {
+    //   title: 'Thuộc nhóm kho',
+    //   dataIndex: `inventGroup`,
+    //   key: 'inventGroup',
+    //   slots: { customRender: 'group' },
+    // },
     {
       title: 'Người tạo',
       dataIndex: 'fullname',

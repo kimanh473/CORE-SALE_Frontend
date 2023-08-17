@@ -53,6 +53,7 @@
                 <div>
                   <input
                     type="text"
+                    placeholder="Nhập ký hiệu"
                     class="form-control-input"
                     v-model="currencyCode"
                     disabled
@@ -71,6 +72,7 @@
                 <div>
                   <input
                     type="text"
+                    placeholder="Nhập symbol"
                     class="form-control-input"
                     v-model="currency.symbol"
                   />
@@ -86,6 +88,7 @@
                 <div>
                   <input
                     type="text"
+                    placeholder="Nhập symbol"
                     class="form-control-input"
                     v-model="currency.symbol2"
                   />
@@ -100,6 +103,7 @@
                 <div>
                   <input
                     type="text"
+                    placeholder="Nhập số"
                     class="form-control-input"
                     v-model="currency.decimal_number"
                   />
@@ -170,6 +174,18 @@
       </div></template
     >
   </base-layout>
+  <a-modal :visible="isOpenConfirmDefault" @cancel="handleClose" width="550px">
+    <template #title>
+      <p class="m-0">Đơn vị tiền tệ A đã được cài làm mặc định</p>
+      <p class="m-0">Bạn có muốn tiếp tục thay đổi?</p>
+    </template>
+    <template #footer>
+      <a-button key="submit" type="primary" :loading="isLoading"
+        >Xác nhận</a-button
+      >
+      <a-button key="back" @click="handleClose">Hủy</a-button>
+    </template>
+  </a-modal>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
@@ -211,6 +227,10 @@
     symbol2: '',
     decimal_number: '',
   })
+  const isOpenConfirmDefault = ref<boolean>(false)
+  const handleClose = () => {
+    isOpenConfirmDefault.value = false
+  }
   const createCurrency = () => {
     let data = {
       title: currencyTitle.value,
@@ -221,7 +241,8 @@
       symbol2: currency.symbol2,
       decimal_number: currency.decimal_number,
     }
-    dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
+    isOpenConfirmDefault.value = true
+    // dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
   }
 </script>
 

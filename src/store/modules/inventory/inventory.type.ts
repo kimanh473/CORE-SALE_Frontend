@@ -25,8 +25,8 @@ interface DetailInvent {
     address_state_id: string,
     address_detail: string,
     desc: string,
-    status:string,
-    inventGroup:string
+    status: string,
+    inventGroup: string
 }
 interface DetailErorr {
     id: string,
@@ -57,6 +57,7 @@ interface DetailGroupInvent {
     deleted_at: string,
     desc: string,
     status: string,
+    user_created: object,
     options: Array<optionGroupInvent>
 }
 interface optionGroupInvent {

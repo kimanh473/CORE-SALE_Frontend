@@ -264,13 +264,13 @@
     isLoading.value = false
   }
   const handleDelete = () => {
-    // isLoading.value = true
-    // dataAttributeGroup.deleteInventoryAction(
-    //   Number(idSelected.value),
-    //   EndTimeLoading,
-    //   toast,
-    //   handleCloseConfirm
-    // )
+    isLoading.value = true
+    dataAttributeGroup.deleteGroupAttributeAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirm
+    )
   }
   const selectedRowKeys = ref([])
   const onSelectChange = (selectedRowKeys1: any) => {
