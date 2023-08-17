@@ -206,6 +206,7 @@
   import { storeToRefs } from 'pinia'
   const dataCurrency = useListCurrency()
   dataCurrency.getListCurrencyAction()
+  dataCurrency.getDefaultCurrencyAction()
   const getDataCurrency = () => {
     dataCurrency.getListCurrencyInternationalAction()
   }
@@ -251,7 +252,6 @@
     dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
   }
   const createCurrency = () => {
-    dataCurrency.getDefaultCurrencyAction()
     let data = {
       title: currencyTitle.value,
       code: currencyCode.value,
