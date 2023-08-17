@@ -31,6 +31,8 @@ export const useUserSetting = defineStore("UserSetting", {
             await getDetailUsersApi(id)
                 .then((payload: any) => {
                     let res = payload?.data?.data
+                    console.log(res);
+
                     this.getDetailUsers(res)
                     getListWeb(res?.json_web_list, res?.json_inventory_list)
                     role.storeSetting = getMatchingResults('STORE_SETTING', res.json_string_roles)

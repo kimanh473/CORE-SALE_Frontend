@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllAttributeGroupApi } from '../../../services/SettingStoreServices/attributeGroup.service'
+import { getAllAttributeGroupApi, deleteAttributeGroupApi } from '../../../services/SettingStoreServices/attributeGroup.service'
 
 export const useAttributeGroup = defineStore("AttributeGroup", {
     state: () => ({
@@ -40,6 +40,24 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
                 })
                 .catch((err) => {
                     console.log(err)
+                });
+        },
+        deleteGroupAttributeAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
+            deleteAttributeGroupApi(id)
+                .then((res) => {
+                    if (res.data.status == "success") {
+                        toast.success("Xóa thành công", 500);
+                        this.getListAttributeGroupAction()
+                    } else {
+                        toast.error(res.data.messages, 500);
+                    }
+                    EndTimeLoading();
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
                 });
         },
         //     getDetailInventoryAction(id: number) {

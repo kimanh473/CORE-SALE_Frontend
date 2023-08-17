@@ -10,5 +10,7 @@ interface DataUser {
     phone: string,
     status: string,
     web_list: Array<string>,
-    inventory_list: Array<string>
+    inventory_list: Array<string>,
+    department_title: any,
+    position_title: any
 }
