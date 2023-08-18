@@ -26,8 +26,8 @@ export const useLocation = defineStore("Location", {
                     console.log(err)
                 });
         },
-        getListAllDistrictAction(id: number) {
-            GetAllDistrictsApi(id)
+       async getListAllDistrictAction(id: number) {
+           await GetAllDistrictsApi(id)
                 .then((payload: any) => {
                     this.getListAllDistrict(payload.data)
                 })

@@ -11,8 +11,12 @@ const updateCustomerProfileApi = (id:number, data: Object) => {
 const deleteCustomerProfileApi = (id:number) => {
     return httpClient.post(`/customer/profile/delete/${id}`);
 }
+const getDetailCustomerProfileApi = (id:number) => {
+    return httpClient.get(`/customer/profile/show/${id}`);
+}
 export {
     getAllCustomerProfileApi,
+    getDetailCustomerProfileApi,
     createCustomerProfileApi,
     updateCustomerProfileApi,
     deleteCustomerProfileApi

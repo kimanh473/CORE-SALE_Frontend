@@ -1,10 +1,19 @@
-import { defineStore } from "pinia";
-import { getAllCustomerProfileApi, createCustomerProfileApi, updateCustomerProfileApi, deleteCustomerProfileApi} from '../../../services/CustomerProfileServices/customerProfile.services'
-import {updateInventoryApi} from "@/services/InventoryServices/inventory.service";
+import {defineStore} from "pinia";
+import {
+    getAllCustomerProfileApi,
+    createCustomerProfileApi,
+    getDetailCustomerProfileApi,
+    updateCustomerProfileApi,
+    deleteCustomerProfileApi
+} from '../../../services/CustomerProfileServices/customerProfile.services'
+
 
 export const useCustomerProfile = defineStore("CustomerProfile", {
     state: () => ({
-        listCustomerProfile: [] as DataCustomerProfile[]
+        listCustomerProfile: [] as DataCustomerProfile[],
+        detailCustomerProfile: {} as DataCustomerProfile,
+        idState:null,
+        idDistrict:null
     }),
     getters: {
         getListCustomerProfilePagination: (state: any) => {
@@ -19,6 +28,12 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                 delivery_address: item.delivery_address,
                 list_address: item.list_address,
             }))
+        },
+        getDetailCustomerProfile: (state: any) => {
+            return (payload: any) => {
+                state.detailCustomerProfile = payload
+                state.idState = payload.detail_delivery_address?.map((item:any)=>item.address_state_id)
+            }
         },
     },
 
@@ -62,7 +77,17 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                     toast.error(errMess[0]);
                 });
         },
-
+        async getDetailCustomerProfileAction(id: number) {
+           await getDetailCustomerProfileApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    console.log(res)
+                    this.getDetailCustomerProfile(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
         async updateCustomerProfileAction(
             id: number,
             data: Object,

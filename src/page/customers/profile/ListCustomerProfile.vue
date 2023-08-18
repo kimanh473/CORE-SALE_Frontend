@@ -36,6 +36,11 @@
           bordered
           row-key="id"
       ><template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'gender'">
+          <p v-if="record.gender == '1'" >Nam</p>
+          <p v-if="record.gender == '0'" >Nữ</p>
+          <p v-if="record.gender == '2'" >Khác</p>
+        </template>
         <template v-if="column.key === 'id'">
           <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
             @click="handleOpenDelete(record)"
@@ -96,6 +101,7 @@ const columns = [
   {
     title: 'Giới tính',
     dataIndex: 'gender',
+    key:'gender'
   },
   {
     title: 'Số điện thoại',

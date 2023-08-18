@@ -79,13 +79,6 @@
                                   <a-space direction="vertical" :size="12">
                                     <a-date-picker v-model:value="value_birth_day" :format="dateFormat"/>
                                   </a-space>
-
-                                  <!--                                  <input
-                                                                        type="text"
-                                                                        class="form-control-input"
-                                                                        placeholder="Nhập ngày sinh"
-                                                                        v-model="customerProfile.birth_day"
-                                                                    />-->
                                   <p
                                       v-if="messageError?.birth_day"
                                       class="text-red-600"
@@ -106,13 +99,6 @@
                                     <option value="0">Nữ</option>
                                     <option value="2">Khác</option>
                                   </select>
-
-                                  <!--                                  <input
-                                                                        type="text"
-                                                                        class="form-control-input"
-                                                                        placeholder="Nhập giới tính"
-                                                                        v-model="customerProfile.gender"
-                                                                    />-->
                                   <p
                                       v-if="messageError?.gender"
                                       class="text-red-600"
@@ -217,22 +203,6 @@
                                   <span></span
                                   ></label>
                                 <div>
-                                  <!--                                <a-select-->
-                                  <!--                                    class="form-control-input"-->
-                                  <!--                                    placeholder="Chọn tỉnh/thành phố"-->
-                                  <!--                                    @change="handleChangeCity"-->
-                                  <!--                                    @click.once="getDataCity"-->
-                                  <!--                                    v-model:value="item.address_state_id"-->
-                                  <!--                                >-->
-                                  <!--                                  <a-select-option-->
-                                  <!--                                      v-for="(item, index) in listAllCity"-->
-                                  <!--                                      :key="index"-->
-                                  <!--                                      :value="item.ID"-->
-                                  <!--                                      :title="item.title"-->
-                                  <!--                                  >{{ item.title }}-->
-                                  <!--                                  </a-select-option-->
-                                  <!--                                  >-->
-                                  <!--                                </a-select>-->
                                   <a-select
                                       show-search
                                       class="form-control-input"
@@ -380,10 +350,9 @@ const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat));
 
 const dataCustomerProfile = useCustomerProfile();
 const dataLocation = useLocation()
-const getDataCity = () => {
-}
+
 dataLocation.getListAllCityAction()
-dataLocation.getListAllCityAction()
+
 const {listAllCity, listAllDistrict, listAllWard} = storeToRefs(dataLocation)
 
 // const handleAdd = ()
@@ -396,7 +365,6 @@ const handleChangeCity = (value:number,option:any,index:number) => {
 
 const handleChangeDistrict = (value:number,option:any,index:number) => {
   let arr = option.filter((item:any)=>item.ID ==value)
-  console.log(arr)
   dataLocation.getListAllWardAction(value)
   dataOption[index].address_detail = arr[0].title + ', ' + dataOption[index].address_detail
 }
@@ -408,6 +376,7 @@ const handleChangeWard = (value:number,option:any,index:number) => {
 
 const dataOption = reactive([
   {
+    title:'',
     address_country_id: '1',
     address_district_id: null,
     address_ward_id: null,
@@ -418,6 +387,7 @@ const dataOption = reactive([
 
 const addOptions = () => {
   const data = {
+    title: '',
     address_country_id: '1',
     address_district_id: null,
     address_ward_id: null,
