@@ -3,12 +3,16 @@ import { getAllGroupInventoryApi, createGroupInventoryApi, deleteGroupInventoryA
 export const useGroupInventory = defineStore("GroupInventory", {
     state: () => ({
         listGroupInventory: [] as DetailGroupInvent[],
+        listActiveGroupInventory: [] as DetailGroupInvent[],
         detailGroupInventory: {} as DetailGroupInvent,
         selectGroupInvent: [] as optionGroupInvent[]
     }),
     getters: {
         getListGroupInventory: (state: any) => {
-            return (payload: any) => state.listGroupInventory = payload
+            return (payload: any) => {
+                state.listGroupInventory = payload
+                state.listActiveGroupInventory = payload?.filter((item: DetailGroupInvent) => item.status == '1')
+            }
         },
         getDetailGroupInventory: (state: any) => {
             return (payload: any) => state.detailGroupInventory = payload
@@ -18,8 +22,8 @@ export const useGroupInventory = defineStore("GroupInventory", {
         // getListGroupInventory(payload: any) {
         //     this.listGroupInventory = payload.data
         // },
-       async getListGroupInventoryAction() {
-           await getAllGroupInventoryApi()
+        async getListGroupInventoryAction() {
+            await getAllGroupInventoryApi()
                 .then((payload: any) => {
                     let res = payload?.data?.data
                     this.getListGroupInventory(res)

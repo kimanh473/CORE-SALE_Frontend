@@ -76,7 +76,7 @@
                   </div>
                   <div class="form-small">
                     <div
-                      v-for="(item, index) in listGroupInventory"
+                      v-for="(item, index) in listActiveGroupInventory"
                       :key="index"
                     >
                       <label for="" class="form-group-label"
@@ -509,7 +509,7 @@
   const dataGroupInventory = useGroupInventory()
   dataGroupInventory.getListGroupInventoryAction()
   const optionGroup = ref([])
-  const { listGroupInventory, detailGroupInventory, selectGroupInvent } =
+  const { listActiveGroupInventory, detailGroupInventory, selectGroupInvent } =
     storeToRefs(dataGroupInventory)
   const getDetailGroupInventory = (id: number) => {
     dataGroupInventory.getDetailGroupInventoryAction(id)
@@ -562,7 +562,7 @@
   const createInventory = () => {
     let data = Object.assign(inventory)
     let st: any = []
-    listGroupInventory.value.map((t, option_id) => {
+    listActiveGroupInventory.value.map((t, option_id) => {
       t.options.map((t2, i2) => {
         if (inventory.type_code[t.id] && inventory.type_code[t.id] == t2.id) {
           st[t.id] = { ...t }

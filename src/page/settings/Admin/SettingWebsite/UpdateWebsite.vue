@@ -84,9 +84,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createInventory()">
-            Cập nhật
-          </button>
+          <button class="button-modal" @click="updateWeb()">Cập nhật</button>
           <button class="button-close-modal" @click="router.go(-1)">
             Hủy bỏ
           </button>
@@ -116,7 +114,7 @@
   const dataWeb = useWebCatalog()
   dataWeb.getDetailWebAction(Number(route.params.id))
   const { detailWeb } = storeToRefs(dataWeb)
-  const createInventory = () => {
+  const updateWeb = () => {
     let data = {
       web_name: detailWeb.value.web_name,
       code: detailWeb.value.code,
