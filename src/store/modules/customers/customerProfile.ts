@@ -12,7 +12,8 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
     state: () => ({
         listCustomerProfile: [] as DataCustomerProfile[],
         detailCustomerProfile: {} as DataCustomerProfile,
-        idState:null,
+        idState:[],
+        idWard:[],
         idDistrict:null
     }),
     getters: {
@@ -32,7 +33,10 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
         getDetailCustomerProfile: (state: any) => {
             return (payload: any) => {
                 state.detailCustomerProfile = payload
-                state.idState = payload.detail_delivery_address?.map((item:any)=>item.address_state_id)
+                //state.idState = payload.detail_delivery_address?.map((item:any)=>item.address_state_id)
+                state.idWard = payload.detail_delivery_address?.map((item:any)=>item.address_district_id)
+                /*state.idState = Array.prototype.reverse.call(state.idStateRev)*/
+
             }
         },
     },
@@ -81,7 +85,6 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
            await getDetailCustomerProfileApi(id)
                 .then((payload: any) => {
                     let res = payload?.data?.data
-                    console.log(res)
                     this.getDetailCustomerProfile(res)
                 })
                 .catch((err) => {

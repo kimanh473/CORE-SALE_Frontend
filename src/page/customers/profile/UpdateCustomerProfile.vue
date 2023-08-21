@@ -232,12 +232,11 @@
                                       class="form-control-input"
                                       placeholder="Chọn quận huyện"
                                       v-model:value="detailCustomerProfile.detail_delivery_address[index].address_district_id"
-                                      :options="arr_district"
-                                      @change="handleChangeDistrict(detailCustomerProfile.detail_delivery_address[index].address_district_id,arr_district[index],index)"
+                                      :options="listAllDistrict"
+                                      @change="handleChangeDistrict(detailCustomerProfile.detail_delivery_address[index].address_district_id,listAllDistrict,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
                                   >
                                   </a-select>
-                                  <p> {{arr_district2[index]}}</p>
                                   <p
                                       v-if="messageError?.address_district_id"
                                       class="text-red-600"
@@ -253,16 +252,16 @@
                                   ></label>
                                 <div>
 
-                                  <a-select
-                                      show-search
-                                      class="form-control-input"
-                                      placeholder="Chọn xã, phường, thị trấn"
-                                      v-model:value="detailCustomerProfile.detail_delivery_address[index].address_ward_id"
-                                      :options="listAllWard"
-                                      @change="handleChangeWard(detailCustomerProfile.detail_delivery_address[index].address_ward_id,listAllWard,index)"
-                                      :fieldNames="{ label: 'title', value: 'ID' }"
-                                  >
-                                  </a-select>
+                                    <a-select
+                                        show-search
+                                        class="form-control-input"
+                                        placeholder="Chọn xã, phường, thị trấn"
+                                        v-model:value="detailCustomerProfile.detail_delivery_address[index].address_ward_id"
+                                        :options="listAllWard"
+                                        @change="handleChangeWard(detailCustomerProfile.detail_delivery_address[index].address_ward_id,listAllWard,index)"
+                                        :fieldNames="{ label: 'title', value: 'ID' }"
+                                    >
+                                    </a-select>
 
                                   <p
                                       v-if="messageError?.address_ward_id"
@@ -296,6 +295,135 @@
                           nhận -->
                       </div>
                     </div>
+            //new record
+                    <div
+                        v-for="(item_new, index_new) in dataOption"
+                        :key="index_new"
+                        class="flex"
+                    >
+                      <div class="form-large border-b-[1px] border-slate-300 ">
+
+                        <div class="">
+                          <label for="" class="form-group-label"
+                          >Họ và tên người nhận<span class="text-red-600">* </span>
+                            <span></span
+                            ></label>
+                          <div>
+                            <input
+                                type="text"
+                                class="form-control-input"
+                                placeholder="Nhập tên địa chỉ"
+                                v-model="item_new.title"
+                            />
+                            <p
+                                v-if="messageError?.title"
+                                class="text-red-600"
+                            >
+                              {{ messageError?.title[0] }}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="">
+                          <div class="flex ">
+                            <div class="flex-1 mr-5">
+                              <label for="" class="form-group-label"
+                              >Tỉnh/Thành phố{{ index_new }}<span class="text-red-600">* </span>
+                                <span></span
+                                ></label>
+                              <div>
+                                <a-select
+                                    show-search
+                                    class="form-control-input"
+                                    placeholder="Chọn thành phố"
+                                    v-model:value="dataOption[index_new].address_state_id"
+                                    :options="listAllCity"
+                                    @change="handleChangeCity_new(dataOption[index_new].address_state_id,listAllCity,index_new)"
+                                    :fieldNames="{ label: 'title', value: 'ID' }"
+                                >
+                                </a-select>
+                                <p
+                                    v-if="messageError?.address_state_id"
+                                    class="text-red-600"
+                                >
+                                  {{ messageError?.address_state_id[0] }}
+                                </p>
+                              </div>
+                            </div>
+                            <div class="flex-1 mr-5">
+                              <label for="" class="form-group-label"
+                              >Quận/Huyện<span class="text-red-600">* </span>
+                                <span></span
+                                ></label>
+                              <div>
+                                <a-select
+                                    show-search
+                                    class="form-control-input"
+                                    placeholder="Chọn quận huyện"
+                                    v-model:value="dataOption[index_new].address_district_id"
+                                    :options="listAllDistrict"
+                                    @change="handleChangeDistrict_new(dataOption[index_new].address_district_id,listAllDistrict,index_new)"
+                                    :fieldNames="{ label: 'title', value: 'ID' }"
+                                >
+                                </a-select>
+                                <p
+                                    v-if="messageError?.address_district_id"
+                                    class="text-red-600"
+                                >
+                                  {{ messageError?.address_district_id[0] }}
+                                </p>
+                              </div>
+                            </div>
+                            <div class="flex-1">
+                              <label for="" class="form-group-label"
+                              >Xã/Phường/Thị trấn<span class="text-red-600">* </span>
+                                <span></span
+                                ></label>
+                              <div>
+
+                                <a-select
+                                    show-search
+                                    class="form-control-input"
+                                    placeholder="Chọn xã, phường, thị trấn"
+                                    v-model:value="dataOption[index_new].address_ward_id"
+                                    :options="listAllWard"
+                                    @change="handleChangeWard_new(dataOption[index_new].address_ward_id,listAllWard,index_new)"
+                                    :fieldNames="{ label: 'title', value: 'ID' }"
+                                >
+                                </a-select>
+
+                                <p
+                                    v-if="messageError?.address_ward_id"
+                                    class="text-red-600"
+                                >
+                                  {{ messageError?.address_ward_id[0] }}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-5">
+                          <label for="" class="form-group-label"
+                          >Địa chỉ cụ thể<span class="text-red-600"> </span>
+                            <span></span
+                            ></label>
+                          <div>
+                        <textarea
+                            name=""
+                            id=""
+                            cols="30"
+                            rows="5"
+                            class="form-control-input"
+                            v-model="item_new.address_detail"
+                        ></textarea>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+
+
                     <div @click="addOptions">
                       <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
@@ -331,7 +459,7 @@ import Header from '../../../components/common/Header.vue'
 
 import dayjs, {Dayjs} from 'dayjs';
 import {storeToRefs} from 'pinia'
-import {ref, reactive, computed} from 'vue'
+import {ref, reactive, computed, toRaw} from 'vue'
 import {useToast} from 'vue-toastification'
 import {useRoute, useRouter} from 'vue-router'
 import {useLocation} from "../../../store/modules/location/location";
@@ -356,59 +484,70 @@ const dataLocation = useLocation()
 
 dataLocation.getListAllCityAction()
 // dataLocation.getListAllWardAction(value)
-const { messageError, detailCustomerProfile,idState } = storeToRefs(dataCustomerProfile)
+const {messageError, detailCustomerProfile, idState, idWard} = storeToRefs(dataCustomerProfile)
 
-const {listAllCity, listAllDistrict, listAllWard} = storeToRefs(dataLocation)
-
+const {listAllCity, listAllDistrict, listAllDistrict_2, listAllWard, listAllWard_2} = storeToRefs(dataLocation)
 
 // localStorage.setItem("jsonListAllDistrict", payload?.roles[0]);
 
-// dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id))
-const arr_district = ref([])
+dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id))
 
-dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id)).then(()=>{
-  for (let i =0;i<=idState.value.length-1;i++){
-    dataLocation.getListAllDistrictAction(idState.value[i]).then(()=>{
-      arr_district.value.push(listAllDistrict.value)
+let arr_district = ref([]);
+let arr_ward = ref([]);
+
+/*dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id)).then(() => {
+    dataLocation.getListAllDistrictAction_2().then(() => {
+      arr_district.value.push(listAllDistrict_2.value)
     })
-  }
 })
 
-console.log(Array.prototype.reverse.call(arr_district.value))
+dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id)).then(() => {
+  dataLocation.getListAllWardAction_2().then(() => {
+    arr_ward.value.push(listAllWard_2.value)
+  })
+})*/
 
-const showDistrict = (value:number) => {
+const showDistrict = (value: number) => {
   // dataLocation.getListAllDistrictAction(value)
 }
 
 // const handleAdd = ()
 
-const handleChangeCity = (value:number,option:any,index:number) => {
-  let arr = option.filter((item:any)=>item.ID ==value)
+const handleChangeCity = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  dataLocation.getListAllDistrictAction(value)
+  detailCustomerProfile.value.detail_delivery_address[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
+}
+
+const handleChangeDistrict = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  dataLocation.getListAllWardAction(value)
+  detailCustomerProfile.value.detail_delivery_address[index].address_detail = arr[0].title + ', ' + detailCustomerProfile.value.detail_delivery_address[index].address_detail
+}
+
+const handleChangeWard = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  detailCustomerProfile.value.detail_delivery_address[index].address_detail = arr[0].title + ', ' + detailCustomerProfile.value.detail_delivery_address[index].address_detail
+}
+
+const handleChangeCity_new = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
   dataLocation.getListAllDistrictAction(value)
   dataOption[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
 }
 
-const handleChangeDistrict = (value:number,option:any,index:number) => {
-  let arr = option.filter((item:any)=>item.ID ==value)
+const handleChangeDistrict_new = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
   dataLocation.getListAllWardAction(value)
   dataOption[index].address_detail = arr[0].title + ', ' + dataOption[index].address_detail
 }
 
-const handleChangeWard = (value:number,option:any,index:number) => {
-  let arr = option.filter((item:any)=>item.ID ==value)
+const handleChangeWard_new = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
   dataOption[index].address_detail = arr[0].title + ', ' + dataOption[index].address_detail
 }
 
-const dataOption = reactive([
-  {
-    title:'',
-    address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
-    address_detail: '',
-  },
-])
+const dataOption = reactive([])
 
 const addOptions = () => {
   const data = {
@@ -419,7 +558,7 @@ const addOptions = () => {
     address_state_id: null,
     address_detail: '',
   }
-  detailCustomerProfile.value.detail_delivery_address.push(data)
+  dataOption.push(data)
 }
 
 const removeOptions = (index: number) => {
@@ -469,9 +608,10 @@ const updateCustomerProfile = () => {
     gender: detailCustomerProfile.value.gender,
     email: detailCustomerProfile.value.email,
     phone: detailCustomerProfile.value.phone,
-    detail_delivery_address: dataOption,
+    detail_delivery_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_delivery_address)),
+    detail_delivery_address_new: dataOption,
   }
-  dataCustomerProfile.updateCustomerProfileAction( Number(route.params.id),data, toast, router, EndTimeLoading)
+  dataCustomerProfile.updateCustomerProfileAction(Number(route.params.id), data, toast, router, EndTimeLoading)
 }
 
 </script>
