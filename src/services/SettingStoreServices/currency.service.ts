@@ -18,11 +18,16 @@ const getDetailCurrencyApi = (id: number) => {
 const getListCurrencyInternationalApi = () => {
     return httpClient.get(`/system-manage/currency/list-currency`);
 };
+//check mặc đinhk
+const checkDefaultCurrencyApi = () => {
+    return httpClient.get(`/system-manage/currency/check-default`);
+};
 export {
     getListCurrencyApi,
     createCurrencyApi,
     getDetailCurrencyApi,
     updateCurrencyApi,
     deleteCurrencyApi,
-    getListCurrencyInternationalApi
+    getListCurrencyInternationalApi,
+    checkDefaultCurrencyApi
 };

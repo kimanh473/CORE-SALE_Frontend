@@ -163,7 +163,7 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Số điện thoại<span class="text-red-600">* </span>
+                        >Số điện thoại<span class="text-red-600"></span>
                         <span></span
                       ></label>
                       <div>

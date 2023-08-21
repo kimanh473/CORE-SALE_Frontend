@@ -20,6 +20,7 @@ export const useListTax = defineStore("ListTax", {
                 created_at: item.created_at,
                 updated_at: item.updated_at,
                 deleted_at: item.deleted_at,
+                user_created:item.user_created
             }))
         },
         getDetailTax: (state: any) => {

@@ -79,9 +79,8 @@
                         show-search
                         class="form-control-input"
                         placeholder="Chọn phòng ban"
-                        v-model:value="departmentSelected"
+                        v-model:value="departmentId"
                         :options="listDepartment"
-                        @click.once="getListDepartment"
                         :filter-option="filterOption"
                       >
                         <!-- <a-select-option
@@ -103,9 +102,8 @@
                         show-search
                         class="form-control-input"
                         placeholder="Chọn vị trí"
-                        v-model:value="positionSelected"
+                        v-model:value="positionId"
                         :options="listPosition"
-                        @click.once="getListPosition"
                         :filter-option="filterOption"
                       >
                         <!-- <a-select-option
@@ -163,7 +161,7 @@
                     </div>
                     <div>
                       <label for="" class="form-group-label"
-                        >Số điện thoại<span class="text-red-600">* </span>
+                        >Số điện thoại<span class="text-red-600"> </span>
                         <span></span
                       ></label>
                       <div>
@@ -1821,7 +1819,7 @@
   import { useDepartment } from '../../../../store/modules/admin-setting/department'
   import { useUserSetting } from '../../../../store/modules/users/users'
   import { storeToRefs } from 'pinia'
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRouter, useRoute } from 'vue-router'
   // const selectedGroupInventory = ref(null)
@@ -1844,15 +1842,8 @@
   }
   const dataDepartment = useDepartment()
   const { listDepartment } = storeToRefs(dataDepartment)
-  const getListPosition = () => {
-    dataPosition.getListPositionAction()
-    console.log(listPosition)
-  }
-  const getListDepartment = () => {
-    dataDepartment.getListDepartmentAction()
-  }
-  const positionSelected = ref()
-  const departmentSelected = ref()
+  dataPosition.getListPositionAction()
+  dataDepartment.getListDepartmentAction()
   const role = reactive({
     //store
     storeSetting: '',
@@ -1874,8 +1865,8 @@
   }
   const dataUser = useUserSetting()
   const { detailUser } = storeToRefs(dataUser)
-  console.log(detailUser)
-
+  const departmentId = computed(() => detailUser.value.department_title?.id)
+  const positionId = computed(() => detailUser.value.position_title?.id)
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
@@ -2039,6 +2030,8 @@
         email_company: detailUser.value.email_company,
         email_personal: detailUser.value.email_personal,
         phone: detailUser.value.phone,
+        department_id: departmentId.value,
+        position_id: positionId.value,
         inherit_roles: 'no',
         string_roles: arr,
         web_list: arrayWeb.value,
@@ -2062,6 +2055,8 @@
         email_personal: detailUser.value.email_personal,
         phone: detailUser.value.phone,
         inherit_roles: 'yes',
+        department_id: departmentId.value,
+        position_id: positionId.value,
       }
       dataUser.updateUserAction(
         Number(route.params.id),

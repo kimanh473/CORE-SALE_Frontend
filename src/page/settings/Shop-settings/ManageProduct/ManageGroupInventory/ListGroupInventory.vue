@@ -55,6 +55,9 @@
         }"
         bordered
         ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'user_created'">
+            <p>{{ record.user_created?.username }}</p>
+          </template>
           <template v-if="column.key === 'status'">
             <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
             <a-tag v-else>Tắt</a-tag>
@@ -262,8 +265,8 @@
     },
     {
       title: 'Người tạo',
-      dataIndex: 'created_by_id',
-      key: 'created_by_id',
+      dataIndex: 'user_created',
+      key: 'user_created',
     },
     {
       title: 'Ngày tạo',

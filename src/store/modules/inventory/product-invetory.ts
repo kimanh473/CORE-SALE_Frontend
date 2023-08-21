@@ -5,7 +5,10 @@ export const useInventory = defineStore("Inventory", {
     state: () => ({
         listInventory: [] as DataInventory[],
         detailInventory: {} as DetailInvent,
-        messageError: {} as DetailErorr
+        messageError: {} as DetailErorr,
+        idState: '',
+        idDistrict: ''
+
     }),
     getters: {
         // getData: (state) => {
@@ -17,14 +20,19 @@ export const useInventory = defineStore("Inventory", {
                 title: item.title,
                 code: item.code,
                 status: item.status == null || item.status == '0' ? 'Chưa kích hoạt' : 'Đang kích hoạt',
-                json_type_code: item.json_type_code.map((item: any) => item + ' '),
+                json_type_code: item.json_type_code.map((item: any) => item.options),
+                inventGroup: item.json_type_code.map((item: any) => item.code + ' '),
                 address: item.address,
                 fullname: item.user_created.fullname,
                 created_at: item.created_at.substring(0, 10),
             }))
         },
         getDetailInventory: (state: any) => {
-            return (payload: any) => state.detailInventory = payload
+            return (payload: any) => {
+                state.detailInventory = payload;
+                state.idState = payload.address_state_id;
+                state.idDistrict = payload.address_district_id
+            }
         }
     },
     actions: {
@@ -44,8 +52,8 @@ export const useInventory = defineStore("Inventory", {
                     console.log(err)
                 });
         },
-        getDetailInventoryAction(id: number) {
-            detailInventoryApi(id)
+        async getDetailInventoryAction(id: number) {
+            await detailInventoryApi(id)
                 .then((payload: any) => {
                     let res = payload?.data?.data
                     this.getDetailInventory(res)

@@ -98,6 +98,24 @@
               <template v-else>{{ fragment }}</template>
             </template>
           </span>
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === 'ACTIVE'" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
+          <template v-if="column.key === 'department_title'">
+            <p>{{ record.department_title?.title }}</p>
+          </template>
+          <template v-if="column.key === 'position_title'">
+            <p>{{ record.position_title?.title }}</p>
+          </template>
+          <template v-if="column.key === 'group_detail'">
+            <p>{{ record.group_detail?.title }}</p>
+          </template>
+          <template v-if="column.key === 'json_web_list'">
+            <p>
+              {{ record?.json_web_list?.toString() }}
+            </p>
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateToUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDeleteUser(record)"
@@ -239,8 +257,8 @@
     },
     {
       title: 'Nhóm',
-      dataIndex: 'group_id',
-      key: 'group_id',
+      dataIndex: 'group_detail',
+      key: 'group_detail',
     },
     {
       title: 'Mã nhân viên',
@@ -267,22 +285,23 @@
     {
       title: 'Trạng thái',
       dataIndex: 'status',
-      key: '',
+      key: 'status',
+      align: 'center',
     },
     {
       title: 'Vị trí',
       dataIndex: 'position_title',
-      key: '',
+      key: 'position_title',
     },
     {
       title: 'Phòng ban',
       dataIndex: 'department_title',
-      key: '',
+      key: 'department_title',
     },
     {
       title: 'Website',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'json_web_list',
+      key: 'json_web_list',
     },
     {
       title: 'Ngày tạo',

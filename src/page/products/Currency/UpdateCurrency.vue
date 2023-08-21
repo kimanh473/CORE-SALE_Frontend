@@ -124,14 +124,14 @@
               </div> -->
             <a-switch
               v-model:checked="detailCurrency.status"
-              checkedValue="1"
-              unCheckedValue="0"
+              :checkedValue="1"
+              :unCheckedValue="0"
             />
             &nbsp; Kích hoạt &nbsp;
             <a-switch
               v-model:checked="detailCurrency.is_default"
-              checkedValue="1"
-              unCheckedValue="0"
+              :checkedValue="1"
+              :unCheckedValue="0"
             />
             &nbsp; Đặt làm mặc định
 
@@ -162,7 +162,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createCurrency()">
+          <button class="button-modal" @click="updateCurrency()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="router.go(-1)">
@@ -172,6 +172,24 @@
       </div></template
     >
   </base-layout>
+  <a-modal :visible="isOpenConfirmDefault" @cancel="handleClose" width="550px">
+    <template #title>
+      <p class="m-0">
+        Đơn vị tiền tệ {{ defaultCurrency }} đã được cài làm mặc định
+      </p>
+      <p class="m-0">Bạn có muốn tiếp tục thay đổi?</p>
+    </template>
+    <template #footer>
+      <a-button
+        key="submit"
+        type="primary"
+        :loading="isLoading"
+        @click="confirmCreateCurrency"
+        >Xác nhận</a-button
+      >
+      <a-button key="back" @click="handleClose">Hủy</a-button>
+    </template>
+  </a-modal>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
@@ -186,11 +204,20 @@
   import { storeToRefs } from 'pinia'
   const dataCurrency = useListCurrency()
   dataCurrency.getListCurrencyAction()
+  dataCurrency.getDefaultCurrencyAction()
   const getDataCurrency = () => {
     dataCurrency.getListCurrencyInternationalAction()
   }
-  const { listCurrencyInternational, detailCurrency } =
-    storeToRefs(dataCurrency)
+  const isOpenConfirmDefault = ref<boolean>(false)
+  const handleClose = () => {
+    isOpenConfirmDefault.value = false
+  }
+  const {
+    listCurrencyInternational,
+    detailCurrency,
+    defaultCurrency,
+    defaultStatus,
+  } = storeToRefs(dataCurrency)
   const isLoading = ref<boolean>(false)
   const status = ref<boolean>(false)
   const toast = useToast()
@@ -212,8 +239,7 @@
     status: 0,
     is_default: 0,
   })
-  const createCurrency = () => {
-    console.log(detailCurrency.value)
+  const confirmCreateCurrency = () => {
     let data = {
       title: detailCurrency.value.title,
       code: detailCurrency.value.code,
@@ -230,6 +256,33 @@
       router,
       EndTimeLoading
     )
+  }
+  const updateCurrency = () => {
+    let data = {
+      title: detailCurrency.value.title,
+      code: detailCurrency.value.code,
+      status: detailCurrency.value.status,
+      is_default: detailCurrency.value.is_default,
+      symbol: detailCurrency.value.symbol,
+      symbol2: detailCurrency.value.symbol2,
+      decimal_number: detailCurrency.value.decimal_number,
+    }
+    console.log(defaultStatus.value)
+
+    if (
+      defaultStatus.value === 'true' &&
+      detailCurrency.value.is_default == '1'
+    ) {
+      isOpenConfirmDefault.value = true
+    } else {
+      dataCurrency.updateCurrencyAction(
+        Number(route.params.id),
+        data,
+        toast,
+        router,
+        EndTimeLoading
+      )
+    }
   }
 </script>
 

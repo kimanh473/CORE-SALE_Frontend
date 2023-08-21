@@ -53,6 +53,7 @@
                 <div>
                   <input
                     type="text"
+                    placeholder="Nhập ký hiệu"
                     class="form-control-input"
                     v-model="currencyCode"
                     disabled
@@ -60,6 +61,52 @@
                   <!-- <p v-if="messageError?.title" class="text-red-600">
                           {{ messageError?.title[0] }}
                         </p> -->
+                </div>
+              </div>
+            </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Symbol<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Nhập symbol"
+                    class="form-control-input"
+                    v-model="currency.symbol"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Symbol2<span class="text-red-600"> </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Nhập symbol"
+                    class="form-control-input"
+                    v-model="currency.symbol2"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-small">
+              <div>
+                <label for="" class="form-group-label"
+                  >Số thập phân<span class="text-red-600"> </span> <span></span
+                ></label>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Nhập số"
+                    class="form-control-input"
+                    v-model="currency.decimal_number"
+                  />
                 </div>
               </div>
             </div>
@@ -127,6 +174,24 @@
       </div></template
     >
   </base-layout>
+  <a-modal :visible="isOpenConfirmDefault" @cancel="handleClose" width="550px">
+    <template #title>
+      <p class="m-0">
+        Đơn vị tiền tệ {{ defaultCurrency }} đã được cài làm mặc định
+      </p>
+      <p class="m-0">Bạn có muốn tiếp tục thay đổi?</p>
+    </template>
+    <template #footer>
+      <a-button
+        key="submit"
+        type="primary"
+        :loading="isLoading"
+        @click="confirmCreateCurrency"
+        >Xác nhận</a-button
+      >
+      <a-button key="back" @click="handleClose">Hủy</a-button>
+    </template>
+  </a-modal>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
@@ -141,10 +206,12 @@
   import { storeToRefs } from 'pinia'
   const dataCurrency = useListCurrency()
   dataCurrency.getListCurrencyAction()
+  dataCurrency.getDefaultCurrencyAction()
   const getDataCurrency = () => {
     dataCurrency.getListCurrencyInternationalAction()
   }
-  const { listCurrencyInternational } = storeToRefs(dataCurrency)
+  const { listCurrencyInternational, defaultCurrency, defaultStatus } =
+    storeToRefs(dataCurrency)
   const isLoading = ref<boolean>(false)
   const status = ref<boolean>(false)
   const toast = useToast()
@@ -164,15 +231,41 @@
     code: '',
     status: 0,
     is_default: 0,
+    symbol: '',
+    symbol2: '',
+    decimal_number: '',
   })
+  const isOpenConfirmDefault = ref<boolean>(false)
+  const handleClose = () => {
+    isOpenConfirmDefault.value = false
+  }
+  const confirmCreateCurrency = () => {
+    let data = {
+      title: currencyTitle.value,
+      code: currencyCode.value,
+      status: currency.status,
+      is_default: currency.is_default,
+      symbol: currency.symbol,
+      symbol2: currency.symbol2,
+      decimal_number: currency.decimal_number,
+    }
+    dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
+  }
   const createCurrency = () => {
     let data = {
       title: currencyTitle.value,
       code: currencyCode.value,
       status: currency.status,
       is_default: currency.is_default,
+      symbol: currency.symbol,
+      symbol2: currency.symbol2,
+      decimal_number: currency.decimal_number,
     }
-    dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
+    if (defaultStatus.value == 'true' && currency.is_default == 1) {
+      isOpenConfirmDefault.value = true
+    } else {
+      dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
+    }
   }
 </script>
 
