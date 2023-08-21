@@ -95,6 +95,7 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
             id: number,
             data: Object,
             toast: any,
+            router: any,
             EndTimeLoading: Function,
             // handleCloseCreate: Function
         ) {
@@ -105,6 +106,7 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                         EndTimeLoading();
                     } else {
                         toast.success("Cập nhật thành công");
+                        router.push('/list-customer-profile')
                         // handleCloseCreate();
                         EndTimeLoading();
                     }
