@@ -111,7 +111,11 @@
                         >Hiển thị ngành hàng<span class="text-red-600"></span
                       ></label>
                       <div>
-                        <a-switch v-model:checked="checked" />
+                        <a-switch
+                          v-model:checked="category.status"
+                          checkedValue="1"
+                          unCheckedValue="0"
+                        />
                         <p v-if="messageError?.code" class="text-red-600">
                           {{ messageError?.code[0] }}
                         </p>
@@ -296,7 +300,11 @@
             >Hiển thị ngành hàng<span class="text-red-600"></span
           ></label>
           <div>
-            <a-switch v-model:checked="checked" />
+            <a-switch
+              v-model:checked="category.status_create"
+              checkedValue="1"
+              unCheckedValue="0"
+            />
             <p v-if="messageError?.code" class="text-red-600">
               {{ messageError?.code[0] }}
             </p>
@@ -527,24 +535,26 @@
     titleCreate: '',
     descCreate: '',
     parentSelectedCreate: '',
+    status: '0',
+    status_create: '0',
   })
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info)
     category.parent_id = info.node.parent_id
     category.title = info.node.title
+    category.status = info.node.status
     category.desc = info.node.desc
     parentSelected.value = info.node.parent.node.title
     category.parentSelectedCreate = info.node.title
     idSelected.value = info.node.id
     category.parent_id_create = info.node.id
+    console.log(category)
   }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-
-  const parentIdSelectChange = ref()
   const handleChange = (value: string) => {
-    parentIdSelectChange.value = value
+    category.parent_id = value
   }
   const handleChangeCreate = (value: string) => {
     category.parent_id_create = value
@@ -561,7 +571,8 @@
     let data = {
       title: category.title,
       desc: category.desc,
-      parent_id: parentIdSelectChange.value,
+      parent_id: category.parent_id,
+      status: category.status,
     }
     dataCategory.updateCategoryAction(
       idSelected.value,
@@ -575,6 +586,7 @@
       title: category.titleCreate,
       desc: category.descCreate,
       parent_id: category.parent_id_create,
+      status: category.status_create,
     }
     dataCategory.createCategoryAction(data, toast, handleClose, EndTimeLoading)
   }

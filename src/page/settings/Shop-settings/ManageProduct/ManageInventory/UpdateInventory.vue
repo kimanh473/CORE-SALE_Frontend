@@ -95,7 +95,7 @@
                   </div> -->
                   <div class="form-small">
                     <div
-                      v-for="(item, index) in listGroupInventory"
+                      v-for="(item, index) in listActiveGroupInventory"
                       :key="index"
                     >
                       <label for="" class="form-group-label">
@@ -326,11 +326,13 @@
                       ></label>
                       <div>
                         <a-select
+                          autofocus
                           show-search
                           class="form-control-input"
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
                           v-model:value="detailInventory.address_state_id"
+                          @focus="test"
                           :filter-option="filterOption"
                         >
                           <a-select-option
@@ -540,7 +542,7 @@
 
   const dataGroupInventory = useGroupInventory()
   dataGroupInventory.getListGroupInventoryAction()
-  const { listGroupInventory } = storeToRefs(dataGroupInventory)
+  const { listActiveGroupInventory } = storeToRefs(dataGroupInventory)
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
@@ -568,6 +570,9 @@
   const handleChangeCity = (value: number, name: any) => {
     dataLocation.getListAllDistrictAction(value)
     detailInventory.value.address = name.title + ', ' + 'Việt Nam'
+  }
+  const test = () => {
+    console.log(1)
   }
   const handleChangeDistrict = (value: number, name: any) => {
     dataLocation.getListAllWardAction(value)

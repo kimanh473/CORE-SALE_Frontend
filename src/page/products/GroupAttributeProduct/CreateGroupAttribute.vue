@@ -34,7 +34,7 @@
               <span v-show="isInfor == false"
                 ><i class="fas fa-chevron-right cursor-pointer"></i
               ></span>
-              Cơ bản
+              Thông tin chung
             </h4>
             <Transition name="slide-up">
               <div v-show="isInfor == true" class="outer">
@@ -162,7 +162,7 @@
                 <span v-show="isContact == false"
                   ><i class="fas fa-chevron-right cursor-pointer"></i
                 ></span>
-                Nâng cao
+                Thông tin chi tiết
               </h4>
               <Transition name="slide-up">
                 <div v-show="isContact == true">

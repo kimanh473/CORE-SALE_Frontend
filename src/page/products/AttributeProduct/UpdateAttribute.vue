@@ -350,7 +350,7 @@
       value: 'switch',
     },
     {
-      label: 'Nhiều lựa chọn',
+      label: 'Lựa chọn',
       value: 'selection',
     },
   ])

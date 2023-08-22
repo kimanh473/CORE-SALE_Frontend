@@ -315,10 +315,10 @@
       label: 'Lựa chọn',
       value: 'selection',
     },
-    {
-      label: 'Nhiều lựa chọn',
-      value: 'multiple_select',
-    },
+    // {
+    //   label: 'Nhiều lựa chọn',
+    //   value: 'multiple_select',
+    // },
   ])
   const options2 = ref<SelectProps['options']>([
     {
