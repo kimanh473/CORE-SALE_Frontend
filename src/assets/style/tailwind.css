@@ -45,6 +45,14 @@
     width: 800px;
     margin-bottom: 10px;
   }
+  .form-large-full {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .form-large-70 {
+    width: 90%;
+    margin-bottom: 10px;
+  }
   .form-large-plus {
     min-width: 1000px;
     margin-bottom: 10px;
