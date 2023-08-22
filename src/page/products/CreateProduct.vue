@@ -26,23 +26,26 @@
         </div>
       </div> -->
       <Transition :duration="550" name="nested">
-        <div class="flex">
+        <div class="flex form-large-70 pl-[150px]">
           <a-anchor
             :affix="true"
             :wrapperStyle="{
-              width: '180px',
-              height: '300px',
+              width: '200px',
+              height: 'fit-content',
               position: 'fixed',
-              // border: 'solid 2px',
+              padding: '0',
+              margin: '0',
+              background: 'white',
+              textAlign: 'center',
             }"
             :showInkInFixed="true"
-            class="w-[200px] h-[300px]"
+            class="min-w-[200px] min-h-full mr-[10px]"
           >
             <a-anchor-link href="#infor-common" title="Thông tin chung" />
             <a-anchor-link href="#infor-detail" title="Thông tin chi tiết" />
           </a-anchor>
           <div
-            class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over"
+            class="text-left px-4 py-2 w-full h-full format-scroll form-large-full bg-white"
           >
             <div id="infor-common">
               <div class="w-full ml-4">
@@ -62,7 +65,9 @@
                   <div v-show="isInfor == true" class="outer">
                     <div>
                       <div class="w-full">
-                        <div class="form-large grid grid-cols-2 gap-2">
+                        <div
+                          class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
+                        >
                           <div>
                             <label for="" class="form-group-label"
                               >Tên sản phẩm<span class="text-red-600">* </span>
@@ -100,7 +105,82 @@
                             </div>
                           </div>
                         </div>
-                        <div class="form-large grid grid-cols-2 gap-2">
+                        <div class="form-large-full pr-[30px]">
+                          <div>
+                            <label for="" class="form-group-label"
+                              >Ngành hàng<span class="text-red-600">* </span>
+                              <span></span
+                            ></label>
+                            <div>
+                              <a-tree-select
+                                placeholder="Chọn ngành hàng"
+                                style="width: 100%"
+                                v-model:value="valueTree"
+                                :tree-data="listTreeCategory"
+                                :show-checked-strategy="TreeSelect.SHOW_ALL"
+                                :fieldNames="{
+                                  children: 'children',
+                                  label: 'title',
+                                  value: 'id',
+                                }"
+                                tree-checkable
+                                treeDefaultExpandAll
+                                multiple
+                              >
+                              </a-tree-select>
+                              <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
+                        >
+                          <div>
+                            <label for="" class="form-group-label"
+                              >Nhóm thuộc tính<span class="text-red-600"
+                                >*
+                              </span>
+                              <span></span
+                            ></label>
+                            <div>
+                              <a-select
+                                class="form-control-input"
+                                placeholder="Chọn nhóm thuộc tính"
+                                :options="listWeb"
+                                v-model:value="product.webID"
+                                :fieldNames="{ label: 'title', value: 'code' }"
+                              >
+                              </a-select>
+                              <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                            </div>
+                          </div>
+                          <div>
+                            <label for="" class="form-group-label"
+                              >Thuế<span class="text-red-600">* </span>
+                              <span></span
+                            ></label>
+                            <div>
+                              <a-select
+                                class="form-control-input"
+                                placeholder="Chọn loại thuế"
+                                :options="listWeb"
+                                v-model:value="product.webID"
+                                :fieldNames="{ label: 'title', value: 'code' }"
+                              >
+                              </a-select>
+                              <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
+                        >
                           <div>
                             <label for="" class="form-group-label"
                               >SKU<span class="text-red-600">* </span>
@@ -130,6 +210,46 @@
                                 placeholder="Nhập barcode"
                                 v-model="product.code"
                               />
+                              <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
+                        >
+                          <div>
+                            <label for="" class="form-group-label"
+                              >Khối lượng<span class="text-red-600">* </span>
+                              <span></span
+                            ></label>
+                            <div>
+                              <input
+                                type="text"
+                                class="form-control-input"
+                                placeholder="Nhập khối lượng"
+                                v-model="product.code"
+                              />
+                              <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                            </div>
+                          </div>
+                          <div>
+                            <label for="" class="form-group-label"
+                              >Đơn vị tính<span class="text-red-600">* </span>
+                              <span></span
+                            ></label>
+                            <div>
+                              <a-select
+                                class="form-control-input"
+                                placeholder="Chọn đơn vị tinh"
+                                :options="listWeb"
+                                v-model:value="product.webID"
+                                :fieldNames="{ label: 'title', value: 'code' }"
+                              >
+                              </a-select>
                               <!-- <p v-if="messageError?.title" class="text-red-600">
                     {{ messageError?.title[0] }}
                   </p> -->
@@ -167,7 +287,9 @@
                             </a-modal>
                           </div>
                         </div>
-                        <div class="form-large grid grid-cols-2 gap-2">
+                        <div
+                          class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
+                        >
                           <div>
                             <label for="" class="form-group-label"
                               >Ngành hàng<span class="text-red-600">* </span>
@@ -393,7 +515,7 @@
   import BaseLayout from '../../layout/baseLayout.vue'
   import SideBar from '../../components/common/SideBar.vue'
   import Header from '../../components/common/Header.vue'
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, watch } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useGroupInventory } from '../../store/modules/inventory/group-inventory'
   import { useRouter } from 'vue-router'
@@ -402,7 +524,39 @@
   import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
   import { storeToRefs } from 'pinia'
   import type { UploadProps } from 'ant-design-vue'
+  import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
+  import { useCategory } from '../../store/modules/store-setting/category'
+  const dataCategory = useCategory()
+  dataCategory.getListCategoryTreeAction()
+  const { listTreeCategory } = storeToRefs(dataCategory)
+  const valueTree = ref([])
+  const treeData = ref([
+    {
+      title: 'Node1',
+      value: '0-0',
+      key: '0-0',
+      children: [
+        {
+          title: 'Child Node1',
+          value: '0-0-1',
+          key: '0-0-1',
+        },
+        {
+          title: 'Child Node2',
+          value: '0-0-2',
+          key: '0-0-2',
+        },
+      ],
+    },
+  ])
+  // const handleSelect = (value: any, node: any, extra: any) => {
+  //   console.log(value)
+  //   console.log(node)
+  //   let str = ''
+  //   str += node.title + '/' + node.title.children[0]?.title
 
+  //   console.log(str)
+  // }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -492,12 +646,13 @@
     margin-top: 8px;
     color: #666;
   }
-  .ant-anchor-ink-ball {
-    width: 15px;
-    height: 15px;
+  .ant-anchor-ink {
     font-family: 'Font Awesome 5 Pro';
     /* content: '\f055'; */
     font-weight: 500;
-    margin-left: 5px;
+    margin-left: 30px;
+  }
+  .ant-anchor-link {
+    padding: 7px 0 7px 0px;
   }
 </style>
