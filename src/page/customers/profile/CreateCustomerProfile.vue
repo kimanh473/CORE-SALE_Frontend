@@ -29,7 +29,6 @@
                       class="text-left py-2 w-full h-full format-scroll form-plus-over"
                   >
                     <div class="w-full">
-
                       <Transition name="slide-up">
                         <div v-show="isInfor == true" class="outer">
                           <div>
@@ -46,9 +45,9 @@
                                       placeholder="Nhập mã khách hàng"
                                       v-model="customerProfile.code"
                                   />
-                                  <p v-if="messageError?.code" class="text-red-600">
+<!--                                  <p v-if="messageError?.code" class="text-red-600">
                                     {{ messageError?.code[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div>
@@ -62,9 +61,9 @@
                                       placeholder="Nhập tên khách hàng"
                                       v-model="customerProfile.name"
                                   />
-                                  <p v-if="messageError?.name" class="text-red-600">
+<!--                                  <p v-if="messageError?.name" class="text-red-600">
                                     {{ messageError?.name[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                             </div>
@@ -79,12 +78,12 @@
                                   <a-space direction="vertical" :size="12">
                                     <a-date-picker v-model:value="value_birth_day" :format="dateFormat"/>
                                   </a-space>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.birth_day"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.birth_day[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div>
@@ -94,17 +93,17 @@
                                   ></label>
                                 <div>
                                   <select v-model="customerProfile.gender" class="form-control-input">
-                                    <option disabled value="">Please select one</option>
+                                    <option disabled value="">Chọn giới tính</option>
                                     <option value="1">Nam</option>
                                     <option value="0">Nữ</option>
                                     <option value="2">Khác</option>
                                   </select>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.gender"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.gender[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
 
@@ -120,12 +119,12 @@
                                       placeholder="Nhập email"
                                       v-model="customerProfile.email"
                                   />
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.email"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.email[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
 
@@ -141,12 +140,12 @@
                                       placeholder="Nhập số điện thoại"
                                       v-model="customerProfile.phone"
                                   />
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.phone"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.phone[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
 
@@ -155,6 +154,7 @@
                             </div>
                           </div>
                         </div>
+
                       </Transition>
                     </div>
                   </div>
@@ -186,12 +186,12 @@
                                   placeholder="Nhập tên địa chỉ"
                                   v-model="item.title"
                               />
-                              <p
+<!--                              <p
                                   v-if="messageError?.title"
                                   class="text-red-600"
                               >
                                 {{ messageError?.title[0] }}
-                              </p>
+                              </p>-->
                             </div>
                           </div>
 
@@ -209,16 +209,16 @@
                                       placeholder="Chọn thành phố"
                                       :options="listAllCity"
                                       v-model:value="dataOption[index].address_state_id"
-                                      @change="handleChangeCity(dataOption[index].address_state_id,listAllCity,index)"
+                                      @change="handleChangeCity(Number(dataOption[index].address_state_id),listAllCity,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
                                   >
                                   </a-select>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.address_state_id"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.address_state_id[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div class="flex-1 mr-5">
@@ -233,16 +233,16 @@
                                       placeholder="Chọn thành phố"
                                       :options="listAllDistrict"
                                       v-model:value="dataOption[index].address_district_id"
-                                      @change="handleChangeDistrict(dataOption[index].address_district_id,listAllDistrict,index)"
+                                      @change="handleChangeDistrict(Number(dataOption[index].address_district_id),listAllDistrict,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
                                   >
                                   </a-select>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.address_district_id"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.address_district_id[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div class="flex-1">
@@ -258,17 +258,17 @@
                                       placeholder="Chọn xã, phường, thị trấn"
                                       :options="listAllWard"
                                       v-model:value="dataOption[index].address_ward_id"
-                                      @change="handleChangeWard(dataOption[index].address_ward_id,listAllWard,index)"
+                                      @change="handleChangeWard(Number(dataOption[index].address_ward_id),listAllWard,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
                                   >
                                   </a-select>
 
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.address_ward_id"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.address_ward_id[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                             </div>
@@ -343,6 +343,7 @@ const isDeliveryAddress = ref<boolean>(true)
 const isContact = ref<boolean>(true)
 const checked = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
+const activeKey = ref('1')
 
 const dateFormat = 'DD/MM/YYYY';
 const dateFormatRequest = 'YYYY/MM/DD';
@@ -354,6 +355,8 @@ const dataLocation = useLocation()
 dataLocation.getListAllCityAction()
 
 const {listAllCity, listAllDistrict, listAllWard} = storeToRefs(dataLocation)
+
+//const { messageError } = storeToRefs(dataCustomerProfile)
 
 // const handleAdd = ()
 
@@ -378,9 +381,9 @@ const dataOption = reactive([
   {
     title:'',
     address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
+    address_district_id: '',
+    address_ward_id: '',
+    address_state_id: '',
     address_detail: '',
   },
 ])
@@ -389,9 +392,9 @@ const addOptions = () => {
   const data = {
     title: '',
     address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
+    address_district_id: '',
+    address_ward_id: '',
+    address_state_id: '',
     address_detail: '',
   }
   dataOption.push(data)
@@ -429,9 +432,9 @@ const customerProfile = reactive({
   email: '',
   phone: '',
   address_country_id: '1',
-  address_district_id: null,
-  address_ward_id: null,
-  address_state_id: null,
+  address_district_id: '',
+  address_ward_id: '',
+  address_state_id: '',
   address_detail: '',
   delivery_address: ''
 })

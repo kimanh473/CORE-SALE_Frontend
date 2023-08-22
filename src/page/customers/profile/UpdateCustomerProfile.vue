@@ -46,9 +46,9 @@
                                       placeholder="Nhập mã khách hàng"
                                       v-model="detailCustomerProfile.code"
                                   />
-                                  <p v-if="messageError?.code" class="text-red-600">
+<!--                                  <p v-if="messageError?.code" class="text-red-600">
                                     {{ messageError?.code[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div>
@@ -62,9 +62,9 @@
                                       placeholder="Nhập tên khách hàng"
                                       v-model="detailCustomerProfile.name"
                                   />
-                                  <p v-if="messageError?.name" class="text-red-600">
+<!--                                  <p v-if="messageError?.name" class="text-red-600">
                                     {{ messageError?.name[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                             </div>
@@ -79,12 +79,12 @@
                                   <a-space direction="vertical" :size="12">
                                     <a-date-picker v-model:value="value_birth_day" :format="dateFormat"/>
                                   </a-space>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.birth_day"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.birth_day[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div>
@@ -99,12 +99,12 @@
                                     <option value="0">Nữ</option>
                                     <option value="2">Khác</option>
                                   </select>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.gender"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.gender[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
 
@@ -120,12 +120,12 @@
                                       placeholder="Nhập email"
                                       v-model="detailCustomerProfile.email"
                                   />
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.email"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.email[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
 
@@ -141,12 +141,12 @@
                                       placeholder="Nhập số điện thoại"
                                       v-model="detailCustomerProfile.phone"
                                   />
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.phone"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.phone[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
 
@@ -186,12 +186,12 @@
                                   placeholder="Nhập tên địa chỉ"
                                   v-model="item.title"
                               />
-                              <p
+<!--                              <p
                                   v-if="messageError?.title"
                                   class="text-red-600"
                               >
                                 {{ messageError?.title[0] }}
-                              </p>
+                              </p>-->
                             </div>
                           </div>
 
@@ -209,16 +209,16 @@
                                       placeholder="Chọn thành phố"
                                       v-model:value="detailCustomerProfile.detail_delivery_address[index].address_state_id"
                                       :options="listAllCity"
-                                      @change="handleChangeCity(detailCustomerProfile.detail_delivery_address[index].address_state_id,listAllCity,index)"
+                                      @change="handleChangeCity(Number(detailCustomerProfile.detail_delivery_address[index].address_state_id),listAllCity,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
                                   >
                                   </a-select>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.address_state_id"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.address_state_id[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div class="flex-1 mr-5">
@@ -233,16 +233,16 @@
                                       placeholder="Chọn quận huyện"
                                       v-model:value="detailCustomerProfile.detail_delivery_address[index].address_district_id"
                                       :options="listAllDistrict"
-                                      @change="handleChangeDistrict(detailCustomerProfile.detail_delivery_address[index].address_district_id,listAllDistrict,index)"
+                                      @change="handleChangeDistrict(Number(detailCustomerProfile.detail_delivery_address[index].address_district_id),listAllDistrict,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
                                   >
                                   </a-select>
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.address_district_id"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.address_district_id[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                               <div class="flex-1">
@@ -258,17 +258,16 @@
                                         placeholder="Chọn xã, phường, thị trấn"
                                         v-model:value="detailCustomerProfile.detail_delivery_address[index].address_ward_id"
                                         :options="listAllWard"
-                                        @change="handleChangeWard(detailCustomerProfile.detail_delivery_address[index].address_ward_id,listAllWard,index)"
+                                        @change="handleChangeWard(Number(detailCustomerProfile.detail_delivery_address[index].address_ward_id),listAllWard,index)"
                                         :fieldNames="{ label: 'title', value: 'ID' }"
                                     >
                                     </a-select>
-
-                                  <p
+<!--                                  <p
                                       v-if="messageError?.address_ward_id"
                                       class="text-red-600"
                                   >
                                     {{ messageError?.address_ward_id[0] }}
-                                  </p>
+                                  </p>-->
                                 </div>
                               </div>
                             </div>
@@ -289,13 +288,33 @@
                         ></textarea>
                             </div>
                           </div>
+                          <div class="mb-5">
+                            <a-radio-group v-model:value="is_default"  name="radioGroup" @change="handleChangeIsDefault(index)">
+                              <a-radio :value="index.toString()" >Đặt làm địa chỉ mặc định</a-radio>
+                            </a-radio-group>
+                          </div>
+                          <div class="float-right">
+                            <i
+                                @click="removeDetailDeliveryAddress(index)"
+                                class="fal fa-times icon-close"
+                            ></i>
+                          </div>
                         </div>
+
 
                         <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
                           nhận -->
                       </div>
                     </div>
-            //new record
+                    <div @click="addOptions">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                    </div>
+                  </div>
+                </Transition>
+
+                <a-modal :visible="isOpenConfirmDefault" @cancel="handleClose" width="660px">
+                  <div v-show="isDeliveryAddress == true" class="outer">
+                    <div class="p-4">
                     <div
                         v-for="(item_new, index_new) in dataOption"
                         :key="index_new"
@@ -315,12 +334,12 @@
                                 placeholder="Nhập tên địa chỉ"
                                 v-model="item_new.title"
                             />
-                            <p
-                                v-if="messageError?.title"
-                                class="text-red-600"
-                            >
-                              {{ messageError?.title[0] }}
-                            </p>
+                            <!--                            <p
+                                                            v-if="messageError?.title"
+                                                            class="text-red-600"
+                                                        >
+                                                          {{ messageError?.title[0] }}
+                                                        </p>-->
                           </div>
                         </div>
 
@@ -328,7 +347,7 @@
                           <div class="flex ">
                             <div class="flex-1 mr-5">
                               <label for="" class="form-group-label"
-                              >Tỉnh/Thành phố{{ index_new }}<span class="text-red-600">* </span>
+                              >Tỉnh/Thành phố<span class="text-red-600">* </span>
                                 <span></span
                                 ></label>
                               <div>
@@ -342,12 +361,12 @@
                                     :fieldNames="{ label: 'title', value: 'ID' }"
                                 >
                                 </a-select>
-                                <p
-                                    v-if="messageError?.address_state_id"
-                                    class="text-red-600"
-                                >
-                                  {{ messageError?.address_state_id[0] }}
-                                </p>
+                                <!--                                <p
+                                                                    v-if="messageError?.address_state_id"
+                                                                    class="text-red-600"
+                                                                >
+                                                                  {{ messageError?.address_state_id[0] }}
+                                                                </p>-->
                               </div>
                             </div>
                             <div class="flex-1 mr-5">
@@ -366,12 +385,12 @@
                                     :fieldNames="{ label: 'title', value: 'ID' }"
                                 >
                                 </a-select>
-                                <p
-                                    v-if="messageError?.address_district_id"
-                                    class="text-red-600"
-                                >
-                                  {{ messageError?.address_district_id[0] }}
-                                </p>
+                                <!--                                <p
+                                                                    v-if="messageError?.address_district_id"
+                                                                    class="text-red-600"
+                                                                >
+                                                                  {{ messageError?.address_district_id[0] }}
+                                                                </p>-->
                               </div>
                             </div>
                             <div class="flex-1">
@@ -392,17 +411,17 @@
                                 >
                                 </a-select>
 
-                                <p
-                                    v-if="messageError?.address_ward_id"
-                                    class="text-red-600"
-                                >
-                                  {{ messageError?.address_ward_id[0] }}
-                                </p>
+                                <!--                                <p
+                                                                    v-if="messageError?.address_ward_id"
+                                                                    class="text-red-600"
+                                                                >
+                                                                  {{ messageError?.address_ward_id[0] }}
+                                                                </p>-->
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="mb-5">
+                        <div class="">
                           <label for="" class="form-group-label"
                           >Địa chỉ cụ thể<span class="text-red-600"> </span>
                             <span></span
@@ -418,17 +437,36 @@
                         ></textarea>
                           </div>
                         </div>
+
+
+
+<!--                        <div class="mb-5">
+                          <a-switch
+                              v-model:checked="item_new.is_default"
+                              :checkedValue="1"
+                              :unCheckedValue="0"
+                          />
+                          &nbsp; Đặt làm mặc định
+                        </div>-->
+
                       </div>
 
-
-                    </div>
-
-
-                    <div @click="addOptions">
-                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
                   </div>
-                </Transition>
+                  </div>
+
+                  <template #footer>
+                    <a-button
+                        key="submit"
+                        type="primary"
+                        :loading="isLoading"
+                        @click="updateCustomerProfile()"
+                    >Xác nhận</a-button
+                    >
+                    <a-button key="back" @click="handleClose">Hủy</a-button>
+                  </template>
+                </a-modal>
+
 
               </div>
             </a-tab-pane>
@@ -475,6 +513,18 @@ const isContact = ref<boolean>(true)
 const checked = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 
+const isOpenConfirmDefault = ref<boolean>(false)
+const handleClose = () => {
+  isOpenConfirmDefault.value = false
+  dataOption.splice(0, 1)
+}
+
+const radioStyle = reactive({
+  display: 'flex',
+  height: '30px',
+  lineHeight: '30px',
+});
+
 const dateFormat = 'DD/MM/YYYY';
 const dateFormatRequest = 'YYYY/MM/DD';
 const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat));
@@ -484,14 +534,11 @@ const dataLocation = useLocation()
 
 dataLocation.getListAllCityAction()
 // dataLocation.getListAllWardAction(value)
-const {messageError, detailCustomerProfile, idState, idWard} = storeToRefs(dataCustomerProfile)
+const {detailCustomerProfile, idState, idWard,is_default} = storeToRefs(dataCustomerProfile)
 
 const {listAllCity, listAllDistrict, listAllDistrict_2, listAllWard, listAllWard_2} = storeToRefs(dataLocation)
 
-// localStorage.setItem("jsonListAllDistrict", payload?.roles[0]);
-
 dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id))
-
 let arr_district = ref([]);
 let arr_ward = ref([]);
 
@@ -547,18 +594,36 @@ const handleChangeWard_new = (value: number, option: any, index: number) => {
   dataOption[index].address_detail = arr[0].title + ', ' + dataOption[index].address_detail
 }
 
+const handleChangeIsDefault = (index:any) => {
+  detailCustomerProfile.value.detail_delivery_address[index].is_default = '1';
+  let color = detailCustomerProfile.value.detail_delivery_address.filter((c:any,i:any)=>i!= index)
+  if (color){
+    color.map((item:any) => item.is_default = 0)
+  }
+}
+
+
+
 const dataOption = reactive([])
 
 const addOptions = () => {
+
+  isOpenConfirmDefault.value = true
+
   const data = {
     title: '',
     address_country_id: '1',
-    address_district_id: null,
-    address_ward_id: null,
-    address_state_id: null,
+    address_district_id: '',
+    address_ward_id: '',
+    address_state_id: '',
     address_detail: '',
+    is_default:''
   }
   dataOption.push(data)
+}
+
+const removeDetailDeliveryAddress = (index: number) => {
+  detailCustomerProfile.value.detail_delivery_address.splice(index,1)
 }
 
 const removeOptions = (index: number) => {
