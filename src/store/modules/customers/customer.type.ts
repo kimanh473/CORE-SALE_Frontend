@@ -20,7 +20,7 @@ interface DetailDeliveryAddress {
     is_default: string
 }
 interface DataCustomerAccount {
-    id:bigint,
+    id: number,
     code: string,
     status: string,
     username: string,
@@ -28,5 +28,6 @@ interface DataCustomerAccount {
     email_company: string,
     email_personal: string,
     phone: string,
+    gender:string,
     web_code: string,
 }

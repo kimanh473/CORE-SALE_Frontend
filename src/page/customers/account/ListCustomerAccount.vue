@@ -652,6 +652,15 @@ const updateCustomerAccount = () => {
   dataCustomerAccount.updateCustomerAccountAction(id, data, toast, EndTimeLoading, handleCloseCreate)
 }
 
+const changeStatusAccount = (id: number, status: string) => {
+  isLoading.value = true
+  let data = {
+    user_id: id,
+    status: status == 'BLOCK' ? 'ACTIVE' : 'BLOCK',
+  }
+  dataCustomerAccount.changeStatusAccountAction(data, toast, EndTimeLoading)
+}
+
 const resetPassword = () => {
   let data = {
     password: changePassword.password,

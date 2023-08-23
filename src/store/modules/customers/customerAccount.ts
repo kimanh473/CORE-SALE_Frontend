@@ -5,8 +5,10 @@ import {
     getDetailCustomerAccountApi,
     createCustomerAccountApi,
     updateCustomerAccountApi,
-    deleteCustomerAccountApi
+    deleteCustomerAccountApi,
 } from '../../../services/CustomerProfileServices/customerAccount.services'
+
+import {changeStatusAccountApi} from "../../../services/AccountServices/password.service";
 
 
 export const useCustomerAccount = defineStore("CustomerAccount", {
@@ -130,7 +132,27 @@ export const useCustomerAccount = defineStore("CustomerAccount", {
                     EndTimeLoading();
                 });
         },
-
+        changeStatusAccountAction(data: any, toast: any, EndTimeLoading: Function) {
+            changeStatusAccountApi(data)
+                .then((res: any) => {
+                    console.log(res);
+                    if (res?.data?.status == 'success') {
+                        toast.success('Thay đổi trạng thái tài khoản thành công');
+                        this.getAllCustomerAccountPaginateAction()
+                        EndTimeLoading()
+                    } else {
+                        EndTimeLoading()
+                        toast.warning(res.data.messages.title);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                    EndTimeLoading()
+                });
+        },
 
 
     }
