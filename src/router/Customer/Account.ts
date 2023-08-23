@@ -1,14 +1,15 @@
 import requireAuth from "../requireAuth";
 
-const customerProfile = [
+const customerAccount = [
     {
-        path: '/list-account-customer',
+        path: '/list-customer-account',
         component: () => import('../../page/customers/account/ListCustomerAccount.vue'),
         meta: {
             layout: "base-layout",
         },
         beforeEnter: requireAuth,
-    },
+    }
 ]
 
-export default customerProfile;
+export default customerAccount;
+

@@ -1,19 +1,23 @@
 import httpClient from "../services";
-const getAllCustomerCustomerApi = () => {
+const getAllCustomerAccountApi = () => {
     return httpClient.get(`/customer/account/index`);
 };
-const createCustomerProfileApi = (data:object) => {
-    return httpClient.post(`/customer/profile/create`,data);
+const createCustomerAccountApi = (data:object) => {
+    return httpClient.post(`/customer/account/create`,data);
 };
-const updateCustomerProfileApi = (id:number, data: Object) => {
-    return httpClient.post(`/customer/profile/update/${id}`,data);
+const updateCustomerAccountApi = (id:number, data: Object) => {
+    return httpClient.post(`/customer/account/update/${id}`,data);
 };
-const deleteCustomerProfileApi = (id:number) => {
-    return httpClient.post(`/customer/profile/delete/${id}`);
+const deleteCustomerAccountApi = (id:number) => {
+    return httpClient.post(`/customer/account/delete/${id}`);
 }
-const getDetailCustomerProfileApi = (id:number) => {
-    return httpClient.get(`/customer/profile/show/${id}`);
+const getDetailCustomerAccountApi = (id:number) => {
+    return httpClient.get(`/customer/account/show/${id}`);
 }
 export {
-    getAllCustomerCustomerApi
+    getAllCustomerAccountApi,
+    getDetailCustomerAccountApi,
+    createCustomerAccountApi,
+    updateCustomerAccountApi,
+    deleteCustomerAccountApi
 };

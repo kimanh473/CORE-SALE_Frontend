@@ -2,11 +2,19 @@ import {defineStore} from "pinia";
 
 import {
     getAllCustomerAccountApi,
-} from '../../../services/CustomerAccountServices/customerAccount.services'
+    getDetailCustomerAccountApi,
+    createCustomerAccountApi,
+    updateCustomerAccountApi,
+    deleteCustomerAccountApi
+} from '../../../services/CustomerProfileServices/customerAccount.services'
 
-export const useCustomerProfile = defineStore("CustomerAccount", {
+
+export const useCustomerAccount = defineStore("CustomerAccount", {
     state: () => ({
         listCustomerAccount: [] as DataCustomerAccount[],
+        customerAccount: {} as DataCustomerAccount,
+        detailCustomerAccount: {} as DataCustomerAccount,
+        createStatus: ''
     }),
     getters: {
         getListCustomerAccountPagination: (state: any) => {
@@ -25,11 +33,7 @@ export const useCustomerProfile = defineStore("CustomerAccount", {
 
         getDetailCustomerAccount: (state: any) => {
             return (payload: any) => {
-                state.detailCustomerProfile = payload
-                //state.idState = payload.detail_delivery_address?.map((item:any)=>item.address_state_id)
-                state.idWard = payload.detail_delivery_address?.map((item:any)=>item.address_district_id)
-                state.is_default = payload.detail_delivery_address?.map((item:any)=>Number(item.is_default)).indexOf(1).toString()
-                /*state.idState = Array.prototype.reverse.call(state.idStateRev)*/
+                state.detailCustomerAccount = payload
             }
         },
     },
@@ -41,10 +45,93 @@ export const useCustomerProfile = defineStore("CustomerAccount", {
                     let res = payload?.data?.data?.data;
                     this.getListCustomerAccountPagination(res)
                 })
+                .catch((err?:any) => {
+                    console.log(err)
+                });
+        },
+        async getDetailCustomerAccountAction(id: number) {
+            await getDetailCustomerAccountApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailCustomerAccount(res)
+                })
                 .catch((err) => {
                     console.log(err)
                 });
         },
+        async createCustomerAccountAction(
+            data: Object,
+            toast: any,
+            EndTimeLoading: Function,
+            handleCloseCreate: Function
+        ) {
+            await createCustomerAccountApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công");
+                        EndTimeLoading();
+                        handleCloseCreate();
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    EndTimeLoading();
+                    let arrMess = err.response.data.message;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+        async updateCustomerAccountAction(
+            id: number,
+            data: Object,
+            toast: any,
+            EndTimeLoading: Function,
+            handleCloseCreate: Function
+        ) {
+            await updateCustomerAccountApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công");
+                        EndTimeLoading();
+                        handleCloseCreate();
+                    }
+                })
+                .catch((err) => {
+                    this.messageError = err.response.data.messages
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+        deleteCustomerAccountAction(id: number, toast: any, EndTimeLoading: Function, handleCloseConfirm: Function) {
+            deleteCustomerAccountApi(id)
+                .then((res) => {
+                    if (res.data.status == "success") {
+                        toast.success("Xóa thành công", 500);
+                        this.getAllCustomerAccountPaginateAction()
+                    } else {
+                        toast.error(res.data.messages, 500);
+                    }
+                    EndTimeLoading();
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
+                });
+        },
+
+
 
     }
 

@@ -533,32 +533,13 @@ const dataCustomerProfile = useCustomerProfile();
 const dataLocation = useLocation()
 
 dataLocation.getListAllCityAction()
-// dataLocation.getListAllWardAction(value)
-const {detailCustomerProfile, idState, idWard,is_default} = storeToRefs(dataCustomerProfile)
 
-const {listAllCity, listAllDistrict, listAllDistrict_2, listAllWard, listAllWard_2} = storeToRefs(dataLocation)
+const {detailCustomerProfile, idState, is_default} = storeToRefs(dataCustomerProfile)
+
+const {listAllCity, listAllDistrict, listAllWard} = storeToRefs(dataLocation)
 
 dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id))
 let arr_district = ref([]);
-let arr_ward = ref([]);
-
-/*dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id)).then(() => {
-    dataLocation.getListAllDistrictAction_2().then(() => {
-      arr_district.value.push(listAllDistrict_2.value)
-    })
-})
-
-dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id)).then(() => {
-  dataLocation.getListAllWardAction_2().then(() => {
-    arr_ward.value.push(listAllWard_2.value)
-  })
-})*/
-
-const showDistrict = (value: number) => {
-  // dataLocation.getListAllDistrictAction(value)
-}
-
-// const handleAdd = ()
 
 const handleChangeCity = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
@@ -607,9 +588,7 @@ const handleChangeIsDefault = (index:any) => {
 const dataOption = reactive([])
 
 const addOptions = () => {
-
   isOpenConfirmDefault.value = true
-
   const data = {
     title: '',
     address_country_id: '1',
@@ -649,21 +628,6 @@ const checkedInvent = (code: string) => {
 const EndTimeLoading = () => {
   isLoading.value = false
 }
-
-/*const customerProfile = reactive({
-  code: '',
-  name: '',
-  birth_day: '',
-  gender: '',
-  email: '',
-  phone: '',
-  address_country_id: '1',
-  address_district_id: null,
-  address_ward_id: null,
-  address_state_id: null,
-  address_detail: '',
-  delivery_address: ''
-})*/
 
 const updateCustomerProfile = () => {
   let data = {
