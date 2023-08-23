@@ -49,6 +49,26 @@
           >
             <div id="infor-common">
               <div class="w-full ml-4">
+                <div class="pr-[30px]">
+                  <label for="" class="form-group-label"
+                    >Nhóm thuộc tính<span class="text-red-600">* </span>
+                    <span></span
+                  ></label>
+                  <div>
+                    <a-select
+                      class="form-control-input"
+                      placeholder="Chọn nhóm thuộc tính"
+                      :options="listAttributeGroup"
+                      v-model:value="product.groupAttributeID"
+                      :fieldNames="{ label: 'title', value: 'code' }"
+                      @change="handleChangeAttributeGroup"
+                    >
+                    </a-select>
+                    <!-- <p v-if="messageError?.title" class="text-red-600">
+                    {{ messageError?.title[0] }}
+                  </p> -->
+                  </div>
+                </div>
                 <h4
                   class="form-section-title form-small cursor-pointer"
                   @click="isInfor = !isInfor"
@@ -139,27 +159,6 @@
                         >
                           <div>
                             <label for="" class="form-group-label"
-                              >Nhóm thuộc tính<span class="text-red-600"
-                                >*
-                              </span>
-                              <span></span
-                            ></label>
-                            <div>
-                              <a-select
-                                class="form-control-input"
-                                placeholder="Chọn nhóm thuộc tính"
-                                :options="listWeb"
-                                v-model:value="product.webID"
-                                :fieldNames="{ label: 'title', value: 'code' }"
-                              >
-                              </a-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
-                            </div>
-                          </div>
-                          <div>
-                            <label for="" class="form-group-label"
                               >Thuế<span class="text-red-600">* </span>
                               <span></span
                             ></label>
@@ -167,8 +166,8 @@
                               <a-select
                                 class="form-control-input"
                                 placeholder="Chọn loại thuế"
-                                :options="listWeb"
-                                v-model:value="product.webID"
+                                :options="listTax"
+                                v-model:value="product.taxID"
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
@@ -245,8 +244,8 @@
                               <a-select
                                 class="form-control-input"
                                 placeholder="Chọn đơn vị tinh"
-                                :options="listWeb"
-                                v-model:value="product.webID"
+                                :options="listSpecification"
+                                v-model:value="product.specificationID"
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
@@ -285,63 +284,6 @@
                                 :src="previewImage"
                               />
                             </a-modal>
-                          </div>
-                        </div>
-                        <div
-                          class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
-                        >
-                          <div>
-                            <label for="" class="form-group-label"
-                              >Ngành hàng<span class="text-red-600">* </span>
-                              <span></span
-                            ></label>
-                            <div>
-                              <input
-                                type="text"
-                                class="form-control-input"
-                                v-model="product.code"
-                              />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
-                            </div>
-                          </div>
-                          <div>
-                            <label for="" class="form-group-label"
-                              >Nhóm thuộc tính<span class="text-red-600"
-                                >*
-                              </span>
-                              <span></span
-                            ></label>
-                            <div>
-                              <input
-                                type="text"
-                                class="form-control-input"
-                                v-model="product.code"
-                              />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-small">
-                          <div>
-                            <label for="" class="form-group-label"
-                              >Thuế<span class="text-red-600">* </span>
-                              <span></span
-                            ></label>
-                            <div>
-                              <input
-                                type="text"
-                                class="form-control-input"
-                                placeholder="Nhập thuế"
-                                v-model="product.title"
-                              />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
-                            </div>
                           </div>
                         </div>
                         <div class="form-small">
@@ -493,6 +435,23 @@
           </div>
         </div>
       </Transition>
+      <a-select
+        class="form-control-input"
+        placeholder="Chọn nhóm thuộc tính"
+        :options="listSetAttributeGroup"
+        v-model:value="product.groupAttributeID"
+        :fieldNames="{ label: 'title', value: 'code' }"
+        @change="handleChangeAttributeGroup"
+      >
+      </a-select>
+      <div v-for="(item, index) in indexAttribute" :key="index">
+        <label for="" class="form-group-label"
+          >{{ item.title }}<span class="text-red-600"></span
+        ></label>
+        <div v-for="(item1, index1) in item.attribute" :key="index1">
+          <input class="mb-2" :type="formatType(item1.backend_type)" />
+        </div>
+      </div>
     </template>
     <template v-slot:footer
       ><div class="bg-slate-300">
@@ -522,13 +481,29 @@
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
   import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
+  import { useListTax } from '../../store/modules/store-setting/tax'
+  import { useListSpecification } from '../../store/modules/store-setting/specification'
+  import { useAttributeGroup } from '../../store/modules/store-setting/attribute-group'
+  import { useCategory } from '../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import type { UploadProps } from 'ant-design-vue'
   import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
-  import { useCategory } from '../../store/modules/store-setting/category'
+  const dataSpecification = useListSpecification()
+  dataSpecification.getListSpecificationAction()
+  const { listSpecification } = storeToRefs(dataSpecification)
+  const dataTax = useListTax()
+  dataTax.getListTaxAction()
+  const { listTax } = storeToRefs(dataTax)
+  const dataAttributeGroup = useAttributeGroup()
+  dataAttributeGroup.getListAttributeGroupAction()
+  dataAttributeGroup.getListSetAttributeGroupAction()
+  const { listAttributeGroup, listSetAttributeGroup } =
+    storeToRefs(dataAttributeGroup)
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
+  console.log(listSetAttributeGroup)
+
   const valueTree = ref([])
   const treeData = ref([
     {
@@ -557,6 +532,18 @@
 
   //   console.log(str)
   // }
+  const indexAttribute = ref()
+  const handleChangeAttributeGroup = (value: any, options: any) => {
+    console.log(value)
+    console.log(options)
+    indexAttribute.value = options.json_group_attribute_detail.map(
+      (item: any) => ({
+        title: item.title,
+        attribute: item.attribute_detail,
+      })
+    )
+    console.log(indexAttribute.value)
+  }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -575,6 +562,15 @@
   const handleCancelImage = () => {
     previewVisible.value = false
     previewTitle.value = ''
+  }
+  const formatType = (type: string) => {
+    if (type == 'text') {
+      return 'text'
+    } else if (type == 'varchar') {
+      return 'checkbox'
+    } else {
+      return ''
+    }
   }
   const handlePreview = async (file: UploadProps['fileList'][number]) => {
     if (!file.url && !file.preview) {
@@ -620,6 +616,9 @@
     code: '',
     desc: '',
     webID: null,
+    groupAttributeID: null,
+    taxID: null,
+    specificationID: null,
   })
   const createGroupInventory = () => {
     let data = {

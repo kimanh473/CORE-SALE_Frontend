@@ -1,5 +1,9 @@
 import httpClient from "../services";
-//Danh sác nhóm thuộc tính
+//Danh sách bộ thuộc tính
+const getAllSetAttributeGroupApi = () => {
+    return httpClient.get(`/system-manage/product-category/index`);
+};
+//Danh sách nhóm thuộc tính
 const getAllAttributeGroupApi = () => {
     return httpClient.get(`/store/product/group-attribute/index`);
 };
@@ -9,5 +13,6 @@ const deleteAttributeGroupApi = (id: number) => {
 };
 export {
     getAllAttributeGroupApi,
-    deleteAttributeGroupApi
+    deleteAttributeGroupApi,
+    getAllSetAttributeGroupApi
 };
