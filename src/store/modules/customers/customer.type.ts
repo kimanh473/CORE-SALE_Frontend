@@ -31,3 +31,20 @@ interface DataCustomerAccount {
     gender:string,
     web_code: string,
 }
+interface DataGroupCustomer {
+    id: number,
+    code: string,
+    title: string,
+    status: string,
+    is_default: string,
+    desc: string,
+    rule: string,
+    json_rule_detail: Array<JsonRuleDetail>
+}
+interface JsonRuleDetail {
+    time_account_min: number,
+    total_order: number,
+    total_order_destroy: number,
+    total_value_order: string,
+    frequency_order: number
+}

@@ -8,7 +8,7 @@ import {
     deleteCustomerAccountApi,
 } from '../../../services/CustomerProfileServices/customerAccount.services'
 
-import {changeStatusAccountApi} from "../../../services/AccountServices/password.service";
+import {changeStatusAccountApi} from "../../../services/AccountServices/passwordCustomer.service";
 
 
 export const useCustomerAccount = defineStore("CustomerAccount", {
@@ -76,6 +76,7 @@ export const useCustomerAccount = defineStore("CustomerAccount", {
                         toast.success("Tạo mới thành công");
                         EndTimeLoading();
                         handleCloseCreate();
+                        this.getAllCustomerAccountPaginateAction()
                     }
                 })
                 .catch((err) => {
@@ -104,6 +105,7 @@ export const useCustomerAccount = defineStore("CustomerAccount", {
                         toast.success("Cập nhật thành công");
                         EndTimeLoading();
                         handleCloseCreate();
+                        this.getAllCustomerAccountPaginateAction()
                     }
                 })
                 .catch((err) => {

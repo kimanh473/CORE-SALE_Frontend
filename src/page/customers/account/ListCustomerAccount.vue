@@ -473,42 +473,6 @@ const fullnameReset = ref()
 const role = localStorage.getItem('role')
 const passSetting = CustomerPasswordSetting()
 
-const rightClick = (record: any) => {
-  return {
-    oncontextmenu: (event: MouseEvent) => {
-      event.preventDefault()
-      console.log('Right-clicked row:', record)
-      groupPermission.value = record
-      fullnameReset.value = record?.fullname
-      idSelected.value = record?.id
-      var menu = document.getElementById('contextMenu')
-      menu.style.display = 'block'
-      FormatModalX(menu, event)
-      FormatModalY(menu, event)
-      // if (isActiveAdminGroup.value === true) {
-      //   isActiveAdminGroup.value = false
-      // } else {
-      //   var menu = document.getElementById('contextMenu')
-      //   menu.style.display = 'block'
-      //   FormatModalX(menu, e)
-      //   FormatModalY(menu, e)
-      // }
-    },
-  }
-}
-
-const handleOpenResetPass = () => {
-  isOpenResetPass.value = true
-}
-
-const handleClose = () => {
-  isOpenConfirmDefault.value = false
-}
-
-const handleCloseUpdate = () => {
-  isOpenUpdateModal.value = false
-}
-
 const dateFormat = 'DD/MM/YYYY';
 const dateFormatRequest = 'YYYY/MM/DD';
 const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat));
@@ -518,12 +482,6 @@ const changePassword = reactive({
   password: '',
   password_confirmation: '',
 })
-
-const handleCloseDetail = () => {
-  isOpenResetPass.value = false
-  changePassword.password = ''
-  changePassword.password_confirmation = ''
-}
 
 const columns = [
   {
@@ -558,6 +516,30 @@ const columns = [
   },
 ]
 
+const rightClick = (record: any) => {
+  return {
+    oncontextmenu: (event: MouseEvent) => {
+      event.preventDefault()
+      console.log('Right-clicked row:', record)
+      groupPermission.value = record
+      fullnameReset.value = record?.fullname
+      idSelected.value = record?.id
+      var menu = document.getElementById('contextMenu')
+      menu.style.display = 'block'
+      FormatModalX(menu, event)
+      FormatModalY(menu, event)
+      // if (isActiveAdminGroup.value === true) {
+      //   isActiveAdminGroup.value = false
+      // } else {
+      //   var menu = document.getElementById('contextMenu')
+      //   menu.style.display = 'block'
+      //   FormatModalX(menu, e)
+      //   FormatModalY(menu, e)
+      // }
+    },
+  }
+}
+
 const addOptions = () => {
   const data = {
     title: '',
@@ -568,6 +550,14 @@ const addOptions = () => {
     address_detail: '',
     is_default: ''
   }
+}
+
+const handleOpenResetPass = () => {
+  isOpenResetPass.value = true
+}
+
+const handleClose = () => {
+  isOpenConfirmDefault.value = false
 }
 
 const handleCloseConfirm = () => {
@@ -581,6 +571,16 @@ const EndTimeLoading = () => {
 const navigateUpdate = (id: number) => {
   dataCustomerAccount.getDetailCustomerAccountAction(id)
   isOpenUpdateModal.value = true
+}
+
+const handleCloseDetail = () => {
+  isOpenResetPass.value = false
+  changePassword.password = ''
+  changePassword.password_confirmation = ''
+}
+
+const handleCloseUpdate = () => {
+  isOpenUpdateModal.value = false
 }
 
 const idSelected = ref()
@@ -614,6 +614,7 @@ const customerAccount = reactive({
 const openModalCreateCustomerAccount = () => {
   isOpenCreateModal.value = true
 }
+
 const handleCloseCreate = () => {
   isOpenCreateModal.value = false
 }
@@ -638,7 +639,6 @@ const createCustomerAccount = () => {
 const updateCustomerAccount = () => {
   isLoading.value = true
   let id = detailCustomerAccount.value.id
-  console.log(id);
   let data = {
     code: detailCustomerAccount.value.code,
     username: detailCustomerAccount.value.username,
@@ -649,7 +649,7 @@ const updateCustomerAccount = () => {
     phone: detailCustomerAccount.value.phone,
     web_code: "HWK"
   }
-  dataCustomerAccount.updateCustomerAccountAction(id, data, toast, EndTimeLoading, handleCloseCreate)
+  dataCustomerAccount.updateCustomerAccountAction(id, data, toast, EndTimeLoading, handleCloseUpdate)
 }
 
 const changeStatusAccount = (id: number, status: string) => {

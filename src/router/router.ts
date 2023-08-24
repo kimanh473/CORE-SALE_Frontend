@@ -12,6 +12,7 @@ import tax from './Product/Tax'
 import currency from './Product/Currency'
 import customerProfile from './Customer/Profile'
 import customerAccount from './Customer/Account'
+import customerGroup from './Customer/Group'
 type TRoute = {
   path: string
   component: () => Promise<any>
@@ -154,6 +155,7 @@ LoadRoute(tax)
 LoadRoute(currency)
 LoadRoute(customerProfile)
 LoadRoute(customerAccount)
+LoadRoute(customerGroup)
 export default createRouter({
   history: createWebHistory(),
   routes: route
