@@ -285,7 +285,7 @@
       value: 'varchar',
     },
     {
-      label: 'Nhiều lựa chọn',
+      label: 'Lựa chọn',
       value: 'varchar',
     },
   ])
