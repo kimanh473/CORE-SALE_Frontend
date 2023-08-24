@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
-import { getAllAttributeGroupApi, deleteAttributeGroupApi } from '../../../services/SettingStoreServices/attributeGroup.service'
+import { getAllSetAttributeGroupApi, getAllAttributeGroupApi, deleteAttributeGroupApi } from '../../../services/SettingStoreServices/attributeGroup.service'
 
 export const useAttributeGroup = defineStore("AttributeGroup", {
     state: () => ({
         listAttributeGroup: [] as DataAttribute[],
+        listSetAttributeGroup: [] as SetDataAttribute[],
     }),
     getters: {
         // getData: (state) => {
@@ -21,6 +22,9 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
         //         created_at: item.created_at.substring(0, 10),
         //     }))
         // },
+        getListSetAttribute: (state: any) => {
+            return (payload: any) => state.listSetAttributeGroup = payload
+        },
         getListAttribute: (state: any) => {
             return (payload: any) => state.listAttributeGroup = payload
         }
@@ -32,6 +36,16 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
         // getDetailInventory(payload: any) {
         //     this.detailInventory = payload.data
         // },
+        async getListSetAttributeGroupAction() {
+            await getAllSetAttributeGroupApi()
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getListSetAttribute(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
         async getListAttributeGroupAction() {
             await getAllAttributeGroupApi()
                 .then((payload: any) => {
