@@ -22,8 +22,22 @@ interface DataAttribute {
     options_new: Array<dataDetailNew>
     options_old: Array<dataDetailOld>
     option_detail: Array<dataDetailOld>
-    user_created:object,
-    user_updated:object
+    user_created: object,
+    user_updated: object
+    attribute_detail: Array<DataAttribute>
+}
+interface SetDataAttribute {
+    id: number
+    code: string,
+    title: string
+    created_by_id: string
+    updated_by_id: string
+    created_at: string
+    updated_at: string
+    deleted_at: string
+    status: string
+    json_group_attribute_code: Array<string>
+    json_group_attribute_detail: Array<DataAttribute>
 }
 interface dataDetailOld {
     id: number,
@@ -102,7 +116,7 @@ interface DataTax {
     created_at: string,
     updated_at: string,
     deleted_at: string,
-    user_created:object
+    user_created: object
 }
 interface DataCurrency {
     id: number,
