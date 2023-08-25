@@ -9,7 +9,7 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"></Transition>
-              <p class="longText pl-5 mb-0">Danh sách nhóm khách hàng</p>
+              <p class="longText pl-5 mb-0">Danh sách đơn hàng</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -27,14 +27,14 @@
             @click="openModalCreateGroupCustomer"
             @cancel="handleCloseCreate"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới nhóm khách hàng</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới đơn hàng</p>
         </div>
 
       </div>
       <a-table
           class="!p-[10px]"
           :columns="columns"
-          :data-source="listGroupCustomer"
+          :data-source="listOrder"
           bordered
           row-key="id"
       >
@@ -442,7 +442,7 @@ import {useRoute, useRouter} from 'vue-router'
 import {ref, reactive} from 'vue'
 import {useToast} from 'vue-toastification'
 import ContextMenu from '../../../components/common/ContextMenu.vue'
-import {useGroupCustomer} from '../../../store/modules/customers/customerGroup'
+import {useOrder} from '../../../store/modules/order-service/order'
 //   import { storeToRefs } from 'pinia'
 import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
 import {storeToRefs} from 'pinia'
@@ -452,9 +452,9 @@ import {FormatModalX, FormatModalY} from "../../../components/constants/FormatAl
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
-const dataGroupCustomer = useGroupCustomer()
-dataGroupCustomer.getAllGroupCustomerPaginateAction()
-const {listGroupCustomer,detailGroupCustomer} = storeToRefs(dataGroupCustomer)
+const dataOrder = useOrder()
+dataOrder.getAllOrderPaginateAction()
+const {listOrder} = storeToRefs(dataOrder)
 const isCheck = ref<boolean>(false)
 const isInfor = ref<boolean>(true)
 const isLoading = ref<boolean>(false)
@@ -474,25 +474,12 @@ const is_default = ref<boolean>(false)
 
 const columns = [
   {
-    title: 'Mã',
+    title: 'Mã đơn hàng',
     dataIndex: 'code',
   },
   {
-    title: 'Tên nhóm',
-    dataIndex: 'title',
-  },
-  {
-    title: 'Mô tả',
-    dataIndex: 'desc',
-  },
-  {
-    title: 'Đặt làm mặc định',
-    dataIndex: 'is_default',
-  },
-  {
-    title: 'Điều kiện',
-    dataIndex: 'json_rule_detail',
-    key: 'json_rule_detail'
+    title: 'Mã khách hàng',
+    dataIndex: 'customer_account_code',
   },
   {
     title: 'Thao tác',
@@ -579,22 +566,10 @@ const createGroupCustomer = () => {
     rule: customerGroupAccount.rule,
     rule_detail: data_rule_detail_arr.value
   }
-  dataGroupCustomer.createGroupCustomerAction(data, toast, EndTimeLoading, handleCloseCreate)
 }
 
 const updateGroupCustomer = () => {
   isLoading.value = true
-  let id = detailGroupCustomer.value.id
-  console.log(id)
-  let data = {
-    code: detailGroupCustomer.value.code,
-    title: detailGroupCustomer.value.title,
-    desc: detailGroupCustomer.value.desc,
-    is_default:  detailGroupCustomer.value.is_default,
-    rule: detailGroupCustomer.value.rule,
-    rule_detail: JSON.parse(JSON.stringify(detailGroupCustomer.value.json_rule_detail)),
-  }
-  dataGroupCustomer.updateGroupCustomerAction(id, data, toast, EndTimeLoading, handleCloseUpdate)
 }
 
 </script>

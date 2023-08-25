@@ -35,10 +35,10 @@ interface DataGroupCustomer {
     id: number,
     code: string,
     title: string,
-    status: string,
-    is_default: string,
+    status: number,
+    is_default: number,
     desc: string,
-    rule: string,
+    rule: number,
     json_rule_detail: Array<JsonRuleDetail>
 }
 interface JsonRuleDetail {

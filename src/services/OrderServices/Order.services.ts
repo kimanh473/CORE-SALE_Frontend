@@ -1,6 +1,6 @@
 import httpClient from "../services";
-const getAllGroupCustomerApi = () => {
-    return httpClient.get(`/system-manage/customer-type/index-paginate`);
+const getAllOrderApi = () => {
+    return httpClient.get(`/user/order/list-order`);
 };
 
 const createGroupCustomerApi = (data:object) => {
@@ -20,9 +20,5 @@ const deleteGroupCustomerApi = (id:number) => {
 }
 
 export {
-    getAllGroupCustomerApi,
-    createGroupCustomerApi,
-    getDetailGroupCustomerApi,
-    updateGroupCustomerApi,
-    deleteGroupCustomerApi
+    getAllOrderApi
 };
