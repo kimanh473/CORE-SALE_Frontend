@@ -28,13 +28,13 @@
       <Transition :duration="550" name="nested">
         <div class="flex form-large-70 pl-[150px]">
           <a-anchor
-            :affix="true"
             :wrapperStyle="{
               width: '200px',
               height: 'fit-content',
               position: 'fixed',
               padding: '0',
               margin: '0',
+              top: '20',
               background: 'white',
               textAlign: 'center',
             }"
@@ -432,26 +432,55 @@
                 </Transition>
               </div>
             </div>
+            <a-select
+              class="form-control-input"
+              placeholder="Chọn nhóm thuộc tính"
+              :options="listSetAttributeGroup"
+              v-model:value="product.groupAttributeID"
+              :fieldNames="{ label: 'title', value: 'code' }"
+              @change="handleChangeAttributeGroup"
+            >
+            </a-select>
+
+            <div v-for="(item, index) in indexAttribute" :key="index">
+              <h4
+                class="form-section-title form-small cursor-pointer"
+                @click="isInfor = !isInfor"
+              >
+                <span v-show="isInfor == true">
+                  <i class="fas fa-chevron-down cursor-pointer"></i>
+                </span>
+                <span v-show="isInfor == false"
+                  ><i class="fas fa-chevron-right cursor-pointer"></i
+                ></span>
+                {{ item.title }}
+              </h4>
+              <div
+                v-show="isInfor == true"
+                v-for="(item1, index1) in item.attribute"
+                :key="index1"
+                class="form-small"
+              >
+                <label for="" class="form-group-label"
+                  >{{ item1.frontend_label
+                  }}<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div v-for="(map, mapIndex) in typeProduct">
+                  <keep-alive>
+                    <component
+                      :is="`a-${map.type}`"
+                      :options="item1.option_detail"
+                      :fieldNames="{ label: 'title', value: 'id' }"
+                      v-bind="{ ...map.attribute }"
+                      v-show="map.code == item1.backend_type"
+                    ></component>
+                  </keep-alive>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Transition>
-      <a-select
-        class="form-control-input"
-        placeholder="Chọn nhóm thuộc tính"
-        :options="listSetAttributeGroup"
-        v-model:value="product.groupAttributeID"
-        :fieldNames="{ label: 'title', value: 'code' }"
-        @change="handleChangeAttributeGroup"
-      >
-      </a-select>
-      <div v-for="(item, index) in indexAttribute" :key="index">
-        <label for="" class="form-group-label"
-          >{{ item.title }}<span class="text-red-600"></span
-        ></label>
-        <div v-for="(item1, index1) in item.attribute" :key="index1">
-          <input class="mb-2" :type="formatType(item1.backend_type)" />
-        </div>
-      </div>
     </template>
     <template v-slot:footer
       ><div class="bg-slate-300">
@@ -486,6 +515,7 @@
   import { useAttributeGroup } from '../../store/modules/store-setting/attribute-group'
   import { useCategory } from '../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
+  import { typeProduct } from '../../page/products/configProduct'
   import type { UploadProps } from 'ant-design-vue'
   import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
   const dataSpecification = useListSpecification()
@@ -558,7 +588,6 @@
   const isInfor = ref(true)
   const isDetail = ref(true)
   const fileList = ref<UploadProps['fileList']>([])
-
   const handleCancelImage = () => {
     previewVisible.value = false
     previewTitle.value = ''
