@@ -41,8 +41,12 @@
             :showInkInFixed="true"
             class="min-w-[200px] min-h-full mr-[10px]"
           >
-            <a-anchor-link href="#infor-common" title="Thông tin chung" />
-            <a-anchor-link href="#infor-detail" title="Thông tin chi tiết" />
+            <a-anchor-link
+              v-for="(item, index) in indexAttribute"
+              :key="index"
+              :href="'#' + item.title"
+              :title="item.title"
+            />
           </a-anchor>
           <div
             class="text-left px-4 py-2 w-full h-full format-scroll form-large-full bg-white"
@@ -404,13 +408,13 @@
                   placeholder="Chọn nhóm thuộc tính"
                   :options="listSetAttributeGroup"
                   v-model:value="product.groupAttributeID"
-                  :fieldNames="{ label: 'title', value: 'code' }"
+                  :fieldNames="{ label: 'title', value: 'id' }"
                   @change="handleChangeAttributeGroup"
                 >
                 </a-select>
               </div>
             </div>
-            <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
+            <!-- <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
               <div>
                 <label for="" class="form-group-label"
                   >Tên sản phẩm<span class="text-red-600">* </span> <span></span
@@ -451,7 +455,6 @@
                     style="width: 100%"
                     v-model:value="valueTree"
                     :tree-data="listTreeCategory"
-                    :show-checked-strategy="TreeSelect.SHOW_ALL"
                     :fieldNames="{
                       children: 'children',
                       label: 'title',
@@ -464,11 +467,12 @@
                   </a-tree-select>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div v-for="(item, index) in indexAttribute" :key="index">
               <h4
                 class="form-section-title form-small cursor-pointer"
                 @click="isInfor = !isInfor"
+                :id="item.title"
               >
                 <span v-show="isInfor == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
@@ -498,22 +502,19 @@
                       :fieldNames="{ label: 'title', value: 'id' }"
                       v-bind="{ ...map.attribute }"
                       v-show="map.code == item1.backend_type"
-                      :ref="item1.attribute_code"
-                      @change="
-                        handleChange(
-                          $event,
-                          Object.keys($refs),
-                          index1,
-                          mapIndex,
-                          item1.attribute_code
-                        )
-                      "
+                      @change="handleChange($event, item1.attribute_code)"
+                      :rules="[
+                        {
+                          required: true,
+                          message: 'Please input your username!',
+                        },
+                      ]"
                     ></component>
                   </keep-alive>
                 </div>
               </div>
             </div>
-            <div id="infor-price" class="w-full ml-4">
+            <!-- <div id="infor-price" class="w-full ml-4">
               <h4
                 class="form-section-title form-small cursor-pointer"
                 @click="isPrice = !isPrice"
@@ -530,38 +531,8 @@
                 <div v-show="isPrice == true" class="outer">
                   <div class="w-full">
                     <div
-                      class="form-large-full grid grid-cols-3 gap-3 pr-[30px]"
+                      class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
                     >
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Giá sỉ<span class="text-red-600">* </span>
-                          <span></span
-                        ></label>
-                        <div>
-                          <input type="text" class="form-control-input" />
-                        </div>
-                      </div>
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Giá lẻ<span class="text-red-600"></span
-                        ></label>
-                        <div>
-                          <input type="text" class="form-control-input" />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="form-large-full grid grid-cols-3 gap-3 pr-[30px]"
-                    >
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Tổn tổng kho<span class="text-red-600">* </span>
-                          <span></span
-                        ></label>
-                        <div>
-                          <input type="text" class="form-control-input" />
-                        </div>
-                      </div>
                       <div>
                         <label for="" class="form-group-label"
                           >Tồn kho tối đa<span class="text-red-600"></span
@@ -647,7 +618,7 @@
                   </div>
                 </div>
               </Transition>
-            </div>
+            </div> -->
           </div>
         </div>
       </Transition>
@@ -696,13 +667,16 @@
   const { listTax } = storeToRefs(dataTax)
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
-  dataAttributeGroup.getListSetAttributeGroupAction()
-  const { listAttributeGroup, listSetAttributeGroup } =
+  const { listAttributeGroup, listSetAttributeGroup, listDefault } =
     storeToRefs(dataAttributeGroup)
+  const indexAttribute = ref()
+
+  dataAttributeGroup
+    .getListSetAttributeGroupAction()
+    .then(() => (indexAttribute.value = listDefault.value))
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
-  console.log(listSetAttributeGroup)
 
   const valueTree = ref([])
   const treeData = ref([
@@ -732,12 +706,13 @@
 
   //   console.log(str)
   // }
-  const dataCreateProduct = ref({})
+  const dataCreateProduct = ref<any>({})
 
-  const indexAttribute = ref()
+  console.log(listSetAttributeGroup.value)
+
+  console.log(indexAttribute)
+
   const handleChangeAttributeGroup = (value: any, options: any) => {
-    console.log(value)
-    console.log(options)
     indexAttribute.value = options.json_group_attribute_detail.map(
       (item: any) => ({
         title: item.title,
@@ -745,40 +720,19 @@
       })
     )
   }
-  const handleChange = (
-    event: any,
-    code: any,
-    index: any,
-    mapIndex: any,
-    input_name: string
-  ) => {
-    console.log(
-      'index',
-      index,
-      'mapIndex',
-      mapIndex,
-      'input_name',
-      input_name,
-      'Code: ',
-      code,
-      'Event: ',
-      event.target.value
-    )
-
-    // console.log(indexAttribute.value[index].attribute[mapIndex])
-    // let obj = code.reduce((accumulator: any, value: any) => {
-    //   console.log('accumulator:', accumulator)
-    //   return {
-    //     // ...accumulator,
-    //     [value]: event.target.value,
-    //   }
-    // }, {})
-    // code = dataCreateProduct.value
-    // console.log(obj)
-
-    // dataCreateProduct.value = Object.assign({}, obj)
-    dataCreateProduct.value[input_name] = event.target.value
-    console.log('dataCreateProduct:', dataCreateProduct.value)
+  const handleChange = (event: any, input_name: string) => {
+    console.log(event)
+    if (input_name == 'switch_1' && event == true) {
+      isConfig1.value = true
+    } else {
+      isConfig1.value = false
+    }
+    if (typeof event != 'number' && typeof event != 'boolean') {
+      dataCreateProduct.value[input_name] = event.target.value
+    } else {
+      dataCreateProduct.value[input_name] = event
+    }
+    console.log(dataCreateProduct.value)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -857,7 +811,7 @@
     code: '',
     desc: '',
     webID: null,
-    groupAttributeID: null,
+    groupAttributeID: 1,
     taxID: null,
     specificationID: null,
   })
