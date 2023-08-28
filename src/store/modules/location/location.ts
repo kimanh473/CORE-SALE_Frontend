@@ -1,10 +1,19 @@
-import { defineStore } from "pinia";
-import { GetAllCityApi, GetAllDistrictsApi, GetAllWardsApi } from '../../../services/LocationServices/location.service'
+import {defineStore} from "pinia";
+import {
+    GetAllCityApi,
+    GetAllDistrictsApi,
+    GetAllWardsApi,
+    GetAllWardsApi_2,
+    GetAllDistrictsApi_2
+} from '../../../services/LocationServices/location.service'
+
 export const useLocation = defineStore("Location", {
     state: () => ({
         listAllCity: null,
-        listAllDistrict: null,
-        listAllWard: null
+        listAllDistrict: [],
+        listAllDistrict_2: [],
+        listAllWard: null,
+        listAllWard_2: [],
     }),
     getters: {},
     actions: {
@@ -14,8 +23,14 @@ export const useLocation = defineStore("Location", {
         getListAllDistrict(payload: any) {
             this.listAllDistrict = payload?.data
         },
+        getListAllDistrict_2(payload: any) {
+            this.listAllDistrict_2 = payload?.data
+        },
         getListAllWard(payload: any) {
             this.listAllWard = payload?.data
+        },
+        getListAllWard_2(payload: any) {
+            this.listAllWard_2 = payload?.data
         },
         getListAllCityAction() {
             GetAllCityApi()
@@ -26,10 +41,19 @@ export const useLocation = defineStore("Location", {
                     console.log(err)
                 });
         },
-        getListAllDistrictAction(id: number) {
-            GetAllDistrictsApi(id)
+        async getListAllDistrictAction(id: number) {
+            await GetAllDistrictsApi(id)
                 .then((payload: any) => {
                     this.getListAllDistrict(payload.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getListAllDistrictAction_2(id: number) {
+            await GetAllDistrictsApi_2(id)
+                .then((payload: any) => {
+                    this.getListAllDistrict_2(payload.data)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -39,6 +63,15 @@ export const useLocation = defineStore("Location", {
             GetAllWardsApi(id)
                 .then((payload: any) => {
                     this.getListAllWard(payload.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getListAllWardAction_2(id: number) {
+            await GetAllWardsApi_2(id)
+                .then((payload: any) => {
+                    this.getListAllWard_2(payload.data)
                 })
                 .catch((err) => {
                     console.log(err)

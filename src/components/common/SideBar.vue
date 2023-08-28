@@ -332,7 +332,29 @@
             submenuGroup: '',
             permission: [''],
             smallLabel: 'KHÁCH HÀNG',
-            children1: [],
+            children1: [
+              {
+                 icon: '',
+                 label: 'Danh sách thông tin khách hàng',
+                 to: '/list-customer-profile',
+                 submenuGroup: '',
+                 permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Danh sách tài khoản khách hàng',
+                to: '/list-customer-account',
+                submenuGroup: '',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Danh sách nhóm tài khoản',
+                to: '/list-group-customer',
+                submenuGroup: '',
+                permission: [''],
+              },
+            ],
           },
           {
             label: 'TIẾP THỊ',
