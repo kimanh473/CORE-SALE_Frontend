@@ -47,7 +47,7 @@
           <div
             class="text-left px-4 py-2 w-full h-full format-scroll form-large-full bg-white"
           >
-            <div id="infor-common">
+            <!-- <div id="infor-common">
               <div class="w-full ml-4">
                 <div class="pr-[30px]">
                   <label for="" class="form-group-label"
@@ -64,9 +64,6 @@
                       @change="handleChangeAttributeGroup"
                     >
                     </a-select>
-                    <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                   </div>
                 </div>
                 <h4
@@ -100,9 +97,6 @@
                                 placeholder="Nhập tên sản phẩm"
                                 v-model="product.title"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                           <div>
@@ -119,9 +113,6 @@
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -148,9 +139,6 @@
                                 multiple
                               >
                               </a-tree-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -171,9 +159,6 @@
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -192,9 +177,6 @@
                                 placeholder="Nhập mã"
                                 v-model="product.code"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                           <div>
@@ -209,9 +191,6 @@
                                 placeholder="Nhập barcode"
                                 v-model="product.code"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -230,9 +209,6 @@
                                 placeholder="Nhập khối lượng"
                                 v-model="product.code"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                           <div>
@@ -249,9 +225,6 @@
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -300,13 +273,9 @@
                                 rows="5"
                                 class="form-control-input"
                               ></textarea>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
-                        <!-- <a-switch v-model:checked="web.status" /> &nbsp; Kích hoạt -->
                       </div>
                     </div>
                   </div>
@@ -346,9 +315,6 @@
                                 >{{ item.web_name }}</a-select-option
                               >
                             </a-select>
-                            <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
                           </div>
                         </div>
                       </div>
@@ -363,9 +329,6 @@
                               class="form-control-input"
                               placeholder="Nhập tên nhóm thuộc tính"
                             />
-                            <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                           </div>
                         </div>
                       </div>
@@ -386,9 +349,6 @@
                                 >{{ item.attribute_code }}</a-select-option
                               >
                             </a-select>
-                            <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                           </div>
                         </div>
                       </div>
@@ -431,16 +391,25 @@
                   </div>
                 </Transition>
               </div>
+            </div> -->
+
+            <div class="pr-[30px]">
+              <label for="" class="form-group-label"
+                >Nhóm thuộc tính<span class="text-red-600">* </span>
+                <span></span
+              ></label>
+              <div>
+                <a-select
+                  class="form-control-input"
+                  placeholder="Chọn nhóm thuộc tính"
+                  :options="listSetAttributeGroup"
+                  v-model:value="product.groupAttributeID"
+                  :fieldNames="{ label: 'title', value: 'code' }"
+                  @change="handleChangeAttributeGroup"
+                >
+                </a-select>
+              </div>
             </div>
-            <a-select
-              class="form-control-input"
-              placeholder="Chọn nhóm thuộc tính"
-              :options="listSetAttributeGroup"
-              v-model:value="product.groupAttributeID"
-              :fieldNames="{ label: 'title', value: 'code' }"
-              @change="handleChangeAttributeGroup"
-            >
-            </a-select>
             <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
               <div>
                 <label for="" class="form-group-label"
@@ -453,9 +422,6 @@
                     placeholder="Nhập tên sản phẩm"
                     v-model="product.title"
                   />
-                  <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                 </div>
               </div>
               <div>
@@ -471,9 +437,6 @@
                     :fieldNames="{ label: 'title', value: 'code' }"
                   >
                   </a-select>
-                  <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                 </div>
               </div>
             </div>
@@ -499,9 +462,6 @@
                     multiple
                   >
                   </a-tree-select>
-                  <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                 </div>
               </div>
             </div>
@@ -539,7 +499,14 @@
                       v-bind="{ ...map.attribute }"
                       v-show="map.code == item1.backend_type"
                       :ref="item1.attribute_code"
-                      @change="handleChange($event, Object.keys($refs))"
+                      @change="
+                        handleChange(
+                          $event,
+                          Object.keys($refs),
+                          index1,
+                          mapIndex
+                        )
+                      "
                     ></component>
                   </keep-alive>
                 </div>
@@ -571,9 +538,6 @@
                         ></label>
                         <div>
                           <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
                         </div>
                       </div>
                       <div>
@@ -582,9 +546,6 @@
                         ></label>
                         <div>
                           <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                         </div>
                       </div>
                     </div>
@@ -598,9 +559,6 @@
                         ></label>
                         <div>
                           <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
                         </div>
                       </div>
                       <div>
@@ -609,9 +567,6 @@
                         ></label>
                         <div>
                           <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                         </div>
                       </div>
                       <div>
@@ -620,9 +575,6 @@
                         ></label>
                         <div>
                           <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                         </div>
                       </div>
                     </div>
@@ -791,15 +743,22 @@
         attribute: item.attribute_detail,
       })
     )
-    console.log(indexAttribute.value)
   }
-  const handleChange = (event: any, code: any) => {
+  const handleChange = (event: any, code: any, index: any, mapIndex: any) => {
     console.log(event)
-    console.log(code)
+
+    indexAttribute.value[index].attribute[mapIndex].default_value =
+      event.target.value
+    console.log(indexAttribute.value[index].attribute[mapIndex])
     let obj = code.reduce((accumulator: any, value: any) => {
-      return { ...accumulator, [value]: event.target.value }
+      return {
+        ...accumulator,
+        [value]: indexAttribute.value[index].attribute[mapIndex].default_value,
+      }
     }, {})
     // code = dataCreateProduct.value
+    console.log(obj)
+
     dataCreateProduct.value = Object.assign({}, obj)
     console.log(dataCreateProduct.value)
   }
