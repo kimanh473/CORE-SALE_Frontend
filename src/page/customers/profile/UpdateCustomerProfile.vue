@@ -75,9 +75,8 @@
                                   <span></span
                                   ></label>
                                 <div>
-
                                   <a-space direction="vertical" :size="12">
-                                    <a-date-picker v-model:value="value_birth_day" :format="dateFormat"/>
+                                    <a-date-picker v-model:value="birth_day_dd_mm_yy" :format="dateFormat"/>
                                   </a-space>
 <!--                                  <p
                                       v-if="messageError?.birth_day"
@@ -525,20 +524,19 @@ const radioStyle = reactive({
   lineHeight: '30px',
 });
 
-const dateFormat = 'DD/MM/YYYY';
-const dateFormatRequest = 'YYYY/MM/DD';
-const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat));
 
 const dataCustomerProfile = useCustomerProfile();
 const dataLocation = useLocation()
 
 dataLocation.getListAllCityAction()
 
-const {detailCustomerProfile, idState, is_default} = storeToRefs(dataCustomerProfile)
-
+const {detailCustomerProfile, idState, is_default, birth_day_dd_mm_yy} = storeToRefs(dataCustomerProfile)
 const {listAllCity, listAllDistrict, listAllWard} = storeToRefs(dataLocation)
 
 dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id))
+
+const dateFormat = 'DD/MM/YYYY';
+const dateFormatRequest = 'YYYY/MM/DD';
 let arr_district = ref([]);
 
 const handleChangeCity = (value: number, option: any, index: number) => {
@@ -633,7 +631,7 @@ const updateCustomerProfile = () => {
   let data = {
     code: detailCustomerProfile.value.code,
     name: detailCustomerProfile.value.name,
-    birth_day: value_birth_day.value.format(dateFormatRequest),
+    birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
     gender: detailCustomerProfile.value.gender,
     email: detailCustomerProfile.value.email,
     phone: detailCustomerProfile.value.phone,

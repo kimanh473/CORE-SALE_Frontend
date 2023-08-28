@@ -1,4 +1,6 @@
 import {defineStore} from "pinia";
+import dayjs from "dayjs";
+
 import {
     getAllCustomerProfileApi,
     createCustomerProfileApi,
@@ -16,6 +18,7 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
         idWard:[],
         idDistrict:null,
         is_default:null,
+        birth_day_dd_mm_yy: null,
     }),
     getters: {
         getListCustomerProfilePagination: (state: any) => {
@@ -37,6 +40,7 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                 //state.idState = payload.detail_delivery_address?.map((item:any)=>item.address_state_id)
                 state.idWard = payload.detail_delivery_address?.map((item:any)=>item.address_district_id)
                 state.is_default = payload.detail_delivery_address?.map((item:any)=>Number(item.is_default)).indexOf(1).toString()
+                state.birth_day_dd_mm_yy = dayjs(payload.birth_day)
                 /*state.idState = Array.prototype.reverse.call(state.idStateRev)*/
             }
         },

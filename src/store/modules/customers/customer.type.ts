@@ -1,9 +1,11 @@
+import dayjs from "dayjs";
+
 interface DataCustomerProfile {
     id: number
     code: string
     name: string
     email: string
-    birth_day: string
+    birth_day: dayjs
     gender: string
     phone: string
     detail_delivery_address: Array<DetailDeliveryAddress>
