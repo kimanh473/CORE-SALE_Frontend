@@ -504,7 +504,8 @@
                           $event,
                           Object.keys($refs),
                           index1,
-                          mapIndex
+                          mapIndex,
+                          item1.attribute_code
                         )
                       "
                     ></component>
@@ -744,23 +745,40 @@
       })
     )
   }
-  const handleChange = (event: any, code: any, index: any, mapIndex: any) => {
-    console.log(event)
-
-    indexAttribute.value[index].attribute[mapIndex].default_value =
+  const handleChange = (
+    event: any,
+    code: any,
+    index: any,
+    mapIndex: any,
+    input_name: string
+  ) => {
+    console.log(
+      'index',
+      index,
+      'mapIndex',
+      mapIndex,
+      'input_name',
+      input_name,
+      'Code: ',
+      code,
+      'Event: ',
       event.target.value
-    console.log(indexAttribute.value[index].attribute[mapIndex])
-    let obj = code.reduce((accumulator: any, value: any) => {
-      return {
-        ...accumulator,
-        [value]: indexAttribute.value[index].attribute[mapIndex].default_value,
-      }
-    }, {})
-    // code = dataCreateProduct.value
-    console.log(obj)
+    )
 
-    dataCreateProduct.value = Object.assign({}, obj)
-    console.log(dataCreateProduct.value)
+    // console.log(indexAttribute.value[index].attribute[mapIndex])
+    // let obj = code.reduce((accumulator: any, value: any) => {
+    //   console.log('accumulator:', accumulator)
+    //   return {
+    //     // ...accumulator,
+    //     [value]: event.target.value,
+    //   }
+    // }, {})
+    // code = dataCreateProduct.value
+    // console.log(obj)
+
+    // dataCreateProduct.value = Object.assign({}, obj)
+    dataCreateProduct.value[input_name] = event.target.value
+    console.log('dataCreateProduct:', dataCreateProduct.value)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
