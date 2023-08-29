@@ -293,11 +293,11 @@
   const options1 = ref<SelectProps['options']>([
     {
       label: 'Text',
-      value: 'varchar',
+      value: 'text',
     },
     {
       label: 'TextArea',
-      value: 'text',
+      value: 'varchar',
     },
     {
       label: 'Ngày giờ',
