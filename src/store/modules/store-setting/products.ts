@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllProductsApi } from '../../../services/SettingStoreServices/product.service'
+import { getAllProductsApi, createProductApi } from '../../../services/SettingStoreServices/product.service'
 
 export const useProduct = defineStore("Products", {
     state: () => ({
@@ -19,6 +19,33 @@ export const useProduct = defineStore("Products", {
                 })
                 .catch((err) => {
                     console.log(err)
+                });
+        },
+        async createProductAction(
+            data: object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await createProductApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công")
+                        EndTimeLoading()
+                        router.push('/list-product')
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
                 });
         },
     },

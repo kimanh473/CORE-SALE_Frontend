@@ -396,7 +396,6 @@
                 </Transition>
               </div>
             </div> -->
-
             <div class="pr-[30px]">
               <label for="" class="form-group-label"
                 >Nhóm thuộc tính<span class="text-red-600">* </span>
@@ -493,27 +492,40 @@
                   }}<span class="text-red-600">* </span> <span></span
                 ></label>
                 <div v-for="(map, mapIndex) in typeProduct">
-                  <keep-alive>
-                    <component
-                      :is="`a-${map.type}`"
-                      :options="item1.option_detail"
-                      v-model:checked="item1.default_value"
-                      v-model:value="item1.default_value"
-                      :fieldNames="{ label: 'title', value: 'id' }"
-                      v-bind="{ ...map.attribute }"
-                      v-show="map.code == item1.backend_type"
-                      @change="handleChange($event, item1.attribute_code)"
-                      :rules="[
-                        {
-                          required: true,
-                          message: 'Please input your username!',
-                        },
-                      ]"
-                    ></component>
-                  </keep-alive>
+                  <component
+                    :is="`a-${map.type}`"
+                    :options="item1.option_detail"
+                    v-model:checked="item1.default_value"
+                    v-model:value="item1.default_value"
+                    v-model:file-list="fileList"
+                    list-type="picture-card"
+                    :fieldNames="{ label: 'title', value: 'id' }"
+                    v-bind="{ ...map.attribute }"
+                    v-show="map.code == item1.backend_type"
+                    @preview="handlePreview"
+                    @change="handleChange($event, item1.attribute_code)"
+                    :beforeUpload="checkJPG"
+                  >
+                    <div v-if="item1.attribute_code == 'image'">
+                      <plus-outlined />
+                      <div style="margin-top: 8px">Upload</div>
+                    </div>
+                    <a-modal
+                      :visible="previewVisible"
+                      :footer="null"
+                      @cancel="handleCancelImage"
+                    >
+                      <img
+                        alt="example"
+                        style="width: 100%"
+                        :src="previewImage"
+                      />
+                    </a-modal>
+                  </component>
                 </div>
               </div>
             </div>
+
             <!-- <div id="infor-price" class="w-full ml-4">
               <h4
                 class="form-section-title form-small cursor-pointer"
@@ -626,9 +638,10 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createGroupInventory()">
+          <button class="button-modal" @click="createProduct()">
             Cập nhật
           </button>
+
           <button class="button-close-modal" @click="router.go(-1)">
             Hủy bỏ
           </button>
@@ -650,6 +663,7 @@
   import { useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
+  import { useProduct } from '../../store/modules/store-setting/products'
   import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
   import { useListTax } from '../../store/modules/store-setting/tax'
   import { useListSpecification } from '../../store/modules/store-setting/specification'
@@ -720,17 +734,38 @@
       })
     )
   }
-  const handleChange = (event: any, input_name: string) => {
-    console.log(event)
-    if (input_name == 'switch_1' && event == true) {
-      isConfig1.value = true
+  const url = ref()
+  const checkJPG = (file: any) => {
+    const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJPG) {
+      toast.error('You can only upload JPG or PNG file!')
+      return false
     } else {
-      isConfig1.value = false
+      return true
     }
-    if (typeof event != 'number' && typeof event != 'boolean') {
-      dataCreateProduct.value[input_name] = event.target.value
-    } else {
+  }
+
+  const handleChange = async (event: any, input_name: string) => {
+    console.log(event)
+
+    if (typeof event == 'number' || typeof event == 'boolean') {
+      console.log(input_name)
+
       dataCreateProduct.value[input_name] = event
+    } else if (input_name == 'image') {
+      let data: any[] = []
+      if (!event.file.url && !event.preview) {
+        event.file.preview = (await getBase64(
+          event.file.originFileObj
+        )) as string
+        console.log(event.file.preview)
+        data.map((item: any, index) => {
+          item = event.file.preview
+        })
+      }
+      dataCreateProduct.value[input_name] = data
+    } else {
+      dataCreateProduct.value[input_name] = event.target.value
     }
     console.log(dataCreateProduct.value)
   }
@@ -770,7 +805,9 @@
   const handlePreview = async (file: UploadProps['fileList'][number]) => {
     if (!file.url && !file.preview) {
       file.preview = (await getBase64(file.originFileObj)) as string
+      console.log(file.preview)
     }
+
     previewImage.value = file.url || file.preview
     previewVisible.value = true
     previewTitle.value =
@@ -792,6 +829,7 @@
   const removeOptions = (index: number) => {
     dataOption.splice(index, 1)
   }
+  const dataProduct = useProduct()
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
@@ -815,14 +853,16 @@
     taxID: null,
     specificationID: null,
   })
-  const createGroupInventory = () => {
-    let data = {
-      title: product.title,
-      code: product.code,
-      desc: product.desc,
-    }
-    dataGroupInventory.createGroupInventoryAction(
-      data,
+  const createProduct = () => {
+    // let data = {
+    //   title: product.title,
+    //   code: product.code,
+    //   desc: product.desc,
+    // }
+    console.log(dataCreateProduct.value)
+
+    dataProduct.createProductAction(
+      dataCreateProduct.value,
       toast,
       router,
       EndTimeLoading
@@ -848,5 +888,15 @@
   }
   .ant-anchor-link {
     padding: 7px 0 7px 0px;
+  }
+  #preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #preview img {
+    max-width: 100%;
+    max-height: 100px;
   }
 </style>

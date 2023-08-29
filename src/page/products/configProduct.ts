@@ -37,7 +37,7 @@ export const typeProduct = [
         type: 'upload',
         code: 'gallery',
         attribute: {
-            class: 'form-group-label'
+            class: 'form-group-label',
         }
     },
     {
