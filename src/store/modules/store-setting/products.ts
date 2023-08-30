@@ -36,7 +36,7 @@ export const useProduct = defineStore("Products", {
                     } else {
                         toast.success("Tạo mới thành công")
                         EndTimeLoading()
-                        router.push('/list-product')
+                        router.push('/products-list')
                     }
                 })
                 .catch((err) => {

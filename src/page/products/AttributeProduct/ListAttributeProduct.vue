@@ -332,8 +332,8 @@
     },
     {
       title: 'Định dạng',
-      dataIndex: 'backend_type',
-      key: 'backend_type',
+      dataIndex: 'frontend_input',
+      key: 'frontend_input',
     },
     {
       title: 'Giá trị duy nhất',

@@ -396,7 +396,7 @@
                 </Transition>
               </div>
             </div> -->
-            <div class="pr-[30px]">
+            <div>
               <label for="" class="form-group-label"
                 >Nhóm thuộc tính<span class="text-red-600">* </span>
                 <span></span
@@ -469,7 +469,7 @@
             </div> -->
             <div v-for="(item, index) in indexAttribute" :key="index">
               <h4
-                class="form-section-title form-small cursor-pointer"
+                class="form-section-title form-large-full cursor-pointer"
                 @click="isInfor = !isInfor"
                 :id="item.title"
               >
@@ -485,7 +485,7 @@
                 v-show="isInfor == true"
                 v-for="(item1, index1) in item.attribute"
                 :key="index1"
-                class="form-small"
+                class="form-large-full"
               >
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
@@ -496,15 +496,13 @@
                     :is="`a-${map.type}`"
                     :options="item1.option_detail"
                     v-model:checked="item1.default_value"
-                    v-model:value="item1.default_value"
                     v-model:file-list="fileList"
                     list-type="picture-card"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     v-bind="{ ...map.attribute }"
-                    v-show="map.code == item1.backend_type"
+                    v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
-                    :beforeUpload="checkJPG"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <plus-outlined />
@@ -522,6 +520,107 @@
                       />
                     </a-modal>
                   </component>
+                </div>
+                <div
+                  id="product_table"
+                  v-show="item1.default_value == true"
+                  v-if="item1.attribute_code == 'classify_product'"
+                  class="bg-[#E8E9EB]"
+                >
+                  <div class="p-4 m-2">
+                    <div class="flex">
+                      <p class="pr-[180px]">
+                        Nhóm phân loại <span class="text-red-600">*</span>
+                      </p>
+                      <p>Phân loại</p>
+                    </div>
+                    <div
+                      v-for="(item, index) in dataOption"
+                      :key="index"
+                      class="flex"
+                    >
+                      <div class="pr-[100px]">
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                      </div>
+                      <div class="flex items-end">
+                        <a-select
+                          v-model:value="item.optionClassify"
+                          mode="tags"
+                          style="width: 400px"
+                          :token-separators="[',']"
+                          placeholder=""
+                        ></a-select>
+                        <i
+                          @click="removeOptions(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
+                      </div>
+                    </div>
+                    <div @click="addOptions" class="mt-2 w-fit">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  id="product_table"
+                  v-show="item1.default_value == true"
+                  v-if="item1.attribute_code == 'unit_change'"
+                  class="bg-[#E8E9EB]"
+                >
+                  <div class="p-4 m-2">
+                    <div class="form-large-full grid grid-cols-3 gap-3 !m-0">
+                      <p>Phân loại <span class="text-red-600">*</span></p>
+                      <p>Đơn vị quy đổi</p>
+                      <p>Số lượng</p>
+                    </div>
+                    <div
+                      v-for="(item, index) in dataOption"
+                      :key="index"
+                      class="form-large-full grid grid-cols-3 gap-3"
+                    >
+                      <div class="w-full">
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn nhóm thuộc tính"
+                          :options="listAttributeGroup"
+                          v-model:value="product.groupAttributeID"
+                          :fieldNames="{ label: 'title', value: 'code' }"
+                          @change="handleChangeAttributeGroup"
+                        >
+                        </a-select>
+                      </div>
+                      <div class="w-full">
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                      </div>
+                      <div class="flex items-end w-full">
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                        <i
+                          @click="removeOptions(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
+                      </div>
+                    </div>
+                    <div @click="addOptions" class="mt-2 w-fit">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -671,6 +770,7 @@
   import { useCategory } from '../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { typeProduct } from '../../page/products/configProduct'
+  import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
   const dataSpecification = useListSpecification()
@@ -683,8 +783,10 @@
   dataAttributeGroup.getListAttributeGroupAction()
   const { listAttributeGroup, listSetAttributeGroup, listDefault } =
     storeToRefs(dataAttributeGroup)
-  const indexAttribute = ref()
 
+  const indexAttribute = ref()
+  const options = ref<SelectProps['options']>([])
+  const valueClassify = ref<string[]>([])
   dataAttributeGroup
     .getListSetAttributeGroupAction()
     .then(() => (indexAttribute.value = listDefault.value))
@@ -735,35 +837,35 @@
     )
   }
   const url = ref()
-  const checkJPG = (file: any) => {
-    const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
-    if (!isJPG) {
-      toast.error('You can only upload JPG or PNG file!')
-      return false
-    } else {
-      return true
-    }
-  }
-
+  // const checkJPG = (file: any) => {
+  //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+  //   if (!isJPG) {
+  //     toast.error('You can only upload JPG or PNG file!')
+  //     return false
+  //   } else {
+  //     return true
+  //   }
+  // }
   const handleChange = async (event: any, input_name: string) => {
     console.log(event)
-
     if (typeof event == 'number' || typeof event == 'boolean') {
       console.log(input_name)
-
       dataCreateProduct.value[input_name] = event
     } else if (input_name == 'image') {
-      let data: any[] = []
+      // let data: any[] = []
       if (!event.file.url && !event.preview) {
         event.file.preview = (await getBase64(
           event.file.originFileObj
         )) as string
-        console.log(event.file.preview)
-        data.map((item: any, index) => {
-          item = event.file.preview
-        })
+        // console.log(event.file.preview)
       }
-      dataCreateProduct.value[input_name] = data
+      dataCreateProduct.value[input_name] = fileList.value.map(
+        (item: any) => item.preview
+      )
+    } else if (input_name.includes('date')) {
+      dataCreateProduct.value[input_name] = event.$d
+        .toISOString()
+        .substring(0, 10)
     } else {
       dataCreateProduct.value[input_name] = event.target.value
     }
@@ -815,13 +917,13 @@
   }
   const dataOption = reactive([
     {
-      defaultOption: false,
+      optionClassify: [],
       title: '',
     },
   ])
   const addOptions = () => {
     const data = {
-      defaultOption: false,
+      optionClassify: <SelectProps['options']>[],
       title: '',
     }
     dataOption.push(data)
@@ -859,8 +961,6 @@
     //   code: product.code,
     //   desc: product.desc,
     // }
-    console.log(dataCreateProduct.value)
-
     dataProduct.createProductAction(
       dataCreateProduct.value,
       toast,

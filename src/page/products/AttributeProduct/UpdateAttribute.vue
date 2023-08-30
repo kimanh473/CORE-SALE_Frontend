@@ -88,7 +88,11 @@
                           class="form-control-input"
                           placeholder="Chọn định dạng"
                           :options="options1"
-                          v-model:value="detailAttribute.backend_type"
+                          v-model:value="detailAttribute.frontend_input"
+                          :fieldNames="{
+                            label: 'label',
+                            value: 'frontend_input',
+                          }"
                           @select="handleChange"
                           @focus="focusOnSelect(detailAttribute.backend_type)"
                         >
@@ -332,26 +336,38 @@
     {
       label: 'Text',
       value: 'text',
+      backend_type: 'text',
+      frontend_input: 'text',
     },
     {
       label: 'TextArea',
       value: 'varchar',
+      backend_type: 'varchar',
+      frontend_input: 'textarea',
     },
     {
       label: 'Ngày giờ',
       value: 'date_time',
+      backend_type: 'varchar',
+      frontend_input: 'date-picker',
     },
     {
       label: 'Hình ảnh',
       value: 'gallery',
+      backend_type: 'gallery',
+      frontend_input: 'upload',
     },
     {
       label: 'Nút bật tắt',
       value: 'switch',
+      backend_type: 'varchar',
+      frontend_input: 'switch',
     },
     {
       label: 'Lựa chọn',
       value: 'selection',
+      backend_type: 'selection',
+      frontend_input: 'selection',
     },
   ])
   const options2 = ref<SelectProps['options']>([
@@ -412,13 +428,16 @@
   //   isReInput.value = false
   // }
   const showManageChoice = ref<Boolean>(false)
-  const handleChange = (value: string) => {
+  const handleChange = (value: string, options: any) => {
+    console.log(value)
+
     if (value == 'selection') {
       showManageChoice.value = true
     } else {
       showManageChoice.value = false
     }
-    detailAttribute.value.backend_type = value
+    detailAttribute.value.backend_type = options.backend_type
+    detailAttribute.value.frontend_input = options.frontend_input
   }
   const focusOnSelect = (type: string) => {
     if (type == 'selection') {
@@ -486,7 +505,7 @@
       backend_type: detailAttribute.value.backend_type,
       backend_table: '',
       frontend_model: '',
-      frontend_input: '',
+      frontend_input: detailAttribute.value.frontend_input,
       frontend_label: detailAttribute.value.frontend_label,
       frontend_class: '',
       source_model: '',
