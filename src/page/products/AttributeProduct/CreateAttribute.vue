@@ -88,6 +88,10 @@
                           placeholder="Chọn định dạng"
                           :options="options1"
                           @change="handleChange"
+                          :fieldNames="{
+                            label: 'label',
+                            value: 'frontend_input',
+                          }"
                         >
                         </a-select>
                         <!-- <p v-if="messageError?.code" class="text-red-600">
@@ -294,26 +298,38 @@
     {
       label: 'Text',
       value: 'text',
+      backend_type: 'text',
+      frontend_input: 'text',
     },
     {
       label: 'TextArea',
       value: 'varchar',
+      backend_type: 'varchar',
+      frontend_input: 'textarea',
     },
     {
       label: 'Ngày giờ',
       value: 'date_time',
+      backend_type: 'varchar',
+      frontend_input: 'date-picker',
     },
     {
       label: 'Hình ảnh',
       value: 'gallery',
+      backend_type: 'gallery',
+      frontend_input: 'upload',
     },
     {
       label: 'Nút bật tắt',
       value: 'switch',
+      backend_type: 'varchar',
+      frontend_input: 'switch',
     },
     {
       label: 'Lựa chọn',
       value: 'selection',
+      backend_type: 'selection',
+      frontend_input: 'selection',
     },
     // {
     //   label: 'Nhiều lựa chọn',
@@ -378,14 +394,14 @@
   //   isReInput.value = false
   // }
   const showManageChoice = ref<Boolean>(false)
-  const handleChange = (value: string) => {
+  const handleChange = (value: string, options: any) => {
     if (value == 'selection') {
       showManageChoice.value = true
     } else {
       showManageChoice.value = false
     }
-    attribute.backend_type = value
-    console.log(attribute.backend_type)
+    attribute.backend_type = options.backend_type
+    attribute.frontend_input = options.frontend_input
   }
   const dataOption = reactive([])
 
@@ -442,7 +458,7 @@
       backend_type: attribute.backend_type,
       backend_table: '',
       frontend_model: '',
-      frontend_input: '',
+      frontend_input: attribute.frontend_input,
       frontend_label: attribute.frontend_label,
       frontend_class: '',
       source_model: '',

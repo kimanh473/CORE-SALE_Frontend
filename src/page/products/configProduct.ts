@@ -19,7 +19,7 @@ export const typeProduct = [
     },
     {
         type: 'textarea',
-        code: 'varchar',
+        code: 'textarea',
         attribute: {
             placeholder: 'textarea',
             class: 'form-control-input !pt-4',
@@ -35,7 +35,14 @@ export const typeProduct = [
     },
     {
         type: 'upload',
-        code: 'gallery',
+        code: 'upload',
+        attribute: {
+            class: 'form-group-label',
+        }
+    },
+    {
+        type: 'date-picker',
+        code: 'date-picker',
         attribute: {
             class: 'form-group-label',
         }

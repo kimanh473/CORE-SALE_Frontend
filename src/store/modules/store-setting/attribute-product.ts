@@ -34,7 +34,8 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                 user_created: item.user_created,
                 created_at: item.created_at,
                 updated_at: item.updated_at,
-                user_updated: item.user_updated
+                user_updated: item.user_updated,
+                frontend_input: item.frontend_input
 
             }))
 
@@ -128,6 +129,7 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                 .then((res) => {
                     if (res.data.status == "success") {
                         toast.success("Xóa thành công", 500);
+                        this.getListAttributeAction()
                     } else {
                         toast.error(res.data.messages, 500);
                     }
