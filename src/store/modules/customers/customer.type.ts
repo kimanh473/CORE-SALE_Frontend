@@ -11,6 +11,7 @@ interface DataCustomerProfile {
     delivery_address: string
     pay_address: string
     list_address: string
+    customer_group: string
 }
 interface DetailDeliveryAddress {
     title: string,
@@ -28,6 +29,7 @@ interface DetailPayAddress {
     address_district_id: string,
     address_ward_id: string,
     address_detail: string,
+    pay_address_detail: string
     is_default_pay: string
 }
 interface DataCustomerAccount {
