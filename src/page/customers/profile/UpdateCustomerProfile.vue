@@ -35,9 +35,25 @@
                           <div>
                             <div class="grid grid-cols-2 gap-2 form-small">
                               <div>
+
+                                <label for="" class="form-group-label"
+                                >Nhóm khách hàng <span class="text-red-600">* </span>
+                                  <span></span
+                                  ></label>
+                                <a-select
+                                    show-search
+                                    class="form-control-input"
+                                    placeholder="Chọn website"
+                                    :options="listGroupCustomer"
+                                    v-model:value="detailCustomerProfile.customer_group"
+                                    @change="handleChangeGroup"
+                                    :fieldNames="{ label: 'code', value: 'id' }"
+                                >
+                                </a-select>
+
                                 <label for="" class="form-group-label"
                                 >Mã<span class="text-red-600">* </span>
-                                  <span></span
+                                  <span> </span
                                   ></label>
                                 <div>
                                   <input
@@ -333,12 +349,6 @@
                                 placeholder="Nhập tên địa chỉ"
                                 v-model="item_new.title"
                             />
-                            <!--                            <p
-                                                            v-if="messageError?.title"
-                                                            class="text-red-600"
-                                                        >
-                                                          {{ messageError?.title[0] }}
-                                                        </p>-->
                           </div>
                         </div>
 
@@ -360,12 +370,6 @@
                                     :fieldNames="{ label: 'title', value: 'ID' }"
                                 >
                                 </a-select>
-                                <!--                                <p
-                                                                    v-if="messageError?.address_state_id"
-                                                                    class="text-red-600"
-                                                                >
-                                                                  {{ messageError?.address_state_id[0] }}
-                                                                </p>-->
                               </div>
                             </div>
                             <div class="flex-1 mr-5">
@@ -384,12 +388,6 @@
                                     :fieldNames="{ label: 'title', value: 'ID' }"
                                 >
                                 </a-select>
-                                <!--                                <p
-                                                                    v-if="messageError?.address_district_id"
-                                                                    class="text-red-600"
-                                                                >
-                                                                  {{ messageError?.address_district_id[0] }}
-                                                                </p>-->
                               </div>
                             </div>
                             <div class="flex-1">
@@ -409,13 +407,6 @@
                                     :fieldNames="{ label: 'title', value: 'ID' }"
                                 >
                                 </a-select>
-
-                                <!--                                <p
-                                                                    v-if="messageError?.address_ward_id"
-                                                                    class="text-red-600"
-                                                                >
-                                                                  {{ messageError?.address_ward_id[0] }}
-                                                                </p>-->
                               </div>
                             </div>
                           </div>
@@ -436,20 +427,7 @@
                         ></textarea>
                           </div>
                         </div>
-
-
-
-<!--                        <div class="mb-5">
-                          <a-switch
-                              v-model:checked="item_new.is_default"
-                              :checkedValue="1"
-                              :unCheckedValue="0"
-                          />
-                          &nbsp; Đặt làm mặc định
-                        </div>-->
-
                       </div>
-
                     </div>
                   </div>
                   </div>
@@ -459,7 +437,7 @@
                         key="submit"
                         type="primary"
                         :loading="isLoading"
-                        @click="updateCustomerProfile()"
+                        @click="createNewDeCustomerProfile()"
                     >Xác nhận</a-button
                     >
                     <a-button key="back" @click="handleClose">Hủy</a-button>
@@ -469,6 +447,318 @@
 
               </div>
             </a-tab-pane>
+
+            <a-tab-pane key="3" tab="Địa chỉ thanh toan">
+              <div class="flex">
+                <Transition name="slide-up">
+                  <div v-show="isPayAddress == true" class="outer">
+                    <div>
+                      <div
+                          v-for="(item, index) in detailCustomerProfile.detail_pay_address"
+                          :key="index"
+                          class="flex"
+                      >
+                        <div class="form-large border-b-[1px] border-slate-300 ">
+
+                          <div class="">
+                            <label for="" class="form-group-label"
+                            >Họ và tên người nhận<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <input
+                                  type="text"
+                                  class="form-control-input"
+                                  placeholder="Nhập tên địa chỉ"
+                                  v-model="item.title"
+                              />
+                              <!--                              <p
+                                                                v-if="messageError?.title"
+                                                                class="text-red-600"
+                                                            >
+                                                              {{ messageError?.title[0] }}
+                                                            </p>-->
+                            </div>
+                          </div>
+
+                          <div class="">
+                            <div class="flex ">
+                              <div class="flex-1 mr-5">
+                                <label for="" class="form-group-label"
+                                >Tỉnh/Thành phố{{ index }}<span class="text-red-600">* </span>
+                                  <span></span
+                                  ></label>
+                                <div>
+                                  <a-select
+                                      show-search
+                                      class="form-control-input"
+                                      placeholder="Chọn thành phố"
+                                      v-model:value="detailCustomerProfile.detail_pay_address[index].address_state_id"
+                                      :options="listAllCity"
+                                      @change="handleChangeCityPay(Number(detailCustomerProfile.detail_pay_address[index].address_state_id),listAllCity,index)"
+                                      :fieldNames="{ label: 'title', value: 'ID' }"
+                                  >
+                                  </a-select>
+                                  <!--                                  <p
+                                                                        v-if="messageError?.address_state_id"
+                                                                        class="text-red-600"
+                                                                    >
+                                                                      {{ messageError?.address_state_id[0] }}
+                                                                    </p>-->
+                                </div>
+                              </div>
+                              <div class="flex-1 mr-5">
+                                <label for="" class="form-group-label"
+                                >Quận/Huyện<span class="text-red-600">* </span>
+                                  <span></span
+                                  ></label>
+                                <div>
+                                  <a-select
+                                      show-search
+                                      class="form-control-input"
+                                      placeholder="Chọn quận huyện"
+                                      v-model:value="detailCustomerProfile.detail_pay_address[index].address_district_id"
+                                      :options="listAllDistrict"
+                                      @change="handleChangeDistrictPay(Number(detailCustomerProfile.detail_pay_address[index].address_district_id),listAllDistrict,index)"
+                                      :fieldNames="{ label: 'title', value: 'ID' }"
+                                  >
+                                  </a-select>
+                                  <!--                                  <p
+                                                                        v-if="messageError?.address_district_id"
+                                                                        class="text-red-600"
+                                                                    >
+                                                                      {{ messageError?.address_district_id[0] }}
+                                                                    </p>-->
+                                </div>
+                              </div>
+                              <div class="flex-1">
+                                <label for="" class="form-group-label"
+                                >Xã/Phường/Thị trấn<span class="text-red-600">* </span>
+                                  <span></span
+                                  ></label>
+                                <div>
+
+                                  <a-select
+                                      show-search
+                                      class="form-control-input"
+                                      placeholder="Chọn xã, phường, thị trấn"
+                                      v-model:value="detailCustomerProfile.detail_pay_address[index].address_ward_id"
+                                      :options="listAllWard"
+                                      @change="handleChangeWardPay(Number(detailCustomerProfile.detail_pay_address[index].address_ward_id),listAllWard,index)"
+                                      :fieldNames="{ label: 'title', value: 'ID' }"
+                                  >
+                                  </a-select>
+                                  <!--                                  <p
+                                                                        v-if="messageError?.address_ward_id"
+                                                                        class="text-red-600"
+                                                                    >
+                                                                      {{ messageError?.address_ward_id[0] }}
+                                                                    </p>-->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-5">
+                            <label for="" class="form-group-label"
+                            >Địa chỉ cụ thể<span class="text-red-600"> </span>
+                              <span></span
+                              ></label>
+                            <div>
+                        <textarea
+                            name=""
+                            id=""
+                            cols="30"
+                            rows="5"
+                            class="form-control-input"
+                            v-model="item.address_detail"
+                        ></textarea>
+                            </div>
+                          </div>
+                          <div class="mb-5">
+                            <a-radio-group v-model:value="is_default_pay"  name="radioGroup" @change="handleChangeIsDefaultPay(index)">
+                              <a-radio :value="index.toString()" >Đặt làm địa chỉ mặc định</a-radio>
+                            </a-radio-group>
+                          </div>
+                          <div class="float-right">
+                            <i
+                                @click="removeDetailPayAddress(index)"
+                                class="fal fa-times icon-close"
+                            ></i>
+                          </div>
+                        </div>
+
+
+                        <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
+                          nhận -->
+                      </div>
+                    </div>
+                    <div @click="payAddOptions">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                    </div>
+                  </div>
+                </Transition>
+
+
+                //them moi//
+                <a-modal :visible="isOpenCreatedPayAddress" @cancel="handleCloseCreatePayAddress" width="660px">
+                  <div v-show="isPayAddress == true" class="outer">
+                    <div class="p-4">
+                      <div
+                          v-for="(item_new, index_new) in payDataOption"
+                          :key="index_new"
+                          class="flex"
+                      >
+                        <div class="form-large border-b-[1px] border-slate-300 ">
+
+                          <div class="">
+                            <label for="" class="form-group-label"
+                            >Họ và tên người nhận<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <input
+                                  type="text"
+                                  class="form-control-input"
+                                  placeholder="Nhập tên địa chỉ"
+                                  v-model="item_new.title"
+                              />
+                              <!--                            <p
+                                                              v-if="messageError?.title"
+                                                              class="text-red-600"
+                                                          >
+                                                            {{ messageError?.title[0] }}
+                                                          </p>-->
+                            </div>
+                          </div>
+
+                          <div class="">
+                            <div class="flex ">
+                              <div class="flex-1 mr-5">
+                                <label for="" class="form-group-label"
+                                >Tỉnh/Thành phố<span class="text-red-600">* </span>
+                                  <span></span
+                                  ></label>
+                                <div>
+                                  <a-select
+                                      show-search
+                                      class="form-control-input"
+                                      placeholder="Chọn thành phố"
+                                      v-model:value="payDataOption[index_new].address_state_id"
+                                      :options="listAllCity"
+                                      @change="handleChangeCity_newpay(payDataOption[index_new].address_state_id,listAllCity,index_new)"
+                                      :fieldNames="{ label: 'title', value: 'ID' }"
+                                  >
+                                  </a-select>
+                                  <!--                                <p
+                                                                      v-if="messageError?.address_state_id"
+                                                                      class="text-red-600"
+                                                                  >
+                                                                    {{ messageError?.address_state_id[0] }}
+                                                                  </p>-->
+                                </div>
+                              </div>
+                              <div class="flex-1 mr-5">
+                                <label for="" class="form-group-label"
+                                >Quận/Huyện<span class="text-red-600">* </span>
+                                  <span></span
+                                  ></label>
+                                <div>
+                                  <a-select
+                                      show-search
+                                      class="form-control-input"
+                                      placeholder="Chọn quận huyện"
+                                      v-model:value="payDataOption[index_new].address_district_id"
+                                      :options="listAllDistrict"
+                                      @change="handleChangeDistrict_newpay(payDataOption[index_new].address_district_id,listAllDistrict,index_new)"
+                                      :fieldNames="{ label: 'title', value: 'ID' }"
+                                  >
+                                  </a-select>
+                                  <!--                                <p
+                                                                      v-if="messageError?.address_district_id"
+                                                                      class="text-red-600"
+                                                                  >
+                                                                    {{ messageError?.address_district_id[0] }}
+                                                                  </p>-->
+                                </div>
+                              </div>
+                              <div class="flex-1">
+                                <label for="" class="form-group-label"
+                                >Xã/Phường/Thị trấn<span class="text-red-600">* </span>
+                                  <span></span
+                                  ></label>
+                                <div>
+
+                                  <a-select
+                                      show-search
+                                      class="form-control-input"
+                                      placeholder="Chọn xã, phường, thị trấn"
+                                      v-model:value="payDataOption[index_new].address_ward_id"
+                                      :options="listAllWard"
+                                      @change="handleChangeWard_newpay(payDataOption[index_new].address_ward_id,listAllWard,index_new)"
+                                      :fieldNames="{ label: 'title', value: 'ID' }"
+                                  >
+                                  </a-select>
+
+                                  <!--                                <p
+                                                                      v-if="messageError?.address_ward_id"
+                                                                      class="text-red-600"
+                                                                  >
+                                                                    {{ messageError?.address_ward_id[0] }}
+                                                                  </p>-->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="">
+                            <label for="" class="form-group-label"
+                            >Địa chỉ cụ thể<span class="text-red-600"> </span>
+                              <span></span
+                              ></label>
+                            <div>
+                        <textarea
+                            name=""
+                            id=""
+                            cols="30"
+                            rows="5"
+                            class="form-control-input"
+                            v-model="item_new.address_detail"
+                        ></textarea>
+                            </div>
+                          </div>
+
+
+
+                          <!--                        <div class="mb-5">
+                                                    <a-switch
+                                                        v-model:checked="item_new.is_default"
+                                                        :checkedValue="1"
+                                                        :unCheckedValue="0"
+                                                    />
+                                                    &nbsp; Đặt làm mặc định
+                                                  </div>-->
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <template #footer>
+                    <a-button
+                        key="submit"
+                        type="primary"
+                        :loading="isLoading"
+                        @click="createNewPayAddress()"
+                    >Xác nhận</a-button
+                    >
+                    <a-button key="back" @click="handleCloseCreatePayAddress">Hủy</a-button>
+                  </template>
+                </a-modal>
+
+
+              </div>
+            </a-tab-pane>
+
           </a-tabs>
         </div>
       </Transition>
@@ -501,6 +791,7 @@ import {useToast} from 'vue-toastification'
 import {useRoute, useRouter} from 'vue-router'
 import {useLocation} from "../../../store/modules/location/location";
 import {useCustomerProfile} from "../../../store/modules/customers/customerProfile";
+import {useGroupCustomer} from "../../../store/modules/customers/customerGroup";
 
 const activeKey = ref('1')
 const route = useRoute()
@@ -508,6 +799,7 @@ const router = useRouter()
 const toast = useToast()
 const isInfor = ref<boolean>(true)
 const isDeliveryAddress = ref<boolean>(true)
+const isPayAddress = ref<boolean>(true)
 const isContact = ref<boolean>(true)
 const checked = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
@@ -515,7 +807,16 @@ const isLoading = ref<boolean>(false)
 const isOpenConfirmDefault = ref<boolean>(false)
 const handleClose = () => {
   isOpenConfirmDefault.value = false
-  dataOption.splice(0, 1)
+}
+
+const isOpenCreatedPayAddress = ref<boolean>(false)
+
+const handleCloseCreatePayAddressWhenSS = () => {
+  isOpenCreatedPayAddress.value = false
+}
+
+const handleCloseCreatePayAddress = () => {
+  isOpenCreatedPayAddress.value = false
 }
 
 const radioStyle = reactive({
@@ -526,15 +827,17 @@ const radioStyle = reactive({
 
 
 const dataCustomerProfile = useCustomerProfile();
-const dataLocation = useLocation()
+const dataLocation = useLocation();
+const dataGroupCustomer = useGroupCustomer();
 
 dataLocation.getListAllCityAction()
-
-const {detailCustomerProfile, idState, is_default, birth_day_dd_mm_yy} = storeToRefs(dataCustomerProfile)
-const {listAllCity, listAllDistrict, listAllWard} = storeToRefs(dataLocation)
-
 dataCustomerProfile.getDetailCustomerProfileAction(Number(route.params.id))
+dataGroupCustomer.getAllGroupCustomerNoPaginateAction()
+dataCustomerProfile.getLastCodeCustomer()
 
+const {detailCustomerProfile, idState, is_default, birth_day_dd_mm_yy, last_code, is_default_pay} = storeToRefs(dataCustomerProfile)
+const {listAllCity, listAllDistrict, listAllWard} = storeToRefs(dataLocation)
+const {listGroupCustomer} = storeToRefs(dataGroupCustomer)
 const dateFormat = 'DD/MM/YYYY';
 const dateFormatRequest = 'YYYY/MM/DD';
 let arr_district = ref([]);
@@ -545,15 +848,32 @@ const handleChangeCity = (value: number, option: any, index: number) => {
   detailCustomerProfile.value.detail_delivery_address[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
 }
 
+const handleChangeCityPay = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  dataLocation.getListAllDistrictAction(value)
+  detailCustomerProfile.value.detail_pay_address[index].pay_address_detail = arr[0].title + ', ' + 'Việt Nam'
+}
+
 const handleChangeDistrict = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
   dataLocation.getListAllWardAction(value)
   detailCustomerProfile.value.detail_delivery_address[index].address_detail = arr[0].title + ', ' + detailCustomerProfile.value.detail_delivery_address[index].address_detail
 }
 
+const handleChangeDistrictPay = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  dataLocation.getListAllWardAction(value)
+  detailCustomerProfile.value.detail_pay_address[index].pay_address_detail = arr[0].title + ', ' + detailCustomerProfile.value.detail_pay_address[index].pay_address_detail
+}
+
 const handleChangeWard = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
   detailCustomerProfile.value.detail_delivery_address[index].address_detail = arr[0].title + ', ' + detailCustomerProfile.value.detail_delivery_address[index].address_detail
+}
+
+const handleChangeWardPay = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  detailCustomerProfile.value.detail_pay_address[index].pay_address_detail = arr[0].title + ', ' + detailCustomerProfile.value.detail_pay_address[index].pay_address_detail
 }
 
 const handleChangeCity_new = (value: number, option: any, index: number) => {
@@ -562,15 +882,32 @@ const handleChangeCity_new = (value: number, option: any, index: number) => {
   dataOption[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
 }
 
+const handleChangeCity_newpay = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  dataLocation.getListAllDistrictAction(value)
+  payDataOption[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
+}
+
 const handleChangeDistrict_new = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
   dataLocation.getListAllWardAction(value)
   dataOption[index].address_detail = arr[0].title + ', ' + dataOption[index].address_detail
 }
 
+const handleChangeDistrict_newpay = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  dataLocation.getListAllWardAction(value)
+  payDataOption[index].address_detail = arr[0].title + ', ' + payDataOption[index].address_detail
+}
+
 const handleChangeWard_new = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
   dataOption[index].address_detail = arr[0].title + ', ' + dataOption[index].address_detail
+}
+
+const handleChangeWard_newpay = (value: number, option: any, index: number) => {
+  let arr = option.filter((item: any) => item.ID == value)
+  payDataOption[index].address_detail = arr[0].title + ', ' + payDataOption[index].address_detail
 }
 
 const handleChangeIsDefault = (index:any) => {
@@ -581,7 +918,18 @@ const handleChangeIsDefault = (index:any) => {
   }
 }
 
+const handleChangeIsDefaultPay = (index:any) => {
+  detailCustomerProfile.value.detail_pay_address[index].is_default_pay = '1';
+  let color = detailCustomerProfile.value.detail_pay_address.filter((c:any,i:any)=>i!= index)
+  if (color){
+    color.map((item:any) => item.is_default_pay = 0)
+  }
+}
 
+const handleChangeGroup = (value:number,option:any) => {
+  detailCustomerProfile.value.customer_group = option.code
+  detailCustomerProfile.value.code = option.code + last_code.value.substring(3,).padStart(8,'0')
+}
 
 const dataOption = reactive([])
 
@@ -599,8 +947,28 @@ const addOptions = () => {
   dataOption.push(data)
 }
 
+const payDataOption = reactive([])
+
+const payAddOptions = () => {
+  isOpenCreatedPayAddress.value = true
+  const data = {
+    title: '',
+    address_country_id: '1',
+    address_district_id: '',
+    address_ward_id: '',
+    address_state_id: '',
+    address_detail: '',
+    is_default_pay:'0'
+  }
+  payDataOption.push(data)
+}
+
 const removeDetailDeliveryAddress = (index: number) => {
   detailCustomerProfile.value.detail_delivery_address.splice(index,1)
+}
+
+const removeDetailPayAddress = (index: number) => {
+  detailCustomerProfile.value.detail_pay_address.splice(index,1)
 }
 
 const removeOptions = (index: number) => {
@@ -627,8 +995,14 @@ const EndTimeLoading = () => {
   isLoading.value = false
 }
 
-const updateCustomerProfile = () => {
+const arr_address_pay = ref([])
+const arr_address_de = ref([])
+
+const createNewDeCustomerProfile = () => {
+  isOpenConfirmDefault.value = false
+  arr_address_de.value = dataOption
   let data = {
+    customer_group: detailCustomerProfile.value.customer_group,
     code: detailCustomerProfile.value.code,
     name: detailCustomerProfile.value.name,
     birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
@@ -637,6 +1011,42 @@ const updateCustomerProfile = () => {
     phone: detailCustomerProfile.value.phone,
     detail_delivery_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_delivery_address)),
     detail_delivery_address_new: dataOption,
+    detail_pay_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_pay_address)),
+    detail_pay_address_new: arr_address_de.value,
+  }
+  dataCustomerProfile.createPayAddressAction(Number(route.params.id), data, toast, router, EndTimeLoading,handleCloseCreatePayAddressWhenSS)
+}
+
+const createNewPayAddress = () => {
+  isOpenCreatedPayAddress.value = false
+  arr_address_pay.value = payDataOption
+  let data = {
+    customer_group: detailCustomerProfile.value.customer_group,
+    code: detailCustomerProfile.value.code,
+    name: detailCustomerProfile.value.name,
+    birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+    gender: detailCustomerProfile.value.gender,
+    email: detailCustomerProfile.value.email,
+    phone: detailCustomerProfile.value.phone,
+    detail_delivery_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_delivery_address)),
+    detail_delivery_address_new: dataOption,
+    detail_pay_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_pay_address)),
+    detail_pay_address_new: arr_address_pay.value,
+  }
+  dataCustomerProfile.createPayAddressAction(Number(route.params.id), data, toast, router, EndTimeLoading,handleCloseCreatePayAddressWhenSS)
+}
+
+const updateCustomerProfile = () => {
+  let data = {
+    customer_group: detailCustomerProfile.value.customer_group,
+    code: detailCustomerProfile.value.code,
+    name: detailCustomerProfile.value.name,
+    birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+    gender: detailCustomerProfile.value.gender,
+    email: detailCustomerProfile.value.email,
+    phone: detailCustomerProfile.value.phone,
+    detail_delivery_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_delivery_address)),
+    detail_pay_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_pay_address)),
   }
   dataCustomerProfile.updateCustomerProfileAction(Number(route.params.id), data, toast, router, EndTimeLoading)
 }

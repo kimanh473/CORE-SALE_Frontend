@@ -14,10 +14,15 @@ const deleteCustomerProfileApi = (id:number) => {
 const getDetailCustomerProfileApi = (id:number) => {
     return httpClient.get(`/customer/profile/show/${id}`);
 }
+const getLastCodeCustomerApi = () => {
+    return httpClient.get(`/setting/get-last-code-customer`);
+}
+
 export {
     getAllCustomerProfileApi,
     getDetailCustomerProfileApi,
     createCustomerProfileApi,
     updateCustomerProfileApi,
-    deleteCustomerProfileApi
+    deleteCustomerProfileApi,
+    getLastCodeCustomerApi
 };

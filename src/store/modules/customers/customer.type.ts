@@ -1,15 +1,15 @@
-import dayjs from "dayjs";
-
 interface DataCustomerProfile {
     id: number
     code: string
     name: string
     email: string
-    birth_day: dayjs
+    birth_day: string
     gender: string
     phone: string
     detail_delivery_address: Array<DetailDeliveryAddress>
+    detail_pay_address: Array<DetailPayAddress>
     delivery_address: string
+    pay_address: string
     list_address: string
 }
 interface DetailDeliveryAddress {
@@ -20,6 +20,15 @@ interface DetailDeliveryAddress {
     address_ward_id: string,
     address_detail: string,
     is_default: string
+}
+interface DetailPayAddress {
+    title: string,
+    address_country_id: string,
+    address_state_id: string,
+    address_district_id: string,
+    address_ward_id: string,
+    address_detail: string,
+    is_default_pay: string
 }
 interface DataCustomerAccount {
     id: number,
