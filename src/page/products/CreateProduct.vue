@@ -556,6 +556,7 @@
                           style="width: 400px"
                           :token-separators="[',']"
                           placeholder=""
+                          @change="handleChangeClassify"
                         ></a-select>
                         <i
                           @click="removeOptions(index)"
@@ -565,6 +566,12 @@
                     </div>
                     <div @click="addOptions" class="mt-2 w-fit">
                       <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                    </div>
+                    <div
+                      @click="addClassify"
+                      class="button-modal w-fit cursor-pointer"
+                    >
+                      Thêm vào danh sách phân loại
                     </div>
                   </div>
                 </div>
@@ -581,7 +588,7 @@
                       <p>Số lượng</p>
                     </div>
                     <div
-                      v-for="(item, index) in dataOption"
+                      v-for="(item, index) in dataUnit"
                       :key="index"
                       class="form-large-full grid grid-cols-3 gap-3"
                     >
@@ -589,8 +596,8 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn nhóm thuộc tính"
-                          :options="listAttributeGroup"
-                          v-model:value="product.groupAttributeID"
+                          :options="lastGenerateList"
+                          v-model:value="product.nameClassifyID"
                           :fieldNames="{ label: 'title', value: 'code' }"
                           @change="handleChangeAttributeGroup"
                         >
@@ -602,26 +609,27 @@
                           class="!pl-[16px]"
                         ></a-checkbox> -->
                         <a-input
-                          v-model:value="item.title"
-                          placeholder="Nhập tiêu đề"
+                          v-model:value="item.unit"
+                          placeholder="Nhập đơn vị quy đổi"
                         ></a-input>
                       </div>
                       <div class="flex items-end w-full">
                         <a-input
-                          v-model:value="item.title"
-                          placeholder="Nhập tiêu đề"
+                          v-model:value="item.quantity"
+                          placeholder="Nhập số lượng"
                         ></a-input>
                         <i
-                          @click="removeOptions(index)"
+                          @click="removeUnits(index)"
                           class="fal fa-times icon-close"
                         ></i>
                       </div>
                     </div>
-                    <div @click="addOptions" class="mt-2 w-fit">
+                    <div @click="addUnits" class="mt-2 w-fit">
                       <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
                   </div>
                 </div>
+                <div><h1>Bảng cấu hình</h1></div>
               </div>
             </div>
 
@@ -773,6 +781,7 @@
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
+  import { faMapMarker } from '@fortawesome/free-solid-svg-icons'
   const dataSpecification = useListSpecification()
   dataSpecification.getListSpecificationAction()
   const { listSpecification } = storeToRefs(dataSpecification)
@@ -904,20 +913,73 @@
       return ''
     }
   }
+  const res_1 = ref([])
+
+  const frc = (arr: any) => {
+    let result = []
+    let i = 0
+    let k = 0
+
+    while (i < arr.length - 1) {
+      while (k < 1) {
+        for (let m = 0; m < arr[0].length; m++) {
+          for (let j = 0; j < arr[1].length; j++) {
+            let a = arr[0][m]
+            let b = a + '_' + arr[1][j]
+            result.push(b)
+          }
+        }
+        arr[0] = result
+        arr.splice(1, 1)
+        res_1.value = result
+        k++
+      }
+      frc(arr)
+      i++
+    }
+    return res_1
+  }
+  const listGenerate = ref<any>([])
+  const listGenerateMap = ref<any>([])
+  const mapArr = ref<any>([])
+  const nameArr = ref<any>([])
+  const handleChangeClassify = (value: any) => {
+    console.log(value)
+    mapArr.value = dataOption.map((item: any) => item.optionClassify)
+    console.log(mapArr.value)
+
+    // listGenerate.value = res_1.value.map((item: any, index: any) => ({
+    //   title: item,
+    //   code: index,
+    // }))
+    // console.log(listGenerate.value)
+
+    // listGenerate.value = value.map((item: any, index: any) => ({
+    //   title: item,
+    //   code: index,
+    // }))
+    // dataOption.push(
+    //   value.map((item: any, index: any) => ({
+    //     title: dataOption[0].title + ' ' + item,
+    //     code: index,
+    //   }))
+    // )
+  }
+
   const handlePreview = async (file: UploadProps['fileList'][number]) => {
     if (!file.url && !file.preview) {
       file.preview = (await getBase64(file.originFileObj)) as string
       console.log(file.preview)
     }
-
     previewImage.value = file.url || file.preview
     previewVisible.value = true
     previewTitle.value =
       file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
   }
+
   const dataOption = reactive([
     {
-      optionClassify: [],
+      optionClassify: <SelectProps['options']>[],
       title: '',
     },
   ])
@@ -930,6 +992,36 @@
   }
   const removeOptions = (index: number) => {
     dataOption.splice(index, 1)
+  }
+  const dataUnit = reactive([
+    {
+      idClassify: '',
+      unit: '',
+      quantity: '',
+    },
+  ])
+  const addUnits = () => {
+    const data = {
+      idClassify: '',
+      unit: '',
+      quantity: '',
+    }
+    dataUnit.push(data)
+  }
+  const removeUnits = (index: number) => {
+    dataUnit.splice(index, 1)
+  }
+  const lastGenerateList = ref<any>([])
+  const addClassify = async () => {
+    nameArr.value = []
+    listGenerate.value = []
+    nameArr.value.push(dataCreateProduct.value.name)
+    listGenerate.value.push(nameArr.value, ...mapArr.value)
+    await frc(listGenerate.value)
+    lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
+      title: item,
+      code: index,
+    }))
   }
   const dataProduct = useProduct()
   const webCatalog = useWebCatalog()
@@ -954,6 +1046,8 @@
     groupAttributeID: 1,
     taxID: null,
     specificationID: null,
+    classifyID: null,
+    nameClassifyID: null,
   })
   const createProduct = () => {
     // let data = {
