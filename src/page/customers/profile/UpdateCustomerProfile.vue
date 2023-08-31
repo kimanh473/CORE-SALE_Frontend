@@ -226,6 +226,7 @@
                                       :options="listAllCity"
                                       @change="handleChangeCity(Number(detailCustomerProfile.detail_delivery_address[index].address_state_id),listAllCity,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
 <!--                                  <p
@@ -247,9 +248,10 @@
                                       class="form-control-input"
                                       placeholder="Chọn quận huyện"
                                       v-model:value="detailCustomerProfile.detail_delivery_address[index].address_district_id"
-                                      :options="listAllDistrict"
-                                      @change="handleChangeDistrict(Number(detailCustomerProfile.detail_delivery_address[index].address_district_id),listAllDistrict,index)"
+                                      :options="list_district_1"
+                                      @change="handleChangeDistrict(Number(detailCustomerProfile.detail_delivery_address[index].address_district_id),list_district_1,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
 <!--                                  <p
@@ -272,9 +274,10 @@
                                         class="form-control-input"
                                         placeholder="Chọn xã, phường, thị trấn"
                                         v-model:value="detailCustomerProfile.detail_delivery_address[index].address_ward_id"
-                                        :options="listAllWard"
-                                        @change="handleChangeWard(Number(detailCustomerProfile.detail_delivery_address[index].address_ward_id),listAllWard,index)"
+                                        :options="list_ward_1"
+                                        @change="handleChangeWard(Number(detailCustomerProfile.detail_delivery_address[index].address_ward_id),list_ward_1,index)"
                                         :fieldNames="{ label: 'title', value: 'ID' }"
+                                        :filter-option="filterOption"
                                     >
                                     </a-select>
 <!--                                  <p
@@ -327,6 +330,7 @@
                   </div>
                 </Transition>
 
+<!--                them moi-->
                 <a-modal :visible="isOpenConfirmDefault" @cancel="handleClose" width="660px">
                   <div v-show="isDeliveryAddress == true" class="outer">
                     <div class="p-4">
@@ -348,6 +352,7 @@
                                 class="form-control-input"
                                 placeholder="Nhập tên địa chỉ"
                                 v-model="item_new.title"
+                                required
                             />
                           </div>
                         </div>
@@ -368,6 +373,7 @@
                                     :options="listAllCity"
                                     @change="handleChangeCity_new(dataOption[index_new].address_state_id,listAllCity,index_new)"
                                     :fieldNames="{ label: 'title', value: 'ID' }"
+                                    :filter-option="filterOption"
                                 >
                                 </a-select>
                               </div>
@@ -386,6 +392,7 @@
                                     :options="listAllDistrict"
                                     @change="handleChangeDistrict_new(dataOption[index_new].address_district_id,listAllDistrict,index_new)"
                                     :fieldNames="{ label: 'title', value: 'ID' }"
+                                    :filter-option="filterOption"
                                 >
                                 </a-select>
                               </div>
@@ -405,6 +412,7 @@
                                     :options="listAllWard"
                                     @change="handleChangeWard_new(dataOption[index_new].address_ward_id,listAllWard,index_new)"
                                     :fieldNames="{ label: 'title', value: 'ID' }"
+                                    :filter-option="filterOption"
                                 >
                                 </a-select>
                               </div>
@@ -497,6 +505,7 @@
                                       :options="listAllCity"
                                       @change="handleChangeCityPay(Number(detailCustomerProfile.detail_pay_address[index].address_state_id),listAllCity,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
                                   <!--                                  <p
@@ -518,9 +527,10 @@
                                       class="form-control-input"
                                       placeholder="Chọn quận huyện"
                                       v-model:value="detailCustomerProfile.detail_pay_address[index].address_district_id"
-                                      :options="listAllDistrict"
-                                      @change="handleChangeDistrictPay(Number(detailCustomerProfile.detail_pay_address[index].address_district_id),listAllDistrict,index)"
+                                      :options="list_district_1"
+                                      @change="handleChangeDistrictPay(Number(detailCustomerProfile.detail_pay_address[index].address_district_id),list_district_1,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
                                   <!--                                  <p
@@ -543,9 +553,10 @@
                                       class="form-control-input"
                                       placeholder="Chọn xã, phường, thị trấn"
                                       v-model:value="detailCustomerProfile.detail_pay_address[index].address_ward_id"
-                                      :options="listAllWard"
-                                      @change="handleChangeWardPay(Number(detailCustomerProfile.detail_pay_address[index].address_ward_id),listAllWard,index)"
+                                      :options="list_ward_1"
+                                      @change="handleChangeWardPay(Number(detailCustomerProfile.detail_pay_address[index].address_ward_id),list_ward_1,index)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
                                   <!--                                  <p
@@ -570,7 +581,7 @@
                             cols="30"
                             rows="5"
                             class="form-control-input"
-                            v-model="item.address_detail"
+                            v-model="item.pay_address_detail"
                         ></textarea>
                             </div>
                           </div>
@@ -599,7 +610,7 @@
                 </Transition>
 
 
-                //them moi//
+<!--                them moi-->
                 <a-modal :visible="isOpenCreatedPayAddress" @cancel="handleCloseCreatePayAddress" width="660px">
                   <div v-show="isPayAddress == true" class="outer">
                     <div class="p-4">
@@ -647,6 +658,7 @@
                                       :options="listAllCity"
                                       @change="handleChangeCity_newpay(payDataOption[index_new].address_state_id,listAllCity,index_new)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
                                   <!--                                <p
@@ -671,6 +683,7 @@
                                       :options="listAllDistrict"
                                       @change="handleChangeDistrict_newpay(payDataOption[index_new].address_district_id,listAllDistrict,index_new)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
                                   <!--                                <p
@@ -696,6 +709,7 @@
                                       :options="listAllWard"
                                       @change="handleChangeWard_newpay(payDataOption[index_new].address_ward_id,listAllWard,index_new)"
                                       :fieldNames="{ label: 'title', value: 'ID' }"
+                                      :filter-option="filterOption"
                                   >
                                   </a-select>
 
@@ -721,21 +735,10 @@
                             cols="30"
                             rows="5"
                             class="form-control-input"
-                            v-model="item_new.address_detail"
+                            v-model="item_new.pay_address_detail"
                         ></textarea>
                             </div>
                           </div>
-
-
-
-                          <!--                        <div class="mb-5">
-                                                    <a-switch
-                                                        v-model:checked="item_new.is_default"
-                                                        :checkedValue="1"
-                                                        :unCheckedValue="0"
-                                                    />
-                                                    &nbsp; Đặt làm mặc định
-                                                  </div>-->
 
                         </div>
 
@@ -825,6 +828,9 @@ const radioStyle = reactive({
   lineHeight: '30px',
 });
 
+const filterOption = (input: string, option: any) => {
+  return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+}
 
 const dataCustomerProfile = useCustomerProfile();
 const dataLocation = useLocation();
@@ -841,6 +847,9 @@ const {listGroupCustomer} = storeToRefs(dataGroupCustomer)
 const dateFormat = 'DD/MM/YYYY';
 const dateFormatRequest = 'YYYY/MM/DD';
 let arr_district = ref([]);
+
+let list_district_1 = JSON.parse(localStorage.getItem("list_district"));
+let list_ward_1 = JSON.parse(localStorage.getItem("list_ward"));
 
 const handleChangeCity = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
@@ -885,7 +894,7 @@ const handleChangeCity_new = (value: number, option: any, index: number) => {
 const handleChangeCity_newpay = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
   dataLocation.getListAllDistrictAction(value)
-  payDataOption[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
+  payDataOption[index].pay_address_detail = arr[0].title + ', ' + 'Việt Nam'
 }
 
 const handleChangeDistrict_new = (value: number, option: any, index: number) => {
@@ -897,7 +906,7 @@ const handleChangeDistrict_new = (value: number, option: any, index: number) => 
 const handleChangeDistrict_newpay = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
   dataLocation.getListAllWardAction(value)
-  payDataOption[index].address_detail = arr[0].title + ', ' + payDataOption[index].address_detail
+  payDataOption[index].pay_address_detail = arr[0].title + ', ' + payDataOption[index].pay_address_detail
 }
 
 const handleChangeWard_new = (value: number, option: any, index: number) => {
@@ -907,7 +916,7 @@ const handleChangeWard_new = (value: number, option: any, index: number) => {
 
 const handleChangeWard_newpay = (value: number, option: any, index: number) => {
   let arr = option.filter((item: any) => item.ID == value)
-  payDataOption[index].address_detail = arr[0].title + ', ' + payDataOption[index].address_detail
+  payDataOption[index].pay_address_detail = arr[0].title + ', ' + payDataOption[index].pay_address_detail
 }
 
 const handleChangeIsDefault = (index:any) => {
@@ -935,32 +944,32 @@ const dataOption = reactive([])
 
 const addOptions = () => {
   isOpenConfirmDefault.value = true
-  const data = {
+  let data_1 = {
     title: '',
     address_country_id: '1',
     address_district_id: '',
     address_ward_id: '',
     address_state_id: '',
     address_detail: '',
-    is_default:''
+    is_default:'0'
   }
-  dataOption.push(data)
+    dataOption.push(data_1)
 }
 
 const payDataOption = reactive([])
 
 const payAddOptions = () => {
   isOpenCreatedPayAddress.value = true
-  const data = {
+  let data = {
     title: '',
     address_country_id: '1',
     address_district_id: '',
     address_ward_id: '',
     address_state_id: '',
-    address_detail: '',
+    pay_address_detail: '',
     is_default_pay:'0'
   }
-  payDataOption.push(data)
+    payDataOption.push(data)
 }
 
 const removeDetailDeliveryAddress = (index: number) => {
@@ -1012,7 +1021,7 @@ const createNewDeCustomerProfile = () => {
     detail_delivery_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_delivery_address)),
     detail_delivery_address_new: dataOption,
     detail_pay_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_pay_address)),
-    detail_pay_address_new: arr_address_de.value,
+    detail_pay_address_new: payDataOption,
   }
   dataCustomerProfile.createPayAddressAction(Number(route.params.id), data, toast, router, EndTimeLoading,handleCloseCreatePayAddressWhenSS)
 }
@@ -1031,7 +1040,7 @@ const createNewPayAddress = () => {
     detail_delivery_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_delivery_address)),
     detail_delivery_address_new: dataOption,
     detail_pay_address_old: JSON.parse(JSON.stringify(detailCustomerProfile.value.detail_pay_address)),
-    detail_pay_address_new: arr_address_pay.value,
+    detail_pay_address_new: payDataOption,
   }
   dataCustomerProfile.createPayAddressAction(Number(route.params.id), data, toast, router, EndTimeLoading,handleCloseCreatePayAddressWhenSS)
 }

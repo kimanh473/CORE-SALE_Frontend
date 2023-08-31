@@ -11,6 +11,7 @@ interface DataCustomerProfile {
     delivery_address: string
     pay_address: string
     list_address: string
+    list_pay_address: string
     customer_group: string
 }
 interface DetailDeliveryAddress {

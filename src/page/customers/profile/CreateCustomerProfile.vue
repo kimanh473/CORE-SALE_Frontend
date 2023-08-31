@@ -335,6 +335,13 @@
                         ></textarea>
                             </div>
                           </div>
+
+                          <div class="mb-5">
+                            <a-radio-group v-model:value="is_default"  name="radioGroup" @change="handleChangeIsDefault(index)">
+                              <a-radio :value="index.toString()" >Đặt làm địa chỉ mặc định</a-radio>
+                            </a-radio-group>
+                          </div>
+
                         </div>
 
                         <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
@@ -477,6 +484,11 @@
                         ></textarea>
                             </div>
                           </div>
+                          <div class="mb-5">
+                            <a-radio-group v-model:value="is_default_pay"  name="radioGroup" @change="handleChangeIsDefaultPay(index)">
+                              <a-radio :value="index.toString()" >Đặt làm địa chỉ mặc định</a-radio>
+                            </a-radio-group>
+                          </div>
                         </div>
 
                         <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
@@ -535,6 +547,8 @@ const isContact = ref<boolean>(true)
 const checked = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const activeKey = ref('1')
+const is_default = ref('')
+const is_default_pay = ref('')
 
 const dateFormat = 'DD/MM/YYYY';
 const dateFormatRequest = 'YYYY/MM/DD';
@@ -605,6 +619,50 @@ const handleChangeGroup = (value:number,option:any) => {
   customerProfile.code = option.code + last_code.value.substring(3,).padStart(8,'0')
 }
 
+const res_1 = ref([]);
+
+const frc = (arr:any) => {
+  let result = [];
+  let i=0;
+  let k=0;
+
+  while (i < arr.length-1){
+    while (k < 1){
+      for (let m = 0; m < arr[0].length; m++) {
+        for (let j = 0; j < arr[1].length; j++) {
+          let a = arr[0][m]
+          let b = a + '_' + arr[1][j]
+          result.push(b)
+        }
+      }
+      arr[0] = result
+      arr.splice(1,1)
+      res_1.value = result
+      k++
+    }
+    frc(arr)
+    i++
+  }
+  return res_1
+}
+
+const handleChangeIsDefault = (index:any) => {
+  dataOption[index].is_default = '1';
+  let color = dataOption.filter((c:any,i:any)=>i!= index)
+  if (color){
+    color.map((item:any) => item.is_default = '0')
+  }
+}
+
+const handleChangeIsDefaultPay = (index:any) => {
+  payDataOption[index].is_default_pay = '1';
+  let color = payDataOption.filter((c:any,i:any)=>i!= index)
+  if (color){
+    color.map((item:any) => item.is_default_pay = '0')
+  }
+}
+
+
 const dataOption = reactive([
   {
     title:'',
@@ -613,6 +671,7 @@ const dataOption = reactive([
     address_ward_id: '',
     address_state_id: '',
     address_detail: '',
+    is_default: ''
   },
 ])
 
@@ -624,6 +683,7 @@ const addOptions = () => {
     address_ward_id: '',
     address_state_id: '',
     address_detail: '',
+    is_default: ''
   }
   dataOption.push(data)
 }
@@ -636,6 +696,7 @@ const payDataOption = reactive([
     address_ward_id: '',
     address_state_id: '',
     pay_address_detail: '',
+    is_default_pay: ''
   },
 ])
 
@@ -647,6 +708,7 @@ const payAddOptions = () => {
     address_ward_id: '',
     address_state_id: '',
     pay_address_detail: '',
+    is_default_pay: ''
   }
   payDataOption.push(data)
 }
@@ -708,7 +770,6 @@ const createCustomerProfile = () => {
     phone: customerProfile.phone,
     website: customerProfile.website,
     customer_group: customerProfile.customer_group,
-
     detail_delivery_address: dataOption,
     detail_pay_address: payDataOption
   }

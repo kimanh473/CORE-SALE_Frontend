@@ -70,6 +70,8 @@
   </section>
 </template>
 <script setup lang="ts">
+  import {useLocation} from "../../store/modules/location/location";
+
   defineOptions({
     name: 'Login',
   })
@@ -82,6 +84,11 @@
   const router = useRouter()
   //   const store = useStore()
   const userlog = userLogin()
+  const dataLocation = useLocation();
+
+  dataLocation.getListAllDistrictAction_2()
+  dataLocation.getListAllWardAction_2()
+
   const savePassword = ref(false)
   const userSave = JSON.parse(localStorage.getItem('dataUser'))
   const user = {

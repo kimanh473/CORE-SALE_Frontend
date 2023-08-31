@@ -76,11 +76,15 @@ import { useCustomerProfile } from '../../../store/modules/customers/customerPro
 //   import { storeToRefs } from 'pinia'
 import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
 import { storeToRefs } from 'pinia'
+import {useLocation} from "../../../store/modules/location/location";
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const dataCustomerProfile = useCustomerProfile()
+const dataLocation = useLocation();
+
 dataCustomerProfile.getAllCustomerProfilePaginateAction()
+
 const {listCustomerProfile} = storeToRefs(dataCustomerProfile)
 const isCheck = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
@@ -108,8 +112,12 @@ const columns = [
     dataIndex: 'phone',
   },
   {
-    title: 'Địa chỉ',
+    title: 'Địa chỉ nhận hàng',
     dataIndex: 'list_address',
+  },
+  {
+    title: 'Địa chỉ thanh toán',
+    dataIndex: 'list_pay_address',
   },
   {
     title: 'Thao tác',

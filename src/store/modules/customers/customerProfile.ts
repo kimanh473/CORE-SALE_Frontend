@@ -11,8 +11,6 @@ import {
 } from '../../../services/CustomerProfileServices/customerProfile.services'
 
 
-
-
 export const useCustomerProfile = defineStore("CustomerProfile", {
     state: () => ({
         listCustomerProfile: [] as DataCustomerProfile[],
@@ -20,9 +18,9 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
         idState:[],
         idWard:[],
         idDistrict:null,
-        is_default:null,
         birth_day_dd_mm_yy: null,
         last_code: '',
+        is_default: '',
         is_default_pay: ''
     }),
     getters: {
@@ -37,6 +35,7 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                 detail_delivery_address: item.detail_delivery_address,
                 delivery_address: item.delivery_address,
                 list_address: item.list_address,
+                list_pay_address: item.list_pay_address,
             }))
         },
         getDetailCustomerProfile: (state: any) => {
@@ -54,7 +53,7 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
             return (payload: any) => {
                 state.last_code = payload
             }
-        },
+        }
     },
 
     actions: {
