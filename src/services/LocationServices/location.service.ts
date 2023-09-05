@@ -5,13 +5,13 @@ const GetAllCityApi = () => {
 const GetAllDistrictsApi = (id: number) => {
     return httpClient.get(`/location/index?parent_id=${id}`);
 };
-const GetAllDistrictsApi_2 = (id: number) => {
+const GetAllDistrictsApi_2 = () => {
     return httpClient.get(`/location/index?type=3`);
 };
 const GetAllWardsApi = (id: number) => {
     return httpClient.get(`/location/index?parent_id=${id}`);
 };
-const GetAllWardsApi_2 = (id: number) => {
+const GetAllWardsApi_2 = () => {
     return httpClient.get(`/location/index?type=4`);
 };
 const GetAllCountryApi = () => {

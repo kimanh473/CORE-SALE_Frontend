@@ -50,10 +50,12 @@ export const useLocation = defineStore("Location", {
                     console.log(err)
                 });
         },
-        async getListAllDistrictAction_2(id: number) {
-            await GetAllDistrictsApi_2(id)
+        async getListAllDistrictAction_2() {
+            await GetAllDistrictsApi_2()
                 .then((payload: any) => {
                     this.getListAllDistrict_2(payload.data)
+                    //console.log(JSON.stringify(payload.data.data))
+                    localStorage.setItem('list_district', JSON.stringify(payload.data.data))
                 })
                 .catch((err) => {
                     console.log(err)
@@ -68,10 +70,11 @@ export const useLocation = defineStore("Location", {
                     console.log(err)
                 });
         },
-        async getListAllWardAction_2(id: number) {
-            await GetAllWardsApi_2(id)
+        async getListAllWardAction_2() {
+            await GetAllWardsApi_2()
                 .then((payload: any) => {
                     this.getListAllWard_2(payload.data)
+                    localStorage.setItem('list_ward', JSON.stringify(payload.data.data))
                 })
                 .catch((err) => {
                     console.log(err)

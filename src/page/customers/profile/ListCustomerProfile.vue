@@ -33,6 +33,7 @@
           class="!p-[10px]"
           :columns="columns"
           :data-source="listCustomerProfile"
+          :custom-row="rightClick"
           bordered
           row-key="id"
       ><template #bodyCell="{ column, record }">
@@ -56,6 +57,173 @@
     <template v-slot:footer>footer</template>
   </base-layout>
 
+
+  <div>
+    <context-menu :isActive="isActiveAdminGroup"
+    ><ul>
+      <li @click.prevent="handleOpenCreateAccount" v-if="role == 'ADMIN'">
+        <i class="fal fa-key"></i><a href="#">Tạo mới tài khoản</a>
+      </li>
+    </ul>
+    </context-menu
+    >
+  </div>
+
+  <!-- tao moi tai khoan -->
+    <a-modal :visible="isOpenCreateAccount" @cancel="handleCloseCreateAccount" width="540px">
+      <div class="outer">
+        <div class="p-4">
+          <p>Tạo mới tài khoản khách hàng</p>
+          <div class="w-full inner">
+            <Transition :duration="550" name="nested">
+              <div
+                  class="text-left py-2 w-full h-full format-scroll form-plus-over"
+              >
+                <div class="w-full">
+                  <Transition name="slide-up">
+                    <div class="outer">
+                      <div>
+                        <div class="grid grid-cols-2 gap-2 form-small">
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Tên tài khoản<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <input
+                                  type="text"
+                                  class="form-control-input"
+                                  placeholder="Nhập tên tài khoản"
+                                  v-model="customerAccount.username"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Họ và tên<span class="text-red-600"></span
+                            ></label>
+                            <div>
+                              <input
+                                  type="text"
+                                  class="form-control-input"
+                                  placeholder="Nhập họ và tên"
+                                  v-model="customerAccount.fullname"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-small">
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Ngày sinh<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <a-space direction="vertical" :size="12">
+                                <a-date-picker v-model:value="birth_day_dd_mm_yy" :format="dateFormat"/>
+                              </a-space>
+                            </div>
+                          </div>
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Giới tính<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <select v-model="customerAccount.gender" class="form-control-input">
+                                <option disabled value="">Chọn giới tính</option>
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                                <option value="2">Khác</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Email<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <input
+                                  type="text"
+                                  class="form-control-input"
+                                  placeholder="Nhập email"
+                                  v-model="customerAccount.email"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Số điện thoại<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <input
+                                  type="text"
+                                  class="form-control-input"
+                                  placeholder="Nhập số điện thoại"
+                                  v-model="customerAccount.phone"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Password<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <input
+                                  type="password"
+                                  class="form-control-input"
+                                  placeholder="Nhập mật khẩu"
+                                  v-model="customerAccount.password"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Nhập lại password<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <input
+                                  type="password"
+                                  class="form-control-input"
+                                  placeholder="Nhập lại mật khẩu"
+                                  v-model="password_confirmation"
+                              />
+                            </div>
+                          </div>
+                          <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
+                            nhận -->
+                        </div>
+                      </div>
+                    </div>
+
+                  </Transition>
+                </div>
+              </div>
+            </Transition>
+          </div
+          >
+        </div>
+      </div>
+      <template #footer>
+        <a-button
+            key="submit"
+            type="primary"
+            @click="createCustomerAccount()"
+        >Xác nhận
+        </a-button
+        >
+        <a-button key="back" @click="handleCloseCreateAccount">Hủy</a-button>
+      </template>
+      <loading-overlay :isLoading="isLoading"></loading-overlay>
+    </a-modal>
+
   <modal-delete
       :isOpen="isOpenConfirm"
       :handleCloseDetail="handleCloseConfirm"
@@ -69,6 +237,7 @@
 import BaseLayout from '../../../layout/baseLayout.vue'
 import SideBar from '../../../components/common/SideBar.vue'
 import Header from '../../../components/common/Header.vue'
+import ContextMenu from '../../../components/common/ContextMenu.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ref, reactive } from 'vue'
 import { useToast } from 'vue-toastification'
@@ -76,12 +245,30 @@ import { useCustomerProfile } from '../../../store/modules/customers/customerPro
 //   import { storeToRefs } from 'pinia'
 import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
 import { storeToRefs } from 'pinia'
+import {useLocation} from "../../../store/modules/location/location";
+import {FormatModalX, FormatModalY} from "../../../components/constants/FormatAll";
+import dayjs, {Dayjs} from "dayjs";
+import {useCustomerAccount} from "../../../store/modules/customers/customerAccount";
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const dataCustomerProfile = useCustomerProfile()
+const dataLocation = useLocation();
+const dataCustomerAccount = useCustomerAccount()
+const groupPermission = ref();
+const isActiveAdminGroup = ref<boolean>(false);
+const isOpenCreateAccount = ref<boolean>(false);
+const fullnameReset = ref();
+const role = localStorage.getItem('role');
+const password_confirmation = ref('');
+const dateFormat = 'DD/MM/YYYY';
+const dateFormatRequest = 'YYYY/MM/DD';
+const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat));
+
 dataCustomerProfile.getAllCustomerProfilePaginateAction()
-const {listCustomerProfile} = storeToRefs(dataCustomerProfile)
+
+
+const {listCustomerProfile,birth_day_dd_mm_yy} = storeToRefs(dataCustomerProfile)
 const isCheck = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const isOpenConfirm = ref<boolean>(false)
@@ -108,8 +295,16 @@ const columns = [
     dataIndex: 'phone',
   },
   {
-    title: 'Địa chỉ',
+    title: 'Email',
+    dataIndex: 'email',
+  },
+  {
+    title: 'Địa chỉ nhận hàng',
     dataIndex: 'list_address',
+  },
+  {
+    title: 'Địa chỉ thanh toán',
+    dataIndex: 'list_pay_address',
   },
   {
     title: 'Thao tác',
@@ -117,6 +312,78 @@ const columns = [
     key: 'id',
   },
 ]
+
+const customerAccount = reactive({
+  code: '',
+  profile_code: '',
+  username: '',
+  fullname: '',
+  birth_day: '',
+  gender: '',
+  email: '',
+  phone: '',
+  password: ''
+})
+
+const createCustomerAccount = () => {
+  isLoading.value = true
+  let data = {
+    code: customerAccount.code,
+    profile_code: customerAccount.profile_code,
+    username: customerAccount.username,
+    fullname: customerAccount.fullname,
+    birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+    gender: customerAccount.gender,
+    email_personal: customerAccount.email,
+    phone: customerAccount.phone,
+    password: customerAccount.password,
+    password_confirmation: password_confirmation.value,
+    web_code: "HWK"
+  }
+  console.log(data)
+ //dataCustomerAccount.createCustomerAccountInListProfileAction(data, toast, EndTimeLoading, handleCloseCreateAccount)
+}
+
+const rightClick = (record: any) => {
+  return {
+    oncontextmenu: (event: MouseEvent) => {
+      event.preventDefault()
+      console.log('Right-clicked row:', record)
+      groupPermission.value = record
+      fullnameReset.value = record?.fullname
+      customerAccount.username = record?.phone
+      customerAccount.email = record?.email
+      customerAccount.phone = record?.phone
+      customerAccount.gender = record?.gender
+      customerAccount.fullname = record?.name
+      customerAccount.profile_code = record?.code
+
+      idSelected.value = record?.id
+      dataCustomerProfile.getDetailCustomerProfileAction(Number(record?.id))
+      var menu = document.getElementById('contextMenu')
+      menu.style.display = 'block'
+      FormatModalX(menu, event)
+      FormatModalY(menu, event)
+      // if (isActiveAdminGroup.value === true) {
+      //   isActiveAdminGroup.value = false
+      // } else {
+      //   var menu = document.getElementById('contextMenu')
+      //   menu.style.display = 'block'
+      //   FormatModalX(menu, e)
+      //   FormatModalY(menu, e)
+      // }
+    },
+  }
+}
+
+const handleOpenCreateAccount = () => {
+  isOpenCreateAccount.value = true
+}
+
+const handleCloseCreateAccount = () => {
+  isOpenCreateAccount.value = false
+}
+
 const handleCloseConfirm = () => {
   isOpenConfirm.value = false
 }

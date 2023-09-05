@@ -4,7 +4,8 @@ import {
     createGroupCustomerApi,
     getDetailGroupCustomerApi,
     updateGroupCustomerApi,
-    deleteGroupCustomerApi
+    deleteGroupCustomerApi,
+    getAllGroupCustomerNoPaginateApi
 } from '../../../services/CustomerProfileServices/customerGroup.services'
 
 
@@ -38,6 +39,16 @@ export const useGroupCustomer = defineStore("customerGroup", {
             getAllGroupCustomerApi()
                 .then((payload: any) => {
                     let res = payload?.data?.data?.data;
+                    this.getListGroupCustomerPagination(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        getAllGroupCustomerNoPaginateAction() {
+            getAllGroupCustomerNoPaginateApi()
+                .then((payload: any) => {
+                    let res = payload?.data?.data;
                     this.getListGroupCustomerPagination(res)
                 })
                 .catch((err) => {
