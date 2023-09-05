@@ -23,7 +23,7 @@
     </template>
     <template v-slot:content class="relative">
       <div
-        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-end"
       >
         <div></div>
         <div
@@ -32,6 +32,13 @@
           @click="CreateGroupAttribute()"
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới nhóm thuộc tính</p>
+        </div>
+        <div
+          class="button-create-new relative group rounded-md px-2"
+          title="Tạo mới web"
+          @click="CreateSpecificationGroup()"
+        >
+          <p class="text-[14px] mt-1 px-1">Tạo mới bảng thông số</p>
         </div>
       </div>
       <a-table
@@ -198,6 +205,46 @@
     :ConfirmDelete="handleDelete"
   >
   </modal-delete>
+  <a-modal :visible="isOpenConfirmDefault" @cancel="handleClose" width="550px">
+    <template #title>
+      <div>Tạo mới bảng thông số</div>
+    </template>
+    <div class="p-4 grid grid-cols-2 gap-2">
+      <label for="" class="form-group-label"
+        >Tên bảng<span class="text-red-600">* </span> <span></span
+      ></label>
+      <label for="" class="form-group-label"
+        >Chọn thông số<span class="text-red-600">* </span> <span></span
+      ></label>
+      <a-input></a-input>
+      <div class="">
+        <div>
+          <a-select
+            show-search
+            class="form-control-input"
+            placeholder="Chọn thông số"
+            :options="listAttributeGroup"
+            :fieldNames="{ label: 'title', value: 'ID' }"
+          >
+          </a-select>
+
+          <!--                                  <p
+                                      v-if="messageError?.address_ward_id"
+                                      class="text-red-600"
+                                  >
+                                    {{ messageError?.address_ward_id[0] }}
+                                  </p>-->
+        </div>
+      </div>
+    </div>
+
+    <template #footer>
+      <a-button key="submit" type="primary" :loading="isLoading"
+        >Xác nhận</a-button
+      >
+      <a-button key="back" @click="handleClose">Hủy</a-button>
+    </template>
+  </a-modal>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
@@ -216,6 +263,7 @@
   const toast = useToast()
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const isOpenConfirmDefault = ref<boolean>(false)
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listAttributeGroup } = storeToRefs(dataAttributeGroup)
@@ -306,6 +354,12 @@
   // })
   const CreateGroupAttribute = () => {
     router.push('/create-group-attribute')
+  }
+  const handleClose = () => {
+    isOpenConfirmDefault.value = false
+  }
+  const CreateSpecificationGroup = () => {
+    isOpenConfirmDefault.value = true
   }
 </script>
 <style>

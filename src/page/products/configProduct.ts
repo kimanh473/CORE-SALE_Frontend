@@ -3,7 +3,7 @@ export const typeProduct = [
         type: 'input',
         code: 'text',
         attribute: {
-            placeholder: 'text',
+            placeholder: 'Nhập text',
             class: 'form-control-input mb-4',
         }
     },
@@ -11,9 +11,8 @@ export const typeProduct = [
         type: 'input',
         code: 'int',
         attribute: {
-            placeholder: 'number',
-            class: 'form-control-input',
-            style: 'margin-bottom: 10px',
+            placeholder: 'Nhập số',
+            class: 'form-control-input mb-4',
             type: 'number'
         }
     },
@@ -21,7 +20,7 @@ export const typeProduct = [
         type: 'textarea',
         code: 'textarea',
         attribute: {
-            placeholder: 'textarea',
+            placeholder: 'Nhập text',
             class: 'form-control-input !pt-4',
         }
     },
@@ -29,7 +28,7 @@ export const typeProduct = [
         type: 'select',
         code: 'selection',
         attribute: {
-            placeholder: 'select',
+            placeholder: 'Chọn',
             class: 'form-control-input',
         }
     },
@@ -45,6 +44,7 @@ export const typeProduct = [
         code: 'date-picker',
         attribute: {
             class: 'form-group-label',
+            placeholder: 'Chọn ngày',
         }
     },
     {

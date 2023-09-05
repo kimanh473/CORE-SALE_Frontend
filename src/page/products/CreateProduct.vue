@@ -528,40 +528,38 @@
                   class="bg-[#E8E9EB]"
                 >
                   <div class="p-4 m-2">
-                    <div class="flex">
-                      <p class="pr-[180px]">
-                        Nhóm phân loại <span class="text-red-600">*</span>
-                      </p>
-                      <p>Phân loại</p>
-                    </div>
-                    <div
-                      v-for="(item, index) in dataOption"
-                      :key="index"
-                      class="flex"
-                    >
-                      <div class="pr-[100px]">
-                        <!-- <a-checkbox
+                    <p class="pr-[180px]">
+                      Nhóm phân loại <span class="text-red-600">*</span>
+                    </p>
+                    <div v-for="(item, index) in dataOption" :key="index">
+                      <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
+                        <p class="m-0">Nhóm phân loại {{ index }}</p>
+                        <p class="m-0">Phân loại</p>
+                        <div class="pr-[100px]">
+                          <!-- <a-checkbox
                           v-model:checked="item.status"
                           class="!pl-[16px]"
                         ></a-checkbox> -->
-                        <a-input
-                          v-model:value="item.title"
-                          placeholder="Nhập tiêu đề"
-                        ></a-input>
-                      </div>
-                      <div class="flex items-end">
-                        <a-select
-                          v-model:value="item.optionClassify"
-                          mode="tags"
-                          style="width: 400px"
-                          :token-separators="[',']"
-                          placeholder=""
-                          @change="handleChangeClassify"
-                        ></a-select>
-                        <i
-                          @click="removeOptions(index)"
-                          class="fal fa-times icon-close"
-                        ></i>
+                          <a-input
+                            v-model:value="item.title"
+                            placeholder="Nhập tiêu đề"
+                          ></a-input>
+                        </div>
+
+                        <div class="flex items-end">
+                          <a-select
+                            v-model:value="item.optionClassify"
+                            mode="tags"
+                            style="width: 400px"
+                            :token-separators="[',']"
+                            placeholder=""
+                            @change="handleChangeClassify"
+                          ></a-select>
+                          <i
+                            @click="removeOptions(index)"
+                            class="fal fa-times icon-close"
+                          ></i>
+                        </div>
                       </div>
                     </div>
                     <div @click="addOptions" class="mt-2 w-fit">
@@ -629,7 +627,152 @@
                     </div>
                   </div>
                 </div>
-                <div><h1>Bảng cấu hình</h1></div>
+                <div
+                  id="product_table"
+                  v-show="item1.default_value == true"
+                  v-if="item1.attribute_code == 'unit_change'"
+                >
+                  <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
+                  <a-table
+                    :columns="columns"
+                    :data-source="lastGenerateList"
+                    :pagination="false"
+                    bordered
+                  >
+                    <template #bodyCell="{ column, record }">
+                      <template v-if="column.key === 'group_1'"
+                        ><div>
+                          <a-upload
+                            class="form-group-label"
+                            list-type="picture-card"
+                            @preview="handlePreview"
+                          >
+                            <div>
+                              <plus-outlined />
+                              <div style="margin-top: 8px">Upload</div>
+                            </div>
+                            <a-modal
+                              :visible="previewVisible"
+                              :footer="null"
+                              @cancel="handleCancelImage"
+                            >
+                              <img
+                                alt="example"
+                                style="width: 100%"
+                                :src="previewImage"
+                              />
+                            </a-modal>
+                          </a-upload>
+                          <p class="m-0">{{ record.title }}</p>
+                        </div>
+                      </template>
+                      <template v-if="column.key === 'group_2'"> </template>
+                      <template v-if="column.key === 'name'">
+                        <a-input></a-input>
+                      </template>
+                      <template v-if="column.key === 'sku'">
+                        <a-input v-model:value="sku[record.code]"></a-input>
+                        {{ sku[record.code] }}
+                      </template>
+                      <template v-if="column.key === 'bar_code'">
+                        <a-input></a-input>
+                      </template>
+
+                      <template v-if="column.key === 'weight'">
+                        <div class="flex">
+                          <a-input></a-input>
+                          <a-select
+                            class="!ml-[4px]"
+                            :options="weightUnit"
+                          ></a-select>
+                        </div>
+                      </template>
+                      <template v-if="column.key === 'minimum'">
+                        <a-input></a-input>
+                      </template>
+                      <template v-if="column.key === 'maximum'">
+                        <a-input></a-input>
+                      </template> </template
+                  ></a-table>
+                </div>
+                <div
+                  id="product_table"
+                  v-show="item1.default_value == true"
+                  v-if="item1.attribute_code == 'specification'"
+                >
+                  <p class="p-3 font-bold text-lg">Bảng kích cỡ thông số</p>
+                  <div>
+                    <a-select
+                      class="form-control-input"
+                      placeholder="Chọn thông số"
+                      :options="listSpecification"
+                      v-model:value="product.specificationID"
+                      :fieldNames="{ label: 'title', value: 'id' }"
+                    >
+                    </a-select>
+                  </div>
+                  <a-table
+                    :columns="columnsSpec"
+                    :data-source="lastGenerateList"
+                    :pagination="false"
+                    bordered
+                  >
+                    <template #bodyCell="{ column, record }">
+                      <template v-if="column.key === 'group_1'"
+                        ><div>
+                          <a-upload
+                            class="form-group-label"
+                            list-type="picture-card"
+                            @preview="handlePreview"
+                          >
+                            <div>
+                              <plus-outlined />
+                              <div style="margin-top: 8px">Upload</div>
+                            </div>
+                            <a-modal
+                              :visible="previewVisible"
+                              :footer="null"
+                              @cancel="handleCancelImage"
+                            >
+                              <img
+                                alt="example"
+                                style="width: 100%"
+                                :src="previewImage"
+                              />
+                            </a-modal>
+                          </a-upload>
+                          <p class="m-0">{{ record.title }}</p>
+                        </div>
+                      </template>
+                      <template v-if="column.key === 'group_2'"> </template>
+                      <template v-if="column.key === 'name'">
+                        <a-input></a-input>
+                      </template>
+                      <template v-if="column.key === 'sku'">
+                        <a-input v-model:value="sku[record.code]"></a-input>
+                        {{ sku[record.code] }}
+                      </template>
+                      <template v-if="column.key === 'bar_code'">
+                        <a-input></a-input>
+                      </template>
+
+                      <template v-if="column.key === 'weight'">
+                        <div class="flex">
+                          <a-input></a-input>
+                          <a-select
+                            class="!ml-[4px]"
+                            :options="weightUnit"
+                          ></a-select>
+                        </div>
+                      </template>
+                      <template v-if="column.key === 'minimum'">
+                        <a-input></a-input>
+                      </template>
+                      <template v-if="column.key === 'maximum'">
+                        <a-input></a-input>
+                      </template> </template
+                  ></a-table>
+                </div>
               </div>
             </div>
 
@@ -781,7 +924,7 @@
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
-  import { faMapMarker } from '@fortawesome/free-solid-svg-icons'
+  import IconAddImg from '../../assets/images/icon_add_image.png'
   const dataSpecification = useListSpecification()
   dataSpecification.getListSpecificationAction()
   const { listSpecification } = storeToRefs(dataSpecification)
@@ -792,7 +935,7 @@
   dataAttributeGroup.getListAttributeGroupAction()
   const { listAttributeGroup, listSetAttributeGroup, listDefault } =
     storeToRefs(dataAttributeGroup)
-
+  const img = ref(IconAddImg)
   const indexAttribute = ref()
   const options = ref<SelectProps['options']>([])
   const valueClassify = ref<string[]>([])
@@ -802,7 +945,7 @@
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
-
+  const uploadStatus = ref('success')
   const valueTree = ref([])
   const treeData = ref([
     {
@@ -823,6 +966,71 @@
       ],
     },
   ])
+  const weightUnit = ref<SelectProps['options']>([
+    {
+      value: 'g',
+      label: 'g',
+    },
+    {
+      value: 'kg',
+      label: 'kg',
+    },
+  ])
+  const columns = [
+    {
+      title: 'Phiên bản sản phẩm',
+      key: 'group_1',
+      align: 'center',
+    },
+    {
+      title: 'Tên',
+      key: 'name',
+      align: 'center',
+    },
+    {
+      title: 'SKU',
+      key: 'sku',
+      align: 'center',
+    },
+    {
+      title: 'Barcode',
+      key: 'bar_code',
+      align: 'center',
+    },
+    {
+      title: 'Khối lượng',
+      key: 'weight',
+      align: 'center',
+    },
+    {
+      title: 'Tồn kho tối thiểu',
+      key: 'minimum',
+      align: 'center',
+    },
+    {
+      title: 'Tồn kho tối đa',
+      key: 'maximum',
+      align: 'center',
+    },
+  ]
+  const columnsSpec = [
+    {
+      title: 'Size (Quốc tế)',
+      key: 'group_1',
+      align: 'center',
+    },
+    {
+      title: 'Size (US)',
+      key: 'name',
+      align: 'center',
+    },
+    {
+      title: 'Size (Việt Nam)',
+      key: 'sku',
+      align: 'center',
+    },
+  ]
+  const data = [{}]
   // const handleSelect = (value: any, node: any, extra: any) => {
   //   console.log(value)
   //   console.log(node)
@@ -832,11 +1040,6 @@
   //   console.log(str)
   // }
   const dataCreateProduct = ref<any>({})
-
-  console.log(listSetAttributeGroup.value)
-
-  console.log(indexAttribute)
-
   const handleChangeAttributeGroup = (value: any, options: any) => {
     indexAttribute.value = options.json_group_attribute_detail.map(
       (item: any) => ({
@@ -892,13 +1095,14 @@
   const previewVisible = ref<boolean>(false)
   const previewImage = ref('')
   const previewTitle = ref('')
+  const sku = ref([])
   const isConfig1 = ref(false)
   const isConfig2 = ref(false)
   const isConfig3 = ref(false)
   const isPrice = ref(true)
   const isConfig = ref(true)
-  const isInfor = ref(true)
   const isDetail = ref(true)
+  const isInfor = ref(true)
   const fileList = ref<UploadProps['fileList']>([])
   const handleCancelImage = () => {
     previewVisible.value = false
@@ -1092,5 +1296,14 @@
   #preview img {
     max-width: 100%;
     max-height: 100px;
+  }
+  .ant-upload-list-picture .ant-upload-list-item-error,
+  .ant-upload-list-picture-card .ant-upload-list-item-error {
+    border-color: transparent;
+  }
+  .ant-tooltip-placement-top,
+  .ant-tooltip-placement-topLeft,
+  .ant-tooltip-placement-topRight {
+    display: none;
   }
 </style>
