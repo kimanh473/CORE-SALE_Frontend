@@ -4,6 +4,7 @@ import {
     getAllCustomerAccountApi,
     getDetailCustomerAccountApi,
     createCustomerAccountApi,
+    createCustomerAccountInListProfileApi,
     updateCustomerAccountApi,
     deleteCustomerAccountApi,
 } from '../../../services/CustomerProfileServices/customerAccount.services'
@@ -68,6 +69,34 @@ export const useCustomerAccount = defineStore("CustomerAccount", {
             handleCloseCreate: Function
         ) {
             await createCustomerAccountApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages);
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công");
+                        EndTimeLoading();
+                        handleCloseCreate();
+                        this.getAllCustomerAccountPaginateAction()
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    EndTimeLoading();
+                    let arrMess = err.response.data.message;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+        async createCustomerAccountInListProfileAction(
+            data: Object,
+            toast: any,
+            EndTimeLoading: Function,
+            handleCloseCreate: Function
+        ) {
+            await createCustomerAccountInListProfileApi(data)
                 .then((res) => {
                     if (res.data.status == "failed") {
                         toast.error(res.data.messages);

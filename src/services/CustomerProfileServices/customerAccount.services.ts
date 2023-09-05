@@ -5,6 +5,9 @@ const getAllCustomerAccountApi = () => {
 const createCustomerAccountApi = (data:object) => {
     return httpClient.post(`/customer/account/create`,data);
 };
+const createCustomerAccountInListProfileApi = (data:object) => {
+    return httpClient.post(`/customer/account/create-in-list-profile`,data);
+};
 const updateCustomerAccountApi = (id:number, data: Object) => {
     return httpClient.post(`/customer/account/update/${id}`,data);
 };
@@ -19,5 +22,6 @@ export {
     getDetailCustomerAccountApi,
     createCustomerAccountApi,
     updateCustomerAccountApi,
-    deleteCustomerAccountApi
+    deleteCustomerAccountApi,
+    createCustomerAccountInListProfileApi
 };

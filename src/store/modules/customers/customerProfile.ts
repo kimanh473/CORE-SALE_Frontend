@@ -28,10 +28,12 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
             return (payload: any) => state.listCustomerProfile = payload?.map((item: any) => ({
                 id: item.id,
                 code: item.code,
+                profile_code: item.profile_code,
                 name: item.name,
                 birth_day: item.birth_day,
                 gender: item.gender,
                 phone: item.phone,
+                email: item.email,
                 detail_delivery_address: item.detail_delivery_address,
                 delivery_address: item.delivery_address,
                 list_address: item.list_address,
