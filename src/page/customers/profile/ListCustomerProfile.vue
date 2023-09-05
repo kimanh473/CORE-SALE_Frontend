@@ -9,7 +9,7 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Danh sách khách hàng</p>
+              <p class="longText pl-5 mb-0">Danh sách khách hàng {{account_exist}}</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -57,11 +57,10 @@
     <template v-slot:footer>footer</template>
   </base-layout>
 
-
   <div>
     <context-menu :isActive="isActiveAdminGroup"
     ><ul>
-      <li @click.prevent="handleOpenCreateAccount" v-if="role == 'ADMIN'">
+      <li @click.prevent="handleOpenCreateAccount" v-if="account_exist == '0' && role == 'ADMIN'">
         <i class="fal fa-key"></i><a href="#">Tạo mới tài khoản</a>
       </li>
     </ul>
@@ -259,16 +258,16 @@ const groupPermission = ref();
 const isActiveAdminGroup = ref<boolean>(false);
 const isOpenCreateAccount = ref<boolean>(false);
 const fullnameReset = ref();
+const checkAccountExist = ref();
 const role = localStorage.getItem('role');
 const password_confirmation = ref('');
 const dateFormat = 'DD/MM/YYYY';
 const dateFormatRequest = 'YYYY/MM/DD';
-const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat));
 
 dataCustomerProfile.getAllCustomerProfilePaginateAction()
 
 
-const {listCustomerProfile,birth_day_dd_mm_yy} = storeToRefs(dataCustomerProfile)
+const {listCustomerProfile,birth_day_dd_mm_yy,account_exist} = storeToRefs(dataCustomerProfile)
 const isCheck = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 const isOpenConfirm = ref<boolean>(false)
@@ -341,7 +340,7 @@ const createCustomerAccount = () => {
     web_code: "HWK"
   }
   console.log(data)
- //dataCustomerAccount.createCustomerAccountInListProfileAction(data, toast, EndTimeLoading, handleCloseCreateAccount)
+  dataCustomerAccount.createCustomerAccountInListProfileAction(data, toast, EndTimeLoading, handleCloseCreateAccount)
 }
 
 const rightClick = (record: any) => {
@@ -359,7 +358,11 @@ const rightClick = (record: any) => {
       customerAccount.profile_code = record?.code
 
       idSelected.value = record?.id
+
+      dataCustomerProfile.getCheckAccountCustomerExist(record?.code)
+
       dataCustomerProfile.getDetailCustomerProfileAction(Number(record?.id))
+
       var menu = document.getElementById('contextMenu')
       menu.style.display = 'block'
       FormatModalX(menu, event)

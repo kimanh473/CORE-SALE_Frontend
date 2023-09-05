@@ -84,6 +84,11 @@
       >
         <i class="fal fa-unlock"></i><a href="#">Mở khóa tài khoản</a>
       </li>
+
+      <li @click.prevent="handleCreateOrder" v-if="role == 'ADMIN'">
+        <i class="fal fa-key"></i><a href="#">Tạo mới đơn hàng</a>
+      </li>
+
     </ul></context-menu
     >
     <modal-delete
@@ -102,7 +107,7 @@
   >
   </modal-delete>
 <!--  <loading-overlay :isLoading="isLoading"></loading-overlay>-->
-  <!--        tạo mới account-->
+  <!-- tạo mới account-->
   <a-modal :visible="isOpenCreateModal" @cancel="handleCloseCreate" width="540px">
     <div v-show="isDeliveryAddress == true" class="outer">
       <div class="p-4">
@@ -307,7 +312,7 @@
                             ></label>
                           <div>
                             <a-space direction="vertical" :size="12">
-                              <a-date-picker v-model:value="value_birth_day" :format="dateFormat"/>
+                              <a-date-picker v-model:value="birth_day_dd_mm_yy" :format="dateFormat"/>
                             </a-space>
                           </div>
                         </div>
@@ -382,7 +387,6 @@
     </template>
     <loading-overlay :isLoading="isLoading"></loading-overlay>
   </a-modal>
-
   <!-- reset mk -->
   <a-modal
       :visible="isOpenResetPass"
@@ -432,6 +436,139 @@
       </div>
     </div>
   </a-modal>
+  <!-- tạo mới đơn hàng-->
+  <a-modal :visible="isOpenCreateOrderModal" @cancel="handleCloseCreateOrder" width="88%" >
+    <div  class="outer">
+      <div class="p-4">
+        <p>Tạo mới đơn hàng</p>
+        <div class="w-full inner">
+          <Transition :duration="550" name="nested">
+            <div
+                class="text-left py-2 w-full h-full format-scroll form-plus-over"
+            >
+              <div class="w-full">
+                <Transition name="slide-up">
+                  <div class="outer">
+                    <div>
+                      <div class="grid grid-cols-2 gap-2 form-small">
+                        <div>
+                          <label for="" class="form-group-label"
+                          >Tên tài khoản<span class="text-red-600">* </span>
+                            <span></span
+                            ></label>
+                          <div>
+                            <input
+                                disabled
+                                type="text"
+                                class="form-control-input disable-input"
+                                placeholder="Nhập tên tài khoản"
+                                v-model="customerOrder.username"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label for="" class="form-group-label"
+                          >Họ và tên<span class="text-red-600"></span
+                          ></label>
+                          <div>
+                            <input
+                                disabled
+                                type="text"
+                                class="form-control-input disable-input"
+                                placeholder="Nhập họ và tên"
+                                v-model="customerOrder.fullname"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-small">
+                        <div class="grid grid-cols-2 gap-2 form-small">
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Giới tính<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <select disabled v-model="customerOrder.gender" class="form-control-input disable-input">
+                                <option disabled value="">Chọn giới tính</option>
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                                <option value="2">Khác</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div>
+                            <label for="" class="form-group-label"
+                            >Ngày sinh<span class="text-red-600">* </span>
+                              <span></span
+                              ></label>
+                            <div>
+                              <a-space :size="14" >
+                                <a-date-picker class="form-control-input birth-day-customer disable-input" disabled v-model:value="birth_day_dd_mm_yy" :format="dateFormat"/>
+                              </a-space>
+                            </div>
+                          </div>
+                          </div>
+
+
+                        <div>
+                          <label for="" class="form-group-label"
+                          >Email<span class="text-red-600">* </span>
+                            <span></span
+                            ></label>
+                          <div>
+                            <input
+                                disabled
+                                type="text"
+                                class="form-control-input disable-input"
+                                placeholder="Nhập email"
+                                v-model="customerOrder.email"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label for="" class="form-group-label"
+                          >Số điện thoại<span class="text-red-600">* </span>
+                            <span></span
+                            ></label>
+                          <div>
+                            <input
+                                disabled
+                                type="text"
+                                class="form-control-input disable-input"
+                                placeholder="Nhập số điện thoại"
+                                v-model="customerOrder.phone"
+                            />
+                          </div>
+                        </div>
+
+                        <!-- <a-switch v-model:checked="checked" /> &nbsp; Sử dụng làm điểm
+                          nhận -->
+                      </div>
+                    </div>
+                  </div>
+
+                </Transition>
+              </div>
+            </div>
+          </Transition>
+        </div
+        >
+      </div>
+    </div>
+    <template #footer>
+      <a-button
+          key="submit"
+          type="primary"
+          @click="createCustomerOrder()"
+      >Xác nhận
+      </a-button
+      >
+      <a-button key="back" @click="handleCloseCreate">Hủy</a-button>
+    </template>
+    <loading-overlay :isLoading="isLoading"></loading-overlay>
+  </a-modal>
 
 </template>
 
@@ -457,7 +594,7 @@ const router = useRouter()
 const toast = useToast()
 const dataCustomerAccount = useCustomerAccount()
 dataCustomerAccount.getAllCustomerAccountPaginateAction()
-const { listCustomerAccount, detailCustomerAccount } = storeToRefs(dataCustomerAccount)
+const { listCustomerAccount, detailCustomerAccount, birth_day_dd_mm_yy } = storeToRefs(dataCustomerAccount)
 const isCheck = ref<boolean>(false)
 const isInfor = ref<boolean>(true)
 const isLoading = ref<boolean>(false)
@@ -468,6 +605,7 @@ const isOpenCreateModal = ref<boolean>(false)
 const isOpenUpdateModal = ref<boolean>(false)
 const isOpenResetPass = ref<boolean>(false)
 const isActiveAdminGroup = ref<boolean>(false)
+const isOpenCreateOrderModal = ref<boolean>(false)
 const groupPermission = ref()
 const fullnameReset = ref()
 const role = localStorage.getItem('role')
@@ -524,6 +662,16 @@ const rightClick = (record: any) => {
       groupPermission.value = record
       fullnameReset.value = record?.fullname
       idSelected.value = record?.id
+
+      customerOrder.username = record?.username
+      customerOrder.code = record?.code
+      customerOrder.email = record?.email_personal
+      customerOrder.fullname = record?.fullname
+      customerOrder.phone = record?.phone
+      customerOrder.gender = record?.gender
+
+      dataCustomerAccount.getDetailCustomerAccountAction(record?.id)
+
       var menu = document.getElementById('contextMenu')
       menu.style.display = 'block'
       FormatModalX(menu, event)
@@ -550,6 +698,18 @@ const addOptions = () => {
     address_detail: '',
     is_default: ''
   }
+}
+
+const navigateCreateOrder = () => {
+  router.push('create-order')
+}
+
+const handleCloseCreateOrder = () => {
+  isOpenCreateOrderModal.value = false
+}
+
+const handleCreateOrder = () => {
+  isOpenCreateOrderModal.value = true
 }
 
 const handleOpenResetPass = () => {
@@ -599,6 +759,13 @@ const handleDelete = () => {
       handleCloseConfirm
   )
 }
+const openModalCreateCustomerAccount = () => {
+  isOpenCreateModal.value = true
+}
+
+const handleCloseCreate = () => {
+  isOpenCreateModal.value = false
+}
 
 const customerAccount = reactive({
   code: '',
@@ -611,13 +778,6 @@ const customerAccount = reactive({
   password: ''
 })
 
-const openModalCreateCustomerAccount = () => {
-  isOpenCreateModal.value = true
-}
-
-const handleCloseCreate = () => {
-  isOpenCreateModal.value = false
-}
 
 const createCustomerAccount = () => {
   isLoading.value = true
@@ -636,6 +796,32 @@ const createCustomerAccount = () => {
   dataCustomerAccount.createCustomerAccountAction(data, toast, EndTimeLoading, handleCloseCreate)
 }
 
+const customerOrder = reactive({
+  code: '',
+  username: '',
+  fullname: '',
+  birth_day: '',
+  gender: '',
+  email: '',
+  phone: '',
+  password: ''
+})
+
+const createCustomerOrder = () => {
+  isLoading.value = true
+  let data = {
+    code: customerOrder.code,
+    username: customerOrder.username,
+    fullname: customerOrder.fullname,
+    birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+    gender: customerOrder.gender,
+    email_personal: customerOrder.email,
+    phone: customerOrder.phone,
+    web_code: "HWK"
+  }
+  console.log(data)
+}
+
 const updateCustomerAccount = () => {
   isLoading.value = true
   let id = detailCustomerAccount.value.id
@@ -643,7 +829,7 @@ const updateCustomerAccount = () => {
     code: detailCustomerAccount.value.code,
     username: detailCustomerAccount.value.username,
     fullname: detailCustomerAccount.value.fullname,
-    birth_day: value_birth_day.value.format(dateFormatRequest),
+    birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
     gender: detailCustomerAccount.value.gender,
     email_personal: detailCustomerAccount.value.email_personal,
     phone: detailCustomerAccount.value.phone,
@@ -707,4 +893,18 @@ const resetPassword = () => {
   z-index: 9999;
   justify-items: center;
 }
+
+.birth-day-customer {
+  height: 37px !important;
+  width: 246px !important;
+  background-color: #e5e7eb !important;
+}
+.disable-input {
+  background-color: #e5e7eb;
+  color: #111 !important;
+}
+.ant-picker-input > input[disabled] {
+  color: #111 !important;
+}
+
 </style>

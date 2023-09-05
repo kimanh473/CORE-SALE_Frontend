@@ -10,6 +10,7 @@ import {
 } from '../../../services/CustomerProfileServices/customerAccount.services'
 
 import {changeStatusAccountApi} from "../../../services/AccountServices/passwordCustomer.service";
+import dayjs from "dayjs";
 
 
 export const useCustomerAccount = defineStore("CustomerAccount", {
@@ -17,7 +18,8 @@ export const useCustomerAccount = defineStore("CustomerAccount", {
         listCustomerAccount: [] as DataCustomerAccount[],
         customerAccount: {} as DataCustomerAccount,
         detailCustomerAccount: {} as DataCustomerAccount,
-        createStatus: ''
+        createStatus: '',
+        birth_day_dd_mm_yy: null,
     }),
     getters: {
         getListCustomerAccountPagination: (state: any) => {
@@ -30,6 +32,7 @@ export const useCustomerAccount = defineStore("CustomerAccount", {
                 email_company: item.email_company,
                 email_personal: item.email_personal,
                 phone: item.phone,
+                gender: item.gender,
                 web_code: item.web_code,
             }))
         },
@@ -37,6 +40,7 @@ export const useCustomerAccount = defineStore("CustomerAccount", {
         getDetailCustomerAccount: (state: any) => {
             return (payload: any) => {
                 state.detailCustomerAccount = payload
+                state.birth_day_dd_mm_yy = dayjs(payload.birth_day)
             }
         },
     },

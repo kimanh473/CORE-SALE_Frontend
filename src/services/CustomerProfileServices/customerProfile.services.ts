@@ -18,11 +18,16 @@ const getLastCodeCustomerApi = () => {
     return httpClient.get(`/setting/get-last-code-customer`);
 }
 
+const getCheckAccountCustomerExistApi = (code: string) => {
+    return httpClient.get(`/customer/profile/account-check/${code}`);
+}
+
 export {
     getAllCustomerProfileApi,
     getDetailCustomerProfileApi,
     createCustomerProfileApi,
     updateCustomerProfileApi,
     deleteCustomerProfileApi,
-    getLastCodeCustomerApi
+    getLastCodeCustomerApi,
+    getCheckAccountCustomerExistApi
 };
