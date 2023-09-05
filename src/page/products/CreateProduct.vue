@@ -41,13 +41,17 @@
             :showInkInFixed="true"
             class="min-w-[200px] min-h-full mr-[10px]"
           >
-            <a-anchor-link href="#infor-common" title="Thông tin chung" />
-            <a-anchor-link href="#infor-detail" title="Thông tin chi tiết" />
+            <a-anchor-link
+              v-for="(item, index) in indexAttribute"
+              :key="index"
+              :href="'#' + item.title"
+              :title="item.title"
+            />
           </a-anchor>
           <div
             class="text-left px-4 py-2 w-full h-full format-scroll form-large-full bg-white"
           >
-            <div id="infor-common">
+            <!-- <div id="infor-common">
               <div class="w-full ml-4">
                 <div class="pr-[30px]">
                   <label for="" class="form-group-label"
@@ -64,9 +68,6 @@
                       @change="handleChangeAttributeGroup"
                     >
                     </a-select>
-                    <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                   </div>
                 </div>
                 <h4
@@ -100,9 +101,6 @@
                                 placeholder="Nhập tên sản phẩm"
                                 v-model="product.title"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                           <div>
@@ -119,9 +117,6 @@
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -148,9 +143,6 @@
                                 multiple
                               >
                               </a-tree-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -171,9 +163,6 @@
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -192,9 +181,6 @@
                                 placeholder="Nhập mã"
                                 v-model="product.code"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                           <div>
@@ -209,9 +195,6 @@
                                 placeholder="Nhập barcode"
                                 v-model="product.code"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -230,9 +213,6 @@
                                 placeholder="Nhập khối lượng"
                                 v-model="product.code"
                               />
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                           <div>
@@ -249,9 +229,6 @@
                                 :fieldNames="{ label: 'title', value: 'code' }"
                               >
                               </a-select>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
@@ -300,13 +277,9 @@
                                 rows="5"
                                 class="form-control-input"
                               ></textarea>
-                              <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                             </div>
                           </div>
                         </div>
-                        <!-- <a-switch v-model:checked="web.status" /> &nbsp; Kích hoạt -->
                       </div>
                     </div>
                   </div>
@@ -346,9 +319,6 @@
                                 >{{ item.web_name }}</a-select-option
                               >
                             </a-select>
-                            <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
                           </div>
                         </div>
                       </div>
@@ -363,9 +333,6 @@
                               class="form-control-input"
                               placeholder="Nhập tên nhóm thuộc tính"
                             />
-                            <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                           </div>
                         </div>
                       </div>
@@ -386,9 +353,6 @@
                                 >{{ item.attribute_code }}</a-select-option
                               >
                             </a-select>
-                            <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                           </div>
                         </div>
                       </div>
@@ -431,17 +395,25 @@
                   </div>
                 </Transition>
               </div>
+            </div> -->
+            <div>
+              <label for="" class="form-group-label"
+                >Nhóm thuộc tính<span class="text-red-600">* </span>
+                <span></span
+              ></label>
+              <div>
+                <a-select
+                  class="form-control-input"
+                  placeholder="Chọn nhóm thuộc tính"
+                  :options="listSetAttributeGroup"
+                  v-model:value="product.groupAttributeID"
+                  :fieldNames="{ label: 'title', value: 'id' }"
+                  @change="handleChangeAttributeGroup"
+                >
+                </a-select>
+              </div>
             </div>
-            <a-select
-              class="form-control-input"
-              placeholder="Chọn nhóm thuộc tính"
-              :options="listSetAttributeGroup"
-              v-model:value="product.groupAttributeID"
-              :fieldNames="{ label: 'title', value: 'code' }"
-              @change="handleChangeAttributeGroup"
-            >
-            </a-select>
-            <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
+            <!-- <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
               <div>
                 <label for="" class="form-group-label"
                   >Tên sản phẩm<span class="text-red-600">* </span> <span></span
@@ -453,9 +425,6 @@
                     placeholder="Nhập tên sản phẩm"
                     v-model="product.title"
                   />
-                  <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                 </div>
               </div>
               <div>
@@ -471,9 +440,6 @@
                     :fieldNames="{ label: 'title', value: 'code' }"
                   >
                   </a-select>
-                  <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                 </div>
               </div>
             </div>
@@ -488,7 +454,6 @@
                     style="width: 100%"
                     v-model:value="valueTree"
                     :tree-data="listTreeCategory"
-                    :show-checked-strategy="TreeSelect.SHOW_ALL"
                     :fieldNames="{
                       children: 'children',
                       label: 'title',
@@ -499,16 +464,14 @@
                     multiple
                   >
                   </a-tree-select>
-                  <!-- <p v-if="messageError?.title" class="text-red-600">
-                    {{ messageError?.title[0] }}
-                  </p> -->
                 </div>
               </div>
-            </div>
+            </div> -->
             <div v-for="(item, index) in indexAttribute" :key="index">
               <h4
-                class="form-section-title form-small cursor-pointer"
+                class="form-section-title form-large-full cursor-pointer"
                 @click="isInfor = !isInfor"
+                :id="item.title"
               >
                 <span v-show="isInfor == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
@@ -522,30 +485,147 @@
                 v-show="isInfor == true"
                 v-for="(item1, index1) in item.attribute"
                 :key="index1"
-                class="form-small"
+                class="form-large-full"
               >
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
                 ></label>
                 <div v-for="(map, mapIndex) in typeProduct">
-                  <keep-alive>
-                    <component
-                      :is="`a-${map.type}`"
-                      :options="item1.option_detail"
-                      v-model:checked="item1.default_value"
-                      v-model:value="item1.default_value"
-                      :fieldNames="{ label: 'title', value: 'id' }"
-                      v-bind="{ ...map.attribute }"
-                      v-show="map.code == item1.backend_type"
-                      :ref="item1.attribute_code"
-                      @change="handleChange($event, Object.keys($refs))"
-                    ></component>
-                  </keep-alive>
+                  <component
+                    :is="`a-${map.type}`"
+                    :options="item1.option_detail"
+                    v-model:checked="item1.default_value"
+                    v-model:file-list="fileList"
+                    list-type="picture-card"
+                    :fieldNames="{ label: 'title', value: 'id' }"
+                    v-bind="{ ...map.attribute }"
+                    v-show="map.code == item1.frontend_input"
+                    @preview="handlePreview"
+                    @change="handleChange($event, item1.attribute_code)"
+                  >
+                    <div v-if="item1.attribute_code == 'image'">
+                      <plus-outlined />
+                      <div style="margin-top: 8px">Upload</div>
+                    </div>
+                    <a-modal
+                      :visible="previewVisible"
+                      :footer="null"
+                      @cancel="handleCancelImage"
+                    >
+                      <img
+                        alt="example"
+                        style="width: 100%"
+                        :src="previewImage"
+                      />
+                    </a-modal>
+                  </component>
+                </div>
+                <div
+                  id="product_table"
+                  v-show="item1.default_value == true"
+                  v-if="item1.attribute_code == 'classify_product'"
+                  class="bg-[#E8E9EB]"
+                >
+                  <div class="p-4 m-2">
+                    <div class="flex">
+                      <p class="pr-[180px]">
+                        Nhóm phân loại <span class="text-red-600">*</span>
+                      </p>
+                      <p>Phân loại</p>
+                    </div>
+                    <div
+                      v-for="(item, index) in dataOption"
+                      :key="index"
+                      class="flex"
+                    >
+                      <div class="pr-[100px]">
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                      </div>
+                      <div class="flex items-end">
+                        <a-select
+                          v-model:value="item.optionClassify"
+                          mode="tags"
+                          style="width: 400px"
+                          :token-separators="[',']"
+                          placeholder=""
+                        ></a-select>
+                        <i
+                          @click="removeOptions(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
+                      </div>
+                    </div>
+                    <div @click="addOptions" class="mt-2 w-fit">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  id="product_table"
+                  v-show="item1.default_value == true"
+                  v-if="item1.attribute_code == 'unit_change'"
+                  class="bg-[#E8E9EB]"
+                >
+                  <div class="p-4 m-2">
+                    <div class="form-large-full grid grid-cols-3 gap-3 !m-0">
+                      <p>Phân loại <span class="text-red-600">*</span></p>
+                      <p>Đơn vị quy đổi</p>
+                      <p>Số lượng</p>
+                    </div>
+                    <div
+                      v-for="(item, index) in dataOption"
+                      :key="index"
+                      class="form-large-full grid grid-cols-3 gap-3"
+                    >
+                      <div class="w-full">
+                        <a-select
+                          class="form-control-input"
+                          placeholder="Chọn nhóm thuộc tính"
+                          :options="listAttributeGroup"
+                          v-model:value="product.groupAttributeID"
+                          :fieldNames="{ label: 'title', value: 'code' }"
+                          @change="handleChangeAttributeGroup"
+                        >
+                        </a-select>
+                      </div>
+                      <div class="w-full">
+                        <!-- <a-checkbox
+                          v-model:checked="item.status"
+                          class="!pl-[16px]"
+                        ></a-checkbox> -->
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                      </div>
+                      <div class="flex items-end w-full">
+                        <a-input
+                          v-model:value="item.title"
+                          placeholder="Nhập tiêu đề"
+                        ></a-input>
+                        <i
+                          @click="removeOptions(index)"
+                          class="fal fa-times icon-close"
+                        ></i>
+                      </div>
+                    </div>
+                    <div @click="addOptions" class="mt-2 w-fit">
+                      <i class="fal fa-plus-circle icon-plus fa-lg"></i>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div id="infor-price" class="w-full ml-4">
+
+            <!-- <div id="infor-price" class="w-full ml-4">
               <h4
                 class="form-section-title form-small cursor-pointer"
                 @click="isPrice = !isPrice"
@@ -562,56 +642,14 @@
                 <div v-show="isPrice == true" class="outer">
                   <div class="w-full">
                     <div
-                      class="form-large-full grid grid-cols-3 gap-3 pr-[30px]"
+                      class="form-large-full grid grid-cols-2 gap-2 pr-[30px]"
                     >
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Giá sỉ<span class="text-red-600">* </span>
-                          <span></span
-                        ></label>
-                        <div>
-                          <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
-                        </div>
-                      </div>
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Giá lẻ<span class="text-red-600"></span
-                        ></label>
-                        <div>
-                          <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="form-large-full grid grid-cols-3 gap-3 pr-[30px]"
-                    >
-                      <div>
-                        <label for="" class="form-group-label"
-                          >Tổn tổng kho<span class="text-red-600">* </span>
-                          <span></span
-                        ></label>
-                        <div>
-                          <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
-                        </div>
-                      </div>
                       <div>
                         <label for="" class="form-group-label"
                           >Tồn kho tối đa<span class="text-red-600"></span
                         ></label>
                         <div>
                           <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                         </div>
                       </div>
                       <div>
@@ -620,9 +658,6 @@
                         ></label>
                         <div>
                           <input type="text" class="form-control-input" />
-                          <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                         </div>
                       </div>
                     </div>
@@ -694,7 +729,7 @@
                   </div>
                 </div>
               </Transition>
-            </div>
+            </div> -->
           </div>
         </div>
       </Transition>
@@ -702,9 +737,10 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createGroupInventory()">
+          <button class="button-modal" @click="createProduct()">
             Cập nhật
           </button>
+
           <button class="button-close-modal" @click="router.go(-1)">
             Hủy bỏ
           </button>
@@ -726,6 +762,7 @@
   import { useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
+  import { useProduct } from '../../store/modules/store-setting/products'
   import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
   import { useListTax } from '../../store/modules/store-setting/tax'
   import { useListSpecification } from '../../store/modules/store-setting/specification'
@@ -733,6 +770,7 @@
   import { useCategory } from '../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { typeProduct } from '../../page/products/configProduct'
+  import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
   const dataSpecification = useListSpecification()
@@ -743,13 +781,18 @@
   const { listTax } = storeToRefs(dataTax)
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
-  dataAttributeGroup.getListSetAttributeGroupAction()
-  const { listAttributeGroup, listSetAttributeGroup } =
+  const { listAttributeGroup, listSetAttributeGroup, listDefault } =
     storeToRefs(dataAttributeGroup)
+
+  const indexAttribute = ref()
+  const options = ref<SelectProps['options']>([])
+  const valueClassify = ref<string[]>([])
+  dataAttributeGroup
+    .getListSetAttributeGroupAction()
+    .then(() => (indexAttribute.value = listDefault.value))
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
-  console.log(listSetAttributeGroup)
 
   const valueTree = ref([])
   const treeData = ref([
@@ -779,28 +822,53 @@
 
   //   console.log(str)
   // }
-  const dataCreateProduct = ref({})
+  const dataCreateProduct = ref<any>({})
 
-  const indexAttribute = ref()
+  console.log(listSetAttributeGroup.value)
+
+  console.log(indexAttribute)
+
   const handleChangeAttributeGroup = (value: any, options: any) => {
-    console.log(value)
-    console.log(options)
     indexAttribute.value = options.json_group_attribute_detail.map(
       (item: any) => ({
         title: item.title,
         attribute: item.attribute_detail,
       })
     )
-    console.log(indexAttribute.value)
   }
-  const handleChange = (event: any, code: any) => {
+  const url = ref()
+  // const checkJPG = (file: any) => {
+  //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+  //   if (!isJPG) {
+  //     toast.error('You can only upload JPG or PNG file!')
+  //     return false
+  //   } else {
+  //     return true
+  //   }
+  // }
+  const handleChange = async (event: any, input_name: string) => {
     console.log(event)
-    console.log(code)
-    let obj = code.reduce((accumulator: any, value: any) => {
-      return { ...accumulator, [value]: event.target.value }
-    }, {})
-    // code = dataCreateProduct.value
-    dataCreateProduct.value = Object.assign({}, obj)
+    if (typeof event == 'number' || typeof event == 'boolean') {
+      console.log(input_name)
+      dataCreateProduct.value[input_name] = event
+    } else if (input_name == 'image') {
+      // let data: any[] = []
+      if (!event.file.url && !event.preview) {
+        event.file.preview = (await getBase64(
+          event.file.originFileObj
+        )) as string
+        // console.log(event.file.preview)
+      }
+      dataCreateProduct.value[input_name] = fileList.value.map(
+        (item: any) => item.preview
+      )
+    } else if (input_name.includes('date')) {
+      dataCreateProduct.value[input_name] = event.$d
+        .toISOString()
+        .substring(0, 10)
+    } else {
+      dataCreateProduct.value[input_name] = event.target.value
+    }
     console.log(dataCreateProduct.value)
   }
   function getBase64(file: File) {
@@ -839,7 +907,9 @@
   const handlePreview = async (file: UploadProps['fileList'][number]) => {
     if (!file.url && !file.preview) {
       file.preview = (await getBase64(file.originFileObj)) as string
+      console.log(file.preview)
     }
+
     previewImage.value = file.url || file.preview
     previewVisible.value = true
     previewTitle.value =
@@ -847,13 +917,13 @@
   }
   const dataOption = reactive([
     {
-      defaultOption: false,
+      optionClassify: [],
       title: '',
     },
   ])
   const addOptions = () => {
     const data = {
-      defaultOption: false,
+      optionClassify: <SelectProps['options']>[],
       title: '',
     }
     dataOption.push(data)
@@ -861,6 +931,7 @@
   const removeOptions = (index: number) => {
     dataOption.splice(index, 1)
   }
+  const dataProduct = useProduct()
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
@@ -880,18 +951,18 @@
     code: '',
     desc: '',
     webID: null,
-    groupAttributeID: null,
+    groupAttributeID: 1,
     taxID: null,
     specificationID: null,
   })
-  const createGroupInventory = () => {
-    let data = {
-      title: product.title,
-      code: product.code,
-      desc: product.desc,
-    }
-    dataGroupInventory.createGroupInventoryAction(
-      data,
+  const createProduct = () => {
+    // let data = {
+    //   title: product.title,
+    //   code: product.code,
+    //   desc: product.desc,
+    // }
+    dataProduct.createProductAction(
+      dataCreateProduct.value,
       toast,
       router,
       EndTimeLoading
@@ -917,5 +988,15 @@
   }
   .ant-anchor-link {
     padding: 7px 0 7px 0px;
+  }
+  #preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #preview img {
+    max-width: 100%;
+    max-height: 100px;
   }
 </style>
