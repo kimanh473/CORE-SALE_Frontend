@@ -90,6 +90,18 @@
           <template v-if="column.key === 'user_updated'">
             {{ record.user_updated?.username }}
           </template>
+          <template v-if="column.key === 'is_required'">
+            <div v-if="record.is_required == 1">Có</div>
+            <div v-else>Không</div>
+          </template>
+          <template v-if="column.key === 'is_unique'">
+            <div v-if="record.is_unique == 1">Có</div>
+            <div v-else>Không</div>
+          </template>
+          <template v-if="column.key === 'is_specification'">
+            <div v-if="record.is_specification == 1">Có</div>
+            <div v-else>Không</div>
+          </template>
           <span
             v-if="state.searchText && state.searchedColumn === column.dataIndex"
           >
@@ -289,7 +301,6 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const { listAttributeProduct } = storeToRefs(dataAttribute)
-  console.log(listAttributeProduct)
   const state = reactive({
     searchText: '',
     searchedColumn: '',
@@ -336,8 +347,14 @@
       key: 'frontend_input',
     },
     {
+      title: 'Dạng thông số',
+      dataIndex: 'is_specification',
+      key: 'is_specification',
+    },
+    {
       title: 'Giá trị duy nhất',
       dataIndex: 'is_unique',
+      key: 'is_unique',
     },
     // {
     //   title: 'Có thể tìm kiếm được',

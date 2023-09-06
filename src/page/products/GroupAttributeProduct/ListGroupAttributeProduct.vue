@@ -223,8 +223,8 @@
             show-search
             class="form-control-input"
             placeholder="Chọn thông số"
-            :options="listAttributeGroup"
-            :fieldNames="{ label: 'title', value: 'ID' }"
+            :options="listAttributeSpecification"
+            :fieldNames="{ label: 'attribute_code', value: 'id' }"
           >
           </a-select>
 
@@ -253,11 +253,16 @@
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
   import { useAttributeGroup } from '../../../store/modules/store-setting/attribute-group'
+  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  const dataAttribute = useAttributeProduct()
+  dataAttribute.getListAttributeAction()
+  const { listAttributeSpecification } = storeToRefs(dataAttribute)
+  console.log(listAttributeSpecification)
   const route = useRoute()
   const router = useRouter()
   const toast = useToast()

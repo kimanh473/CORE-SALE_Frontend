@@ -262,6 +262,25 @@
                         </p> -->
                       </div>
                     </div>
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Dạng thông số<span class="text-red-600"> </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <a-switch
+                          v-model:checked="detailAttribute.is_specification"
+                          checkedValue="1"
+                          unCheckedValue="0"
+                        />
+                        <!-- <p
+                          v-if="messageError?.contact_email"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_email[0] }}
+                        </p> -->
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Transition>
@@ -513,6 +532,7 @@
       is_user_defined: '0',
       default_value: '',
       is_unique: detailAttribute.value.is_unique,
+      is_specification: detailAttribute.value.is_specification,
       note: '',
       options_old: detailAttribute.value.option_detail,
       options_new: dataOption,

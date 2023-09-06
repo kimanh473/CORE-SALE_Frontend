@@ -230,6 +230,25 @@
                         </p> -->
                       </div>
                     </div>
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Dạng thông số<span class="text-red-600"> </span>
+                        <span></span
+                      ></label>
+                      <div>
+                        <a-switch
+                          v-model:checked="attribute.is_specification"
+                          checkedValue="1"
+                          unCheckedValue="0"
+                        />
+                        <!-- <p
+                          v-if="messageError?.contact_email"
+                          class="text-red-600"
+                        >
+                          {{ messageError?.contact_email[0] }}
+                        </p> -->
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Transition>
@@ -381,6 +400,7 @@
     is_user_defined: '0',
     default_value: '',
     is_unique: '0',
+    is_specification: '0',
     note: '',
   })
   // if (
@@ -466,10 +486,10 @@
       is_user_defined: '0',
       default_value: '',
       is_unique: attribute.is_unique,
+      is_specification: attribute.is_specification,
       note: '',
       option_detail: dataOption,
     }
-    console.log(data)
     dataAttribute.createAttributeAction(data, toast, router, EndTimeLoading)
     // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
