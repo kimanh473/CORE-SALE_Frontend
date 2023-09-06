@@ -5,7 +5,8 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
     state: () => ({
         listAttributeGroup: [] as DataAttribute[],
         listSetAttributeGroup: [] as SetDataAttribute[],
-        listDefault: {} as SetDataAttribute
+        listDefault: {} as SetDataAttribute,
+        listSpecDefault: {} as SetDataAttribute
     }),
     getters: {
         // getData: (state) => {
@@ -27,6 +28,10 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
             return (payload: any) => {
                 state.listSetAttributeGroup = payload;
                 state.listDefault = payload[0].json_group_attribute_detail.map((item: any) => ({
+                    title: item.title,
+                    attribute: item.attribute_detail
+                }))
+                state.listSpecDefault = payload[0].json_group_specification_detail.map((item: any) => ({
                     title: item.title,
                     attribute: item.attribute_detail
                 }))

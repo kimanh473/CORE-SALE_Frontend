@@ -4,7 +4,8 @@ import { getAllAttributeProductsApi, deleteAttributeApi, createAttributeApi, get
 export const useAttributeProduct = defineStore("AttributeProduct", {
     state: () => ({
         listAttributeProduct: [] as DataAttribute[],
-        detailAttribute: {} as DataAttribute
+        detailAttribute: {} as DataAttribute,
+        listAttributeSpecification: [] as DataAttribute[]
     }),
     getters: {
         // getData: (state) => {
@@ -23,26 +24,15 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
         //     }))
         // },
         getListAttribute: (state: any) => {
-            return (payload: any) => state.listAttributeProduct = payload?.map((item: DataAttribute) => ({
-                id: item.id,
-                attribute_code: item.attribute_code,
-                frontend_label: item.frontend_label,
-                is_required: item.is_required == '1' ? 'Có' : 'Không',
-                backend_type: item.backend_type,
-                is_unique: item.is_unique == '1' ? 'Có' : 'Không',
-                is_user_defined: item.is_user_defined == '1' ? 'Có' : 'Không',
-                user_created: item.user_created,
-                created_at: item.created_at,
-                updated_at: item.updated_at,
-                user_updated: item.user_updated,
-                frontend_input: item.frontend_input
-
-            }))
+            return (payload: any) => state.listAttributeProduct = payload
 
         },
         getDetailAttribute: (state: any) => {
             return (payload: any) => state.detailAttribute = payload
-        }
+        },
+        getlistAttributeSpecification: (state: any) => {
+            return (payload: any) => state.listAttributeSpecification = payload.filter((item: DataAttribute) => (item.frontend_input == 'text' || item.frontend_input == 'textarea' || item.frontend_input == 'selection'))
+        },
     },
     actions: {
         // getListInventory(payload: any) {
@@ -56,6 +46,7 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                 .then((payload: any) => {
                     let res = payload?.data?.data?.data
                     this.getListAttribute(res)
+                    this.getlistAttributeSpecification(res)
                 })
                 .catch((err) => {
                     console.log(err)

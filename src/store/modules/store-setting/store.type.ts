@@ -19,6 +19,7 @@ interface DataAttribute {
     created_at: string,
     updated_at: string,
     deleted_at: string,
+    is_specification: string,
     options_new: Array<dataDetailNew>
     options_old: Array<dataDetailOld>
     option_detail: Array<dataDetailOld>

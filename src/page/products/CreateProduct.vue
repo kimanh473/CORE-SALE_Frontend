@@ -595,8 +595,8 @@
                           class="form-control-input"
                           placeholder="Chọn nhóm thuộc tính"
                           :options="lastGenerateList"
-                          v-model:value="product.nameClassifyID"
-                          :fieldNames="{ label: 'title', value: 'code' }"
+                          v-model:value="item.idClassify"
+                          :fieldNames="{ label: 'title', value: 'title' }"
                           @change="handleChangeAttributeGroup"
                         >
                         </a-select>
@@ -635,7 +635,7 @@
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
                   <a-table
                     :columns="columns"
-                    :data-source="lastGenerateList"
+                    :data-source="dataTableConfig"
                     :pagination="false"
                     bordered
                   >
@@ -646,6 +646,8 @@
                             class="form-group-label"
                             list-type="picture-card"
                             @preview="handlePreview"
+                            v-model:file-list="record.image"
+                            @change="handleImageTable($event, index)"
                           >
                             <div>
                               <plus-outlined />
@@ -663,24 +665,23 @@
                               />
                             </a-modal>
                           </a-upload>
-                          <p class="m-0">{{ record.title }}</p>
+                          <p class="m-0">{{ record.name }}</p>
                         </div>
                       </template>
-                      <template v-if="column.key === 'group_2'"> </template>
                       <template v-if="column.key === 'name'">
-                        <a-input></a-input>
+                        <a-input v-model:value="record.name"></a-input>
                       </template>
                       <template v-if="column.key === 'sku'">
-                        <a-input v-model:value="sku[record.code]"></a-input>
-                        {{ sku[record.code] }}
+                        <a-input v-model:value="record.sku"></a-input>
                       </template>
                       <template v-if="column.key === 'bar_code'">
-                        <a-input></a-input>
+                        <a-input v-model:value="record.bar_code"></a-input>
                       </template>
-
                       <template v-if="column.key === 'weight'">
                         <div class="flex">
-                          <a-input></a-input>
+                          <a-input-number
+                            v-model:value="record.weight"
+                          ></a-input-number>
                           <a-select
                             class="!ml-[4px]"
                             :options="weightUnit"
@@ -688,10 +689,10 @@
                         </div>
                       </template>
                       <template v-if="column.key === 'minimum'">
-                        <a-input></a-input>
+                        <a-input v-model:value="record.minimum"></a-input>
                       </template>
                       <template v-if="column.key === 'maximum'">
-                        <a-input></a-input>
+                        <a-input v-model:value="record.maximum"></a-input>
                       </template> </template
                   ></a-table>
                 </div>
@@ -700,8 +701,8 @@
                   v-show="item1.default_value == true"
                   v-if="item1.attribute_code == 'specification'"
                 >
-                  <p class="p-3 font-bold text-lg">Bảng kích cỡ thông số</p>
-                  <div>
+                  <p class="p-3 m-0 font-bold text-lg">Danh sách thông số</p>
+                  <!-- <div>
                     <a-select
                       class="form-control-input"
                       placeholder="Chọn thông số"
@@ -710,68 +711,54 @@
                       :fieldNames="{ label: 'title', value: 'id' }"
                     >
                     </a-select>
-                  </div>
-                  <a-table
-                    :columns="columnsSpec"
-                    :data-source="lastGenerateList"
-                    :pagination="false"
-                    bordered
+                  </div> -->
+                  <div
+                    v-for="(itemSpec, indexSpec) in specDefault"
+                    :key="indexSpec"
                   >
-                    <template #bodyCell="{ column, record }">
-                      <template v-if="column.key === 'group_1'"
-                        ><div>
-                          <a-upload
-                            class="form-group-label"
-                            list-type="picture-card"
-                            @preview="handlePreview"
+                    <div
+                      v-for="(itemSpec1, indexSpec1) in itemSpec.attribute"
+                      :key="indexSpec1"
+                      class="form-large-full"
+                    >
+                      <label for="" class="form-group-label"
+                        >{{ itemSpec1.frontend_label
+                        }}<span class="text-red-600">* </span> <span></span
+                      ></label>
+                      <div v-for="(map, mapIndex) in typeProduct">
+                        <component
+                          :is="`a-${map.type}`"
+                          :options="itemSpec1.option_detail"
+                          v-model:checked="itemSpec1.default_value"
+                          v-model:file-list="fileList"
+                          list-type="picture-card"
+                          :fieldNames="{ label: 'title', value: 'id' }"
+                          v-bind="{ ...map.attribute }"
+                          v-show="map.code == itemSpec1.frontend_input"
+                          @preview="handlePreview"
+                          @change="
+                            handleChange($event, itemSpec1.attribute_code)
+                          "
+                        >
+                          <div v-if="itemSpec1.attribute_code == 'image'">
+                            <plus-outlined />
+                            <div style="margin-top: 8px">Upload</div>
+                          </div>
+                          <a-modal
+                            :visible="previewVisible"
+                            :footer="null"
+                            @cancel="handleCancelImage"
                           >
-                            <div>
-                              <plus-outlined />
-                              <div style="margin-top: 8px">Upload</div>
-                            </div>
-                            <a-modal
-                              :visible="previewVisible"
-                              :footer="null"
-                              @cancel="handleCancelImage"
-                            >
-                              <img
-                                alt="example"
-                                style="width: 100%"
-                                :src="previewImage"
-                              />
-                            </a-modal>
-                          </a-upload>
-                          <p class="m-0">{{ record.title }}</p>
-                        </div>
-                      </template>
-                      <template v-if="column.key === 'group_2'"> </template>
-                      <template v-if="column.key === 'name'">
-                        <a-input></a-input>
-                      </template>
-                      <template v-if="column.key === 'sku'">
-                        <a-input v-model:value="sku[record.code]"></a-input>
-                        {{ sku[record.code] }}
-                      </template>
-                      <template v-if="column.key === 'bar_code'">
-                        <a-input></a-input>
-                      </template>
-
-                      <template v-if="column.key === 'weight'">
-                        <div class="flex">
-                          <a-input></a-input>
-                          <a-select
-                            class="!ml-[4px]"
-                            :options="weightUnit"
-                          ></a-select>
-                        </div>
-                      </template>
-                      <template v-if="column.key === 'minimum'">
-                        <a-input></a-input>
-                      </template>
-                      <template v-if="column.key === 'maximum'">
-                        <a-input></a-input>
-                      </template> </template
-                  ></a-table>
+                            <img
+                              alt="example"
+                              style="width: 100%"
+                              :src="previewImage"
+                            />
+                          </a-modal>
+                        </component>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -915,57 +902,28 @@
   import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
   import { useProduct } from '../../store/modules/store-setting/products'
   import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
-  import { useListTax } from '../../store/modules/store-setting/tax'
-  import { useListSpecification } from '../../store/modules/store-setting/specification'
   import { useAttributeGroup } from '../../store/modules/store-setting/attribute-group'
   import { useCategory } from '../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { typeProduct } from '../../page/products/configProduct'
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
-  import { TreeSelectProps, TreeSelect } from 'ant-design-vue'
   import IconAddImg from '../../assets/images/icon_add_image.png'
-  const dataSpecification = useListSpecification()
-  dataSpecification.getListSpecificationAction()
-  const { listSpecification } = storeToRefs(dataSpecification)
-  const dataTax = useListTax()
-  dataTax.getListTaxAction()
-  const { listTax } = storeToRefs(dataTax)
+
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
-  const { listAttributeGroup, listSetAttributeGroup, listDefault } =
+  const { listSetAttributeGroup, listDefault, listSpecDefault } =
     storeToRefs(dataAttributeGroup)
   const img = ref(IconAddImg)
   const indexAttribute = ref()
-  const options = ref<SelectProps['options']>([])
-  const valueClassify = ref<string[]>([])
-  dataAttributeGroup
-    .getListSetAttributeGroupAction()
-    .then(() => (indexAttribute.value = listDefault.value))
+  const specDefault = ref()
+  dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
+    indexAttribute.value = listDefault.value
+    specDefault.value = listSpecDefault.value
+    console.log(specDefault.value)
+  })
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
-  const { listTreeCategory } = storeToRefs(dataCategory)
-  const uploadStatus = ref('success')
-  const valueTree = ref([])
-  const treeData = ref([
-    {
-      title: 'Node1',
-      value: '0-0',
-      key: '0-0',
-      children: [
-        {
-          title: 'Child Node1',
-          value: '0-0-1',
-          key: '0-0-1',
-        },
-        {
-          title: 'Child Node2',
-          value: '0-0-2',
-          key: '0-0-2',
-        },
-      ],
-    },
-  ])
   const weightUnit = ref<SelectProps['options']>([
     {
       value: 'g',
@@ -986,6 +944,7 @@
       title: 'Tên',
       key: 'name',
       align: 'center',
+      width: '15%',
     },
     {
       title: 'SKU',
@@ -1001,6 +960,7 @@
       title: 'Khối lượng',
       key: 'weight',
       align: 'center',
+      width: '10%',
     },
     {
       title: 'Tồn kho tối thiểu',
@@ -1013,24 +973,7 @@
       align: 'center',
     },
   ]
-  const columnsSpec = [
-    {
-      title: 'Size (Quốc tế)',
-      key: 'group_1',
-      align: 'center',
-    },
-    {
-      title: 'Size (US)',
-      key: 'name',
-      align: 'center',
-    },
-    {
-      title: 'Size (Việt Nam)',
-      key: 'sku',
-      align: 'center',
-    },
-  ]
-  const data = [{}]
+
   // const handleSelect = (value: any, node: any, extra: any) => {
   //   console.log(value)
   //   console.log(node)
@@ -1058,6 +1001,7 @@
   //     return true
   //   }
   // }
+
   const handleChange = async (event: any, input_name: string) => {
     console.log(event)
     if (typeof event == 'number' || typeof event == 'boolean') {
@@ -1095,7 +1039,6 @@
   const previewVisible = ref<boolean>(false)
   const previewImage = ref('')
   const previewTitle = ref('')
-  const sku = ref([])
   const isConfig1 = ref(false)
   const isConfig2 = ref(false)
   const isConfig3 = ref(false)
@@ -1216,6 +1159,7 @@
     dataUnit.splice(index, 1)
   }
   const lastGenerateList = ref<any>([])
+  const dataTableConfig = ref<any>([])
   const addClassify = async () => {
     nameArr.value = []
     listGenerate.value = []
@@ -1226,6 +1170,28 @@
       title: item,
       code: index,
     }))
+    dataTableConfig.value = lastGenerateList.value.map((item: any) => ({
+      name: item.title,
+      sku: '',
+      bar_code: '',
+      weight: '',
+      minimum: '',
+      maximum: '',
+      image: <any>[],
+    }))
+  }
+  const listImageTable = ref<any>([])
+  const handleImageTable = async (event: any, index: number) => {
+    if (!event.file.url && !event.preview) {
+      event.file.preview = (await getBase64(event.file.originFileObj)) as string
+      listImageTable.value = dataTableConfig.value[index].image?.map(
+        (item: any) => item.preview
+      )
+      console.log(dataTableConfig.value)
+      console.log(listImageTable)
+
+      // dataTableConfig.value.image = event.file.preview
+    }
   }
   const dataProduct = useProduct()
   const webCatalog = useWebCatalog()
@@ -1254,17 +1220,16 @@
     nameClassifyID: null,
   })
   const createProduct = () => {
-    // let data = {
-    //   title: product.title,
-    //   code: product.code,
-    //   desc: product.desc,
-    // }
-    dataProduct.createProductAction(
-      dataCreateProduct.value,
-      toast,
-      router,
-      EndTimeLoading
-    )
+    console.log(dataOption)
+    console.log(dataUnit)
+    console.log(dataTableConfig.value)
+
+    // dataProduct.createProductAction(
+    //   dataCreateProduct.value,
+    //   toast,
+    //   router,
+    //   EndTimeLoading
+    // )
   }
 </script>
 
