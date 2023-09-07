@@ -22,25 +22,12 @@ import ModalView from './components/modal/ModalView.vue';
 /* add icons to the library */
 const store = createPinia()
 createApp(App)
-    .use(router)
-    .use(store)
-    .use(Antd)
-    .use(vClickOutside)
-    .use(Toast)
-    .component('font-awesome-icon', FontAwesomeIcon)
-    .component('loading-overlay', LoadingOverlay)
-    .component('modal-view', ModalView)
-    .component('upload-img', {
-        template: `<a-upload
-        v-model:file-list="fileList"
-        list-type="picture-card"
-        action="//jsonplaceholder.typicode.com/posts/"
-        @preview="handlePreview"
-      >
-        <div v-if="fileList.length < 8">
-          <plus-outlined />
-          <div style="margin-top: 8px">Upload</div>
-        </div>
-      </a-upload>`
-    })
-    .mount('#app')
+  .use(router)
+  .use(store)
+  .use(Antd)
+  .use(vClickOutside)
+  .use(Toast)
+  .component('font-awesome-icon', FontAwesomeIcon)
+  .component('loading-overlay', LoadingOverlay)
+  .component('modal-view', ModalView)
+  .mount('#app')
