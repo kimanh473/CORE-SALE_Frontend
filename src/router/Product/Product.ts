@@ -18,7 +18,7 @@ const product = [
         beforeEnter: requireAuth,
     },
     {
-        path: '/update-product',
+        path: '/update-product/:id',
         component: () => import('../../page/products/UpdateProduct.vue'),
         meta: {
             layout: "base-layout",

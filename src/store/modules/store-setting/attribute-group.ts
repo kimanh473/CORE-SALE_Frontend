@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
-import { getAllSetAttributeGroupApi, getAllAttributeGroupApi, deleteAttributeGroupApi } from '../../../services/SettingStoreServices/attributeGroup.service'
+import { getAllSetAttributeGroupApi, getAllAttributeGroupApi, deleteAttributeGroupApi, getDetailSetAttributeGroupApi } from '../../../services/SettingStoreServices/attributeGroup.service'
 
 export const useAttributeGroup = defineStore("AttributeGroup", {
     state: () => ({
         listAttributeGroup: [] as DataAttribute[],
         listSetAttributeGroup: [] as SetDataAttribute[],
         listDefault: {} as SetDataAttribute,
-        listSpecDefault: {} as SetDataAttribute
+        listSpecDefault: {} as SetDataAttribute,
+        detailSetAttribute: {} as SetDataAttribute,
+        detailSpecAttribute: {} as SetDataAttribute,
     }),
     getters: {
         // getData: (state) => {
@@ -39,7 +41,13 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
         },
         getListAttribute: (state: any) => {
             return (payload: any) => state.listAttributeGroup = payload
-        }
+        },
+        getDetailSetAttribute: (state: any) => {
+            return (payload: any) => {
+                state.detailSetAttribute = payload.json_group_attribute_detail
+                state.detailSpecAttribute = payload.json_group_specification_detail
+            }
+        },
     },
     actions: {
         // getListInventory(payload: any) {
@@ -53,6 +61,16 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
                 .then((payload: any) => {
                     let res = payload?.data?.data
                     this.getListSetAttribute(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getDetailSetAttributeGroupAction(id: number) {
+            await getDetailSetAttributeGroupApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailSetAttribute(res)
                 })
                 .catch((err) => {
                     console.log(err)

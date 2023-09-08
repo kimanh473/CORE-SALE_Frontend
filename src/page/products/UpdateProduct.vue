@@ -406,7 +406,7 @@
                   class="form-control-input"
                   placeholder="Chọn nhóm thuộc tính"
                   :options="listSetAttributeGroup"
-                  v-model:value="product.groupAttributeID"
+                  v-model:value="detailProduct.attribute_set_id"
                   :fieldNames="{ label: 'title', value: 'id' }"
                   @change="handleChangeAttributeGroup"
                 >
@@ -550,7 +550,7 @@
 
                         <div class="flex items-end">
                           <a-select
-                            v-model:value="item.optionClassify"
+                            v-model:value="item.value"
                             mode="tags"
                             style="width: 400px"
                             :token-separators="[',']"
@@ -584,12 +584,12 @@
                   <div class="p-4 m-2">
                     <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
                       <p>Đơn vị quy đổi</p>
-                      <p>Số lượng</p>
+                      <p>Tỷ lệ quy đổi</p>
                     </div>
                     <div
                       v-for="(item, index) in dataUnit"
                       :key="index"
-                      class="form-large-full grid grid-cols-2 gap-"
+                      class="form-large-full grid grid-cols-2 gap-2"
                     >
                       <!-- <div class="w-full">
                         <a-select
@@ -610,14 +610,14 @@
                           class="w-11/12"
                           placeholder="Chọn đơn vị quy đổi"
                           :options="listProductUnit"
-                          v-model:value="item.idClassify"
+                          v-model:value="item.unit_exchange"
                           :fieldNames="{ label: 'title', value: 'code' }"
                         >
                         </a-select>
                       </div>
                       <div class="flex items-end w-full">
                         <a-input
-                          v-model:value="item.quantity"
+                          v-model:value="item.rate"
                           placeholder="Nhập số lượng"
                         ></a-input>
                         <i
@@ -651,7 +651,7 @@
                             list-type="picture-card"
                             @preview="handlePreview"
                             v-model:file-list="record.image"
-                            @change="handleImageTable($event, index)"
+                            @change="handleImageTable($event, record.id)"
                           >
                             <div>
                               <plus-outlined />
@@ -764,6 +764,23 @@
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div v-if="item.title == 'mặc định'">
+                <label for="" class="form-group-label"
+                  >Đơn vị quy chuẩn<span class="text-red-600">* </span>
+                  <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="form-control-input"
+                    placeholder="Chọn nhóm thuộc tính"
+                    :options="listProductUnit"
+                    v-model:value="product.unitCode"
+                    :fieldNames="{ label: 'title', value: 'code' }"
+                    @change="handleChangeUnit"
+                  >
+                  </a-select>
                 </div>
               </div>
             </div>
@@ -902,7 +919,7 @@
   import { ref, reactive, watch } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useGroupInventory } from '../../store/modules/inventory/group-inventory'
-  import { useRouter } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
   import { useProductUnit } from '../../store/modules/store-setting/product-unit'
@@ -916,6 +933,10 @@
   import type { UploadProps } from 'ant-design-vue'
   import IconAddImg from '../../assets/images/icon_add_image.png'
 
+  const route = useRoute()
+  const dataProduct = useProduct()
+  dataProduct.getDetailProductAction(Number(route.params.id))
+  const { detailProduct } = storeToRefs(dataProduct)
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -929,7 +950,6 @@
   dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
-    console.log(specDefault.value)
   })
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
@@ -953,12 +973,13 @@
       title: 'Tên',
       key: 'name',
       align: 'center',
-      width: '15%',
+      width: '12%',
     },
     {
       title: 'SKU',
       key: 'sku',
       align: 'center',
+      width: '12%',
     },
     {
       title: 'Barcode',
@@ -983,14 +1004,6 @@
     },
   ]
 
-  // const handleSelect = (value: any, node: any, extra: any) => {
-  //   console.log(value)
-  //   console.log(node)
-  //   let str = ''
-  //   str += node.title + '/' + node.title.children[0]?.title
-
-  //   console.log(str)
-  // }
   const dataCreateProduct = ref<any>({})
   const handleChangeAttributeGroup = (value: any, options: any) => {
     indexAttribute.value = options.json_group_attribute_detail.map(
@@ -1012,9 +1025,7 @@
   // }
 
   const handleChange = async (event: any, input_name: string) => {
-    console.log(event)
     if (typeof event == 'number' || typeof event == 'boolean') {
-      console.log(input_name)
       dataCreateProduct.value[input_name] = event
     } else if (input_name == 'image') {
       // let data: any[] = []
@@ -1022,7 +1033,6 @@
         event.file.preview = (await getBase64(
           event.file.originFileObj
         )) as string
-        // console.log(event.file.preview)
       }
       dataCreateProduct.value[input_name] = fileList.value.map(
         (item: any) => item.preview
@@ -1060,15 +1070,7 @@
     previewVisible.value = false
     previewTitle.value = ''
   }
-  const formatType = (type: string) => {
-    if (type == 'text') {
-      return 'text'
-    } else if (type == 'varchar') {
-      return 'checkbox'
-    } else {
-      return ''
-    }
-  }
+
   const res_1 = ref([])
   const res_2 = ref([])
   const frc = (arr: any, arr2: any) => {
@@ -1115,16 +1117,14 @@
   const listGenerateMap = ref<any>([])
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
-  const handleChangeClassify = (value: any) => {
-    console.log(value)
-    mapArr.value = dataOption.map((item: any) => item.optionClassify)
-    console.log(mapArr.value)
+  const handleChangeClassify = (valueClassify: any) => {
+    console.log(valueClassify)
+    mapArr.value = dataOption.map((item: any) => item.value)
 
     // listGenerate.value = res_1.value.map((item: any, index: any) => ({
     //   title: item,
     //   code: index,
     // }))
-    // console.log(listGenerate.value)
 
     // listGenerate.value = value.map((item: any, index: any) => ({
     //   title: item,
@@ -1141,7 +1141,6 @@
   const handlePreview = async (file: UploadProps['fileList'][number]) => {
     if (!file.url && !file.preview) {
       file.preview = (await getBase64(file.originFileObj)) as string
-      console.log(file.preview)
     }
     previewImage.value = file.url || file.preview
     previewVisible.value = true
@@ -1151,13 +1150,13 @@
 
   const dataOption = reactive([
     {
-      optionClassify: <SelectProps['options']>[],
+      value: <SelectProps['options']>[],
       title: '',
     },
   ])
   const addOptions = () => {
     const data = {
-      optionClassify: <SelectProps['options']>[],
+      value: <SelectProps['options']>[],
       title: '',
     }
     dataOption.push(data)
@@ -1165,37 +1164,48 @@
   const removeOptions = (index: number) => {
     dataOption.splice(index, 1)
   }
+  const product = reactive({
+    title: '',
+    code: '',
+    desc: '',
+    webID: null,
+    groupAttributeID: 1,
+    taxID: null,
+    specificationID: null,
+    classifyID: null,
+    nameClassifyID: null,
+    unitCode: '',
+  })
   const dataUnit = reactive([
     {
-      idClassify: '',
-      unit: '',
-      quantity: '',
+      unit_standard: '',
+      unit_exchange: '',
+      rate: '',
     },
   ])
   const addUnits = () => {
     const data = {
-      idClassify: '',
-      unit: '',
-      quantity: '',
+      unit_standard: '',
+      unit_exchange: '',
+      rate: '',
     }
     dataUnit.push(data)
   }
   const removeUnits = (index: number) => {
     dataUnit.splice(index, 1)
   }
+  const dataMapUnit = ref<any>([])
+  const handleChangeUnit = (value: any) => {
+    dataMapUnit.value = dataUnit.map((item: any) => ({
+      unit_standard: value,
+      unit_exchange: item.unit_exchange,
+      rate: item.rate,
+    }))
+  }
   const lastGenerateList = ref<any>([])
   const lastGenerateSku = ref<any>([])
-  const dataTableConfig = ref<TableConfig[]>([])
-  interface TableConfig {
-    name: string
-    sku: string
-    bar_code: string
-    weight: string
-    weight_unit: string
-    minimum: string
-    maximum: string
-    image: Array<string>
-  }
+  const dataTableConfig = ref<any>([])
+
   const skuArr = ref<any>([])
   const listSku = ref<any>([])
   const addClassify = async () => {
@@ -1207,7 +1217,6 @@
     listGenerate.value.push(nameArr.value, ...mapArr.value)
     skuArr.value.push(dataCreateProduct.value.sku)
     listSku.value.push(skuArr.value, ...mapArr.value)
-
     await frc(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
       title: item,
@@ -1222,7 +1231,8 @@
       sku: lastGenerateSku.value[index].sku,
     }))
 
-    dataTableConfig.value = arrTable.map((item: any) => ({
+    dataTableConfig.value = arrTable.map((item: any, index: number) => ({
+      id: index,
       name: item.title,
       sku: item.sku,
       bar_code: '',
@@ -1230,21 +1240,23 @@
       weight_unit: '',
       minimum: '',
       maximum: '',
-      image: <any>[],
+      image: <UploadProps['fileList']>[],
+      image1: <any>[],
     }))
   }
-  const listImageTable = ref<any>([])
   const handleImageTable = async (event: any, index: number) => {
     if (!event.file.url && !event.preview) {
       event.file.preview = (await getBase64(event.file.originFileObj)) as string
-      listImageTable.value = dataTableConfig.value[index].image?.map(
-        (item: any) => item.preview
-      )
-      dataTableConfig.value[index].image = listImageTable.value
-      // dataTableConfig.value.image = event.file.preview
     }
+    console.log(index)
+
+    dataTableConfig.value[index].image1 = dataTableConfig.value[
+      index
+    ].image.map((item: any) => item.preview)
+    // dataTableConfig.value[index].image = listImageTable.value
+    console.log(dataTableConfig.value)
+    // dataTableConfig.value.image = event.file.preview
   }
-  const dataProduct = useProduct()
   const webCatalog = useWebCatalog()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
@@ -1259,28 +1271,30 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const product = reactive({
-    title: '',
-    code: '',
-    desc: '',
-    webID: null,
-    groupAttributeID: 1,
-    taxID: null,
-    specificationID: null,
-    classifyID: null,
-    nameClassifyID: null,
-  })
-  const createProduct = () => {
-    console.log(dataOption)
-    console.log(dataUnit)
-    console.log(dataTableConfig.value)
 
-    // dataProduct.createProductAction(
-    //   dataCreateProduct.value,
-    //   toast,
-    //   router,
-    //   EndTimeLoading
-    // )
+  const createProduct = () => {
+    let dataSource = {
+      attribute_set_id: product.groupAttributeID,
+      list_unit_change: dataMapUnit.value,
+      list_classify: dataOption,
+      list_product_config: dataTableConfig.value.map((item: any) => ({
+        name: item.name,
+        sku: item.sku,
+        bar_code: item.barcode,
+        weight: item.weight,
+        weight_unit: item.weight_unit,
+        minimum: item.minimum,
+        maximum: item.maximum,
+        image: item.image1,
+      })),
+      unit_code: product.unitCode,
+    }
+    // console.log(dataOption)
+    // console.log(dataUnit)
+    // console.log(dataTableConfig.value)
+    let data = Object.assign({}, dataCreateProduct.value, dataSource)
+    console.log(data)
+    dataProduct.createProductAction(data, toast, router, EndTimeLoading)
   }
 </script>
 

@@ -1,14 +1,18 @@
 import { defineStore } from "pinia";
-import { getAllProductsApi, createProductApi } from '../../../services/SettingStoreServices/product.service'
+import { getAllProductsApi, createProductApi, getDetailProductApi } from '../../../services/SettingStoreServices/product.service'
 
 export const useProduct = defineStore("Products", {
     state: () => ({
-        listProduct: [] as DataProduct[],
+        listProduct: <any>[],
+        detailProduct: <any>{}
     }),
     getters: {
         getListProduct: (state: any) => {
             return (payload: any) => state.listProduct = payload
-        }
+        },
+        getDetailProduct: (state: any) => {
+            return (payload: any) => state.detailProduct = payload
+        },
     },
     actions: {
         async getListProductAction(perPage: number, page: number) {
@@ -16,6 +20,16 @@ export const useProduct = defineStore("Products", {
                 .then((payload: any) => {
                     let res = payload?.data?.data?.data
                     this.getListProduct(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+        async getDetailProductAction(id: number) {
+            await getDetailProductApi(id)
+                .then((payload: any) => {
+                    let res = payload?.data?.data
+                    this.getDetailProduct(res)
                 })
                 .catch((err) => {
                     console.log(err)
