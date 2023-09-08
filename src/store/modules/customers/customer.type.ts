@@ -42,7 +42,7 @@ interface DataCustomerAccount {
     email_company: string,
     email_personal: string,
     phone: string,
-    gender:string,
+    gender: string,
     web_code: string,
 }
 interface DataGroupCustomer {

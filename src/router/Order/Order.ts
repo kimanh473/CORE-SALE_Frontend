@@ -9,5 +9,13 @@ const order = [
         },
         beforeEnter: requireAuth,
     },
+    {
+        path: '/create-order',
+        component: () => import('../../page/customers/order/CreateOrder.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    }
 ]
 export default order;

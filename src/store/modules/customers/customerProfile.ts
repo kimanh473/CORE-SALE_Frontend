@@ -7,7 +7,8 @@ import {
     getDetailCustomerProfileApi,
     updateCustomerProfileApi,
     deleteCustomerProfileApi,
-    getLastCodeCustomerApi
+    getLastCodeCustomerApi,
+    getCheckAccountCustomerExistApi
 } from '../../../services/CustomerProfileServices/customerProfile.services'
 
 
@@ -21,7 +22,8 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
         birth_day_dd_mm_yy: null,
         last_code: '',
         is_default: '',
-        is_default_pay: ''
+        is_default_pay: '',
+        account_exist: ''
     }),
     getters: {
         getListCustomerProfilePagination: (state: any) => {
@@ -55,7 +57,13 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
             return (payload: any) => {
                 state.last_code = payload
             }
+        },
+        checkAccountExist: (state: any) => {
+            return (payload: any) => {
+                state.account_exist = payload
+            }
         }
+
     },
 
     actions: {
@@ -74,6 +82,13 @@ export const useCustomerProfile = defineStore("CustomerProfile", {
                 .then((payload: any) => {
                     let res = payload?.data;
                     this.getCodeCustomer(res)
+                })
+        },
+        getCheckAccountCustomerExist(code: any) {
+            getCheckAccountCustomerExistApi(code)
+                .then((payload: any) => {
+                    let res = payload?.data;
+                    this.checkAccountExist(res)
                 })
         },
         async createCustomerProfileAction(
