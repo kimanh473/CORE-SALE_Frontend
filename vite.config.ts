@@ -7,7 +7,7 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => ['modal-view', 'menu-box', 'notify-box', 'upload-img'].includes(tag),
+          isCustomElement: (tag) => ['modal-view', 'menu-box', 'notify-box', 'ModalView'].includes(tag),
         }
       }
     })

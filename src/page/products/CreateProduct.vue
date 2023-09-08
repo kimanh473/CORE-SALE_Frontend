@@ -505,20 +505,22 @@
                     @change="handleChange($event, item1.attribute_code)"
                   >
                     <div v-if="item1.attribute_code == 'image'">
-                      <plus-outlined />
-                      <div style="margin-top: 8px">Upload</div>
+                      <div>
+                        <plus-outlined />
+                        <div style="margin-top: 8px">Upload</div>
+                      </div>
+                      <a-modal
+                        :visible="previewVisible"
+                        :footer="null"
+                        @cancel="handleCancelImage"
+                      >
+                        <img
+                          alt="example"
+                          style="width: 100%"
+                          :src="previewImage"
+                        />
+                      </a-modal>
                     </div>
-                    <a-modal
-                      :visible="previewVisible"
-                      :footer="null"
-                      @cancel="handleCancelImage"
-                    >
-                      <img
-                        alt="example"
-                        style="width: 100%"
-                        :src="previewImage"
-                      />
-                    </a-modal>
                   </component>
                 </div>
                 <div
@@ -580,36 +582,38 @@
                   class="bg-[#E8E9EB]"
                 >
                   <div class="p-4 m-2">
-                    <div class="form-large-full grid grid-cols-3 gap-3 !m-0">
-                      <p>Phân loại <span class="text-red-600">*</span></p>
+                    <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
                       <p>Đơn vị quy đổi</p>
                       <p>Số lượng</p>
                     </div>
                     <div
                       v-for="(item, index) in dataUnit"
                       :key="index"
-                      class="form-large-full grid grid-cols-3 gap-3"
+                      class="form-large-full grid grid-cols-2 gap-"
                     >
-                      <div class="w-full">
+                      <!-- <div class="w-full">
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn nhóm thuộc tính"
                           :options="lastGenerateList"
                           v-model:value="item.idClassify"
-                          :fieldNames="{ label: 'title', value: 'title' }"
-                          @change="handleChangeAttributeGroup"
+                          :fieldNames="{ label: 'title', value: 'code' }"
                         >
                         </a-select>
-                      </div>
+                      </div> -->
                       <div class="w-full">
                         <!-- <a-checkbox
                           v-model:checked="item.status"
                           class="!pl-[16px]"
                         ></a-checkbox> -->
-                        <a-input
-                          v-model:value="item.unit"
-                          placeholder="Nhập đơn vị quy đổi"
-                        ></a-input>
+                        <a-select
+                          class="w-11/12"
+                          placeholder="Chọn đơn vị quy đổi"
+                          :options="listProductUnit"
+                          v-model:value="item.idClassify"
+                          :fieldNames="{ label: 'title', value: 'code' }"
+                        >
+                        </a-select>
                       </div>
                       <div class="flex items-end w-full">
                         <a-input
@@ -630,7 +634,7 @@
                 <div
                   id="product_table"
                   v-show="item1.default_value == true"
-                  v-if="item1.attribute_code == 'unit_change'"
+                  v-if="item1.attribute_code == 'classify_product'"
                 >
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
                   <a-table
@@ -684,6 +688,7 @@
                           ></a-input-number>
                           <a-select
                             class="!ml-[4px]"
+                            v-model:value="record.weight_unit"
                             :options="weightUnit"
                           ></a-select>
                         </div>
@@ -900,6 +905,7 @@
   import { useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
+  import { useProductUnit } from '../../store/modules/store-setting/product-unit'
   import { useProduct } from '../../store/modules/store-setting/products'
   import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
   import { useAttributeGroup } from '../../store/modules/store-setting/attribute-group'
@@ -914,6 +920,9 @@
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
     storeToRefs(dataAttributeGroup)
+  const dataProductUnit = useProductUnit()
+  dataProductUnit.getListProductUnitAction()
+  const { listProductUnit } = storeToRefs(dataProductUnit)
   const img = ref(IconAddImg)
   const indexAttribute = ref()
   const specDefault = ref()
@@ -926,11 +935,11 @@
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
-      value: 'g',
+      value: '0',
       label: 'g',
     },
     {
-      value: 'kg',
+      value: '1',
       label: 'kg',
     },
   ])
@@ -1061,8 +1070,8 @@
     }
   }
   const res_1 = ref([])
-
-  const frc = (arr: any) => {
+  const res_2 = ref([])
+  const frc = (arr: any, arr2: any) => {
     let result = []
     let i = 0
     let k = 0
@@ -1081,10 +1090,26 @@
         res_1.value = result
         k++
       }
-      frc(arr)
+      frc(arr, arr2)
       i++
     }
-    return res_1
+    while (i < arr2.length - 1) {
+      while (k < 1) {
+        for (let m = 0; m < arr2[0].length; m++) {
+          for (let j = 0; j < arr2[1].length; j++) {
+            let a = arr2[0][m]
+            let b = a + '_' + arr2[1][j]
+            result.push(b)
+          }
+        }
+        arr2[0] = result
+        arr2.splice(1, 1)
+        res_2.value = result
+        k++
+      }
+      frc(arr, arr2)
+      i++
+    }
   }
   const listGenerate = ref<any>([])
   const listGenerateMap = ref<any>([])
@@ -1159,22 +1184,50 @@
     dataUnit.splice(index, 1)
   }
   const lastGenerateList = ref<any>([])
-  const dataTableConfig = ref<any>([])
+  const lastGenerateSku = ref<any>([])
+  const dataTableConfig = ref<TableConfig[]>([])
+  interface TableConfig {
+    name: string
+    sku: string
+    bar_code: string
+    weight: string
+    weight_unit: string
+    minimum: string
+    maximum: string
+    image: Array<string>
+  }
+  const skuArr = ref<any>([])
+  const listSku = ref<any>([])
   const addClassify = async () => {
     nameArr.value = []
     listGenerate.value = []
+    skuArr.value = []
+    listSku.value = []
     nameArr.value.push(dataCreateProduct.value.name)
     listGenerate.value.push(nameArr.value, ...mapArr.value)
-    await frc(listGenerate.value)
+    skuArr.value.push(dataCreateProduct.value.sku)
+    listSku.value.push(skuArr.value, ...mapArr.value)
+
+    await frc(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
       title: item,
       code: index,
     }))
-    dataTableConfig.value = lastGenerateList.value.map((item: any) => ({
+    lastGenerateSku.value = res_2.value.map((item: any) => ({
+      sku: item,
+    }))
+    let arrTable = lastGenerateList.value.map((item: any, index: number) => ({
+      title: item.title,
+      code: item.code,
+      sku: lastGenerateSku.value[index].sku,
+    }))
+
+    dataTableConfig.value = arrTable.map((item: any) => ({
       name: item.title,
-      sku: '',
+      sku: item.sku,
       bar_code: '',
       weight: '',
+      weight_unit: '',
       minimum: '',
       maximum: '',
       image: <any>[],
@@ -1187,9 +1240,7 @@
       listImageTable.value = dataTableConfig.value[index].image?.map(
         (item: any) => item.preview
       )
-      console.log(dataTableConfig.value)
-      console.log(listImageTable)
-
+      dataTableConfig.value[index].image = listImageTable.value
       // dataTableConfig.value.image = event.file.preview
     }
   }
