@@ -36,6 +36,11 @@
         bordered
         row-key="id"
         ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'image'">
+            <div v-for="(item, index) in record.image" :key="index">
+              <img :src="UriImg + '/' + item" alt="" width="100" height="100" />
+            </div>
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -87,11 +92,12 @@
     },
     {
       title: 'Ảnh',
-      dataIndex: '',
+      dataIndex: 'image',
+      key: 'image',
     },
     {
       title: 'Tên',
-      dataIndex: '',
+      dataIndex: 'name',
     },
     {
       title: 'Loại sản phẩm',
@@ -107,6 +113,9 @@
       key: 'id',
     },
   ]
+  const UriImg = import.meta.env.VITE_APP_IMG_URL
+  console.log(UriImg)
+
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
@@ -117,7 +126,7 @@
     router.push('/create-product')
   }
   const navigateUpdate = (id: number) => {
-    router.push(`/update-web/${id}`)
+    router.push(`/update-product/${id}`)
   }
   const idSelected = ref()
   const handleOpenDelete = (record: any) => {
