@@ -487,6 +487,7 @@
                 :key="index1"
                 class="form-large-full"
               >
+                <!-- {{ dayjs(detailProduct['create_date']) }} -->
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
@@ -495,14 +496,17 @@
                   <component
                     :is="`a-${map.type}`"
                     :options="item1.option_detail"
-                    v-model:checked="item1.default_value"
+                    v-model:checked="detailProduct[item1.attribute_code]"
                     v-model:file-list="fileList"
+                    v-model:value="detailProduct[item1.attribute_code]"
                     list-type="picture-card"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     v-bind="{ ...map.attribute }"
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
+                    :name="dayjs()"
+                    format="YYYY-MM-DD"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
@@ -525,7 +529,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="item1.default_value == true"
+                  v-show="detailProduct.list_classify.length > 0"
                   v-if="item1.attribute_code == 'classify_product'"
                   class="bg-[#E8E9EB]"
                 >
@@ -533,7 +537,10 @@
                     <p class="pr-[180px]">
                       Nhóm phân loại <span class="text-red-600">*</span>
                     </p>
-                    <div v-for="(item, index) in dataOption" :key="index">
+                    <div
+                      v-for="(item, index) in detailProduct.list_classify"
+                      :key="index"
+                    >
                       <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
                         <p class="m-0">Nhóm phân loại {{ index }}</p>
                         <p class="m-0">Phân loại</p>
@@ -577,7 +584,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="item1.default_value == true"
+                  v-show="detailProduct.list_unit_change.length > 0"
                   v-if="item1.attribute_code == 'unit_change'"
                   class="bg-[#E8E9EB]"
                 >
@@ -587,7 +594,7 @@
                       <p>Tỷ lệ quy đổi</p>
                     </div>
                     <div
-                      v-for="(item, index) in dataUnit"
+                      v-for="(item, index) in detailProduct.list_unit_change"
                       :key="index"
                       class="form-large-full grid grid-cols-2 gap-2"
                     >
@@ -633,7 +640,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="item1.default_value == true"
+                  v-show="detailProduct.list_classify.length > 0"
                   v-if="item1.attribute_code == 'classify_product'"
                 >
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
@@ -726,6 +733,8 @@
                       :key="indexSpec1"
                       class="form-large-full"
                     >
+                      {{ detailProduct[itemSpec1.attribute_code] }}
+
                       <label for="" class="form-group-label"
                         >{{ itemSpec1.frontend_label
                         }}<span class="text-red-600">* </span> <span></span
@@ -916,6 +925,7 @@
   import BaseLayout from '../../layout/baseLayout.vue'
   import SideBar from '../../components/common/SideBar.vue'
   import Header from '../../components/common/Header.vue'
+  import dayjs, { Dayjs } from 'dayjs'
   import { ref, reactive, watch } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useGroupInventory } from '../../store/modules/inventory/group-inventory'
@@ -932,7 +942,6 @@
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import IconAddImg from '../../assets/images/icon_add_image.png'
-
   const route = useRoute()
   const dataProduct = useProduct()
   dataProduct.getDetailProductAction(Number(route.params.id))
@@ -1042,7 +1051,7 @@
         .toISOString()
         .substring(0, 10)
     } else {
-      dataCreateProduct.value[input_name] = event.target.value
+      dataCreateProduct.value[input_name] = detailProduct.value[input_name]
     }
     console.log(dataCreateProduct.value)
   }

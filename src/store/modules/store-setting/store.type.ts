@@ -140,3 +140,38 @@ interface DataCurrencyInternational {
     title: string,
     code: string
 }
+interface DataAdjustPrice {
+    id: number
+    title: string
+    created_by_id: string
+    updated_by_id: string
+    created_at: string
+    updated_at: string
+    deleted_at: string
+    user_created: object
+    user_updated: object
+    json_website_list: Array<string>
+    json_nganh_hang_list: Array<string>
+    json_period: Array<Period>
+    json_product_price_detail: Array<ProductPriceDetail>
+
+}
+interface Period {
+    title: string
+    date_start: string
+    date_end: string
+    listed_price: string
+    wholesale_price: string
+    retail_price: string
+}
+interface ProductPriceDetail {
+    sku: string
+    code: string
+    unit: string
+    has_custom: string
+    date_start: string
+    date_end: string
+    listed_price: string
+    wholesale_price: string
+    retail_price: string
+}

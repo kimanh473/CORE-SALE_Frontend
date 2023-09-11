@@ -283,6 +283,13 @@
               },
               {
                 icon: '',
+                label: 'Điều chỉnh giá',
+                to: '/price-adjust',
+                submenuGroup: '',
+                permission: [''],
+              },
+              {
+                icon: '',
                 label: 'Ngành hàng',
                 to: '/category-list',
                 submenuGroup: '',
@@ -334,11 +341,11 @@
             smallLabel: 'KHÁCH HÀNG',
             children1: [
               {
-                 icon: '',
-                 label: 'Danh sách thông tin khách hàng',
-                 to: '/list-customer-profile',
-                 submenuGroup: '',
-                 permission: [''],
+                icon: '',
+                label: 'Danh sách thông tin khách hàng',
+                to: '/list-customer-profile',
+                submenuGroup: '',
+                permission: [''],
               },
               {
                 icon: '',
