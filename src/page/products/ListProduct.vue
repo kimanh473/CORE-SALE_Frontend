@@ -114,7 +114,6 @@
     },
   ]
   const UriImg = import.meta.env.VITE_APP_IMG_URL
-  console.log(UriImg)
 
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false

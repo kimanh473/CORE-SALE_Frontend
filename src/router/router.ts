@@ -9,6 +9,7 @@ import specification from './Product/Specification'
 import inventory from './Inventory/Inventory'
 import groupInventory from './Inventory/GroupInventory'
 import tax from './Product/Tax'
+import adjust from "./Product/AdjustPrice";
 import currency from './Product/Currency'
 import customerProfile from './Customer/Profile'
 import customerAccount from './Customer/Account'
@@ -153,6 +154,7 @@ LoadRoute(category)
 LoadRoute(inventory)
 LoadRoute(groupInventory)
 LoadRoute(tax)
+LoadRoute(adjust)
 LoadRoute(currency)
 LoadRoute(customerProfile)
 LoadRoute(customerAccount)
