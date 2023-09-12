@@ -3,6 +3,9 @@ import httpClient from "../services";
 const getAllProductsApi = (perPage: number, page: number) => {
     return httpClient.get(`/catalog/product/index?per_page=${perPage}&page=${page}`);
 };
+const getAllProductsNoPagingApi = () => {
+    return httpClient.get(`/catalog/product/index`);
+};
 //Tạo sản phẩm
 const createProductApi = (data: object) => {
     return httpClient.post(`/catalog/product/create`, data);
@@ -14,5 +17,6 @@ const getDetailProductApi = (id: number) => {
 export {
     getAllProductsApi,
     createProductApi,
-    getDetailProductApi
+    getDetailProductApi,
+    getAllProductsNoPagingApi
 };

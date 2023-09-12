@@ -9,5 +9,13 @@ const adjust = [
         },
         beforeEnter: requireAuth,
     },
+    {
+        path: '/create-adjust-price',
+        component: () => import('../../page/products/AdjustPrice/CreateAdjustTable.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    },
 ]
 export default adjust;
