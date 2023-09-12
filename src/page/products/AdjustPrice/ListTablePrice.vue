@@ -29,9 +29,9 @@
         <div
           class="button-create-new relative group rounded-md px-2"
           title="Tạo mới"
-          @click="CreateAttribute()"
+          @click="navigateToCreate()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới thuộc tính</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới bảng giá</p>
         </div>
       </div>
       <a-table
@@ -94,7 +94,7 @@
             v-if="state.searchText && state.searchedColumn === column.dataIndex"
           >
             <template
-              v-for="(fragment, i) in record.frontend_label
+              v-for="(fragment, i) in record.title
                 .toString()
                 .split(
                   new RegExp(
@@ -312,10 +312,7 @@
       dataIndex: 'title',
       customFilterDropdown: true,
       onFilter: (value: any, record: any) =>
-        record.frontend_label
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase()),
+        record.title.toString().toLowerCase().includes(value.toLowerCase()),
       onFilterDropdownOpenChange: (visible: boolean) => {
         if (visible) {
           setTimeout(() => {
@@ -411,8 +408,8 @@
   //     console.log(selected, selectedRows, changeRows)
   //   },
   // })
-  const CreateAttribute = () => {
-    router.push('/create-attribute-product')
+  const navigateToCreate = () => {
+    router.push('/create-adjust-price')
   }
 </script>
 <style>
