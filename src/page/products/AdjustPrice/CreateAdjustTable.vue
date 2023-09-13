@@ -223,8 +223,10 @@
                         ></label>
                         <div>
                           <a-date-picker
+                            placeholder="Chọn ngày"
                             class="form-control-input"
                             v-model:value="item.date_start"
+                            :format="dateFormatRequest"
                           />
                           <!-- <p
                             v-if="messageError?.contact_email"
@@ -241,8 +243,10 @@
                         ></label>
                         <div>
                           <a-date-picker
+                            placeholder="Chọn ngày"
                             class="form-control-input"
                             v-model:value="item.date_end"
+                            :format="dateFormatRequest"
                           />
                           <!-- <p
                             v-if="messageError?.contact_email"
@@ -353,12 +357,21 @@
                     class="!p-[10px]"
                     :columns="columns"
                     :data-source="dataTableDetail"
+                    sharedOnCell="key, name, sku"
                     bordered
                     row-key="id"
                   >
                     <template #bodyCell="{ column, text, record }">
                       <template
-                        v-if="['id', 'name', 'sku'].includes(record.key)"
+                        v-if="
+                          [
+                            'date_start',
+                            'date_end',
+                            'listed_price',
+                            'whosale_price',
+                            'retail_price',
+                          ].includes(column.dataIndex)
+                        "
                       >
                         <div>
                           <a-input
@@ -368,9 +381,7 @@
                             "
                             style="margin: -5px 0"
                           />
-                          <template v-else>
-                            {{ text }}
-                          </template>
+                          <template v-else> {{ text }} </template>
                         </div>
                       </template>
                       <template v-else-if="column.dataIndex === 'operation'">
@@ -433,6 +444,8 @@
   import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
   import { cloneDeep, filter } from 'lodash-es'
   import type { UnwrapRef } from 'vue'
+  import dayjs, { Dayjs } from 'dayjs'
+  import type { TableColumnType } from 'ant-design-vue'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -459,37 +472,59 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const columns = [
+  const dateFormatRequest = 'DD/MM/YYYY'
+  const columns: TableColumnType[] = [
     {
       title: 'STT',
-      key: 'id',
+      key: 'key',
+      dataIndex: 'key',
+      customCell: (_, index) => {
+        return { rowSpan: 2 }
+      },
     },
     {
       title: 'Sản phẩm/Phiên bản',
       key: 'name',
       dataIndex: 'name',
+      customCell: (_, index) => {
+        return { rowSpan: 2 }
+      },
     },
     {
       title: 'SKU',
       key: 'sku',
+      dataIndex: 'sku',
+      customCell: (_, index) => {
+        return { rowSpan: 2 }
+      },
     },
     {
       title: 'Đơn vị tính',
+      dataIndex: 'unit',
+      key: 'unit',
+      customCell: (_, index) => {
+        return { rowSpan: 2 }
+      },
     },
     {
       title: 'Ngày bắt đầu',
+      dataIndex: 'date_start',
     },
     {
       title: 'Ngày kết thúc',
+      dataIndex: 'date_end',
     },
     {
       title: 'Giá niêm yết',
+      dataIndex: 'listed_price',
     },
     {
       title: 'Giá sỉ',
+      dataIndex: 'whosale_price',
     },
     {
       title: 'Giá lẻ',
+      dataIndex: 'retail_price',
     },
     {
       title: 'Tùy chỉnh',
@@ -598,15 +633,50 @@
   const removeTime = (index: number) => {
     timeAdjustPrice.splice(index, 1)
   }
+  // const sharedOnCell = (_, index) => {
+  //   if (index === 4) {
+  //     return { colSpan: 0 }
+  //   }
+  // }
+  const listProduct = ref([])
   const filterProduct = () => {
-    console.log(adjust)
-    dataTableDetail.value = adjust.product.map((item: any) => ({
-      name: item,
+    console.log(listProduct.value)
+    let arrProduct = []
+    arrProduct = listProduct.value.map((item: any) => ({
+      name: item.productName,
+      sku: item.sku,
     }))
+    const arrAll = []
+
+    for (let i = 0; i < arrProduct.length; i++) {
+      const item1 = arrProduct[i]
+
+      for (let j = 0; j < timeAdjustPrice.length; j++) {
+        const item2 = timeAdjustPrice[j]
+
+        const newItem = {
+          key: i.toString(),
+          name: item1.name,
+          sku: item1.sku,
+          date_start: dayjs(item2.date_start).format('YYYY/MM/DD'),
+          date_end: dayjs(item2.date_end).format('YYYY/MM/DD'),
+          listed_price: item2.listed_price,
+          whosale_price: item2.whosale_price,
+          retail_price: item2.retail_price,
+        }
+
+        arrAll.push(newItem)
+      }
+    }
+    console.log(arrAll)
+    dataTableDetail.value = arrAll
+    console.log(timeAdjustPrice)
   }
   const editableData: UnwrapRef<Record<any, any>> = reactive({})
 
   const edit = (key: string) => {
+    console.log(key)
+
     editableData[key] = cloneDeep(
       dataTableDetail.value.filter((item: any) => key === item.key)[0]
     )
@@ -639,6 +709,10 @@
     } else {
       showManageChoice.value = false
     }
+    listProduct.value = options.map((item: any) => ({
+      productName: item.name,
+      sku: item.sku,
+    }))
   }
   const dataOption = reactive([])
 
