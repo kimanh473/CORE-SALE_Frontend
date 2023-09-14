@@ -2,14 +2,16 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-            <img src="../assets/images/btp.png" />
-          </div> -->
+              <img src="../assets/images/btp.png" />
+            </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới bảng điều chỉnh giá</p></template
+          ><p class="pl-5 text-[16px]">
+            Cập nhật bảng điều chỉnh giá
+          </p></template
         >
       </Header>
     </template>
@@ -19,10 +21,10 @@
           class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over flex"
         >
           <!-- <a-anchor class="w-[200px] h-[300px] border-2">
-              <a-anchor-link href="#infor-common" title="Thông tin chung" />
-              <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
-              <a-anchor-link href="#address" title="Địa chỉ" />
-            </a-anchor> -->
+                <a-anchor-link href="#infor-common" title="Thông tin chung" />
+                <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
+                <a-anchor-link href="#address" title="Địa chỉ" />
+              </a-anchor> -->
           <div id="infor-common" class="w-full ml-4">
             <h4
               class="form-section-title form-small cursor-pointer"
@@ -50,11 +52,11 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tiêu đề"
-                          v-model="adjust.title"
+                          v-model="detailAdjustPrice.title"
                         />
                         <!-- <p v-if="messageError?.title" class="text-red-600">
-                            {{ messageError?.title[0] }}
-                          </p> -->
+                              {{ messageError?.title[0] }}
+                            </p> -->
                       </div>
                     </div>
                   </div>
@@ -68,7 +70,7 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn website"
-                          v-model:value="adjust.website"
+                          v-model:value="detailAdjustPrice.json_website_list"
                           :options="listWeb"
                           @change="handleChange"
                           :fieldNames="{
@@ -79,8 +81,8 @@
                         >
                         </a-select>
                         <!-- <p v-if="messageError?.title" class="text-red-600">
-                            {{ messageError?.title[0] }}
-                          </p> -->
+                              {{ messageError?.title[0] }}
+                            </p> -->
                       </div>
                     </div>
                   </div>
@@ -94,7 +96,7 @@
                           placeholder="Chọn ngành hàng"
                           style="width: 100%"
                           :tree-data="listTreeCategory"
-                          v-model:value="adjust.category"
+                          v-model:value="detailAdjustPrice.json_nganh_hang_list"
                           :fieldNames="{
                             children: 'children',
                             label: 'title',
@@ -106,8 +108,8 @@
                         >
                         </a-tree-select>
                         <!-- <p v-if="messageError?.code" class="text-red-600">
-                            {{ messageError?.code[0] }}
-                          </p> -->
+                              {{ messageError?.code[0] }}
+                            </p> -->
                       </div>
                     </div>
                   </div>
@@ -121,7 +123,9 @@
                           class="form-control-input"
                           placeholder="Chọn sản phẩm"
                           :options="listAllProduct"
-                          v-model:value="adjust.product"
+                          v-model:value="
+                            detailAdjustPrice.json_product_code_list
+                          "
                           @change="handleChange"
                           :fieldNames="{
                             label: 'name',
@@ -131,8 +135,8 @@
                         >
                         </a-select>
                         <!-- <p v-if="messageError?.code" class="text-red-600">
-                            {{ messageError?.code[0] }}
-                          </p> -->
+                              {{ messageError?.code[0] }}
+                            </p> -->
                       </div>
                     </div>
                   </div>
@@ -157,9 +161,9 @@
                     >
                       <div class="pr-[100px]">
                         <!-- <a-checkbox
-                            v-model:checked="item.status"
-                            class="!pl-[16px]"
-                          ></a-checkbox> -->
+                              v-model:checked="item.status"
+                              class="!pl-[16px]"
+                            ></a-checkbox> -->
                         <input
                           type="checkbox"
                           v-model="item.status"
@@ -229,11 +233,11 @@
                             :format="dateFormatRequest"
                           />
                           <!-- <p
-                            v-if="messageError?.contact_email"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_email[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_email"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_email[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -249,11 +253,11 @@
                             :format="dateFormatRequest"
                           />
                           <!-- <p
-                            v-if="messageError?.contact_email"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_email[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_email"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_email[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -269,11 +273,11 @@
                           >
                           </a-input>
                           <!-- <p
-                            v-if="messageError?.contact_phone"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_phone[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_phone"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_phone[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -289,11 +293,11 @@
                           >
                           </a-input>
                           <!-- <p
-                            v-if="messageError?.contact_phone"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_phone[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_phone"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_phone[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -309,11 +313,11 @@
                           >
                           </a-input>
                           <!-- <p
-                            v-if="messageError?.contact_email"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_email[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_email"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_email[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div class="mt-[35px]">
@@ -437,10 +441,11 @@
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
   import { useCategory } from '../../../store/modules/store-setting/category'
   import { useProduct } from '../../../store/modules/store-setting/products'
+  import { useAdjustPrice } from '../../../store/modules/store-setting/adjust-price'
   import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
   import { cloneDeep, filter } from 'lodash-es'
   import type { UnwrapRef } from 'vue'
@@ -451,6 +456,7 @@
   // const selectedDistrict = ref(null)
   // const selectedWard = ref(null)
   const router = useRouter()
+  const route = useRoute()
   const toast = useToast()
   const isAddress = ref(true)
   const isInfor = ref(true)
@@ -467,6 +473,10 @@
   const { listTreeCategory } = storeToRefs(dataCategory)
   dataProduct.getListProductNoPagingAction()
   const { listAllProduct } = storeToRefs(dataProduct)
+  const dataAdjustPrice = useAdjustPrice()
+  dataAdjustPrice.getDetailAdjustPriceAction(Number(route.params.id))
+  const { detailAdjustPrice } = storeToRefs(dataAdjustPrice)
+  console.log(detailAdjustPrice)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
@@ -704,8 +714,6 @@
     } else {
       showManageChoice.value = false
     }
-    console.log(adjust)
-
     listProduct.value = options.map((item: any) => ({
       productName: item.name,
       sku: item.sku,
