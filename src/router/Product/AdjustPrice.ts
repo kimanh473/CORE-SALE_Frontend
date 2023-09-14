@@ -17,5 +17,13 @@ const adjust = [
         },
         beforeEnter: requireAuth,
     },
+    {
+        path: '/update-adjust-price/:id',
+        component: () => import('../../page/products/AdjustPrice/UpdateAdjustTable.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    },
 ]
 export default adjust;

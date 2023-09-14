@@ -3,6 +3,10 @@ import httpClient from "../services";
 const getAdjustPriceApi = () => {
     return httpClient.get(`/system-manage/product-price-setting/index`);
 };
+const getdetailAdjustPriceApi = (id: number) => {
+    return httpClient.get(`/system-manage/product-price-setting/show/${id}`);
+};
 export {
     getAdjustPriceApi,
+    getdetailAdjustPriceApi
 };

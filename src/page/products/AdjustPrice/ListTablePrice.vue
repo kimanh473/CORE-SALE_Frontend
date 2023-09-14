@@ -354,7 +354,7 @@
   ]
 
   const navigateUpdate = (id: number) => {
-    router.push(`/update-attribute-product/${id}`)
+    router.push(`/update-adjust-price/${id}`)
   }
   const idSelected = ref()
   const handleOpenDelete = (record: any) => {
