@@ -191,7 +191,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên thuộc tính*, Định dạng *
+                Tiêu đề *, Website *, Ngành hàng * ,Sản phẩm *
               </h2>
             </div>
 
@@ -329,35 +329,26 @@
                   </div>
                 </div>
               </Transition>
-              <div v-show="isContact == false">
-                <h2
-                  @click="isContact = !isContact"
-                  class="cursor-pointer form-group-label"
-                >
-                  Website áp dụng *, Giá trị duy nhất*, *Kiểm tra tính hợp lệ
-                </h2>
-              </div>
             </div>
             <div id="infor-contact" class="inner">
               <h4
                 class="form-section-title form-small cursor-pointer"
-                @click="isContact = !isContact"
+                @click="isDetail = !isDetail"
               >
-                <span v-show="isContact == true">
+                <span v-show="isDetail == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
                 </span>
-                <span v-show="isContact == false"
+                <span v-show="isDetail == false"
                   ><i class="fas fa-chevron-right cursor-pointer"></i
                 ></span>
                 Thông tin chi tiết
               </h4>
               <Transition name="slide-up">
-                <div v-show="isContact == true">
+                <div v-show="isDetail == true">
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
                     :data-source="dataTableDetail"
-                    sharedOnCell="key, name, sku"
                     bordered
                     row-key="id"
                   >
@@ -455,6 +446,7 @@
   const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
+  const isDetail = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
@@ -478,13 +470,6 @@
       title: 'STT',
       key: 'key',
       dataIndex: 'key',
-      // customCell: (record, rowIndex, column) => {
-      //   console.log(record)
-      //   console.log(rowIndex)
-      //   console.log(column)
-      //   if (record.key == 0) return { rowSpan: 2 }
-      //   else return { rowSpan: 1 }
-      // },
     },
     {
       title: 'Sản phẩm/Phiên bản',
@@ -526,6 +511,9 @@
       key: 'edit',
       dataIndex: 'operation',
       align: 'center',
+      customCell: (record, rowIndex, column) => {
+        return { rowSpan: 2 }
+      },
     },
   ]
   const options1 = ref<SelectProps['options']>([

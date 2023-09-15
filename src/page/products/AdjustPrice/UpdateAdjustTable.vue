@@ -216,7 +216,7 @@
                 <div v-show="isContact == true">
                   <div class="form-large-plus">
                     <div
-                      v-for="(item, index) in timeAdjustPrice"
+                      v-for="(item, index) in listPeriod"
                       :key="index"
                       class="grid grid-cols-6 gap-6"
                     >
@@ -345,18 +345,18 @@
             <div id="infor-contact" class="inner">
               <h4
                 class="form-section-title form-small cursor-pointer"
-                @click="isContact = !isContact"
+                @click="isDetail = !isDetail"
               >
-                <span v-show="isContact == true">
+                <span v-show="isDetail == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
                 </span>
-                <span v-show="isContact == false"
+                <span v-show="isDetail == false"
                   ><i class="fas fa-chevron-right cursor-pointer"></i
                 ></span>
                 Thông tin chi tiết
               </h4>
               <Transition name="slide-up">
-                <div v-show="isContact == true">
+                <div v-show="isDetail == true">
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
@@ -461,6 +461,7 @@
   const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
+  const isDetail = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
@@ -475,7 +476,7 @@
   const { listAllProduct } = storeToRefs(dataProduct)
   const dataAdjustPrice = useAdjustPrice()
   dataAdjustPrice.getDetailAdjustPriceAction(Number(route.params.id))
-  const { detailAdjustPrice } = storeToRefs(dataAdjustPrice)
+  const { detailAdjustPrice, listPeriod } = storeToRefs(dataAdjustPrice)
   console.log(detailAdjustPrice)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
