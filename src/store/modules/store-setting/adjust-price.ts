@@ -14,7 +14,7 @@ export const useAdjustPrice = defineStore("AdjustPrice", {
         getDetailAdjustPrice: (state: any) => {
             return (payload: any) => {
                 state.detailAdjustPrice = payload
-                state.listPeriod = payload.json_period.map((item) => ({
+                state.listPeriod = payload.json_period.map((item: Period) => ({
                     title: item.title,
                     date_start: dayjs(item.date_start),
                     date_end: dayjs(item.date_end),
