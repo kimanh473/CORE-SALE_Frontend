@@ -216,7 +216,7 @@
                 <div v-show="isContact == true">
                   <div class="form-large-plus">
                     <div
-                      v-for="(item, index) in timeAdjustPrice"
+                      v-for="(item, index) in listPeriod"
                       :key="index"
                       class="grid grid-cols-6 gap-6"
                     >
@@ -345,18 +345,18 @@
             <div id="infor-contact" class="inner">
               <h4
                 class="form-section-title form-small cursor-pointer"
-                @click="isContact = !isContact"
+                @click="isDetail = !isDetail"
               >
-                <span v-show="isContact == true">
+                <span v-show="isDetail == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
                 </span>
-                <span v-show="isContact == false"
+                <span v-show="isDetail == false"
                   ><i class="fas fa-chevron-right cursor-pointer"></i
                 ></span>
                 Thông tin chi tiết
               </h4>
               <Transition name="slide-up">
-                <div v-show="isContact == true">
+                <div v-show="isDetail == true">
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
@@ -366,6 +366,9 @@
                     row-key="id"
                   >
                     <template #bodyCell="{ column, text, record }">
+                      <template v-if="column.key === 'key'">
+                        {{ record.key }}
+                      </template>
                       <template
                         v-if="
                           [
@@ -377,32 +380,35 @@
                           ].includes(column.dataIndex)
                         "
                       >
-                        <div>
+                        <div
+                          v-for="(item, index) in record.timeAdjust"
+                          :key="index"
+                        >
                           <a-input
                             v-if="editableData[record.key]"
-                            v-model:value="
-                              editableData[record.key][column.dataIndex]
-                            "
-                            style="margin: -5px 0"
+                            v-model:value="item[column.dataIndex]"
+                            style="margin: 5px 0"
                           />
-                          <template v-else> {{ text }} </template>
+                          <template v-else>
+                            {{ item[column.dataIndex] }}
+                          </template>
                         </div>
                       </template>
                       <template v-else-if="column.dataIndex === 'operation'">
                         <div class="editable-row-operations">
                           <span v-if="editableData[record.key]">
                             <a-typography-link @click="save(record.key)"
-                              >Save</a-typography-link
+                              >Lưu</a-typography-link
                             >
                             <a-popconfirm
-                              title="Sure to cancel?"
+                              title="Bạn có muốn hủy?"
                               @confirm="cancel(record.key)"
                             >
-                              <a>Cancel</a>
+                              <a>Hủy</a>
                             </a-popconfirm>
                           </span>
                           <span v-else>
-                            <a @click="edit(record.key)">Edit</a>
+                            <a @click="edit(record.key)">Sửa</a>
                           </span>
                         </div>
                       </template>
@@ -461,6 +467,7 @@
   const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
+  const isDetail = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
@@ -475,7 +482,7 @@
   const { listAllProduct } = storeToRefs(dataProduct)
   const dataAdjustPrice = useAdjustPrice()
   dataAdjustPrice.getDetailAdjustPriceAction(Number(route.params.id))
-  const { detailAdjustPrice } = storeToRefs(dataAdjustPrice)
+  const { detailAdjustPrice, listPeriod } = storeToRefs(dataAdjustPrice)
   console.log(detailAdjustPrice)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
@@ -651,28 +658,40 @@
       name: item.productName,
       sku: item.sku,
     }))
-    const arrAll = []
-
-    for (let i = 0; i < arrProduct.length; i++) {
-      const item1 = arrProduct[i]
-
-      for (let j = 0; j < timeAdjustPrice.length; j++) {
-        const item2 = timeAdjustPrice[j]
-
-        const newItem = {
-          key: i.toString(),
-          name: item1.name,
-          sku: item1.sku,
-          date_start: dayjs(item2.date_start).format('YYYY/MM/DD'),
-          date_end: dayjs(item2.date_end).format('YYYY/MM/DD'),
+    const arrAll = arrProduct.map((item: any, index: number) => {
+      return {
+        ...item,
+        key: index,
+        timeAdjust: timeAdjustPrice.map((item2: any) => ({
+          date_start: dayjs(item2.date_start).format('DD/MM/YYYY'),
+          date_end: dayjs(item2.date_end).format('DD/MM/YYYY'),
           listed_price: item2.listed_price,
           wholesale_price: item2.wholesale_price,
           retail_price: item2.retail_price,
-        }
-
-        arrAll.push(newItem)
+        })),
       }
-    }
+    })
+
+    // for (let i = 0; i < arrProduct.length; i++) {
+    //   const item1 = arrProduct[i]
+
+    //   for (let j = 0; j < timeAdjustPrice.length; j++) {
+    //     const item2 = timeAdjustPrice[j]
+
+    //     const newItem = {
+    //       key: i.toString(),
+    //       name: item1.name,
+    //       sku: item1.sku,
+    //       date_start: dayjs(item2.date_start).format('YYYY/MM/DD'),
+    //       date_end: dayjs(item2.date_end).format('YYYY/MM/DD'),
+    //       listed_price: item2.listed_price,
+    //       wholesale_price: item2.wholesale_price,
+    //       retail_price: item2.retail_price,
+    //     }
+
+    //     arrAll.push(newItem)
+    //   }
+    // }
     console.log(arrAll)
     dataTableDetail.value = arrAll
     console.log(timeAdjustPrice)
@@ -688,7 +707,7 @@
   }
   const save = (key: string) => {
     Object.assign(
-      dataTableDetail.value.filter((item: any) => key === item.key)[0],
+      dataTableDetail.value.filter((item: any) => key === item.key),
       editableData[key]
     )
     delete editableData[key]

@@ -191,7 +191,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên thuộc tính*, Định dạng *
+                Tiêu đề *, Website *, Ngành hàng * ,Sản phẩm *
               </h2>
             </div>
 
@@ -329,39 +329,33 @@
                   </div>
                 </div>
               </Transition>
-              <div v-show="isContact == false">
-                <h2
-                  @click="isContact = !isContact"
-                  class="cursor-pointer form-group-label"
-                >
-                  Website áp dụng *, Giá trị duy nhất*, *Kiểm tra tính hợp lệ
-                </h2>
-              </div>
             </div>
             <div id="infor-contact" class="inner">
               <h4
                 class="form-section-title form-small cursor-pointer"
-                @click="isContact = !isContact"
+                @click="isDetail = !isDetail"
               >
-                <span v-show="isContact == true">
+                <span v-show="isDetail == true">
                   <i class="fas fa-chevron-down cursor-pointer"></i>
                 </span>
-                <span v-show="isContact == false"
+                <span v-show="isDetail == false"
                   ><i class="fas fa-chevron-right cursor-pointer"></i
                 ></span>
                 Thông tin chi tiết
               </h4>
               <Transition name="slide-up">
-                <div v-show="isContact == true">
+                <div v-show="isDetail == true">
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
                     :data-source="dataTableDetail"
-                    sharedOnCell="key, name, sku"
                     bordered
                     row-key="id"
                   >
                     <template #bodyCell="{ column, text, record }">
+                      <template v-if="column.key === 'key'">
+                        {{ record.key }}
+                      </template>
                       <template
                         v-if="
                           [
@@ -373,32 +367,35 @@
                           ].includes(column.dataIndex)
                         "
                       >
-                        <div>
+                        <div
+                          v-for="(item, index) in record.timeAdjust"
+                          :key="index"
+                        >
                           <a-input
                             v-if="editableData[record.key]"
-                            v-model:value="
-                              editableData[record.key][column.dataIndex]
-                            "
-                            style="margin: -5px 0"
+                            v-model:value="item[column.dataIndex]"
+                            style="margin: 5px 0"
                           />
-                          <template v-else> {{ text }} </template>
+                          <template v-else>
+                            {{ item[column.dataIndex] }}
+                          </template>
                         </div>
                       </template>
                       <template v-else-if="column.dataIndex === 'operation'">
                         <div class="editable-row-operations">
                           <span v-if="editableData[record.key]">
                             <a-typography-link @click="save(record.key)"
-                              >Save</a-typography-link
+                              >Lưu</a-typography-link
                             >
                             <a-popconfirm
-                              title="Sure to cancel?"
+                              title="Bạn có muốn hủy?"
                               @confirm="cancel(record.key)"
                             >
-                              <a>Cancel</a>
+                              <a>Hủy</a>
                             </a-popconfirm>
                           </span>
                           <span v-else>
-                            <a @click="edit(record.key)">Edit</a>
+                            <a @click="edit(record.key)">Sửa</a>
                           </span>
                         </div>
                       </template>
@@ -455,6 +452,7 @@
   const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
+  const isDetail = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
@@ -478,13 +476,6 @@
       title: 'STT',
       key: 'key',
       dataIndex: 'key',
-      // customCell: (record, rowIndex, column) => {
-      //   console.log(record)
-      //   console.log(rowIndex)
-      //   console.log(column)
-      //   if (record.key == 0) return { rowSpan: 2 }
-      //   else return { rowSpan: 1 }
-      // },
     },
     {
       title: 'Sản phẩm/Phiên bản',
@@ -641,28 +632,39 @@
       name: item.productName,
       sku: item.sku,
     }))
-    const arrAll = []
-
-    for (let i = 0; i < arrProduct.length; i++) {
-      const item1 = arrProduct[i]
-
-      for (let j = 0; j < timeAdjustPrice.length; j++) {
-        const item2 = timeAdjustPrice[j]
-
-        const newItem = {
-          key: i.toString(),
-          name: item1.name,
-          sku: item1.sku,
-          date_start: dayjs(item2.date_start).format('YYYY/MM/DD'),
-          date_end: dayjs(item2.date_end).format('YYYY/MM/DD'),
+    const arrAll = arrProduct.map((item: any, index: number) => {
+      return {
+        ...item,
+        key: index,
+        timeAdjust: timeAdjustPrice.map((item2: any) => ({
+          date_start: dayjs(item2.date_start).format('DD/MM/YYYY'),
+          date_end: dayjs(item2.date_end).format('DD/MM/YYYY'),
           listed_price: item2.listed_price,
           wholesale_price: item2.wholesale_price,
           retail_price: item2.retail_price,
-        }
-
-        arrAll.push(newItem)
+        })),
       }
-    }
+    })
+
+    // for (let i = 0; i < arrProduct.length; i++) {
+    //   const item1 = arrProduct[i]
+
+    //   for (let j = 0; j < timeAdjustPrice.length; j++) {
+    //     const item2 = timeAdjustPrice[j]
+
+    //     const newItem = {
+    //       key: i.toString(),
+    //       name: item1.name,
+    //       sku: item1.sku,
+    //       date_start: dayjs(item2.date_start).format('YYYY/MM/DD'),
+    //       date_end: dayjs(item2.date_end).format('YYYY/MM/DD'),
+    //       listed_price: item2.listed_price,
+    //       wholesale_price: item2.wholesale_price,
+    //       retail_price: item2.retail_price,
+    //     }
+    //     arrAll.push(newItem)
+    //   }
+    // }
     console.log(arrAll)
     dataTableDetail.value = arrAll
     console.log(timeAdjustPrice)
@@ -675,10 +677,13 @@
     editableData[key] = cloneDeep(
       dataTableDetail.value.filter((item: any) => key === item.key)[0]
     )
+    console.log(editableData)
   }
   const save = (key: string) => {
+    console.log(dataTableDetail.value)
+
     Object.assign(
-      dataTableDetail.value.filter((item: any) => key === item.key)[0],
+      dataTableDetail.value.filter((item: any) => key === item.key),
       editableData[key]
     )
     delete editableData[key]
