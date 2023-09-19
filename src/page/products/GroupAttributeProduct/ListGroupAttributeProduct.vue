@@ -262,7 +262,6 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const { listAttributeSpecification } = storeToRefs(dataAttribute)
-  console.log(listAttributeSpecification)
   const route = useRoute()
   const router = useRouter()
   const toast = useToast()

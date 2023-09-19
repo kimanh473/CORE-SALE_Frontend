@@ -1896,7 +1896,6 @@
   const getListWeb = (webList: any, inventList: any) => {
     arrayWeb.value = webList
     arrayInvent.value = inventList
-    console.log(arrayWeb.value)
   }
   dataUser.getDetailUserAction(
     Number(route.params.id),

@@ -332,7 +332,6 @@
                           placeholder="Chọn tỉnh/thành phố"
                           @change="handleChangeCity"
                           v-model:value="detailInventory.address_state_id"
-                          @focus="test"
                           :filter-option="filterOption"
                         >
                           <a-select-option
@@ -530,8 +529,6 @@
   const selectedGroup = computed(() =>
     detailInventory.value.json_type_code?.map((item: any) => item.options)
   )
-  console.log(selectedGroup)
-
   // const selectGroup = computed(() =>
   //   detailInventory.value.json_type_code.map((item: any) => ({
 
@@ -561,7 +558,6 @@
   //     use_direct: '0',
   //   })
   dataLocation.getListAllCityAction()
-  console.log(idDistrict.value)
 
   dataLocation.getListAllDistrictAction(Number(idState.value))
   dataLocation.getListAllWardAction(Number(idDistrict.value))
@@ -571,9 +567,7 @@
     dataLocation.getListAllDistrictAction(value)
     detailInventory.value.address = name.title + ', ' + 'Việt Nam'
   }
-  const test = () => {
-    console.log(1)
-  }
+
   const handleChangeDistrict = (value: number, name: any) => {
     dataLocation.getListAllWardAction(value)
     detailInventory.value.address =

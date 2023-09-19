@@ -126,7 +126,6 @@
   getadminSetting.getAllPermissionGroupsAction(10, 1)
   const { listGroupPermission } = storeToRefs(getadminSetting)
   const groupPermission = ref()
-  console.log(listGroupPermission.value)
   const EndTimeLoading = () => {
     isLoading.value = false
   }

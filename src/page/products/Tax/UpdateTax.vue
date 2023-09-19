@@ -130,7 +130,6 @@
   const route = useRoute()
   dataTax.getDetailTaxAction(Number(route.params.id))
   const { detailTax } = storeToRefs(dataTax)
-  console.log(detailTax)
 
   const EndTimeLoading = () => {
     isLoading.value = false

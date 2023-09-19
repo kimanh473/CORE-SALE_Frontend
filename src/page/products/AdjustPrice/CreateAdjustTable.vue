@@ -626,7 +626,6 @@
   // }
   const listProduct = ref([])
   const filterProduct = () => {
-    console.log(listProduct.value)
     let arrProduct = []
     arrProduct = listProduct.value.map((item: any) => ({
       name: item.productName,
@@ -665,23 +664,16 @@
     //     arrAll.push(newItem)
     //   }
     // }
-    console.log(arrAll)
     dataTableDetail.value = arrAll
-    console.log(timeAdjustPrice)
   }
   const editableData: UnwrapRef<Record<any, any>> = reactive({})
 
   const edit = (key: string) => {
-    console.log(key)
-
     editableData[key] = cloneDeep(
       dataTableDetail.value.filter((item: any) => key === item.key)[0]
     )
-    console.log(editableData)
   }
   const save = (key: string) => {
-    console.log(dataTableDetail.value)
-
     Object.assign(
       dataTableDetail.value.filter((item: any) => key === item.key),
       editableData[key]
@@ -709,7 +701,6 @@
     } else {
       showManageChoice.value = false
     }
-    console.log(adjust)
 
     listProduct.value = options.map((item: any) => ({
       productName: item.name,

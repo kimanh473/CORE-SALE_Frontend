@@ -774,7 +774,6 @@ const createCustomerProfile = () => {
     detail_pay_address: payDataOption
   }
 
-  console.log(data)
   dataCustomerProfile.createCustomerProfileAction(data, toast, router, EndTimeLoading)
 }
 

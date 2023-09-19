@@ -483,7 +483,6 @@
   const dataAdjustPrice = useAdjustPrice()
   dataAdjustPrice.getDetailAdjustPriceAction(Number(route.params.id))
   const { detailAdjustPrice, listPeriod } = storeToRefs(dataAdjustPrice)
-  console.log(detailAdjustPrice)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
@@ -652,7 +651,6 @@
   // }
   const listProduct = ref([])
   const filterProduct = () => {
-    console.log(listProduct.value)
     let arrProduct = []
     arrProduct = listProduct.value.map((item: any) => ({
       name: item.productName,
@@ -692,15 +690,11 @@
     //     arrAll.push(newItem)
     //   }
     // }
-    console.log(arrAll)
     dataTableDetail.value = arrAll
-    console.log(timeAdjustPrice)
   }
   const editableData: UnwrapRef<Record<any, any>> = reactive({})
 
   const edit = (key: string) => {
-    console.log(key)
-
     editableData[key] = cloneDeep(
       dataTableDetail.value.filter((item: any) => key === item.key)[0]
     )

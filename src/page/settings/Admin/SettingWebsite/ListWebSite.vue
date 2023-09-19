@@ -77,7 +77,6 @@
   const dataWeb = useWebCatalog()
   dataWeb.getAllWebPaginateAction()
   const { listWebPaginate } = storeToRefs(dataWeb)
-  console.log(listWebPaginate)
 
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)

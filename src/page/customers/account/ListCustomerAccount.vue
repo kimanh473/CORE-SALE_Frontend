@@ -840,7 +840,6 @@
       phone: customerOrder.phone,
       web_code: 'HWK',
     }
-    console.log(data)
   }
 
   const updateCustomerAccount = () => {

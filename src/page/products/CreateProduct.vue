@@ -1040,7 +1040,6 @@
     } else {
       dataCreateProduct.value[input_name] = event.target.value
     }
-    console.log(dataCreateProduct.value)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -1114,7 +1113,6 @@
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
   const handleChangeClassify = (valueClassify: any) => {
-    console.log(valueClassify)
     mapArr.value = dataOption.map((item: any) => item.value)
 
     // listGenerate.value = res_1.value.map((item: any, index: any) => ({
@@ -1244,13 +1242,11 @@
     if (!event.file.url && !event.preview) {
       event.file.preview = (await getBase64(event.file.originFileObj)) as string
     }
-    console.log(index)
 
     dataTableConfig.value[index].image1 = dataTableConfig.value[
       index
     ].image.map((item: any) => item.preview)
     // dataTableConfig.value[index].image = listImageTable.value
-    console.log(dataTableConfig.value)
     // dataTableConfig.value.image = event.file.preview
   }
   const dataProduct = useProduct()
@@ -1290,7 +1286,6 @@
     // console.log(dataUnit)
     // console.log(dataTableConfig.value)
     let data = Object.assign({}, dataCreateProduct.value, dataSource)
-    console.log(data)
     dataProduct.createProductAction(data, toast, router, EndTimeLoading)
   }
 </script>

@@ -289,7 +289,6 @@
   const dataAdjustPrice = useAdjustPrice()
   dataAdjustPrice.getListAdjustPriceAction()
   const { listAdjustPrice } = storeToRefs(dataAdjustPrice)
-  console.log(listAdjustPrice)
 
   const state = reactive({
     searchText: '',
