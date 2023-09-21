@@ -387,7 +387,6 @@
   const dataDetailCategory = useCategory()
   dataDetailCategory.getDetailCategoryAction(12)
   const { detailCategory } = storeToRefs(dataDetailCategory)
-  console.log(detailCategory)
 
   const dataInventory = useInventory()
   const { messageError } = storeToRefs(dataInventory)

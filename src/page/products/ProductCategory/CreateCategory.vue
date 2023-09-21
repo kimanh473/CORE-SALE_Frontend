@@ -548,7 +548,6 @@
     category.parentSelectedCreate = info.node.title
     idSelected.value = info.node.id
     category.parent_id_create = info.node.id
-    console.log(category)
   }
   const EndTimeLoading = () => {
     isLoading.value = false
@@ -558,7 +557,6 @@
   }
   const handleChangeCreate = (value: string) => {
     category.parent_id_create = value
-    console.log(category.parent_id_create)
   }
   const idSelected = ref()
   const parentSelected = ref()

@@ -72,8 +72,8 @@
                           :options="listWeb"
                           @change="handleChange"
                           :fieldNames="{
-                            label: 'title',
-                            value: 'code',
+                            label: 'web_name',
+                            value: 'id',
                           }"
                           mode="multiple"
                         >
@@ -110,6 +110,14 @@
                           </p> -->
                       </div>
                     </div>
+                    <div>
+                      <button
+                        class="button-modal mt-2"
+                        @click="filterProduct()"
+                      >
+                        Lọc sản phẩm
+                      </button>
+                    </div>
                   </div>
                   <div class="form-small">
                     <div>
@@ -136,11 +144,7 @@
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <button class="button-modal" @click="filterProduct()">
-                      Lọc sản phẩm
-                    </button>
-                  </div>
+
                   <div
                     class="border border-gray-800 w-[500px] p-4"
                     v-if="showManageChoice"
@@ -327,6 +331,11 @@
                       <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
                   </div>
+                  <div>
+                    <button class="button-modal" @click="getDetailAdjust()">
+                      Lấy chi tiết điều chỉnh giá
+                    </button>
+                  </div>
                 </div>
               </Transition>
             </div>
@@ -385,8 +394,8 @@
                         <div class="editable-row-operations">
                           <span v-if="editableData[record.key]">
                             <a-typography-link @click="save(record.key)"
-                              >Lưu</a-typography-link
-                            >
+                              >Lưu
+                            </a-typography-link>
                             <a-popconfirm
                               title="Bạn có muốn hủy?"
                               @confirm="cancel(record.key)"
@@ -439,7 +448,7 @@
   import { useCategory } from '../../../store/modules/store-setting/category'
   import { useProduct } from '../../../store/modules/store-setting/products'
   import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
-  import { cloneDeep, filter } from 'lodash-es'
+  import { cloneDeep } from 'lodash-es'
   import type { UnwrapRef } from 'vue'
   import dayjs, { Dayjs } from 'dayjs'
   import type { TableColumnType } from 'ant-design-vue'
@@ -461,6 +470,8 @@
   const dataAttribute = useAttributeProduct()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
+  console.log(listWeb.value)
+
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
   dataProduct.getListProductNoPagingAction()
@@ -625,8 +636,7 @@
   //   }
   // }
   const listProduct = ref([])
-  const filterProduct = () => {
-    console.log(listProduct.value)
+  const getDetailAdjust = () => {
     let arrProduct = []
     arrProduct = listProduct.value.map((item: any) => ({
       name: item.productName,
@@ -665,23 +675,23 @@
     //     arrAll.push(newItem)
     //   }
     // }
-    console.log(arrAll)
     dataTableDetail.value = arrAll
-    console.log(timeAdjustPrice)
+  }
+  const filterProduct = () => {
+    let data = {
+      nganh_hang: adjust.category,
+      website: adjust.website,
+    }
+    dataProduct.filterProductAction(data)
   }
   const editableData: UnwrapRef<Record<any, any>> = reactive({})
 
   const edit = (key: string) => {
-    console.log(key)
-
     editableData[key] = cloneDeep(
       dataTableDetail.value.filter((item: any) => key === item.key)[0]
     )
-    console.log(editableData)
   }
   const save = (key: string) => {
-    console.log(dataTableDetail.value)
-
     Object.assign(
       dataTableDetail.value.filter((item: any) => key === item.key),
       editableData[key]
@@ -709,7 +719,7 @@
     } else {
       showManageChoice.value = false
     }
-    console.log(adjust)
+    console.log(options)
 
     listProduct.value = options.map((item: any) => ({
       productName: item.name,

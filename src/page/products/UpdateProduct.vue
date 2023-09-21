@@ -9,7 +9,7 @@
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới sản phẩm</p></template
+          ><p class="pl-5 text-[16px]">Sửa sản phẩm</p></template
         >
       </Header>
     </template>
@@ -513,6 +513,17 @@
                         <plus-outlined />
                         <div style="margin-top: 8px">Upload</div>
                       </div>
+                      <!-- <div
+                        v-for="(itemImg, indexImg) in detailProduct.image"
+                        :key="indexImg"
+                      >
+                        {{ itemImg }}
+                        <img
+                          alt="example"
+                          style="width: 100%"
+                          :src="UrlImg + '/' + itemImg"
+                        />
+                      </div> -->
                       <a-modal
                         :visible="previewVisible"
                         :footer="null"
@@ -758,6 +769,7 @@
                             <plus-outlined />
                             <div style="margin-top: 8px">Upload</div>
                           </div>
+
                           <a-modal
                             :visible="previewVisible"
                             :footer="null"
@@ -768,6 +780,17 @@
                               style="width: 100%"
                               :src="previewImage"
                             />
+                            <!-- <div
+                              v-for="(itemImg, indexImg) in detailProduct.image"
+                              :key="index"
+                            >
+                              {{ itemImg }}
+                              <img
+                                alt="example"
+                                style="width: 100%"
+                                :src="UrlImg + '/' + itemImg"
+                              />
+                            </div> -->
                           </a-modal>
                         </component>
                       </div>
@@ -1053,7 +1076,6 @@
     } else {
       dataCreateProduct.value[input_name] = detailProduct.value[input_name]
     }
-    console.log(dataCreateProduct.value)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -1063,9 +1085,11 @@
       reader.onerror = (error) => reject(error)
     })
   }
+  const UrlImg = import.meta.env.VITE_APP_IMG_URL
   const checked = ref<boolean>(false)
   const previewVisible = ref<boolean>(false)
   const previewImage = ref('')
+  const previewImageOld = ref('')
   const previewTitle = ref('')
   const isConfig1 = ref(false)
   const isConfig2 = ref(false)
@@ -1127,7 +1151,6 @@
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
   const handleChangeClassify = (valueClassify: any) => {
-    console.log(valueClassify)
     mapArr.value = dataOption.map((item: any) => item.value)
 
     // listGenerate.value = res_1.value.map((item: any, index: any) => ({
@@ -1257,13 +1280,11 @@
     if (!event.file.url && !event.preview) {
       event.file.preview = (await getBase64(event.file.originFileObj)) as string
     }
-    console.log(index)
 
     dataTableConfig.value[index].image1 = dataTableConfig.value[
       index
     ].image.map((item: any) => item.preview)
     // dataTableConfig.value[index].image = listImageTable.value
-    console.log(dataTableConfig.value)
     // dataTableConfig.value.image = event.file.preview
   }
   const webCatalog = useWebCatalog()
@@ -1302,7 +1323,6 @@
     // console.log(dataUnit)
     // console.log(dataTableConfig.value)
     let data = Object.assign({}, dataCreateProduct.value, dataSource)
-    console.log(data)
     dataProduct.createProductAction(data, toast, router, EndTimeLoading)
   }
 </script>

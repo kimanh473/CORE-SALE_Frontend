@@ -1960,7 +1960,6 @@
   const dataGroupInventory = useGroupInventory()
   const getListPosition = () => {
     dataPosition.getListPositionAction()
-    console.log(listPosition)
   }
   const getListDepartment = () => {
     dataDepartment.getListDepartmentAction()
@@ -2008,8 +2007,6 @@
       department_id: departmentSelected.value,
       position_id: positionSelected.value,
     }
-    console.log(data)
-
     dataUser.createUserAction(data, toast, router, EndTimeLoading)
   }
 </script>

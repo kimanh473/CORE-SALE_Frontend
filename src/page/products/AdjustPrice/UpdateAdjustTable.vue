@@ -360,7 +360,7 @@
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
-                    :data-source="dataTableDetail"
+                    :data-source="detailAdjustPrice.json_product_price_detail"
                     sharedOnCell="key, name, sku"
                     bordered
                     row-key="id"
@@ -381,7 +381,7 @@
                         "
                       >
                         <div
-                          v-for="(item, index) in record.timeAdjust"
+                          v-for="(item, index) in record.detail"
                           :key="index"
                         >
                           <a-input
@@ -398,8 +398,8 @@
                         <div class="editable-row-operations">
                           <span v-if="editableData[record.key]">
                             <a-typography-link @click="save(record.key)"
-                              >Lưu</a-typography-link
-                            >
+                              >Lưu
+                            </a-typography-link>
                             <a-popconfirm
                               title="Bạn có muốn hủy?"
                               @confirm="cancel(record.key)"
@@ -483,7 +483,6 @@
   const dataAdjustPrice = useAdjustPrice()
   dataAdjustPrice.getDetailAdjustPriceAction(Number(route.params.id))
   const { detailAdjustPrice, listPeriod } = storeToRefs(dataAdjustPrice)
-  console.log(detailAdjustPrice)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
@@ -652,7 +651,6 @@
   // }
   const listProduct = ref([])
   const filterProduct = () => {
-    console.log(listProduct.value)
     let arrProduct = []
     arrProduct = listProduct.value.map((item: any) => ({
       name: item.productName,
@@ -692,15 +690,11 @@
     //     arrAll.push(newItem)
     //   }
     // }
-    console.log(arrAll)
     dataTableDetail.value = arrAll
-    console.log(timeAdjustPrice)
   }
   const editableData: UnwrapRef<Record<any, any>> = reactive({})
 
   const edit = (key: string) => {
-    console.log(key)
-
     editableData[key] = cloneDeep(
       dataTableDetail.value.filter((item: any) => key === item.key)[0]
     )

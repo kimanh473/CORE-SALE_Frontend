@@ -343,7 +343,6 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getDetailAttributeAction(Number(route.params.id))
   const { detailAttribute } = storeToRefs(dataAttribute)
-  console.log(detailAttribute)
 
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
@@ -448,8 +447,6 @@
   // }
   const showManageChoice = ref<Boolean>(false)
   const handleChange = (value: string, options: any) => {
-    console.log(value)
-
     if (value == 'selection') {
       showManageChoice.value = true
     } else {
@@ -460,7 +457,6 @@
   }
   const focusOnSelect = (type: string) => {
     if (type == 'selection') {
-      console.log(type)
       showManageChoice.value = true
     } else {
       showManageChoice.value = false
@@ -537,7 +533,6 @@
       options_old: detailAttribute.value.option_detail,
       options_new: dataOption,
     }
-    console.log(data)
     dataAttribute.updateProductUnitAction(
       Number(route.params.id),
       data,

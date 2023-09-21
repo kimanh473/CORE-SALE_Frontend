@@ -504,7 +504,6 @@
   // }
   const dataInventory = useInventory()
   const { messageError } = storeToRefs(dataInventory)
-  console.log(messageError)
 
   const dataGroupInventory = useGroupInventory()
   dataGroupInventory.getListGroupInventoryAction()
@@ -514,8 +513,6 @@
   const getDetailGroupInventory = (id: number) => {
     dataGroupInventory.getDetailGroupInventoryAction(id)
   }
-
-  console.log(selectGroupInvent)
 
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
@@ -540,11 +537,9 @@
   }
   const dataOp = ref([])
 
-  const handleChange = (value: any, option: any) => {
-    console.log(value)
-    console.log(option)
-    option.map((item: any, index: number) => ({}))
-  }
+  // const handleChange = (value: any, option: any) => {
+  //   option.map((item: any, index: number) => ({}))
+  // }
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
   const handleChangeCity = (value: number, name: any) => {

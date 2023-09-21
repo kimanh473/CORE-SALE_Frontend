@@ -14,9 +14,14 @@ const createProductApi = (data: object) => {
 const getDetailProductApi = (id: number) => {
     return httpClient.get(`/catalog/product/show/${id}`);
 };
+//lọc sản phẩm theo ngành hàng,website
+const filterProductApi = (data: object) => {
+    return httpClient.post(`/catalog/product/filter`, data);
+};
 export {
     getAllProductsApi,
     createProductApi,
     getDetailProductApi,
-    getAllProductsNoPagingApi
+    getAllProductsNoPagingApi,
+    filterProductApi
 };

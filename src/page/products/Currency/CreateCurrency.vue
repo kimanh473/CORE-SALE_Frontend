@@ -222,7 +222,6 @@
   const currencyCode = ref()
   const currencyTitle = ref()
   const handleChange = (value: string, option: any) => {
-    console.log(option)
     currencyCode.value = option.value
     currencyTitle.value = option.label
   }
