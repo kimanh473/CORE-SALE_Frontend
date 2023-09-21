@@ -95,7 +95,7 @@
         <div class="w-full inner">
           <Transition :duration="550" name="nested">
             <div
-              class="text-left py-2 w-full h-full format-scroll form-plus-over"
+              class="text-left p-1 w-full h-full format-scroll form-plus-over"
             >
               <div class="w-full">
                 <Transition name="slide-up">
@@ -283,7 +283,7 @@
         <div class="w-full inner">
           <Transition :duration="550" name="nested">
             <div
-              class="text-left py-2 w-full h-full format-scroll form-plus-over"
+              class="text-left p-1 w-full h-full format-scroll form-plus-over"
             >
               <div class="w-full">
                 <Transition name="slide-up">

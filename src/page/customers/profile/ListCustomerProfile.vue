@@ -39,6 +39,9 @@
         bordered
         row-key="id"
         ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'birth_day'">
+            {{ dayjs(record.birth_day).format(dateFormat) }}
+          </template>
           <template v-if="column.key === 'gender'">
             <p v-if="record.gender == '1'">Nam</p>
             <p v-if="record.gender == '0'">Nữ</p>
@@ -84,7 +87,7 @@
         <div class="w-full inner">
           <Transition :duration="550" name="nested">
             <div
-              class="text-left py-2 w-full h-full format-scroll form-plus-over"
+              class="text-left p-2 w-full h-full format-scroll form-plus-over"
             >
               <div class="w-full">
                 <Transition name="slide-up">
@@ -281,6 +284,8 @@
 
   const { listCustomerProfile, birth_day_dd_mm_yy, account_exist } =
     storeToRefs(dataCustomerProfile)
+  console.log(listCustomerProfile.value)
+
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
@@ -296,6 +301,7 @@
     {
       title: 'Ngày sinh',
       dataIndex: 'birth_day',
+      key: 'birth_day',
     },
     {
       title: 'Giới tính',

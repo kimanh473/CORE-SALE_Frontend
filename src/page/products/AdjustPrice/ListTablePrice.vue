@@ -90,6 +90,12 @@
           <template v-if="column.key === 'user_updated'">
             {{ record.user_updated?.username }}
           </template>
+          <template v-if="column.key === 'created_at'">
+            {{ dayjs(record.created_at).format('DD/MM/YYYY') }}
+          </template>
+          <template v-if="column.key === 'updated_at'">
+            {{ dayjs(record.updated_at).format('DD/MM/YYYY') }}
+          </template>
           <span
             v-if="state.searchText && state.searchedColumn === column.dataIndex"
           >
@@ -281,6 +287,7 @@
   import { SearchOutlined } from '@ant-design/icons-vue'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import dayjs, { Dayjs } from 'dayjs'
   const route = useRoute()
   const router = useRouter()
   const toast = useToast()
@@ -340,10 +347,12 @@
     {
       title: 'Ngày tạo',
       dataIndex: 'created_at',
+      key: 'created_at',
     },
     {
       title: 'Ngày sửa',
       dataIndex: 'updated_at',
+      key: 'updated_at',
     },
     {
       title: 'Thao tác',

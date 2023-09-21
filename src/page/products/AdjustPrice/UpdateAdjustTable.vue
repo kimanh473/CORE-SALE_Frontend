@@ -360,7 +360,7 @@
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
-                    :data-source="dataTableDetail"
+                    :data-source="detailAdjustPrice.json_product_price_detail"
                     sharedOnCell="key, name, sku"
                     bordered
                     row-key="id"
@@ -381,7 +381,7 @@
                         "
                       >
                         <div
-                          v-for="(item, index) in record.timeAdjust"
+                          v-for="(item, index) in record.detail"
                           :key="index"
                         >
                           <a-input
@@ -398,8 +398,8 @@
                         <div class="editable-row-operations">
                           <span v-if="editableData[record.key]">
                             <a-typography-link @click="save(record.key)"
-                              >Lưu</a-typography-link
-                            >
+                              >Lưu
+                            </a-typography-link>
                             <a-popconfirm
                               title="Bạn có muốn hủy?"
                               @confirm="cancel(record.key)"
