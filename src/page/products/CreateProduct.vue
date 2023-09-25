@@ -503,6 +503,8 @@
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
@@ -744,6 +746,8 @@
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
                           "
+                          checkedValue="1"
+                          unCheckedValue="0"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
                             <plus-outlined />
