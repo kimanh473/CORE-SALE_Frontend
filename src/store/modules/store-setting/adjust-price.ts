@@ -1,11 +1,14 @@
 import { defineStore } from "pinia";
-import { getAdjustPriceApi, getdetailAdjustPriceApi } from '../../../services/SettingStoreServices/priceAdjust.service'
+import { getAdjustPriceApi, getdetailAdjustPriceApi, crateAdjustPriceApi } from '../../../services/SettingStoreServices/priceAdjust.service'
 import dayjs, { Dayjs } from 'dayjs'
 export const useAdjustPrice = defineStore("AdjustPrice", {
     state: () => ({
         listAdjustPrice: [] as DataAdjustPrice[],
         detailAdjustPrice: {} as DataAdjustPrice,
-        listPeriod: [] as Period[]
+        listPeriod: [] as Period[],
+        listCodeWeb: [],
+        listCodeCategory: [],
+        listTableDetail: []
     }),
     getters: {
         getListAdjustPrice: (state: any) => {
@@ -14,6 +17,14 @@ export const useAdjustPrice = defineStore("AdjustPrice", {
         getDetailAdjustPrice: (state: any) => {
             return (payload: any) => {
                 state.detailAdjustPrice = payload
+                state.listTableDetail = payload.json_product_price_detail.map((item: any, index: number) => ({
+                    key: index,
+                    name: item.name,
+                    sku: item.sku,
+                    unit: item.unit,
+                    code: item.code,
+                    detail: item.detail
+                }))
                 state.listPeriod = payload.json_period.map((item: Period) => ({
                     title: item.title,
                     date_start: dayjs(item.date_start),
@@ -22,6 +33,8 @@ export const useAdjustPrice = defineStore("AdjustPrice", {
                     wholesale_price: item.wholesale_price,
                     retail_price: item.retail_price
                 }))
+                state.listCodeWeb = payload.json_website_list.map((item: any) => item.code)
+                state.listCodeCategory = payload.json_nganh_hang_list.map((item: any) => item.code)
             }
         },
     },
@@ -46,6 +59,34 @@ export const useAdjustPrice = defineStore("AdjustPrice", {
                 })
                 .catch((err) => {
                     console.log(err)
+                });
+        },
+        async createAdjustPriceAction(
+            data: object,
+            toast: any,
+            router: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await crateAdjustPriceApi(data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Tạo mới thành công")
+                        EndTimeLoading()
+                        router.push('/price-adjust')
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                    EndTimeLoading()
                 });
         },
     },

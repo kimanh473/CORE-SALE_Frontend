@@ -70,7 +70,7 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn website"
-                          v-model:value="detailAdjustPrice.json_website_list"
+                          v-model:value="listCodeWeb"
                           :options="listWeb"
                           @change="handleChange"
                           :fieldNames="{
@@ -96,11 +96,11 @@
                           placeholder="Chọn ngành hàng"
                           style="width: 100%"
                           :tree-data="listTreeCategory"
-                          v-model:value="detailAdjustPrice.json_nganh_hang_list"
+                          v-model:value="listCodeCategory"
                           :fieldNames="{
                             children: 'children',
                             label: 'title',
-                            value: 'id',
+                            value: 'code',
                           }"
                           tree-checkable
                           treeDefaultExpandAll
@@ -360,8 +360,7 @@
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
-                    :data-source="detailAdjustPrice.json_product_price_detail"
-                    sharedOnCell="key, name, sku"
+                    :data-source="listTableDetail"
                     bordered
                     row-key="id"
                   >
@@ -482,7 +481,13 @@
   const { listAllProduct } = storeToRefs(dataProduct)
   const dataAdjustPrice = useAdjustPrice()
   dataAdjustPrice.getDetailAdjustPriceAction(Number(route.params.id))
-  const { detailAdjustPrice, listPeriod } = storeToRefs(dataAdjustPrice)
+  const {
+    detailAdjustPrice,
+    listPeriod,
+    listCodeWeb,
+    listCodeCategory,
+    listTableDetail,
+  } = storeToRefs(dataAdjustPrice)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
@@ -660,7 +665,7 @@
       return {
         ...item,
         key: index,
-        timeAdjust: timeAdjustPrice.map((item2: any) => ({
+        detail: timeAdjustPrice.map((item2: any) => ({
           date_start: dayjs(item2.date_start).format('DD/MM/YYYY'),
           date_end: dayjs(item2.date_end).format('DD/MM/YYYY'),
           listed_price: item2.listed_price,
@@ -690,18 +695,19 @@
     //     arrAll.push(newItem)
     //   }
     // }
-    dataTableDetail.value = arrAll
+    listTableDetail.value = arrAll
   }
   const editableData: UnwrapRef<Record<any, any>> = reactive({})
 
   const edit = (key: string) => {
     editableData[key] = cloneDeep(
-      dataTableDetail.value.filter((item: any) => key === item.key)[0]
+      listTableDetail.value.filter((item: any) => key === item.key)[0]
     )
+    console.log(editableData)
   }
   const save = (key: string) => {
     Object.assign(
-      dataTableDetail.value.filter((item: any) => key === item.key),
+      listTableDetail.value.filter((item: any) => key === item.key),
       editableData[key]
     )
     delete editableData[key]

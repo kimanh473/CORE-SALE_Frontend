@@ -73,7 +73,7 @@
                           @change="handleChange"
                           :fieldNames="{
                             label: 'web_name',
-                            value: 'id',
+                            value: 'code',
                           }"
                           mode="multiple"
                         >
@@ -98,8 +98,9 @@
                           :fieldNames="{
                             children: 'children',
                             label: 'title',
-                            value: 'id',
+                            value: 'code',
                           }"
+                          :show-checked-strategy="SHOW_PARENT"
                           tree-checkable
                           treeDefaultExpandAll
                           multiple
@@ -377,7 +378,7 @@
                         "
                       >
                         <div
-                          v-for="(item, index) in record.timeAdjust"
+                          v-for="(item, index) in record.detail"
                           :key="index"
                         >
                           <a-input
@@ -420,7 +421,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createAttribute()">
+          <button class="button-modal" @click="createAdjustPrice()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="router.go(-1)">
@@ -452,6 +453,10 @@
   import type { UnwrapRef } from 'vue'
   import dayjs, { Dayjs } from 'dayjs'
   import type { TableColumnType } from 'ant-design-vue'
+  import { useAdjustPrice } from '../../../store/modules/store-setting/adjust-price'
+  import { TreeSelect } from 'ant-design-vue'
+  const SHOW_PARENT = TreeSelect.SHOW_ALL
+  const dataAdjustPrice = useAdjustPrice()
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -638,24 +643,31 @@
   const listProduct = ref([])
   const getDetailAdjust = () => {
     let arrProduct = []
+    console.log(listProduct.value)
+
     arrProduct = listProduct.value.map((item: any) => ({
       name: item.productName,
       sku: item.sku,
+      unit: item.unit,
+      code: item.code,
     }))
+    console.log(arrProduct)
+
     const arrAll = arrProduct.map((item: any, index: number) => {
       return {
         ...item,
         key: index,
-        timeAdjust: timeAdjustPrice.map((item2: any) => ({
+        detail: timeAdjustPrice.map((item2: any) => ({
           date_start: dayjs(item2.date_start).format('DD/MM/YYYY'),
           date_end: dayjs(item2.date_end).format('DD/MM/YYYY'),
           listed_price: item2.listed_price,
           wholesale_price: item2.wholesale_price,
           retail_price: item2.retail_price,
         })),
+        has_custom: '0',
       }
     })
-
+    console.log(arrAll)
     // for (let i = 0; i < arrProduct.length; i++) {
     //   const item1 = arrProduct[i]
 
@@ -690,6 +702,7 @@
     editableData[key] = cloneDeep(
       dataTableDetail.value.filter((item: any) => key === item.key)[0]
     )
+    console.log(editableData)
   }
   const save = (key: string) => {
     Object.assign(
@@ -724,6 +737,8 @@
     listProduct.value = options.map((item: any) => ({
       productName: item.name,
       sku: item.sku,
+      code: item.code,
+      unit: item.unit_code,
     }))
   }
   const dataOption = reactive([])
@@ -773,10 +788,35 @@
   // const handleChangeWard = (value: number, name: any) => {
   //   attribute.address = name.title + ', ' + attribute.address
   // }
-  const createAttribute = () => {
-    let data = {}
-    dataAttribute.createAttributeAction(data, toast, router, EndTimeLoading)
-    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
+  const createAdjustPrice = () => {
+    let data = {
+      title: adjust.title,
+      website_list: adjust.website,
+      nganh_hang_list: adjust.category,
+      product_code_list: adjust.product,
+      period: timeAdjustPrice,
+      product_price_detail: dataTableDetail.value.map((item: any) => ({
+        name: item.name,
+        sku: item.sku,
+        code: item.code,
+        unit: item.unit,
+        has_custom: item.has_custom,
+        detail: item.detail.map((itemDetail: any) => ({
+          date_start: dayjs(itemDetail.date_start, 'DD-MM-YYYY').format(
+            'YYYY-MM-DD'
+          ),
+          date_end: dayjs(itemDetail.date_end, 'DD-MM-YYYY').format(
+            'YYYY-MM-DD'
+          ),
+          listed_price: itemDetail.listed_price,
+          wholesale_price: itemDetail.wholesale_price,
+          retail_price: itemDetail.retail_price,
+        })),
+      })),
+    }
+    // console.log(data)
+
+    dataAdjustPrice.createAdjustPriceAction(data, toast, router, EndTimeLoading)
   }
 </script>
 
