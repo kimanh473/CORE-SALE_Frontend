@@ -6,11 +6,19 @@ const getAdjustPriceApi = () => {
 const getdetailAdjustPriceApi = (id: number) => {
     return httpClient.get(`/system-manage/product-price-setting/show/${id}`);
 };
-const crateAdjustPriceApi = (data: object) => {
+const createAdjustPriceApi = (data: object) => {
     return httpClient.post(`/system-manage/product-price-setting/create`, data);
+};
+const updateAdjustPriceApi = (id: number, data: object) => {
+    return httpClient.post(`/system-manage/product-price-setting/update/${id}`, data);
+};
+const deleteAdjustPriceApi = (id: number) => {
+    return httpClient.post(`/system-manage/product-price-setting/delete/${id}`);
 };
 export {
     getAdjustPriceApi,
     getdetailAdjustPriceApi,
-    crateAdjustPriceApi
+    createAdjustPriceApi,
+    updateAdjustPriceApi,
+    deleteAdjustPriceApi
 };

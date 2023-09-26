@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAdjustPriceApi, getdetailAdjustPriceApi, crateAdjustPriceApi } from '../../../services/SettingStoreServices/priceAdjust.service'
+import { getAdjustPriceApi, getdetailAdjustPriceApi, createAdjustPriceApi, updateAdjustPriceApi, deleteAdjustPriceApi } from '../../../services/SettingStoreServices/priceAdjust.service'
 import dayjs, { Dayjs } from 'dayjs'
 export const useAdjustPrice = defineStore("AdjustPrice", {
     state: () => ({
@@ -68,7 +68,7 @@ export const useAdjustPrice = defineStore("AdjustPrice", {
             EndTimeLoading: Function,
             // handleCloseCreate: Function
         ) {
-            await crateAdjustPriceApi(data)
+            await createAdjustPriceApi(data)
                 .then((res) => {
                     if (res.data.status == "failed") {
                         toast.error(res.data.messages)
@@ -88,6 +88,57 @@ export const useAdjustPrice = defineStore("AdjustPrice", {
                     toast.error(errMess[0]);
                     EndTimeLoading()
                 });
+        },
+        async updateAdjustPriceAction(
+            id: number,
+            data: object,
+            router: any,
+            toast: any,
+            EndTimeLoading: Function,
+            // handleCloseCreate: Function
+        ) {
+            await updateAdjustPriceApi(id, data)
+                .then((res) => {
+                    if (res.data.status == "failed") {
+                        toast.error(res.data.messages)
+                        EndTimeLoading();
+                    } else {
+                        toast.success("Cập nhật thành công")
+                        router.push('/price-adjust')
+                        EndTimeLoading()
+                    }
+                })
+                .catch((err) => {
+                    // this.messageError = err.response.data.messages
+                    // console.log(this.messageError);
+                    console.log(err);
+                    let arrMess = err.response.data.messages;
+                    let errMess = arrMess[Object.keys(arrMess)[0]]
+                    toast.error(errMess[0]);
+                });
+        },
+        deleteAdjustPriceAction(
+            id: number,
+            toast: any,
+            EndTimeLoading: Function,
+            handleCloseConfirm: Function
+        ) {
+            deleteAdjustPriceApi(id)
+                .then((res) => {
+                    if (res.data.status == 'success') {
+                        toast.success('Xóa thành công', 500)
+                        this.getListAdjustPriceAction()
+                    } else {
+                        toast.error(res.data.messages, 500)
+                    }
+                    EndTimeLoading()
+                    handleCloseConfirm()
+                })
+                .catch((err) => {
+                    console.log(err)
+                    handleCloseConfirm()
+                    EndTimeLoading()
+                })
         },
     },
 })
