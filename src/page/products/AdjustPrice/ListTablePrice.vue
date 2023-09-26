@@ -377,12 +377,12 @@
   }
   const handleDelete = () => {
     isLoading.value = true
-    // dataAttribute.deleteAttributeAction(
-    //   Number(idSelected.value),
-    //   EndTimeLoading,
-    //   toast,
-    //   handleCloseConfirm
-    // )
+    dataAdjustPrice.deleteAdjustPriceAction(
+      Number(idSelected.value),
+      toast,
+      EndTimeLoading,
+      handleCloseConfirm
+    )
   }
   const selectedRowKeys = ref([])
   const onSelectChange = (selectedRowKeys1: any) => {

@@ -814,7 +814,6 @@
         })),
       })),
     }
-    // console.log(data)
 
     dataAdjustPrice.createAdjustPriceAction(data, toast, router, EndTimeLoading)
   }

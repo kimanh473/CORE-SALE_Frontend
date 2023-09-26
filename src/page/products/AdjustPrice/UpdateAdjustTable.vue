@@ -141,9 +141,7 @@
                     </div>
                   </div>
                   <div>
-                    <button class="button-modal" @click="filterProduct()">
-                      Lọc sản phẩm
-                    </button>
+                    <button class="button-modal">Lọc sản phẩm</button>
                   </div>
                   <div
                     class="border border-gray-800 w-[500px] p-4"
@@ -330,6 +328,11 @@
                     <div @click="addTime" class="mt-2 w-fit">
                       <i class="fal fa-plus-circle icon-plus fa-lg"></i>
                     </div>
+                  </div>
+                  <div>
+                    <button class="button-modal" @click="filterProduct()">
+                      Lấy chi tiết điều chỉnh giá
+                    </button>
                   </div>
                 </div>
               </Transition>
@@ -638,40 +641,44 @@
   ])
   const addTime = () => {
     let data = {
+      title: '',
       date_start: '',
       date_end: '',
       listed_price: '',
       wholesale_price: '',
       retail_price: '',
     }
-    timeAdjustPrice.push(data)
+    listPeriod.value.push(data)
   }
   const removeTime = (index: number) => {
-    timeAdjustPrice.splice(index, 1)
+    listPeriod.value.splice(index, 1)
   }
   // const sharedOnCell = (_, index) => {
   //   if (index === 4) {
   //     return { colSpan: 0 }
   //   }
   // }
-  const listProduct = ref([])
+  // const listProduct = ref([])
   const filterProduct = () => {
     let arrProduct = []
-    arrProduct = listProduct.value.map((item: any) => ({
-      name: item.productName,
+    arrProduct = listTableDetail.value.map((item: any) => ({
+      name: item.name,
       sku: item.sku,
+      unit: item.unit,
+      code: item.code,
     }))
     const arrAll = arrProduct.map((item: any, index: number) => {
       return {
         ...item,
         key: index,
-        detail: timeAdjustPrice.map((item2: any) => ({
+        detail: listPeriod.value.map((item2: any) => ({
           date_start: dayjs(item2.date_start).format('DD/MM/YYYY'),
           date_end: dayjs(item2.date_end).format('DD/MM/YYYY'),
           listed_price: item2.listed_price,
           wholesale_price: item2.wholesale_price,
           retail_price: item2.retail_price,
         })),
+        has_custom: '0',
       }
     })
 
@@ -733,9 +740,11 @@
     } else {
       showManageChoice.value = false
     }
-    listProduct.value = options.map((item: any) => ({
-      productName: item.name,
+    listTableDetail.value = options.map((item: any) => ({
+      name: item.name,
       sku: item.sku,
+      code: item.code,
+      unit: item.unit_code,
     }))
   }
   const dataOption = reactive([])
@@ -786,8 +795,45 @@
   //   attribute.address = name.title + ', ' + attribute.address
   // }
   const createAttribute = () => {
-    let data = {}
-    dataAttribute.createAttributeAction(data, toast, router, EndTimeLoading)
+    let data = {
+      title: detailAdjustPrice.value.title,
+      website_list: listCodeWeb.value,
+      nganh_hang_list: listCodeCategory.value,
+      product_code_list: detailAdjustPrice.value.json_product_code_list,
+      period: listPeriod.value.map((item: any) => ({
+        date_start: dayjs(item.date_start).format('YYYY/MM/DD'),
+        date_end: dayjs(item.date_end).format('YYYY/MM/DD'),
+        listed_price: item.listed_price,
+        wholesale_price: item.wholesale_price,
+        retail_price: item.retail_price,
+      })),
+      product_price_detail: listTableDetail.value.map((item: any) => ({
+        name: item.name,
+        sku: item.sku,
+        code: item.code,
+        unit: item.unit,
+        has_custom: item.has_custom,
+        detail: item.detail.map((itemDetail: any) => ({
+          date_start: dayjs(itemDetail.date_start, 'DD-MM-YYYY').format(
+            'YYYY-MM-DD'
+          ),
+          date_end: dayjs(itemDetail.date_end, 'DD-MM-YYYY').format(
+            'YYYY-MM-DD'
+          ),
+          listed_price: itemDetail.listed_price,
+          wholesale_price: itemDetail.wholesale_price,
+          retail_price: itemDetail.retail_price,
+        })),
+      })),
+    }
+
+    dataAdjustPrice.updateAdjustPriceAction(
+      Number(route.params.id),
+      data,
+      router,
+      toast,
+      EndTimeLoading
+    )
     // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
