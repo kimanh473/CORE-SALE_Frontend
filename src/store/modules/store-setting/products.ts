@@ -59,7 +59,7 @@ export const useProduct = defineStore("Products", {
             await filterProductApi(data)
                 .then((payload: any) => {
                     let res = payload?.data?.data
-                    this.getDetailProduct(res)
+                    this.getListFiltered(res)
                 })
                 .catch((err) => {
                     console.log(err)
