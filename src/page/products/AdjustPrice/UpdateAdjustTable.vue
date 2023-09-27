@@ -102,6 +102,7 @@
                             label: 'title',
                             value: 'code',
                           }"
+                          :show-checked-strategy="SHOW_PARENT"
                           tree-checkable
                           treeDefaultExpandAll
                           multiple
@@ -459,6 +460,8 @@
   import type { UnwrapRef } from 'vue'
   import dayjs, { Dayjs } from 'dayjs'
   import type { TableColumnType } from 'ant-design-vue'
+  import { TreeSelect } from 'ant-design-vue'
+  const SHOW_PARENT = TreeSelect.SHOW_ALL
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)

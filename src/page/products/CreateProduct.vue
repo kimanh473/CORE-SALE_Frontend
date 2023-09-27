@@ -413,6 +413,58 @@
                 </a-select>
               </div>
             </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Ngành hàng<span class="text-red-600">*</span></label
+                >
+                <div>
+                  <a-tree-select
+                    placeholder="Chọn ngành hàng"
+                    style="width: 100%"
+                    :tree-data="listTreeCategory"
+                    v-model:value="product.category"
+                    :fieldNames="{
+                      children: 'children',
+                      label: 'title',
+                      value: 'code',
+                    }"
+                    :show-checked-strategy="SHOW_PARENT"
+                    tree-checkable
+                    treeDefaultExpandAll
+                    multiple
+                  >
+                  </a-tree-select>
+                  <!-- <p v-if="messageError?.code" class="text-red-600">
+                            {{ messageError?.code[0] }}
+                          </p> -->
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Website<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="form-control-input"
+                    placeholder="Chọn website"
+                    v-model:value="product.website"
+                    :options="listWeb"
+                    :fieldNames="{
+                      label: 'web_name',
+                      value: 'code',
+                    }"
+                    mode="multiple"
+                  >
+                  </a-select>
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                            {{ messageError?.title[0] }}
+                          </p> -->
+                </div>
+              </div>
+            </div>
             <!-- <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
               <div>
                 <label for="" class="form-group-label"
@@ -936,7 +988,11 @@
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import IconAddImg from '../../assets/images/icon_add_image.png'
-
+  import { TreeSelect } from 'ant-design-vue'
+  const SHOW_PARENT = TreeSelect.SHOW_ALL
+  const dataCategory = useCategory()
+  dataCategory.getListCategoryTreeAction()
+  const { listTreeCategory } = storeToRefs(dataCategory)
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -951,7 +1007,6 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
-  const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
@@ -1166,7 +1221,8 @@
     title: '',
     code: '',
     desc: '',
-    webID: null,
+    website: [],
+    category: [],
     groupAttributeID: 1,
     taxID: null,
     specificationID: null,
@@ -1272,6 +1328,8 @@
   const createProduct = () => {
     let dataSource = {
       attribute_set_id: product.groupAttributeID,
+      website: product.website,
+      nganh_hang: product.category,
       list_unit_change: dataMapUnit.value,
       list_classify: dataOption,
       list_product_config: dataTableConfig.value.map((item: any) => ({
@@ -1290,6 +1348,8 @@
     // console.log(dataUnit)
     // console.log(dataTableConfig.value)
     let data = Object.assign({}, dataCreateProduct.value, dataSource)
+    console.log(data)
+
     dataProduct.createProductAction(data, toast, router, EndTimeLoading)
   }
 </script>

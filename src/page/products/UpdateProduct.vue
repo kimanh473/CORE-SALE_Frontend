@@ -406,11 +406,63 @@
                   class="form-control-input"
                   placeholder="Chọn nhóm thuộc tính"
                   :options="listSetAttributeGroup"
-                  v-model:value="detailProduct.attribute_set_id"
+                  v-model:value="detailProduct.attribute_set_id_int"
                   :fieldNames="{ label: 'title', value: 'id' }"
                   @change="handleChangeAttributeGroup"
                 >
                 </a-select>
+              </div>
+            </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Ngành hàng<span class="text-red-600">*</span></label
+                >
+                <div>
+                  <a-tree-select
+                    placeholder="Chọn ngành hàng"
+                    style="width: 100%"
+                    :tree-data="listTreeCategory"
+                    v-model:value="detailProduct.nganh_hang_code"
+                    :fieldNames="{
+                      children: 'children',
+                      label: 'title',
+                      value: 'code',
+                    }"
+                    :show-checked-strategy="SHOW_PARENT"
+                    tree-checkable
+                    treeDefaultExpandAll
+                    multiple
+                  >
+                  </a-tree-select>
+                  <!-- <p v-if="messageError?.code" class="text-red-600">
+                            {{ messageError?.code[0] }}
+                          </p> -->
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Website<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="form-control-input"
+                    placeholder="Chọn website"
+                    v-model:value="detailProduct.web_site_code"
+                    :options="listWeb"
+                    :fieldNames="{
+                      label: 'web_name',
+                      value: 'code',
+                    }"
+                    mode="multiple"
+                  >
+                  </a-select>
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                            {{ messageError?.title[0] }}
+                          </p> -->
+                </div>
               </div>
             </div>
             <!-- <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
@@ -808,7 +860,7 @@
                     class="form-control-input"
                     placeholder="Chọn nhóm thuộc tính"
                     :options="listProductUnit"
-                    v-model:value="product.unitCode"
+                    v-model:value="detailProduct.unit_code"
                     :fieldNames="{ label: 'title', value: 'code' }"
                     @change="handleChangeUnit"
                   >
@@ -965,6 +1017,11 @@
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import IconAddImg from '../../assets/images/icon_add_image.png'
+  import { TreeSelect } from 'ant-design-vue'
+  const SHOW_PARENT = TreeSelect.SHOW_ALL
+  const dataCategory = useCategory()
+  dataCategory.getListCategoryTreeAction()
+  const { listTreeCategory } = storeToRefs(dataCategory)
   const route = useRoute()
   const dataProduct = useProduct()
   dataProduct.getDetailProductAction(Number(route.params.id))
@@ -983,7 +1040,6 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
-  const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {

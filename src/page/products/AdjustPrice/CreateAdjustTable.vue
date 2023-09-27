@@ -70,7 +70,6 @@
                           placeholder="Chọn website"
                           v-model:value="adjust.website"
                           :options="listWeb"
-                          @change="handleChange"
                           :fieldNames="{
                             label: 'web_name',
                             value: 'code',
@@ -129,7 +128,7 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn sản phẩm"
-                          :options="listAllProduct"
+                          :options="listFiltered"
                           v-model:value="adjust.product"
                           @change="handleChange"
                           :fieldNames="{
@@ -480,7 +479,7 @@
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
   dataProduct.getListProductNoPagingAction()
-  const { listAllProduct } = storeToRefs(dataProduct)
+  const { listAllProduct, listFiltered } = storeToRefs(dataProduct)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
