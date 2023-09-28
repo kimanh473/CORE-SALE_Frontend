@@ -539,7 +539,7 @@
                 :key="index1"
                 class="form-large-full"
               >
-                <!-- {{ dayjs(detailProduct['create_date']) }} -->
+                {{ detailProduct[item1.attribute_code] }}
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
@@ -557,8 +557,6 @@
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
-                    :name="dayjs()"
-                    format="YYYY-MM-DD"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
@@ -1040,6 +1038,7 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
+  const dateFormat = 'YYYY-MM-DD'
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {

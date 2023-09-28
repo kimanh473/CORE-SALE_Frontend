@@ -45,7 +45,7 @@ export const typeProduct = [
     //     attribute: {
     //         class: 'form-group-label',
     //         placeholder: 'Chọn ngày',
-    //         format: 'YYYY/MM/DD'
+    //         format: 'YYYY-MM-DD'
     //     }
     // },
     {
