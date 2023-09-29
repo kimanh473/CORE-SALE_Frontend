@@ -398,8 +398,8 @@
             </div> -->
             <div>
               <label for="" class="form-group-label"
-                >Nhóm thuộc tính<span class="text-red-600">* </span>
-                <span></span
+                >Nhóm thuộc tính{{ detailProduct.create_date
+                }}<span class="text-red-600">* </span> <span></span
               ></label>
               <div>
                 <a-select
@@ -557,6 +557,7 @@
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
+                    valueFormat="DD/MM/YYYY"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
@@ -1024,6 +1025,8 @@
   const dataProduct = useProduct()
   dataProduct.getDetailProductAction(Number(route.params.id))
   const { detailProduct } = storeToRefs(dataProduct)
+  console.log(detailProduct.value)
+
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -1038,7 +1041,7 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
-  const dateFormat = 'YYYY-MM-DD'
+  const dateFormat = 'DD/MM/YYYY'
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {

@@ -93,8 +93,11 @@
                                 <div>
                                   <a-space direction="vertical" :size="12">
                                     <a-date-picker
+                                      placeholder="chọn ngày"
+                                      @change="changeDate"
                                       v-model:value="value_birth_day"
                                       :format="dateFormat"
+                                      :valueFormat="dateFormat"
                                     />
                                   </a-space>
                                   <!--                                  <p
@@ -657,7 +660,11 @@
 
   const dateFormat = 'DD/MM/YYYY'
   const dateFormatRequest = 'YYYY/MM/DD'
-  const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat))
+  const value_birth_day = ref<Dayjs>()
+  const changeDate = (a: string, b: any) => {
+    console.log(a)
+    console.log(b)
+  }
 
   const dataCustomerProfile = useCustomerProfile()
   const dataLocation = useLocation()
