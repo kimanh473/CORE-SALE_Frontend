@@ -413,6 +413,58 @@
                 </a-select>
               </div>
             </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Ngành hàng<span class="text-red-600">*</span></label
+                >
+                <div>
+                  <a-tree-select
+                    placeholder="Chọn ngành hàng"
+                    style="width: 100%"
+                    :tree-data="listTreeCategory"
+                    v-model:value="product.category"
+                    :fieldNames="{
+                      children: 'children',
+                      label: 'title',
+                      value: 'code',
+                    }"
+                    :show-checked-strategy="SHOW_PARENT"
+                    tree-checkable
+                    treeDefaultExpandAll
+                    multiple
+                  >
+                  </a-tree-select>
+                  <!-- <p v-if="messageError?.code" class="text-red-600">
+                            {{ messageError?.code[0] }}
+                          </p> -->
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Website<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="form-control-input"
+                    placeholder="Chọn website"
+                    v-model:value="product.website"
+                    :options="listWeb"
+                    :fieldNames="{
+                      label: 'web_name',
+                      value: 'code',
+                    }"
+                    mode="multiple"
+                  >
+                  </a-select>
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                            {{ messageError?.title[0] }}
+                          </p> -->
+                </div>
+              </div>
+            </div>
             <!-- <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
               <div>
                 <label for="" class="form-group-label"
@@ -503,6 +555,9 @@
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
+                    valueFormat="DD/MM/YYYY"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
@@ -744,6 +799,9 @@
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
                           "
+                          checkedValue="1"
+                          unCheckedValue="0"
+                          valueFormat="DD/MM/YYYY"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
                             <plus-outlined />
@@ -929,10 +987,15 @@
   import { useCategory } from '../../store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { typeProduct } from '../../page/products/configProduct'
+  import dayjs, { Dayjs } from 'dayjs'
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import IconAddImg from '../../assets/images/icon_add_image.png'
-
+  import { TreeSelect } from 'ant-design-vue'
+  const SHOW_PARENT = TreeSelect.SHOW_ALL
+  const dataCategory = useCategory()
+  dataCategory.getListCategoryTreeAction()
+  const { listTreeCategory } = storeToRefs(dataCategory)
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -947,7 +1010,6 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
-  const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
@@ -1034,13 +1096,13 @@
         (item: any) => item.preview
       )
     } else if (input_name.includes('date')) {
-      dataCreateProduct.value[input_name] = event.$d
-        .toISOString()
-        .substring(0, 10)
+      console.log(dayjs(event, 'DD/MM/YYYY'))
+      dataCreateProduct.value[input_name] = dayjs(event, 'DD/MM/YYYY').format(
+        'YYYY-MM-DD'
+      )
     } else {
       dataCreateProduct.value[input_name] = event.target.value
     }
-    console.log(dataCreateProduct.value)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -1114,7 +1176,6 @@
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
   const handleChangeClassify = (valueClassify: any) => {
-    console.log(valueClassify)
     mapArr.value = dataOption.map((item: any) => item.value)
 
     // listGenerate.value = res_1.value.map((item: any, index: any) => ({
@@ -1164,7 +1225,8 @@
     title: '',
     code: '',
     desc: '',
-    webID: null,
+    website: [],
+    category: [],
     groupAttributeID: 1,
     taxID: null,
     specificationID: null,
@@ -1244,13 +1306,11 @@
     if (!event.file.url && !event.preview) {
       event.file.preview = (await getBase64(event.file.originFileObj)) as string
     }
-    console.log(index)
 
     dataTableConfig.value[index].image1 = dataTableConfig.value[
       index
     ].image.map((item: any) => item.preview)
     // dataTableConfig.value[index].image = listImageTable.value
-    console.log(dataTableConfig.value)
     // dataTableConfig.value.image = event.file.preview
   }
   const dataProduct = useProduct()
@@ -1272,6 +1332,8 @@
   const createProduct = () => {
     let dataSource = {
       attribute_set_id: product.groupAttributeID,
+      website: product.website,
+      nganh_hang: product.category,
       list_unit_change: dataMapUnit.value,
       list_classify: dataOption,
       list_product_config: dataTableConfig.value.map((item: any) => ({
@@ -1291,6 +1353,7 @@
     // console.log(dataTableConfig.value)
     let data = Object.assign({}, dataCreateProduct.value, dataSource)
     console.log(data)
+
     dataProduct.createProductAction(data, toast, router, EndTimeLoading)
   }
 </script>

@@ -39,15 +39,16 @@ export const typeProduct = [
             class: 'form-group-label',
         }
     },
-    // {
-    //     type: 'date-picker',
-    //     code: 'date-picker',
-    //     attribute: {
-    //         class: 'form-group-label',
-    //         placeholder: 'Chọn ngày',
-    //         format: 'YYYY/MM/DD'
-    //     }
-    // },
+    {
+        type: 'date-picker',
+        code: 'date-picker',
+        attribute: {
+            class: 'form-group-label',
+            placeholder: 'Chọn ngày',
+            format: 'DD-MM-YYYY',
+            valueFormat: 'DD-MM-YYYY'
+        }
+    },
     {
         type: 'switch',
         code: 'switch',

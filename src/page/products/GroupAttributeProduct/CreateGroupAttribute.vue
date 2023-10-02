@@ -306,7 +306,6 @@
     return handleTreeData(tData, targetKeys.value)
   })
   const gData = ref<TreeProps['treeData']>(treeData.value)
-  console.log(gData)
 
   const onChecked = (
     e:
@@ -410,7 +409,6 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const { listAttributeProduct } = storeToRefs(dataAttribute)
-  console.log(listAttributeProduct)
 
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {

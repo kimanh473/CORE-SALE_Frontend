@@ -9,7 +9,7 @@
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới sản phẩm</p></template
+          ><p class="pl-5 text-[16px]">Sửa sản phẩm</p></template
         >
       </Header>
     </template>
@@ -398,19 +398,71 @@
             </div> -->
             <div>
               <label for="" class="form-group-label"
-                >Nhóm thuộc tính<span class="text-red-600">* </span>
-                <span></span
+                >Nhóm thuộc tính{{ detailProduct.create_date
+                }}<span class="text-red-600">* </span> <span></span
               ></label>
               <div>
                 <a-select
                   class="form-control-input"
                   placeholder="Chọn nhóm thuộc tính"
                   :options="listSetAttributeGroup"
-                  v-model:value="detailProduct.attribute_set_id"
+                  v-model:value="detailProduct.attribute_set_id_int"
                   :fieldNames="{ label: 'title', value: 'id' }"
                   @change="handleChangeAttributeGroup"
                 >
                 </a-select>
+              </div>
+            </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Ngành hàng<span class="text-red-600">*</span></label
+                >
+                <div>
+                  <a-tree-select
+                    placeholder="Chọn ngành hàng"
+                    style="width: 100%"
+                    :tree-data="listTreeCategory"
+                    v-model:value="detailProduct.nganh_hang_code"
+                    :fieldNames="{
+                      children: 'children',
+                      label: 'title',
+                      value: 'code',
+                    }"
+                    :show-checked-strategy="SHOW_PARENT"
+                    tree-checkable
+                    treeDefaultExpandAll
+                    multiple
+                  >
+                  </a-tree-select>
+                  <!-- <p v-if="messageError?.code" class="text-red-600">
+                            {{ messageError?.code[0] }}
+                          </p> -->
+                </div>
+              </div>
+            </div>
+            <div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Website<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="form-control-input"
+                    placeholder="Chọn website"
+                    v-model:value="detailProduct.web_site_code"
+                    :options="listWeb"
+                    :fieldNames="{
+                      label: 'web_name',
+                      value: 'code',
+                    }"
+                    mode="multiple"
+                  >
+                  </a-select>
+                  <!-- <p v-if="messageError?.title" class="text-red-600">
+                            {{ messageError?.title[0] }}
+                          </p> -->
+                </div>
               </div>
             </div>
             <!-- <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
@@ -487,7 +539,9 @@
                 :key="index1"
                 class="form-large-full"
               >
-                <!-- {{ dayjs(detailProduct['create_date']) }} -->
+                {{ item1.attribute_code }}/{{
+                  detailProduct[item1.attribute_code]
+                }}/{{ detailProduct.create_date }}
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
@@ -505,14 +559,24 @@
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
-                    :name="dayjs()"
-                    format="YYYY-MM-DD"
+                    valueFormat="DD-MM-YYYY"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
                         <plus-outlined />
                         <div style="margin-top: 8px">Upload</div>
                       </div>
+                      <!-- <div
+                        v-for="(itemImg, indexImg) in detailProduct.image"
+                        :key="indexImg"
+                      >
+                        {{ itemImg }}
+                        <img
+                          alt="example"
+                          style="width: 100%"
+                          :src="UrlImg + '/' + itemImg"
+                        />
+                      </div> -->
                       <a-modal
                         :visible="previewVisible"
                         :footer="null"
@@ -745,6 +809,9 @@
                           :options="itemSpec1.option_detail"
                           v-model:checked="itemSpec1.default_value"
                           v-model:file-list="fileList"
+                          v-model:value="
+                            detailProduct[itemSpec1.attribute_code]
+                          "
                           list-type="picture-card"
                           :fieldNames="{ label: 'title', value: 'id' }"
                           v-bind="{ ...map.attribute }"
@@ -753,11 +820,13 @@
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
                           "
+                          valueFormat="DD-MM-YYYY"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
                             <plus-outlined />
                             <div style="margin-top: 8px">Upload</div>
                           </div>
+
                           <a-modal
                             :visible="previewVisible"
                             :footer="null"
@@ -768,6 +837,17 @@
                               style="width: 100%"
                               :src="previewImage"
                             />
+                            <!-- <div
+                              v-for="(itemImg, indexImg) in detailProduct.image"
+                              :key="index"
+                            >
+                              {{ itemImg }}
+                              <img
+                                alt="example"
+                                style="width: 100%"
+                                :src="UrlImg + '/' + itemImg"
+                              />
+                            </div> -->
                           </a-modal>
                         </component>
                       </div>
@@ -785,7 +865,7 @@
                     class="form-control-input"
                     placeholder="Chọn nhóm thuộc tính"
                     :options="listProductUnit"
-                    v-model:value="product.unitCode"
+                    v-model:value="detailProduct.unit_code"
                     :fieldNames="{ label: 'title', value: 'code' }"
                     @change="handleChangeUnit"
                   >
@@ -942,10 +1022,18 @@
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
   import IconAddImg from '../../assets/images/icon_add_image.png'
+  import { TreeSelect } from 'ant-design-vue'
+  const SHOW_PARENT = TreeSelect.SHOW_ALL
+  const dataCategory = useCategory()
+  dataCategory.getListCategoryTreeAction()
+  const { listTreeCategory } = storeToRefs(dataCategory)
   const route = useRoute()
   const dataProduct = useProduct()
-  dataProduct.getDetailProductAction(Number(route.params.id))
+  dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
+    console.log(detailProduct.value)
+  })
   const { detailProduct } = storeToRefs(dataProduct)
+
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -960,7 +1048,7 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
-  const dataCategory = useCategory()
+  const dateFormat = 'DD/MM/YYYY'
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
@@ -1053,7 +1141,6 @@
     } else {
       dataCreateProduct.value[input_name] = detailProduct.value[input_name]
     }
-    console.log(dataCreateProduct.value)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -1063,9 +1150,11 @@
       reader.onerror = (error) => reject(error)
     })
   }
+  const UrlImg = import.meta.env.VITE_APP_IMG_URL
   const checked = ref<boolean>(false)
   const previewVisible = ref<boolean>(false)
   const previewImage = ref('')
+  const previewImageOld = ref('')
   const previewTitle = ref('')
   const isConfig1 = ref(false)
   const isConfig2 = ref(false)
@@ -1127,7 +1216,6 @@
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
   const handleChangeClassify = (valueClassify: any) => {
-    console.log(valueClassify)
     mapArr.value = dataOption.map((item: any) => item.value)
 
     // listGenerate.value = res_1.value.map((item: any, index: any) => ({
@@ -1257,13 +1345,11 @@
     if (!event.file.url && !event.preview) {
       event.file.preview = (await getBase64(event.file.originFileObj)) as string
     }
-    console.log(index)
 
     dataTableConfig.value[index].image1 = dataTableConfig.value[
       index
     ].image.map((item: any) => item.preview)
     // dataTableConfig.value[index].image = listImageTable.value
-    console.log(dataTableConfig.value)
     // dataTableConfig.value.image = event.file.preview
   }
   const webCatalog = useWebCatalog()
@@ -1302,7 +1388,6 @@
     // console.log(dataUnit)
     // console.log(dataTableConfig.value)
     let data = Object.assign({}, dataCreateProduct.value, dataSource)
-    console.log(data)
     dataProduct.createProductAction(data, toast, router, EndTimeLoading)
   }
 </script>

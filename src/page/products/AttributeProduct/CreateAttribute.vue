@@ -329,7 +329,7 @@
     {
       label: 'Ngày giờ',
       value: 'date_time',
-      backend_type: 'varchar',
+      backend_type: 'date_time',
       frontend_input: 'date-picker',
     },
     {

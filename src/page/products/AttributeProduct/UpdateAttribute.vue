@@ -52,9 +52,6 @@
                           placeholder="Nhập tên thuộc tính"
                           v-model="detailAttribute.frontend_label"
                         />
-                        <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -71,9 +68,6 @@
                           placeholder="Nhập mã thuộc tính"
                           v-model="detailAttribute.attribute_code"
                         />
-                        <!-- <p v-if="messageError?.title" class="text-red-600">
-                          {{ messageError?.title[0] }}
-                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -97,9 +91,6 @@
                           @focus="focusOnSelect(detailAttribute.backend_type)"
                         >
                         </a-select>
-                        <!-- <p v-if="messageError?.code" class="text-red-600">
-                          {{ messageError?.code[0] }}
-                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -118,10 +109,6 @@
                       class="flex"
                     >
                       <div class="pr-[100px]">
-                        <!-- <a-checkbox
-                          v-model:checked="item.status"
-                          class="!pl-[16px]"
-                        ></a-checkbox> -->
                         <input
                           type="checkbox"
                           v-model="item.status"
@@ -147,10 +134,6 @@
                       class="flex"
                     >
                       <div class="pr-[100px]">
-                        <!-- <a-checkbox
-                          v-model:checked="item.status"
-                          class="!pl-[16px]"
-                        ></a-checkbox> -->
                         <input
                           type="checkbox"
                           v-model="item.status"
@@ -214,12 +197,6 @@
                             checkedValue="1"
                             unCheckedValue="0"
                           />
-                          <!-- <p
-                          v-if="messageError?.contact_email"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_email[0] }}
-                        </p> -->
                         </div>
                       </div>
                       <div>
@@ -233,12 +210,6 @@
                             checkedValue="1"
                             unCheckedValue="0"
                           />
-                          <!-- <p
-                          v-if="messageError?.contact_email"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_email[0] }}
-                        </p> -->
                         </div>
                       </div>
                     </div>
@@ -254,12 +225,6 @@
                           :options="options2"
                         >
                         </a-select>
-                        <!-- <p
-                          v-if="messageError?.contact_phone"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_phone[0] }}
-                        </p> -->
                       </div>
                     </div>
                     <div>
@@ -273,12 +238,6 @@
                           checkedValue="1"
                           unCheckedValue="0"
                         />
-                        <!-- <p
-                          v-if="messageError?.contact_email"
-                          class="text-red-600"
-                        >
-                          {{ messageError?.contact_email[0] }}
-                        </p> -->
                       </div>
                     </div>
                   </div>
@@ -343,7 +302,6 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getDetailAttributeAction(Number(route.params.id))
   const { detailAttribute } = storeToRefs(dataAttribute)
-  console.log(detailAttribute)
 
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
@@ -367,7 +325,7 @@
     {
       label: 'Ngày giờ',
       value: 'date_time',
-      backend_type: 'varchar',
+      backend_type: 'date_time',
       frontend_input: 'date-picker',
     },
     {
@@ -448,8 +406,6 @@
   // }
   const showManageChoice = ref<Boolean>(false)
   const handleChange = (value: string, options: any) => {
-    console.log(value)
-
     if (value == 'selection') {
       showManageChoice.value = true
     } else {
@@ -460,7 +416,6 @@
   }
   const focusOnSelect = (type: string) => {
     if (type == 'selection') {
-      console.log(type)
       showManageChoice.value = true
     } else {
       showManageChoice.value = false
@@ -481,41 +436,7 @@
   const removeOptionsOld = (index: number) => {
     detailAttribute.value.option_detail.splice(index, 1)
   }
-  // let options2 = ref<SelectProps['options']>([])
-  //   const sourceProduct = reactive({
-  //     title: 'nguồn A1',
-  //     code: 'SOURCEA',
-  //     latitude: '11',
-  //     longitude: '11',
-  //     contact: 'hoangthiyen',
-  //     contact_email: 'ttb@gmail.com',
-  //     contact_phone: '0123456789',
-  //     address_country_id: null,
-  //     address_district_id: null,
-  //     address_ward_id: null,
-  //     address_state_id: 1,
-  //     address_detail: 'viet nam',
-  //     desc: 'nguồn A tại hà nội',
-  //     use_direct: '0',
-  //   })
-  // const dataLocation = useLocation()
-  // const getDataCity = () => {
-  //   dataLocation.getListAllCityAction()
-  // }
-  // const { listAllCity, listAllDistrict, listAllWard } =
-  //   storeToRefs(dataLocation)
-  // const handleChangeCity = (value: number, name: any) => {
-  //   dataLocation.getListAllDistrictAction(value)
 
-  //   attribute.address = name.title + ', ' + 'Việt Nam'
-  // }
-  // const handleChangeDistrict = (value: number, name: any) => {
-  //   dataLocation.getListAllWardAction(value)
-  //   attribute.address = name.title + ', ' + attribute.address
-  // }
-  // const handleChangeWard = (value: number, name: any) => {
-  //   attribute.address = name.title + ', ' + attribute.address
-  // }
   const createAttribute = () => {
     let data = {
       attribute_code: detailAttribute.value.attribute_code,
@@ -537,7 +458,6 @@
       options_old: detailAttribute.value.option_detail,
       options_new: dataOption,
     }
-    console.log(data)
     dataAttribute.updateProductUnitAction(
       Number(route.params.id),
       data,

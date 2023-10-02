@@ -229,7 +229,6 @@
     isLoading.value = false
   }
   const handleChange = (value: string, option: any) => {
-    console.log(option)
     detailCurrency.value.code = option.value
     detailCurrency.value.title = option.value
   }
@@ -267,7 +266,6 @@
       symbol2: detailCurrency.value.symbol2,
       decimal_number: detailCurrency.value.decimal_number,
     }
-    console.log(defaultStatus.value)
 
     if (
       defaultStatus.value === 'true' &&

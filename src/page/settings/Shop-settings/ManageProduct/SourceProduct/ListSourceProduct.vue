@@ -62,7 +62,6 @@
   const dataSourceProduct = useSourceProduct()
   dataSourceProduct.getListSourceProductAction()
   const { listSourceProduct } = storeToRefs(dataSourceProduct)
-  console.log(listSourceProduct)
 
   const columns = [
     {

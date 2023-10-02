@@ -160,7 +160,6 @@
         }
       }
       const ShowSubmenu = (index) => {
-        console.log(index)
         if (index != '') {
           return ' grid grid-cols-2 gap-4 px-4'
         } else {

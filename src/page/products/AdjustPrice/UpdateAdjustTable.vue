@@ -2,14 +2,16 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-            <img src="../assets/images/btp.png" />
-          </div> -->
+              <img src="../assets/images/btp.png" />
+            </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Tạo mới bảng điều chỉnh giá</p></template
+          ><p class="pl-5 text-[16px]">
+            Cập nhật bảng điều chỉnh giá
+          </p></template
         >
       </Header>
     </template>
@@ -19,10 +21,10 @@
           class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over flex"
         >
           <!-- <a-anchor class="w-[200px] h-[300px] border-2">
-              <a-anchor-link href="#infor-common" title="Thông tin chung" />
-              <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
-              <a-anchor-link href="#address" title="Địa chỉ" />
-            </a-anchor> -->
+                <a-anchor-link href="#infor-common" title="Thông tin chung" />
+                <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
+                <a-anchor-link href="#address" title="Địa chỉ" />
+              </a-anchor> -->
           <div id="infor-common" class="w-full ml-4">
             <h4
               class="form-section-title form-small cursor-pointer"
@@ -50,11 +52,11 @@
                           type="text"
                           class="form-control-input"
                           placeholder="Nhập tiêu đề"
-                          v-model="adjust.title"
+                          v-model="detailAdjustPrice.title"
                         />
                         <!-- <p v-if="messageError?.title" class="text-red-600">
-                            {{ messageError?.title[0] }}
-                          </p> -->
+                              {{ messageError?.title[0] }}
+                            </p> -->
                       </div>
                     </div>
                   </div>
@@ -68,18 +70,19 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn website"
-                          v-model:value="adjust.website"
+                          v-model:value="listCodeWeb"
                           :options="listWeb"
+                          @change="handleChange"
                           :fieldNames="{
-                            label: 'web_name',
+                            label: 'title',
                             value: 'code',
                           }"
                           mode="multiple"
                         >
                         </a-select>
                         <!-- <p v-if="messageError?.title" class="text-red-600">
-                            {{ messageError?.title[0] }}
-                          </p> -->
+                              {{ messageError?.title[0] }}
+                            </p> -->
                       </div>
                     </div>
                   </div>
@@ -93,7 +96,7 @@
                           placeholder="Chọn ngành hàng"
                           style="width: 100%"
                           :tree-data="listTreeCategory"
-                          v-model:value="adjust.category"
+                          v-model:value="listCodeCategory"
                           :fieldNames="{
                             children: 'children',
                             label: 'title',
@@ -106,17 +109,9 @@
                         >
                         </a-tree-select>
                         <!-- <p v-if="messageError?.code" class="text-red-600">
-                            {{ messageError?.code[0] }}
-                          </p> -->
+                              {{ messageError?.code[0] }}
+                            </p> -->
                       </div>
-                    </div>
-                    <div>
-                      <button
-                        class="button-modal mt-2"
-                        @click="filterProduct()"
-                      >
-                        Lọc sản phẩm
-                      </button>
                     </div>
                   </div>
                   <div class="form-small">
@@ -128,8 +123,10 @@
                         <a-select
                           class="form-control-input"
                           placeholder="Chọn sản phẩm"
-                          :options="listFiltered"
-                          v-model:value="adjust.product"
+                          :options="listAllProduct"
+                          v-model:value="
+                            detailAdjustPrice.json_product_code_list
+                          "
                           @change="handleChange"
                           :fieldNames="{
                             label: 'name',
@@ -139,12 +136,14 @@
                         >
                         </a-select>
                         <!-- <p v-if="messageError?.code" class="text-red-600">
-                            {{ messageError?.code[0] }}
-                          </p> -->
+                              {{ messageError?.code[0] }}
+                            </p> -->
                       </div>
                     </div>
                   </div>
-
+                  <div>
+                    <button class="button-modal">Lọc sản phẩm</button>
+                  </div>
                   <div
                     class="border border-gray-800 w-[500px] p-4"
                     v-if="showManageChoice"
@@ -161,9 +160,9 @@
                     >
                       <div class="pr-[100px]">
                         <!-- <a-checkbox
-                            v-model:checked="item.status"
-                            class="!pl-[16px]"
-                          ></a-checkbox> -->
+                              v-model:checked="item.status"
+                              class="!pl-[16px]"
+                            ></a-checkbox> -->
                         <input
                           type="checkbox"
                           v-model="item.status"
@@ -195,7 +194,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tiêu đề *, Website *, Ngành hàng * ,Sản phẩm *
+                Tên thuộc tính*, Định dạng *
               </h2>
             </div>
 
@@ -216,7 +215,7 @@
                 <div v-show="isContact == true">
                   <div class="form-large-plus">
                     <div
-                      v-for="(item, index) in timeAdjustPrice"
+                      v-for="(item, index) in listPeriod"
                       :key="index"
                       class="grid grid-cols-6 gap-6"
                     >
@@ -233,11 +232,11 @@
                             :format="dateFormatRequest"
                           />
                           <!-- <p
-                            v-if="messageError?.contact_email"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_email[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_email"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_email[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -253,11 +252,11 @@
                             :format="dateFormatRequest"
                           />
                           <!-- <p
-                            v-if="messageError?.contact_email"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_email[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_email"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_email[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -273,11 +272,11 @@
                           >
                           </a-input>
                           <!-- <p
-                            v-if="messageError?.contact_phone"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_phone[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_phone"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_phone[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -293,11 +292,11 @@
                           >
                           </a-input>
                           <!-- <p
-                            v-if="messageError?.contact_phone"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_phone[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_phone"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_phone[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div>
@@ -313,11 +312,11 @@
                           >
                           </a-input>
                           <!-- <p
-                            v-if="messageError?.contact_email"
-                            class="text-red-600"
-                          >
-                            {{ messageError?.contact_email[0] }}
-                          </p> -->
+                              v-if="messageError?.contact_email"
+                              class="text-red-600"
+                            >
+                              {{ messageError?.contact_email[0] }}
+                            </p> -->
                         </div>
                       </div>
                       <div class="mt-[35px]">
@@ -332,12 +331,20 @@
                     </div>
                   </div>
                   <div>
-                    <button class="button-modal" @click="getDetailAdjust()">
+                    <button class="button-modal" @click="filterProduct()">
                       Lấy chi tiết điều chỉnh giá
                     </button>
                   </div>
                 </div>
               </Transition>
+              <div v-show="isContact == false">
+                <h2
+                  @click="isContact = !isContact"
+                  class="cursor-pointer form-group-label"
+                >
+                  Website áp dụng *, Giá trị duy nhất*, *Kiểm tra tính hợp lệ
+                </h2>
+              </div>
             </div>
             <div id="infor-contact" class="inner">
               <h4
@@ -357,7 +364,7 @@
                   <a-table
                     class="!p-[10px]"
                     :columns="columns"
-                    :data-source="dataTableDetail"
+                    :data-source="listTableDetail"
                     bordered
                     row-key="id"
                   >
@@ -420,7 +427,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="createAdjustPrice()">
+          <button class="button-modal" @click="createAttribute()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="router.go(-1)">
@@ -443,24 +450,24 @@
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
   import { useCategory } from '../../../store/modules/store-setting/category'
   import { useProduct } from '../../../store/modules/store-setting/products'
+  import { useAdjustPrice } from '../../../store/modules/store-setting/adjust-price'
   import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
-  import { cloneDeep } from 'lodash-es'
+  import { cloneDeep, filter } from 'lodash-es'
   import type { UnwrapRef } from 'vue'
   import dayjs, { Dayjs } from 'dayjs'
   import type { TableColumnType } from 'ant-design-vue'
-  import { useAdjustPrice } from '../../../store/modules/store-setting/adjust-price'
   import { TreeSelect } from 'ant-design-vue'
   const SHOW_PARENT = TreeSelect.SHOW_ALL
-  const dataAdjustPrice = useAdjustPrice()
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
   // const selectedWard = ref(null)
   const router = useRouter()
+  const route = useRoute()
   const toast = useToast()
   const isAddress = ref(true)
   const isInfor = ref(true)
@@ -474,12 +481,19 @@
   const dataAttribute = useAttributeProduct()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
-  console.log(listWeb.value)
-
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
   dataProduct.getListProductNoPagingAction()
-  const { listAllProduct, listFiltered } = storeToRefs(dataProduct)
+  const { listAllProduct } = storeToRefs(dataProduct)
+  const dataAdjustPrice = useAdjustPrice()
+  dataAdjustPrice.getDetailAdjustPriceAction(Number(route.params.id))
+  const {
+    detailAdjustPrice,
+    listPeriod,
+    listCodeWeb,
+    listCodeCategory,
+    listTableDetail,
+  } = storeToRefs(dataAdjustPrice)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
@@ -491,6 +505,13 @@
       title: 'STT',
       key: 'key',
       dataIndex: 'key',
+      // customCell: (record, rowIndex, column) => {
+      //   console.log(record)
+      //   console.log(rowIndex)
+      //   console.log(column)
+      //   if (record.key == 0) return { rowSpan: 2 }
+      //   else return { rowSpan: 1 }
+      // },
     },
     {
       title: 'Sản phẩm/Phiên bản',
@@ -623,40 +644,37 @@
   ])
   const addTime = () => {
     let data = {
+      title: '',
       date_start: '',
       date_end: '',
       listed_price: '',
       wholesale_price: '',
       retail_price: '',
     }
-    timeAdjustPrice.push(data)
+    listPeriod.value.push(data)
   }
   const removeTime = (index: number) => {
-    timeAdjustPrice.splice(index, 1)
+    listPeriod.value.splice(index, 1)
   }
   // const sharedOnCell = (_, index) => {
   //   if (index === 4) {
   //     return { colSpan: 0 }
   //   }
   // }
-  const listProduct = ref([])
-  const getDetailAdjust = () => {
+  // const listProduct = ref([])
+  const filterProduct = () => {
     let arrProduct = []
-    console.log(listProduct.value)
-
-    arrProduct = listProduct.value.map((item: any) => ({
-      name: item.productName,
+    arrProduct = listTableDetail.value.map((item: any) => ({
+      name: item.name,
       sku: item.sku,
       unit: item.unit,
       code: item.code,
     }))
-    console.log(arrProduct)
-
     const arrAll = arrProduct.map((item: any, index: number) => {
       return {
         ...item,
         key: index,
-        detail: timeAdjustPrice.map((item2: any) => ({
+        detail: listPeriod.value.map((item2: any) => ({
           date_start: dayjs(item2.date_start).format('DD/MM/YYYY'),
           date_end: dayjs(item2.date_end).format('DD/MM/YYYY'),
           listed_price: item2.listed_price,
@@ -666,7 +684,7 @@
         has_custom: '0',
       }
     })
-    console.log(arrAll)
+
     // for (let i = 0; i < arrProduct.length; i++) {
     //   const item1 = arrProduct[i]
 
@@ -683,29 +701,23 @@
     //       wholesale_price: item2.wholesale_price,
     //       retail_price: item2.retail_price,
     //     }
+
     //     arrAll.push(newItem)
     //   }
     // }
-    dataTableDetail.value = arrAll
-  }
-  const filterProduct = () => {
-    let data = {
-      nganh_hang: adjust.category,
-      website: adjust.website,
-    }
-    dataProduct.filterProductAction(data)
+    listTableDetail.value = arrAll
   }
   const editableData: UnwrapRef<Record<any, any>> = reactive({})
 
   const edit = (key: string) => {
     editableData[key] = cloneDeep(
-      dataTableDetail.value.filter((item: any) => key === item.key)[0]
+      listTableDetail.value.filter((item: any) => key === item.key)[0]
     )
     console.log(editableData)
   }
   const save = (key: string) => {
     Object.assign(
-      dataTableDetail.value.filter((item: any) => key === item.key),
+      listTableDetail.value.filter((item: any) => key === item.key),
       editableData[key]
     )
     delete editableData[key]
@@ -731,10 +743,8 @@
     } else {
       showManageChoice.value = false
     }
-    console.log(options)
-
-    listProduct.value = options.map((item: any) => ({
-      productName: item.name,
+    listTableDetail.value = options.map((item: any) => ({
+      name: item.name,
       sku: item.sku,
       code: item.code,
       unit: item.unit_code,
@@ -787,14 +797,20 @@
   // const handleChangeWard = (value: number, name: any) => {
   //   attribute.address = name.title + ', ' + attribute.address
   // }
-  const createAdjustPrice = () => {
+  const createAttribute = () => {
     let data = {
-      title: adjust.title,
-      website_list: adjust.website,
-      nganh_hang_list: adjust.category,
-      product_code_list: adjust.product,
-      period: timeAdjustPrice,
-      product_price_detail: dataTableDetail.value.map((item: any) => ({
+      title: detailAdjustPrice.value.title,
+      website_list: listCodeWeb.value,
+      nganh_hang_list: listCodeCategory.value,
+      product_code_list: detailAdjustPrice.value.json_product_code_list,
+      period: listPeriod.value.map((item: any) => ({
+        date_start: dayjs(item.date_start).format('YYYY/MM/DD'),
+        date_end: dayjs(item.date_end).format('YYYY/MM/DD'),
+        listed_price: item.listed_price,
+        wholesale_price: item.wholesale_price,
+        retail_price: item.retail_price,
+      })),
+      product_price_detail: listTableDetail.value.map((item: any) => ({
         name: item.name,
         sku: item.sku,
         code: item.code,
@@ -814,7 +830,14 @@
       })),
     }
 
-    dataAdjustPrice.createAdjustPriceAction(data, toast, router, EndTimeLoading)
+    dataAdjustPrice.updateAdjustPriceAction(
+      Number(route.params.id),
+      data,
+      router,
+      toast,
+      EndTimeLoading
+    )
+    // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>
 

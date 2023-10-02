@@ -189,7 +189,6 @@
   }
   const handleOpenDetail = () => {
     isOpenDetail.value = true
-    console.log(isOpenDetail)
   }
   const handleCloseDetail = () => {
     isOpenDetail.value = false
@@ -217,7 +216,6 @@
       password: changePassword.password,
       password_confirmation: changePassword.password_confirmation,
     }
-    console.log(data)
 
     if (data.password == data.password_confirmation) {
       passSetting.changePassAction(data, toast, router, handleCloseDetail)

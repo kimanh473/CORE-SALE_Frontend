@@ -118,7 +118,6 @@
       password_confirmation: resetPassword.password_confirmation,
       code: resetPassword.code,
     }
-    console.log(data)
     passSetting.changePassByEmailConfirmAction(data, toast, router)
     // if (format.value.test(data.password)) {
     //   if (data.password == data.password_confirmation) {

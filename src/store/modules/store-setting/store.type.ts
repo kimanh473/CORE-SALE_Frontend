@@ -154,6 +154,7 @@ interface DataAdjustPrice {
     json_nganh_hang_list: Array<string>
     json_period: Array<Period>
     json_product_price_detail: Array<ProductPriceDetail>
+    json_product_code_list: Array<string>
 
 }
 interface Period {
