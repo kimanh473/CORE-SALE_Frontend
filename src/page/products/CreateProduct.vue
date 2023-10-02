@@ -801,6 +801,7 @@
                           "
                           checkedValue="1"
                           unCheckedValue="0"
+                          valueFormat="DD/MM/YYYY"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
                             <plus-outlined />
@@ -1096,7 +1097,9 @@
       )
     } else if (input_name.includes('date')) {
       console.log(dayjs(event, 'DD/MM/YYYY'))
-      dataCreateProduct.value[input_name] = dayjs(event,'DD/MM/YYYY').format('YYYY-MM-DD')
+      dataCreateProduct.value[input_name] = dayjs(event, 'DD/MM/YYYY').format(
+        'YYYY-MM-DD'
+      )
     } else {
       dataCreateProduct.value[input_name] = event.target.value
     }

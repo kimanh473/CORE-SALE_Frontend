@@ -45,7 +45,8 @@ export const typeProduct = [
         attribute: {
             class: 'form-group-label',
             placeholder: 'Chọn ngày',
-            format: 'DD/MM/YYYY'
+            format: 'DD-MM-YYYY',
+            valueFormat: 'DD-MM-YYYY'
         }
     },
     {

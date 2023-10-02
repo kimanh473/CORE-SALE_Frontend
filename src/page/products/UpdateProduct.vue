@@ -539,7 +539,9 @@
                 :key="index1"
                 class="form-large-full"
               >
-                {{ detailProduct[item1.attribute_code] }}
+                {{ item1.attribute_code }}/{{
+                  detailProduct[item1.attribute_code]
+                }}/{{ detailProduct.create_date }}
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
@@ -557,7 +559,7 @@
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
-                    valueFormat="DD/MM/YYYY"
+                    valueFormat="DD-MM-YYYY"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
@@ -807,6 +809,9 @@
                           :options="itemSpec1.option_detail"
                           v-model:checked="itemSpec1.default_value"
                           v-model:file-list="fileList"
+                          v-model:value="
+                            detailProduct[itemSpec1.attribute_code]
+                          "
                           list-type="picture-card"
                           :fieldNames="{ label: 'title', value: 'id' }"
                           v-bind="{ ...map.attribute }"
@@ -815,6 +820,7 @@
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
                           "
+                          valueFormat="DD-MM-YYYY"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
                             <plus-outlined />
@@ -1023,9 +1029,10 @@
   const { listTreeCategory } = storeToRefs(dataCategory)
   const route = useRoute()
   const dataProduct = useProduct()
-  dataProduct.getDetailProductAction(Number(route.params.id))
+  dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
+    console.log(detailProduct.value)
+  })
   const { detailProduct } = storeToRefs(dataProduct)
-  console.log(detailProduct.value)
 
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()

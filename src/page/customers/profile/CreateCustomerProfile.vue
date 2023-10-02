@@ -197,12 +197,19 @@
                                     mode="multiple"
                                   >
                                   </a-select>
-                                  <!--                                  <p
-                                                                        v-if="messageError?.address_state_id"
-                                                                        class="text-red-600"
-                                                                    >
-                                                                      {{ messageError?.address_state_id[0] }}
-                                                                    </p>-->
+                                </div>
+                              </div>
+                              <div>
+                                <label for="" class="form-group-label"
+                                  >Mã số thuế<span class="text-red-600"></span
+                                ></label>
+                                <div>
+                                  <input
+                                    type="text"
+                                    class="form-control-input"
+                                    placeholder="Nhập mã số thuế"
+                                    v-model="customerProfile.tax_code"
+                                  />
                                 </div>
                               </div>
 
@@ -878,6 +885,7 @@
     website: [],
     customer_group: '',
     pay_address_detail: '',
+    tax_code: '',
   })
 
   const createCustomerProfile = () => {
