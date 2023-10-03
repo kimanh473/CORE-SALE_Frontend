@@ -69,8 +69,10 @@
                               </div>
                               <div>
                                 <label for="" class="form-group-label"
-                                  >Họ & tên<span class="text-red-600"></span
-                                ></label>
+                                  >Họ & tên<span class="text-red-600"
+                                    >*</span
+                                  ></label
+                                >
                                 <div>
                                   <input
                                     type="text"
