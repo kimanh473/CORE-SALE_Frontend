@@ -61,8 +61,7 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Website<span class="text-red-600">* </span>
-                        <span></span
+                        >Website<span class="text-red-600"> </span> <span></span
                       ></label>
                       <div>
                         <a-select
@@ -86,8 +85,8 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Ngành hàng<span class="text-red-600">*</span></label
-                      >
+                        >Ngành hàng<span class="text-red-600"></span
+                      ></label>
                       <div>
                         <a-tree-select
                           placeholder="Chọn ngành hàng"

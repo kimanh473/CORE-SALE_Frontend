@@ -398,8 +398,8 @@
             </div> -->
             <div>
               <label for="" class="form-group-label"
-                >Nhóm thuộc tính<span class="text-red-600">* </span>
-                <span></span
+                >Nhóm thuộc tính{{ detailProduct.create_date
+                }}<span class="text-red-600">* </span> <span></span
               ></label>
               <div>
                 <a-select
@@ -539,7 +539,9 @@
                 :key="index1"
                 class="form-large-full"
               >
-                <!-- {{ dayjs(detailProduct['create_date']) }} -->
+                {{ item1.attribute_code }}/{{
+                  detailProduct[item1.attribute_code]
+                }}/{{ detailProduct.create_date }}
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
@@ -557,8 +559,7 @@
                     v-show="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
-                    :name="dayjs()"
-                    format="YYYY-MM-DD"
+                    valueFormat="DD-MM-YYYY"
                   >
                     <div v-if="item1.attribute_code == 'image'">
                       <div>
@@ -808,6 +809,9 @@
                           :options="itemSpec1.option_detail"
                           v-model:checked="itemSpec1.default_value"
                           v-model:file-list="fileList"
+                          v-model:value="
+                            detailProduct[itemSpec1.attribute_code]
+                          "
                           list-type="picture-card"
                           :fieldNames="{ label: 'title', value: 'id' }"
                           v-bind="{ ...map.attribute }"
@@ -816,6 +820,7 @@
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
                           "
+                          valueFormat="DD-MM-YYYY"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
                             <plus-outlined />
@@ -1024,8 +1029,11 @@
   const { listTreeCategory } = storeToRefs(dataCategory)
   const route = useRoute()
   const dataProduct = useProduct()
-  dataProduct.getDetailProductAction(Number(route.params.id))
+  dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
+    console.log(detailProduct.value)
+  })
   const { detailProduct } = storeToRefs(dataProduct)
+
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -1040,6 +1048,7 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
+  const dateFormat = 'DD/MM/YYYY'
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {

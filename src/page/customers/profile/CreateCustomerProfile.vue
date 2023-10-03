@@ -69,8 +69,10 @@
                               </div>
                               <div>
                                 <label for="" class="form-group-label"
-                                  >Họ & tên<span class="text-red-600"></span
-                                ></label>
+                                  >Họ & tên<span class="text-red-600"
+                                    >*</span
+                                  ></label
+                                >
                                 <div>
                                   <input
                                     type="text"
@@ -93,8 +95,11 @@
                                 <div>
                                   <a-space direction="vertical" :size="12">
                                     <a-date-picker
+                                      placeholder="chọn ngày"
+                                      @change="changeDate"
                                       v-model:value="value_birth_day"
                                       :format="dateFormat"
+                                      :valueFormat="dateFormat"
                                     />
                                   </a-space>
                                   <!--                                  <p
@@ -194,12 +199,19 @@
                                     mode="multiple"
                                   >
                                   </a-select>
-                                  <!--                                  <p
-                                                                        v-if="messageError?.address_state_id"
-                                                                        class="text-red-600"
-                                                                    >
-                                                                      {{ messageError?.address_state_id[0] }}
-                                                                    </p>-->
+                                </div>
+                              </div>
+                              <div>
+                                <label for="" class="form-group-label"
+                                  >Mã số thuế<span class="text-red-600"></span
+                                ></label>
+                                <div>
+                                  <input
+                                    type="text"
+                                    class="form-control-input"
+                                    placeholder="Nhập mã số thuế"
+                                    v-model="customerProfile.tax_code"
+                                  />
                                 </div>
                               </div>
 
@@ -657,7 +669,11 @@
 
   const dateFormat = 'DD/MM/YYYY'
   const dateFormatRequest = 'YYYY/MM/DD'
-  const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat))
+  const value_birth_day = ref<Dayjs>()
+  const changeDate = (a: string, b: any) => {
+    console.log(a)
+    console.log(b)
+  }
 
   const dataCustomerProfile = useCustomerProfile()
   const dataLocation = useLocation()
@@ -871,6 +887,7 @@
     website: [],
     customer_group: '',
     pay_address_detail: '',
+    tax_code: '',
   })
 
   const createCustomerProfile = () => {
