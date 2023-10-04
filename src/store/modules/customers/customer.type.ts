@@ -13,6 +13,8 @@ interface DataCustomerProfile {
     list_address: string
     list_pay_address: string
     customer_group: string
+    website_json: Array<string>
+    tax_code: string
 }
 interface DetailDeliveryAddress {
     title: string,

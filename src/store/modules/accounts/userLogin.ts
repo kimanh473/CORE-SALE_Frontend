@@ -5,15 +5,24 @@ export const userLogin = defineStore("UserLogin", {
     state: () => ({
         dataLogin: null,
     }),
-    getters: {},
+    getters: {
+        setDataLogin: (state: any) => {
+            return (payload: any) => {
+                localStorage.setItem("TOKEN", payload.token);
+                localStorage.setItem("role", payload?.roles[0]);
+                localStorage.setItem("authenticated", 'true');
+                state.dataLogin = payload
+            }
+        },
+    },
     actions: {
 
-        setDataLogin(payload: any) {
-            localStorage.setItem("TOKEN", payload.token);
-            localStorage.setItem("role", payload?.roles[0]);
-            localStorage.setItem("authenticated", 'true');
-            this.dataLogin = payload
-        },
+        // setDataLogin(payload: any) {
+        //     localStorage.setItem("TOKEN", payload.token);
+        //     localStorage.setItem("role", payload?.roles[0]);
+        //     localStorage.setItem("authenticated", 'true');
+        //     this.dataLogin = payload
+        // },
 
         LoginAction(user: object, router: any) {
             UserLoginApi(user)

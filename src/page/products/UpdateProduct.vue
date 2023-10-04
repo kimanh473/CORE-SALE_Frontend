@@ -556,7 +556,7 @@
                     list-type="picture-card"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     v-bind="{ ...map.attribute }"
-                    v-show="map.code == item1.frontend_input"
+                    v-if="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
                     valueFormat="DD-MM-YYYY"
@@ -815,7 +815,7 @@
                           list-type="picture-card"
                           :fieldNames="{ label: 'title', value: 'id' }"
                           v-bind="{ ...map.attribute }"
-                          v-show="map.code == itemSpec1.frontend_input"
+                          v-if="map.code == itemSpec1.frontend_input"
                           @preview="handlePreview"
                           @change="
                             handleChange($event, itemSpec1.attribute_code)

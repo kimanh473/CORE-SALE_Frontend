@@ -894,7 +894,7 @@
     let data = {
       code: customerProfile.code,
       name: customerProfile.name,
-      birth_day: value_birth_day.value.format(dateFormatRequest),
+      birth_day: dayjs(value_birth_day.value).format(dateFormatRequest),
       gender: customerProfile.gender,
       email: customerProfile.email,
       phone: customerProfile.phone,
@@ -903,7 +903,6 @@
       detail_delivery_address: dataOption,
       detail_pay_address: payDataOption,
     }
-
     dataCustomerProfile.createCustomerProfileAction(
       data,
       toast,

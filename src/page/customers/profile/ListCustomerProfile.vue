@@ -350,7 +350,7 @@
       profile_code: customerAccount.profile_code,
       username: customerAccount.username,
       fullname: customerAccount.fullname,
-      birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+      birth_day: dayjs(birth_day_dd_mm_yy.value).format(dateFormatRequest),
       gender: customerAccount.gender,
       email_personal: customerAccount.email,
       phone: customerAccount.phone,

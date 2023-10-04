@@ -494,6 +494,7 @@
     listCodeCategory,
     listTableDetail,
   } = storeToRefs(dataAdjustPrice)
+
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
