@@ -82,7 +82,7 @@
     width="540px"
   >
     <div class="outer">
-      <div class="p-4">
+      <div class="p-3">
         <p>Tạo mới tài khoản khách hàng</p>
         <div class="w-full inner">
           <Transition :duration="550" name="nested">

@@ -4,6 +4,7 @@ import { getAllAttributeProductsApi, deleteAttributeApi, createAttributeApi, get
 export const useAttributeProduct = defineStore("AttributeProduct", {
     state: () => ({
         listAttributeProduct: [] as DataAttribute[],
+        listAttributeProductOption: [] as DataAttribute[],
         detailAttribute: {} as DataAttribute,
         listAttributeSpecification: [] as DataAttribute[]
     }),
@@ -24,7 +25,15 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
         //     }))
         // },
         getListAttribute: (state: any) => {
-            return (payload: any) => state.listAttributeProduct = payload
+            return (payload: any) => {
+                state.listAttributeProduct = payload
+                state.listAttributeProductOption = payload.map((item: DataAttribute) => ({
+                    id: item.id,
+                    key: item.id.toString(),
+                    code: item.attribute_code,
+                    title: item.frontend_label
+                }))
+            }
 
         },
         getDetailAttribute: (state: any) => {
@@ -35,12 +44,6 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
         },
     },
     actions: {
-        // getListInventory(payload: any) {
-        //     this.listInventory = payload.data?.data
-        // },
-        // getDetailInventory(payload: any) {
-        //     this.detailInventory = payload.data
-        // },
         async getListAttributeAction() {
             await getAllAttributeProductsApi()
                 .then((payload: any) => {
@@ -76,7 +79,7 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                         EndTimeLoading();
                     } else {
                         toast.success("Tạo mới thành công");
-                        router.push('/list-attribute-product');
+                        router.push('/list-attribute-group');
                         EndTimeLoading();
                     }
                 })
@@ -102,7 +105,7 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                         EndTimeLoading();
                     } else {
                         toast.success("Cập nhật thành công")
-                        router.push('/list-attribute-product')
+                        router.push('/list-attribute-group')
                         EndTimeLoading()
                     }
                 })

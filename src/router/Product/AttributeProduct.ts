@@ -57,5 +57,29 @@ const attribute = [
         },
         beforeEnter: requireAuth,
     },
+    {
+        path: '/list-attribute-category',
+        component: () => import('../../page/products/AttributeCategory/ListAttributeCategory.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    },
+    {
+        path: '/create-attribute-category',
+        component: () => import('../../page/products/AttributeCategory/CreateAttributeCategory.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    },
+    {
+        path: '/update-attribute-category/:id',
+        component: () => import('../../page/products/AttributeCategory/UpdateAttributeCategory.vue'),
+        meta: {
+            layout: "base-layout",
+        },
+        beforeEnter: requireAuth,
+    },
 ]
 export default attribute;
