@@ -505,6 +505,13 @@
                 submenuGroup: 'Sản phẩm',
                 permission: [''],
               },
+              {
+                icon: '',
+                label: 'Bộ thuộc tính sản phẩm',
+                to: '/list-attribute-category',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
               // {
               //   icon: '',
               //   label: 'Tiền tệ',

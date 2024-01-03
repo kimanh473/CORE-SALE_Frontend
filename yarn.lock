@@ -596,6 +596,18 @@ acorn@^8.8.0:
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.8.2.tgz"
   integrity sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==
 
+ag-grid-community@~31.0.1:
+  version "31.0.1"
+  resolved "https://registry.npmjs.org/ag-grid-community/-/ag-grid-community-31.0.1.tgz"
+  integrity sha512-RZQlW1DTOJHsUR/tnbnTJQKgAnDlHi05YYyTe5AgNor/1TlX1hoYdcqrGsJjvcHQgTjeEgzWOL0yf+KcqXZzxg==
+
+ag-grid-vue3@^31.0.1:
+  version "31.0.1"
+  resolved "https://registry.npmjs.org/ag-grid-vue3/-/ag-grid-vue3-31.0.1.tgz"
+  integrity sha512-+eSvIl5SEk30dZwVbOBwilsUW8rvA+CRxl2aptklvi+IyOstT9AGAaHGHmkBFmgYk6t0KHcna/j9JjLnea8s5Q==
+  dependencies:
+    ag-grid-community "~31.0.1"
+
 aggregate-error@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/aggregate-error/-/aggregate-error-3.1.0.tgz"
@@ -852,9 +864,9 @@ camelcase-css@^2.0.1:
   integrity sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==
 
 caniuse-lite@^1.0.30001449, caniuse-lite@^1.0.30001464:
-  version "1.0.30001489"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001489.tgz"
-  integrity sha512-x1mgZEXK8jHIfAxm+xgdpHpk50IN3z3q3zP261/WS+uvePxW8izXuCu6AHz0lkuYTlATDehiZ/tNyYBdSQsOUQ==
+  version "1.0.30001572"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001572.tgz"
+  integrity sha512-1Pbh5FLmn5y4+QhNyJE9j3/7dK44dGB83/ZMjv/qJk86TvDbjk0LosiZo0i0WB0Vx607qMX9jYrn1VLHCkN4rw==
 
 chalk@5.2.0:
   version "5.2.0"

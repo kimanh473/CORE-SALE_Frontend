@@ -2,14 +2,14 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-            <img src="../assets/images/btp.png" />
-          </div> -->
+                <img src="../assets/images/btp.png" />
+              </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
       <Header :is-show-search="false">
         <template v-slot:name
-          ><p class="pl-5 text-[16px]">Cập nhật nhóm thuộc tính</p></template
+          ><p class="pl-5 text-[16px]">Cập nhật bộ thuộc tính</p></template
         >
       </Header>
     </template>
@@ -19,10 +19,10 @@
           class="text-left px-4 py-2 w-full h-full format-scroll form-plus-over flex"
         >
           <!-- <a-anchor class="w-[200px] h-[300px] border-2">
-              <a-anchor-link href="#infor-common" title="Thông tin chung" />
-              <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
-              <a-anchor-link href="#address" title="Địa chỉ" />
-            </a-anchor> -->
+                  <a-anchor-link href="#infor-common" title="Thông tin chung" />
+                  <a-anchor-link href="#infor-contact" title="Thông tin liên lạc" />
+                  <a-anchor-link href="#address" title="Địa chỉ" />
+                </a-anchor> -->
           <div id="infor-common" class="w-full ml-4">
             <h4
               class="form-section-title form-small cursor-pointer"
@@ -42,7 +42,7 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Tên nhóm thuộc tính<span class="text-red-600"
+                        >Tên bộ thuộc tính<span class="text-red-600"
                           >*</span
                         ></label
                       >
@@ -50,8 +50,8 @@
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập tên nhóm thuộc tính"
-                          v-model="detailAttributeGroup.title"
+                          placeholder="Nhập tên bộ thuộc tính"
+                          v-model="detailAttributeCategory.title"
                         />
                       </div>
                     </div>
@@ -59,7 +59,7 @@
                   <div class="form-small">
                     <div>
                       <label for="" class="form-group-label"
-                        >Mã nhóm thuộc tính<span class="text-red-600"
+                        >Mã bộ thuộc tính<span class="text-red-600"
                           >*</span
                         ></label
                       >
@@ -67,9 +67,24 @@
                         <input
                           type="text"
                           class="form-control-input"
-                          placeholder="Nhập mã nhóm thuộc tính"
-                          v-model="detailAttributeGroup.code"
+                          placeholder="Nhập mã bộ thuộc tính"
+                          v-model="detailAttributeCategory.code"
                         />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-small">
+                    <div>
+                      <label for="" class="form-group-label"
+                        >Trạng thái<span class="text-red-600">*</span></label
+                      >
+                      <div>
+                        <a-switch
+                          v-model:checked="detailAttributeCategory.status"
+                          checkedValue="1"
+                          unCheckedValue="0"
+                        />
+                        &nbsp; Kích hoạt
                       </div>
                     </div>
                   </div>
@@ -81,7 +96,7 @@
                 @click="isInfor = !isInfor"
                 class="cursor-pointer form-group-label"
               >
-                Tên nhóm thuộc tính*
+                Tên bộ thuộc tính*
               </h2>
             </div>
 
@@ -160,7 +175,7 @@
     <template v-slot:footer
       ><div class="bg-slate-300">
         <div class="p-4 text-left">
-          <button class="button-modal" @click="updateAttribute()">
+          <button class="button-modal" @click="updateAttributeCategory()">
             Cập nhật
           </button>
           <button class="button-close-modal" @click="router.go(-1)">
@@ -201,12 +216,13 @@
   const dataAttribute = useAttributeProduct()
   const groupAttribute = useAttributeGroup()
   const { listAttributeProductOption } = storeToRefs(dataAttribute)
-  const { detailAttributeGroup } = storeToRefs(groupAttribute)
-  console.log(detailAttributeGroup)
-
   dataAttribute.getListAttributeAction()
-  const leftRowData = computed(() => listAttributeProductOption.value)
+  groupAttribute.getListAttributeGroupAction()
 
+  const { listAttributeGroupOption, detailAttributeCategory } =
+    storeToRefs(groupAttribute)
+  console.log(detailAttributeCategory)
+  const leftRowData = computed(() => listAttributeGroupOption.value)
   const rightRowData = ref([])
   const leftApi = ref(null)
   const rightApi = ref(null)
@@ -218,15 +234,15 @@
     filter: true,
   })
   groupAttribute
-    .getDetailAttributeGroupAction(Number(route.params.id))
+    .getDetailSetAttributeGroupAction(Number(route.params.id))
     .then(() => {
       rightRowData.value = [
-        ...detailAttributeGroup?.value.attribute_detail.map(
-          (item: DataAttribute) => ({
+        ...detailAttributeCategory?.value.json_group_attribute_detail.map(
+          (item: any) => ({
             id: item.id,
             key: item.id.toString(),
-            code: item.attribute_code,
-            title: item.frontend_label,
+            code: item.code,
+            title: item.title,
           })
         ),
       ]
@@ -252,7 +268,7 @@
     },
     {
       field: 'title',
-      headerName: 'Thuộc tính có thể chọn',
+      headerName: 'Nhóm thuộc tính có thể chọn',
       filterParams: {
         filterOptions: [
           {
@@ -291,7 +307,7 @@
     },
     {
       field: 'title',
-      headerName: 'Thuộc tính đã chọn',
+      headerName: 'Nhóm thuộc tính đã chọn',
       filterParams: {
         filterOptions: [
           {
@@ -366,13 +382,23 @@
       addGridDropZone()
     }
   }
-  const updateAttribute = () => {
+
+  const attribute = reactive({
+    title: '',
+    code: '',
+    status: '0',
+    json_group_attribute: [],
+    json_group_specification: [],
+  })
+  const updateAttributeCategory = () => {
     let data = {
-      title: detailAttributeGroup.value.title,
-      code: detailAttributeGroup.value.code,
-      json_attribute: rightRowData.value.map((item: any) => item.code),
+      title: detailAttributeCategory.value.title,
+      code: detailAttributeCategory.value.code,
+      status: detailAttributeCategory.value.status,
+      json_group_attribute: rightRowData.value.map((item: any) => item.code),
+      json_group_specification: <any>[],
     }
-    groupAttribute.updateAttributeGroupAction(
+    groupAttribute.updateAttributeCategoryAction(
       Number(route.params.id),
       data,
       toast,
