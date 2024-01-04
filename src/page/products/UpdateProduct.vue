@@ -539,9 +539,6 @@
                 :key="index1"
                 class="form-large-full"
               >
-                {{ item1.attribute_code }}/{{
-                  detailProduct[item1.attribute_code]
-                }}/{{ detailProduct.create_date }}
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
@@ -1028,9 +1025,17 @@
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
   const route = useRoute()
+  const fileList = ref<UploadProps['fileList']>([])
   const dataProduct = useProduct()
   dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
-    console.log(detailProduct.value)
+    fileList.value = detailProduct.value.image.map(
+      (item: Array<string>, index: number) => ({
+        uid: index,
+        name: `image ${index}`,
+        status: 'done',
+        url: `http://coresale-betest.btpholdings.vn:2000/${item}`,
+      })
+    )
   })
   const { detailProduct } = storeToRefs(dataProduct)
 
@@ -1163,7 +1168,7 @@
   const isConfig = ref(true)
   const isDetail = ref(true)
   const isInfor = ref(true)
-  const fileList = ref<UploadProps['fileList']>([])
+
   const handleCancelImage = () => {
     previewVisible.value = false
     previewTitle.value = ''
