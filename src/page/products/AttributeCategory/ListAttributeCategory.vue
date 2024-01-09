@@ -319,7 +319,7 @@
   }
   const handleDelete = () => {
     isLoading.value = true
-    dataAttributeGroup.deleteGroupAttributeAction(
+    dataAttributeGroup.deleteAttributeCategoryAction(
       Number(idSelected.value),
       EndTimeLoading,
       toast,

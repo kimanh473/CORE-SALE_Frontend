@@ -35,6 +35,10 @@ const createAttributeCategoryApi = (data: object) => {
 const updateAttributeCategoryApi = (id: number, data: object) => {
     return httpClient.post(`/system-manage/product-category/update/${id}`, data);
 };
+//xóa bộ thuộc tính
+const deleteAttributeCategoryApi = (id: number) => {
+    return httpClient.post(`/system-manage/product-category/delete/${id}`);
+};
 export {
     getAllAttributeGroupApi,
     deleteAttributeGroupApi,
@@ -44,5 +48,6 @@ export {
     updateAttributeGroupApi,
     getDetailAttributeGroupApi,
     createAttributeCategoryApi,
-    updateAttributeCategoryApi
+    updateAttributeCategoryApi,
+    deleteAttributeCategoryApi
 };
