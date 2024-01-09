@@ -79,7 +79,7 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                         EndTimeLoading();
                     } else {
                         toast.success("Tạo mới thành công");
-                        router.push('/list-attribute-group');
+                        router.push('/list-attribute-product');
                         EndTimeLoading();
                     }
                 })
@@ -105,7 +105,7 @@ export const useAttributeProduct = defineStore("AttributeProduct", {
                         EndTimeLoading();
                     } else {
                         toast.success("Cập nhật thành công")
-                        router.push('/list-attribute-group')
+                        router.push('/list-attribute-product')
                         EndTimeLoading()
                     }
                 })

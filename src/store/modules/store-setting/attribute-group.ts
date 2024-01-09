@@ -8,7 +8,8 @@ import {
     updateAttributeGroupApi,
     getDetailAttributeGroupApi,
     createAttributeCategoryApi,
-    updateAttributeCategoryApi
+    updateAttributeCategoryApi,
+    deleteAttributeCategoryApi
 } from '../../../services/SettingStoreServices/attributeGroup.service'
 
 export const useAttributeGroup = defineStore("AttributeGroup", {
@@ -217,6 +218,24 @@ export const useAttributeGroup = defineStore("AttributeGroup", {
                     if (res.data.status == "success") {
                         toast.success("Xóa thành công", 500);
                         this.getListAttributeGroupAction()
+                    } else {
+                        toast.error(res.data.messages, 500);
+                    }
+                    EndTimeLoading();
+                    handleCloseConfirm();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    handleCloseConfirm();
+                    EndTimeLoading();
+                });
+        },
+        deleteAttributeCategoryAction(id: number, EndTimeLoading: Function, toast: any, handleCloseConfirm: Function) {
+            deleteAttributeCategoryApi(id)
+                .then((res) => {
+                    if (res.data.status == "success") {
+                        toast.success("Xóa thành công", 500);
+                        this.getListSetAttributeGroupAction()
                     } else {
                         toast.error(res.data.messages, 500);
                     }
