@@ -1,25 +1,27 @@
 <template>
-  <!-- <a-form
+  <a-form
     :model="detailProduct"
     name="basic"
     autocomplete="off"
-  > -->
-  <base-layout>
-    <template v-slot:sidebar>
-      <!-- <div class="logo">
+    @finish="onFinish"
+    @finishFailed="onFinishFailed"
+  >
+    <base-layout>
+      <template v-slot:sidebar>
+        <!-- <div class="logo">
               <img src="../assets/images/btp.png" />
             </div> -->
-      <SideBar />
-    </template>
-    <template v-slot:header>
-      <Header :is-show-search="false">
-        <template v-slot:name
-          ><p class="pl-5 text-[16px]">Sửa sản phẩm</p></template
-        >
-      </Header>
-    </template>
-    <template v-slot:content class="relative">
-      <!-- <div
+        <SideBar />
+      </template>
+      <template v-slot:header>
+        <Header :is-show-search="false">
+          <template v-slot:name
+            ><p class="pl-5 text-[16px]">Sửa sản phẩm</p></template
+          >
+        </Header>
+      </template>
+      <template v-slot:content class="relative">
+        <!-- <div
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div></div>
@@ -30,31 +32,32 @@
           <p class="text-[14px] mt-1 px-1">Hủy</p>
         </div>
       </div> -->
-      <Transition :duration="550" name="nested">
-        <div class="flex form-large-70 pl-[150px]">
-          <a-anchor
-            :wrapperStyle="{
-              width: '200px',
-              height: 'fit-content',
-              position: 'fixed',
-              padding: '0',
-              margin: '0',
-              top: '72px',
-              background: 'white',
-              textAlign: 'center',
-            }"
-            :showInkInFixed="true"
-            class="min-w-[200px] min-h-full mr-[10px]"
-          >
-            <a-anchor-link
-              v-for="(item, index) in indexAttribute"
-              :key="index"
-              :href="'#' + item.title"
-              :title="item.title"
-            />
-          </a-anchor>
+        <div class="flex justify-center">
+          <div>
+            <a-anchor
+              :wrapperStyle="{
+                width: '200px',
+                height: 'fit-content',
+                position: 'fixed',
+                padding: '0',
+                margin: '0',
+                top: '72px',
+                background: 'white',
+                textAlign: 'center',
+              }"
+              :showInkInFixed="true"
+              class="min-w-[200px] min-h-full mr-[10px]"
+            >
+              <a-anchor-link
+                v-for="(item, index) in indexAttribute"
+                :key="index"
+                :href="'#' + item.title"
+                :title="item.title"
+              />
+            </a-anchor>
+          </div>
           <div
-            class="text-left px-4 py-2 w-full h-full format-scroll form-large-full bg-white"
+            class="text-left px-4 py-2 w-full h-full format-scroll form-large-70 bg-white"
           >
             <!-- <div id="infor-common">
               <div class="w-full ml-4">
@@ -493,14 +496,14 @@
                   >Thuế<span class="text-red-600"></span> <span></span
                 ></label>
                 <div>
-                  <!-- <a-select
-                      class="w-full"
-                      placeholder="Chọn loại thuế"
-                      :options="listTax"
-                      v-model:value="product.taxID"
-                      :fieldNames="{ label: 'title', value: 'id' }"
-                    >
-                    </a-select> -->
+                  <a-select
+                    class="w-full"
+                    placeholder="Chọn loại thuế"
+                    :options="listTax"
+                    v-model:value="product.taxID"
+                    :fieldNames="{ label: 'title', value: 'id' }"
+                  >
+                  </a-select>
                 </div>
               </div>
             </div>
@@ -579,42 +582,42 @@
             </div>
             <div class="pt-2 pr-2 w-[650px]">
               Trạng thái sản phẩm
-              <!-- <a-select
-                  class="form-control-input"
-                  placeholder="Chọn trạng thái"
-                  :options="statusProduct"
-                  v-model:value="detailProduct.status"
-                  @change="handleChangeUnit"
-                >
-                </a-select> -->
+              <a-select
+                class="form-control-input"
+                placeholder="Chọn trạng thái"
+                :options="statusProduct"
+                v-model:value="detailProduct.status"
+                @change="handleChangeUnit"
+              >
+              </a-select>
             </div>
             <div>
               <label for="" class="form-group-label"
                 >Hình ảnh<span class="text-red-600"></span
               ></label>
               <div>
-                <!-- <a-upload
-                    class="form-group-label"
-                    list-type="picture-card"
-                    @preview="handlePreview"
-                    v-model:file-list="fileProductList"
+                <a-upload
+                  class="form-group-label"
+                  list-type="picture-card"
+                  @preview="handlePreview"
+                  v-model:file-list="fileProductList"
+                >
+                  <div>
+                    <plus-outlined />
+                    <div style="margin-top: 8px">Upload</div>
+                  </div>
+                  <a-modal
+                    :visible="previewVisible"
+                    :footer="null"
+                    @cancel="handleCancelImage"
                   >
-                    <div>
-                      <plus-outlined />
-                      <div style="margin-top: 8px">Upload</div>
-                    </div>
-                    <a-modal
-                      :visible="previewVisible"
-                      :footer="null"
-                      @cancel="handleCancelImage"
-                    >
-                      <img
-                        alt="example"
-                        style="width: 100%"
-                        :src="previewImage"
-                      />
-                    </a-modal>
-                  </a-upload> -->
+                    <img
+                      alt="example"
+                      style="width: 100%"
+                      :src="previewImage"
+                    />
+                  </a-modal>
+                </a-upload>
               </div>
             </div>
             <div>
@@ -1143,52 +1146,56 @@
             </div> -->
           </div>
         </div>
-      </Transition>
-    </template>
-    <template v-slot:footer
-      ><div class="bg-slate-300">
-        <div class="p-4 text-left">
-          <button class="button-modal" html-type="submit">Cập nhật</button>
-          <button class="button-close-modal" @click="router.go(-1)">
-            Hủy bỏ
-          </button>
-        </div>
-      </div></template
-    >
-  </base-layout>
-  <!-- </a-form> -->
+      </template>
+      <template v-slot:footer
+        ><div class="bg-slate-300">
+          <div class="p-4 text-left">
+            <button class="button-modal" html-type="submit">Cập nhật</button>
+            <button class="button-close-modal" @click="router.go(-1)">
+              Hủy bỏ
+            </button>
+          </div>
+        </div></template
+      >
+    </base-layout>
+  </a-form>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../layout/baseLayout.vue'
-  import SideBar from '../../components/common/SideBar.vue'
-  import Header from '../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import dayjs, { Dayjs } from 'dayjs'
   import { ref, reactive, watch } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useGroupInventory } from '../../store/modules/inventory/group-inventory'
+  import { useGroupInventory } from '@/store/modules/inventory/group-inventory'
   import { useRoute, useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
-  import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
-  import { useProductUnit } from '../../store/modules/store-setting/product-unit'
-  import { useProduct } from '../../store/modules/store-setting/products'
-  import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
-  import { useAttributeGroup } from '../../store/modules/store-setting/attribute-group'
-  import { useCategory } from '../../store/modules/store-setting/category'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useProductUnit } from '@/store/modules/store-setting/product-unit'
+  import { useProduct } from '@/store/modules/store-setting/products'
+  import { useListTax } from '@/store/modules/store-setting/tax'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
+  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
+  import { useCategory } from '@/store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
-  import { typeProduct } from '../../page/products/configProduct'
+  import { typeProduct } from '@/page/products/configProduct'
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
-  import IconAddImg from '../../assets/images/icon_add_image.png'
+  import IconAddImg from '@/assets/images/icon_add_image.png'
   import { TreeSelect } from 'ant-design-vue'
   const UrlImg = import.meta.env.VITE_APP_IMG_URL
   const SHOW_PARENT = TreeSelect.SHOW_ALL
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
+  const dataTax = useListTax()
+  dataTax.getListTaxAction()
+  const { listTax } = storeToRefs(dataTax)
   const route = useRoute()
   const fileList = ref<UploadProps['fileList']>([])
+  const fileProductList = ref<UploadProps['fileList']>([])
   const dataProduct = useProduct()
   dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
     fileList.value = detailProduct.value.image.map(
@@ -1226,6 +1233,16 @@
     {
       value: '1',
       label: 'kg',
+    },
+  ])
+  const statusProduct = ref<SelectProps['options']>([
+    {
+      value: '0',
+      label: 'Chưa kích hoạt',
+    },
+    {
+      value: '1',
+      label: 'Đang kích hoạt',
     },
   ])
   const columns = [
@@ -1533,12 +1550,12 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  // const onFinish = (values) => {
-  //   console.log('Success:', values)
-  // }
-  // const onFinishFailed = (errorInfo) => {
-  //   console.log('Failed:', errorInfo)
-  // }
+  const onFinish = (values: any) => {
+    console.log('Success:', values)
+  }
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo)
+  }
   // const createProduct = () => {
   //   let dataSource = {
   //     attribute_set_id: product.groupAttributeID,
