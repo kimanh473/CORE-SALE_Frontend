@@ -405,7 +405,7 @@
               </div>
             </div> -->
             <div class="flex">
-              <div class="w-[650px] pr-2">
+              <div class="w-1/2 pr-2">
                 <label for="" class="form-group-label"
                   >Tên sản phẩm<span class="text-red-600">* </span> <span></span
                 ></label>
@@ -424,7 +424,7 @@
                   </a-form-item>
                 </div>
               </div>
-              <div class="w-[650px] pl-2">
+              <div class="w-1/2 pl-2">
                 <label for="" class="form-group-label"
                   >Website<span class="text-red-600"></span> <span></span
                 ></label>
@@ -444,7 +444,7 @@
                 </div>
               </div>
             </div>
-            <div>
+            <div class="form-large-full">
               <label for="" class="form-group-label"
                 >Ngành hàng<span class="text-red-600">*</span></label
               >
@@ -455,7 +455,6 @@
                 >
                   <a-tree-select
                     placeholder="Chọn ngành hàng"
-                    class="w-full"
                     style="width: 100%"
                     :tree-data="listTreeCategory"
                     v-model:value="detailProduct.category"
@@ -474,7 +473,7 @@
               </div>
             </div>
             <div class="flex">
-              <div class="w-[650px] pr-2">
+              <div class="w-1/2 pr-2">
                 <label for="" class="form-group-label"
                   >Bộ thuộc tính<span class="text-red-600">* </span>
                   <span></span
@@ -491,7 +490,7 @@
                   </a-select>
                 </div>
               </div>
-              <div class="w-[650px] pl-2">
+              <div class="w-1/2 pl-2">
                 <label for="" class="form-group-label"
                   >Thuế<span class="text-red-600"></span> <span></span
                 ></label>
@@ -508,7 +507,7 @@
               </div>
             </div>
             <div class="flex">
-              <div class="w-[650px] pr-2">
+              <div class="w-1/2 pr-2">
                 <label for="" class="form-group-label"
                   >SKU<span class="text-red-600">* </span> <span></span
                 ></label>
@@ -527,7 +526,7 @@
                   </a-form-item>
                 </div>
               </div>
-              <div class="w-[650px] pl-2">
+              <div class="w-1/2 pl-2">
                 <label for="" class="form-group-label"
                   >Barcode<span class="text-red-600"></span> <span></span
                 ></label>
@@ -543,7 +542,7 @@
               </div>
             </div>
             <div class="flex">
-              <div class="w-[650px] pr-2">
+              <div class="w-1/2 pr-2">
                 <label for="" class="form-group-label"
                   >Khối lượng<span class="text-red-600"></span> <span></span
                 ></label>
@@ -563,7 +562,7 @@
                   </a-select>
                 </div>
               </div>
-              <div class="w-[650px] pl-2">
+              <div class="w-1/2 pl-2">
                 <label for="" class="form-group-label"
                   >Đơn vị quy dổi<span class="text-red-600"></span> <span></span
                 ></label>
@@ -580,7 +579,7 @@
                 </div>
               </div>
             </div>
-            <div class="pt-2 pr-2 w-[650px]">
+            <div class="pt-2 pr-2 w-1/2">
               Trạng thái sản phẩm
               <a-select
                 class="form-control-input"
