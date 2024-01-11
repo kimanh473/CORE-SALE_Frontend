@@ -33,13 +33,13 @@
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới nhóm thuộc tính</p>
         </div>
-        <div
+        <!-- <div
           class="button-create-new relative group rounded-md px-2"
           title="Tạo mới web"
           @click="CreateSpecificationGroup()"
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới bảng thông số</p>
-        </div>
+        </div> -->
       </div>
       <a-table
         row-key="id"

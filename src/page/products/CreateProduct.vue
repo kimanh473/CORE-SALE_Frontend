@@ -41,7 +41,6 @@
                 position: 'fixed',
                 top: '72px',
                 background: 'white',
-                textAlign: 'center',
               }"
               :showInkInFixed="true"
               class="min-w-[200px] min-h-full mr-[10px]"
@@ -97,7 +96,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-large-full ">
+            <div class="form-large-full">
               <label for="" class="form-group-label"
                 >Ngành hàng<span class="text-red-600">*</span></label
               >
@@ -490,7 +489,6 @@
                               />
                             </a-modal>
                           </a-upload>
-                          <p class="m-0">{{ record.name }}</p>
                         </div>
                       </template>
                       <template v-if="column.key === 'name'">
@@ -1055,9 +1053,9 @@
     listGenerate.value = []
     skuArr.value = []
     listSku.value = []
-    nameArr.value.push(dataCreateProduct.value.name)
+    nameArr.value.push(product.title)
     listGenerate.value.push(nameArr.value, ...mapArr.value)
-    skuArr.value.push(dataCreateProduct.value.sku)
+    skuArr.value.push(product.sku)
     listSku.value.push(skuArr.value, ...mapArr.value)
     await frc(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
@@ -1078,8 +1076,8 @@
       name: item.title,
       sku: item.sku,
       bar_code: '',
-      weight: '',
-      weight_unit: '',
+      weight: product.weight,
+      weight_unit: product.weightUnit,
       minimum: '',
       maximum: '',
       image: <UploadProps['fileList']>[],
@@ -1167,13 +1165,14 @@
   }
   .ant-anchor-ink {
     font-family: 'Font Awesome 5 Pro';
-    font-weight: 500;
-    margin-left: 30px;
-    height: 0px;
+    /* content: '\f055'; */
+    font-weight: 700;
+    margin-left: 20px;
   }
   .ant-anchor-link {
     padding: 7px 0 7px 0px;
     font-weight: 700;
+    margin-left: 30px;
   }
   #preview {
     display: flex;

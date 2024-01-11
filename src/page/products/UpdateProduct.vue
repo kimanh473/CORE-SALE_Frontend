@@ -43,7 +43,6 @@
                 margin: '0',
                 top: '72px',
                 background: 'white',
-                textAlign: 'center',
               }"
               :showInkInFixed="true"
               class="min-w-[200px] min-h-full mr-[10px]"
@@ -1593,11 +1592,12 @@
   .ant-anchor-ink {
     font-family: 'Font Awesome 5 Pro';
     /* content: '\f055'; */
-    font-weight: 500;
-    margin-left: 30px;
+    font-weight: 700;
+    margin-left: 20px;
   }
   .ant-anchor-link {
     padding: 7px 0 7px 0px;
+    margin-left: 30px;
   }
   #preview {
     display: flex;
