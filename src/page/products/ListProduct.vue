@@ -82,6 +82,7 @@
   const dataProduct = useProduct()
   dataProduct.getListProductAction(4, 1)
   const { listProduct } = storeToRefs(dataProduct)
+  console.log(listProduct)
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
@@ -96,16 +97,40 @@
       key: 'image',
     },
     {
-      title: 'Tên',
+      title: 'Tên sản phẩm',
       dataIndex: 'name',
+    },
+    {
+      title: 'SKU',
+      dataIndex: 'sku',
     },
     {
       title: 'Loại sản phẩm',
       dataIndex: `type_id`,
     },
     {
-      title: 'Nhóm thuộc tính',
+      title: 'Bộ thuộc tính',
       dataIndex: 'attribute_set_id',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'attribute_set_id',
+    },
+    {
+      title: 'Website',
+      dataIndex: 'attribute_set_id',
+    },
+    {
+      title: 'Giá niêm yết',
+      dataIndex: 'listed_price',
+    },
+    {
+      title: 'Giá sỉ',
+      dataIndex: 'wholesale_price',
+    },
+    {
+      title: 'Giá lẻ',
+      dataIndex: 'retail_price',
     },
     {
       title: 'Thao tác',
