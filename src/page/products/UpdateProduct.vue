@@ -431,7 +431,7 @@
                   <a-select
                     class="w-full"
                     placeholder="Chọn website"
-                    v-model:value="detailProduct.website"
+                    v-model:value="detailProduct.web_site_code"
                     :options="listWeb"
                     :fieldNames="{
                       label: 'web_name',
@@ -456,7 +456,7 @@
                     placeholder="Chọn ngành hàng"
                     style="width: 100%"
                     :tree-data="listTreeCategory"
-                    v-model:value="detailProduct.category"
+                    v-model:value="detailProduct.nganh_hang_code"
                     :fieldNames="{
                       children: 'children',
                       label: 'title',
@@ -563,12 +563,12 @@
               </div>
               <div class="w-1/2 pl-2">
                 <label for="" class="form-group-label"
-                  >Đơn vị quy dổi<span class="text-red-600"></span> <span></span
+                  >Đơn vị tính<span class="text-red-600"></span> <span></span
                 ></label>
                 <div>
                   <a-select
                     class="form-control-input"
-                    placeholder="Chọn đơn vị quy đổi"
+                    placeholder="Chọn đơn vị tính"
                     :options="listProductUnit"
                     v-model:value="product.unitCode"
                     :fieldNames="{ label: 'title', value: 'id' }"
@@ -1353,7 +1353,7 @@
 
   const res_1 = ref([])
   const res_2 = ref([])
-  const frc = (arr: any, arr2: any) => {
+  const getDataTableConfig = (arr: any, arr2: any) => {
     let result = []
     let i = 0
     let k = 0
@@ -1372,7 +1372,7 @@
         res_1.value = result
         k++
       }
-      frc(arr, arr2)
+      getDataTableConfig(arr, arr2)
       i++
     }
     while (i < arr2.length - 1) {
@@ -1389,7 +1389,7 @@
         res_2.value = result
         k++
       }
-      frc(arr, arr2)
+      getDataTableConfig(arr, arr2)
       i++
     }
   }
@@ -1453,7 +1453,7 @@
     specificationID: null,
     classifyID: null,
     nameClassifyID: null,
-    unitCode: '',
+    unitCode: null,
   })
   const dataUnit = reactive([
     {
@@ -1496,7 +1496,7 @@
     listGenerate.value.push(nameArr.value, ...mapArr.value)
     skuArr.value.push(dataCreateProduct.value.sku)
     listSku.value.push(skuArr.value, ...mapArr.value)
-    await frc(listGenerate.value, listSku.value)
+    await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
       title: item,
       code: index,
