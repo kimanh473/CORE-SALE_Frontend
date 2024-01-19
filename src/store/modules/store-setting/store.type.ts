@@ -27,6 +27,20 @@ interface DataAttribute {
     user_updated: object
     attribute_detail: Array<DataAttribute>
 }
+interface DataGroupAttribute {
+    attribute_detail: Array<DataAttribute>
+    code: string
+    created_at: string
+    created_by_id: string
+    deleted_at: string
+    id: number
+    is_specification: string
+    json_attribute_detail: Array<string>
+    status: string
+    title: string
+    updated_at: string
+    updated_by_id: string
+}
 interface SetDataAttribute {
     id: number
     code: string,

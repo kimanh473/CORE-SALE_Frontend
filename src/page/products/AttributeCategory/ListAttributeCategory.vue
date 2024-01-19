@@ -2,8 +2,8 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-                <img src="../assets/images/btp.png" />
-              </div> -->
+                  <img src="../assets/images/btp.png" />
+                </div> -->
       <SideBar />
     </template>
     <template v-slot:header>
@@ -13,7 +13,7 @@
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
               <p class="longText pl-5 mb-0 text-xl font-bold">
-                Danh sách nhóm thuộc tính
+                Danh sách bộ thuộc tính
               </p>
               <div class="icon-filter-approval relative group"></div>
             </div>
@@ -29,9 +29,9 @@
         <div
           class="button-create-new relative group rounded-md px-2"
           title="Tạo mới web"
-          @click="CreateGroupAttribute()"
+          @click="CreateAttributeCategory()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới nhóm thuộc tính</p>
+          <p class="text-[14px] mt-1 px-1">Tạo mới bộ thuộc tính</p>
         </div>
         <!-- <div
           class="button-create-new relative group rounded-md px-2"
@@ -45,7 +45,7 @@
         row-key="id"
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listAttributeGroup"
+        :data-source="listSetAttributeGroup"
         :rowSelection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
@@ -67,138 +67,138 @@
     <template v-slot:footer>footer</template>
   </base-layout>
   <!-- <modal-view :isOpen="isOpenCreateInventory" :handleCloseDetail="handleClose">
-    <div>
-      <h1 class="header-modal">Tạo mới kho</h1>
-      <div
-        class="text-left p-2 min-h-[300px] max-h-[600px] min-w-[500px] overflow-y-auto format-scroll"
-      >
-        <div class="">
-          <label for="" class="form-group-label">Tên kho</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập tên kho"
-            />
+      <div>
+        <h1 class="header-modal">Tạo mới kho</h1>
+        <div
+          class="text-left p-2 min-h-[300px] max-h-[600px] min-w-[500px] overflow-y-auto format-scroll"
+        >
+          <div class="">
+            <label for="" class="form-group-label">Tên kho</label>
+            <div>
+              <input
+                type="text"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập tên kho"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Loại kho</label>
+            <div>
+              <input
+                type="text"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập mã phòng ban"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Quản lý kho</label>
+            <div>
+              <input
+                type="text"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập mã phòng ban"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Số điện thoại</label>
+            <div>
+              <input
+                type="text"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập mã phòng ban"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Địa chỉ</label>
+            <div>
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập số"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Quốc gia</label>
+            <div>
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập số"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Tỉnh/Thành phố</label>
+            <div>
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập chiều rộng"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Quận/Huyện</label>
+            <div>
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập chiều dài"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Xã/Phường/Thị trấn</label>
+            <div>
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập chiều dài"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <label for="" class="form-group-label">Địa chỉ chi tiết</label>
+            <div>
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control-input"
+                placeholder="Nhập địa chỉ"
+              />
+            </div>
           </div>
         </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Loại kho</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập mã phòng ban"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Quản lý kho</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập mã phòng ban"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Số điện thoại</label>
-          <div>
-            <input
-              type="text"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập mã phòng ban"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Địa chỉ</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập số"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Quốc gia</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập số"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Tỉnh/Thành phố</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập chiều rộng"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Quận/Huyện</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập chiều dài"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Xã/Phường/Thị trấn</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập chiều dài"
-            />
-          </div>
-        </div>
-        <div class="mt-2">
-          <label for="" class="form-group-label">Địa chỉ chi tiết</label>
-          <div>
-            <input
-              type="number"
-              name=""
-              id=""
-              class="form-control-input"
-              placeholder="Nhập địa chỉ"
-            />
-          </div>
+        <div class="bg-button-modal">
+          <button class="button-modal">Cập nhật</button>
+          <button class="button-close-modal" @click="handleClose">Hủy bỏ</button>
         </div>
       </div>
-      <div class="bg-button-modal">
-        <button class="button-modal">Cập nhật</button>
-        <button class="button-close-modal" @click="handleClose">Hủy bỏ</button>
-      </div>
-    </div>
-  </modal-view> -->
+    </modal-view> -->
   <modal-delete
     :isOpen="isOpenConfirm"
     :handleCloseDetail="handleCloseConfirm"
@@ -229,11 +229,11 @@
           </a-select>
 
           <!--                                  <p
-                                      v-if="messageError?.address_ward_id"
-                                      class="text-red-600"
-                                  >
-                                    {{ messageError?.address_ward_id[0] }}
-                                  </p>-->
+                                        v-if="messageError?.address_ward_id"
+                                        class="text-red-600"
+                                    >
+                                      {{ messageError?.address_ward_id[0] }}
+                                    </p>-->
         </div>
       </div>
     </div>
@@ -269,8 +269,10 @@
   const isOpenConfirm = ref<boolean>(false)
   const isOpenConfirmDefault = ref<boolean>(false)
   const dataAttributeGroup = useAttributeGroup()
-  dataAttributeGroup.getListAttributeGroupAction()
-  const { listAttributeGroup } = storeToRefs(dataAttributeGroup)
+  dataAttributeGroup.getListSetAttributeGroupAction()
+  const { listSetAttributeGroup } = storeToRefs(dataAttributeGroup)
+  console.log(listSetAttributeGroup)
+
   const columns = [
     {
       title: 'Tên bộ thuộc tính',
@@ -302,7 +304,7 @@
   ]
 
   const navigateUpdateGroupAttribute = (id: number) => {
-    router.push(`/update-group-attribute/${id}`)
+    router.push(`/update-attribute-category/${id}`)
   }
   const idSelected = ref()
   const handleOpenDeleteGroupAttribute = (record: any) => {
@@ -317,7 +319,7 @@
   }
   const handleDelete = () => {
     isLoading.value = true
-    dataAttributeGroup.deleteGroupAttributeAction(
+    dataAttributeGroup.deleteAttributeCategoryAction(
       Number(idSelected.value),
       EndTimeLoading,
       toast,
@@ -356,8 +358,8 @@
   //     console.log(selected, selectedRows, changeRows)
   //   },
   // })
-  const CreateGroupAttribute = () => {
-    router.push('/create-group-attribute')
+  const CreateAttributeCategory = () => {
+    router.push('/create-attribute-category')
   }
   const handleClose = () => {
     isOpenConfirmDefault.value = false

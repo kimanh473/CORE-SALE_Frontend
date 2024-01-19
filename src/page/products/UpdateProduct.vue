@@ -1,20 +1,27 @@
 <template>
-  <base-layout>
-    <template v-slot:sidebar>
-      <!-- <div class="logo">
+  <a-form
+    :model="detailProduct"
+    name="basic"
+    autocomplete="off"
+    @finish="onFinish"
+    @finishFailed="onFinishFailed"
+  >
+    <base-layout>
+      <template v-slot:sidebar>
+        <!-- <div class="logo">
               <img src="../assets/images/btp.png" />
             </div> -->
-      <SideBar />
-    </template>
-    <template v-slot:header>
-      <Header :is-show-search="false">
-        <template v-slot:name
-          ><p class="pl-5 text-[16px]">Sửa sản phẩm</p></template
-        >
-      </Header>
-    </template>
-    <template v-slot:content class="relative">
-      <!-- <div
+        <SideBar />
+      </template>
+      <template v-slot:header>
+        <Header :is-show-search="false">
+          <template v-slot:name
+            ><p class="pl-5 text-[16px]">Sửa sản phẩm</p></template
+          >
+        </Header>
+      </template>
+      <template v-slot:content class="relative">
+        <!-- <div
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div></div>
@@ -25,31 +32,31 @@
           <p class="text-[14px] mt-1 px-1">Hủy</p>
         </div>
       </div> -->
-      <Transition :duration="550" name="nested">
-        <div class="flex form-large-70 pl-[150px]">
-          <a-anchor
-            :wrapperStyle="{
-              width: '200px',
-              height: 'fit-content',
-              position: 'fixed',
-              padding: '0',
-              margin: '0',
-              top: '72px',
-              background: 'white',
-              textAlign: 'center',
-            }"
-            :showInkInFixed="true"
-            class="min-w-[200px] min-h-full mr-[10px]"
-          >
-            <a-anchor-link
-              v-for="(item, index) in indexAttribute"
-              :key="index"
-              :href="'#' + item.title"
-              :title="item.title"
-            />
-          </a-anchor>
+        <div class="flex justify-center">
+          <div>
+            <a-anchor
+              :wrapperStyle="{
+                width: '200px',
+                height: 'fit-content',
+                position: 'fixed',
+                padding: '0',
+                margin: '0',
+                top: '72px',
+                background: 'white',
+              }"
+              :showInkInFixed="true"
+              class="min-w-[200px] min-h-full mr-[10px]"
+            >
+              <a-anchor-link
+                v-for="(item, index) in indexAttribute"
+                :key="index"
+                :href="'#' + item.title"
+                :title="item.title"
+              />
+            </a-anchor>
+          </div>
           <div
-            class="text-left px-4 py-2 w-full h-full format-scroll form-large-full bg-white"
+            class="text-left px-4 py-2 w-full h-full format-scroll form-large-70 bg-white"
           >
             <!-- <div id="infor-common">
               <div class="w-full ml-4">
@@ -396,29 +403,55 @@
                 </Transition>
               </div>
             </div> -->
-            <div>
-              <label for="" class="form-group-label"
-                >Nhóm thuộc tính{{ detailProduct.create_date
-                }}<span class="text-red-600">* </span> <span></span
-              ></label>
-              <div>
-                <a-select
-                  class="form-control-input"
-                  placeholder="Chọn nhóm thuộc tính"
-                  :options="listSetAttributeGroup"
-                  v-model:value="detailProduct.attribute_set_id_int"
-                  :fieldNames="{ label: 'title', value: 'id' }"
-                  @change="handleChangeAttributeGroup"
-                >
-                </a-select>
+            <div class="flex">
+              <div class="w-1/2 pr-2">
+                <label for="" class="form-group-label"
+                  >Tên sản phẩm<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <a-form-item
+                    name="title"
+                    :rules="[{ required: true, message: 'Chưa nhập tiêu đề' }]"
+                  >
+                    <a-input
+                      type="text"
+                      class="w-full"
+                      placeholder="Nhập tên sản phẩm"
+                      v-model:value="detailProduct.title"
+                    >
+                    </a-input>
+                  </a-form-item>
+                </div>
+              </div>
+              <div class="w-1/2 pl-2">
+                <label for="" class="form-group-label"
+                  >Website<span class="text-red-600"></span> <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="w-full"
+                    placeholder="Chọn website"
+                    v-model:value="detailProduct.web_site_code"
+                    :options="listWeb"
+                    :fieldNames="{
+                      label: 'web_name',
+                      value: 'code',
+                    }"
+                    mode="multiple"
+                  >
+                  </a-select>
+                </div>
               </div>
             </div>
-            <div>
+            <div class="form-large-full">
+              <label for="" class="form-group-label"
+                >Ngành hàng<span class="text-red-600">*</span></label
+              >
               <div>
-                <label for="" class="form-group-label"
-                  >Ngành hàng<span class="text-red-600">*</span></label
+                <a-form-item
+                  name="category"
+                  :rules="[{ required: true, message: 'Chưa chọn ngành hàng' }]"
                 >
-                <div>
                   <a-tree-select
                     placeholder="Chọn ngành hàng"
                     style="width: 100%"
@@ -435,34 +468,167 @@
                     multiple
                   >
                   </a-tree-select>
-                  <!-- <p v-if="messageError?.code" class="text-red-600">
-                            {{ messageError?.code[0] }}
-                          </p> -->
+                </a-form-item>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="w-1/2 pr-2">
+                <label for="" class="form-group-label"
+                  >Bộ thuộc tính<span class="text-red-600">* </span>
+                  <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="w-full"
+                    placeholder="Chọn bộ thuộc tính"
+                    :options="listSetAttributeGroup"
+                    v-model:value="product.groupAttributeID"
+                    :fieldNames="{ label: 'title', value: 'id' }"
+                    @change="handleChangeAttributeGroup"
+                  >
+                  </a-select>
+                </div>
+              </div>
+              <div class="w-1/2 pl-2">
+                <label for="" class="form-group-label"
+                  >Thuế<span class="text-red-600"></span> <span></span
+                ></label>
+                <div>
+                  <a-select
+                    class="w-full"
+                    placeholder="Chọn loại thuế"
+                    :options="listTax"
+                    v-model:value="product.taxID"
+                    :fieldNames="{ label: 'title', value: 'id' }"
+                  >
+                  </a-select>
                 </div>
               </div>
             </div>
-            <div>
-              <div>
+            <div class="flex">
+              <div class="w-1/2 pr-2">
                 <label for="" class="form-group-label"
-                  >Website<span class="text-red-600">* </span> <span></span
+                  >SKU<span class="text-red-600">* </span> <span></span
+                ></label>
+                <div>
+                  <a-form-item
+                    name="title"
+                    :rules="[{ required: true, message: 'Chưa nhập mã sku' }]"
+                  >
+                    <a-input
+                      type="text"
+                      class="w-full"
+                      placeholder="Nhập mã sku"
+                      v-model:value="detailProduct.sku"
+                    >
+                    </a-input>
+                  </a-form-item>
+                </div>
+              </div>
+              <div class="w-1/2 pl-2">
+                <label for="" class="form-group-label"
+                  >Barcode<span class="text-red-600"></span> <span></span
+                ></label>
+                <div>
+                  <a-input
+                    type="text"
+                    class="w-full"
+                    placeholder="Nhập barcode"
+                    v-model:value="detailProduct.bar_code"
+                  >
+                  </a-input>
+                </div>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="w-1/2 pr-2">
+                <label for="" class="form-group-label"
+                  >Khối lượng<span class="text-red-600"></span> <span></span
+                ></label>
+                <div class="flex">
+                  <a-input
+                    type="text"
+                    placeholder="Nhập khối lượng"
+                    v-model:value="detailProduct.weight"
+                  >
+                  </a-input>
+                  <a-select
+                    class="form-control-input !w-[70px]"
+                    :options="weightUnit"
+                    v-model:value="detailProduct.weightUnit"
+                    @change="handleChangeUnit"
+                  >
+                  </a-select>
+                </div>
+              </div>
+              <div class="w-1/2 pl-2">
+                <label for="" class="form-group-label"
+                  >Đơn vị tính<span class="text-red-600"></span> <span></span
                 ></label>
                 <div>
                   <a-select
                     class="form-control-input"
-                    placeholder="Chọn website"
-                    v-model:value="detailProduct.web_site_code"
-                    :options="listWeb"
-                    :fieldNames="{
-                      label: 'web_name',
-                      value: 'code',
-                    }"
-                    mode="multiple"
+                    placeholder="Chọn đơn vị tính"
+                    :options="listProductUnit"
+                    v-model:value="product.unitCode"
+                    :fieldNames="{ label: 'title', value: 'id' }"
+                    @change="handleChangeUnit"
                   >
                   </a-select>
-                  <!-- <p v-if="messageError?.title" class="text-red-600">
-                            {{ messageError?.title[0] }}
-                          </p> -->
                 </div>
+              </div>
+            </div>
+            <div class="pt-2 pr-2 w-1/2">
+              Trạng thái sản phẩm
+              <a-select
+                class="form-control-input"
+                placeholder="Chọn trạng thái"
+                :options="statusProduct"
+                v-model:value="detailProduct.status"
+                @change="handleChangeUnit"
+              >
+              </a-select>
+            </div>
+            <div>
+              <label for="" class="form-group-label"
+                >Hình ảnh<span class="text-red-600"></span
+              ></label>
+              <div>
+                <a-upload
+                  class="form-group-label"
+                  list-type="picture-card"
+                  @preview="handlePreview"
+                  v-model:file-list="fileProductList"
+                >
+                  <div>
+                    <plus-outlined />
+                    <div style="margin-top: 8px">Upload</div>
+                  </div>
+                  <a-modal
+                    :visible="previewVisible"
+                    :footer="null"
+                    @cancel="handleCancelImage"
+                  >
+                    <img
+                      alt="example"
+                      style="width: 100%"
+                      :src="previewImage"
+                    />
+                  </a-modal>
+                </a-upload>
+              </div>
+            </div>
+            <div>
+              <label for="" class="form-group-label"
+                >Mô tả<span class="text-red-600"></span
+              ></label>
+              <div>
+                <a-textarea
+                  type="text"
+                  placeholder="Nhập mô tả"
+                  v-model:value="product.desc"
+                >
+                </a-textarea>
               </div>
             </div>
             <!-- <div class="form-large-full grid grid-cols-2 gap-2 pr-[30px]">
@@ -539,9 +705,6 @@
                 :key="index1"
                 class="form-large-full"
               >
-                {{ item1.attribute_code }}/{{
-                  detailProduct[item1.attribute_code]
-                }}/{{ detailProduct.create_date }}
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
@@ -556,7 +719,7 @@
                     list-type="picture-card"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     v-bind="{ ...map.attribute }"
-                    v-show="map.code == item1.frontend_input"
+                    v-if="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
                     valueFormat="DD-MM-YYYY"
@@ -815,7 +978,7 @@
                           list-type="picture-card"
                           :fieldNames="{ label: 'title', value: 'id' }"
                           v-bind="{ ...map.attribute }"
-                          v-show="map.code == itemSpec1.frontend_input"
+                          v-if="map.code == itemSpec1.frontend_input"
                           @preview="handlePreview"
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
@@ -981,56 +1144,66 @@
             </div> -->
           </div>
         </div>
-      </Transition>
-    </template>
-    <template v-slot:footer
-      ><div class="bg-slate-300">
-        <div class="p-4 text-left">
-          <button class="button-modal" @click="createProduct()">
-            Cập nhật
-          </button>
-
-          <button class="button-close-modal" @click="router.go(-1)">
-            Hủy bỏ
-          </button>
-        </div>
-      </div></template
-    >
-  </base-layout>
-
+      </template>
+      <template v-slot:footer
+        ><div class="bg-slate-300">
+          <div class="p-4 text-left">
+            <button class="button-modal" html-type="submit">Cập nhật</button>
+            <button class="button-close-modal" @click="router.go(-1)">
+              Hủy bỏ
+            </button>
+          </div>
+        </div></template
+      >
+    </base-layout>
+  </a-form>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../layout/baseLayout.vue'
-  import SideBar from '../../components/common/SideBar.vue'
-  import Header from '../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import dayjs, { Dayjs } from 'dayjs'
   import { ref, reactive, watch } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useGroupInventory } from '../../store/modules/inventory/group-inventory'
+  import { useGroupInventory } from '@/store/modules/inventory/group-inventory'
   import { useRoute, useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
-  import { useWebCatalog } from '../../store/modules/web-catalog/webcatalog'
-  import { useProductUnit } from '../../store/modules/store-setting/product-unit'
-  import { useProduct } from '../../store/modules/store-setting/products'
-  import { useAttributeProduct } from '../../store/modules/store-setting/attribute-product'
-  import { useAttributeGroup } from '../../store/modules/store-setting/attribute-group'
-  import { useCategory } from '../../store/modules/store-setting/category'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useProductUnit } from '@/store/modules/store-setting/product-unit'
+  import { useProduct } from '@/store/modules/store-setting/products'
+  import { useListTax } from '@/store/modules/store-setting/tax'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
+  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
+  import { useCategory } from '@/store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
-  import { typeProduct } from '../../page/products/configProduct'
+  import { typeProduct } from '@/page/products/configProduct'
   import type { SelectProps } from 'ant-design-vue'
   import type { UploadProps } from 'ant-design-vue'
-  import IconAddImg from '../../assets/images/icon_add_image.png'
+  import IconAddImg from '@/assets/images/icon_add_image.png'
   import { TreeSelect } from 'ant-design-vue'
+  const UrlImg = import.meta.env.VITE_APP_IMG_URL
   const SHOW_PARENT = TreeSelect.SHOW_ALL
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
+  const dataTax = useListTax()
+  dataTax.getListTaxAction()
+  const { listTax } = storeToRefs(dataTax)
   const route = useRoute()
+  const fileList = ref<UploadProps['fileList']>([])
+  const fileProductList = ref<UploadProps['fileList']>([])
   const dataProduct = useProduct()
   dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
-    console.log(detailProduct.value)
+    fileList.value = detailProduct.value.image.map(
+      (item: Array<string>, index: number) => ({
+        uid: index,
+        name: `image ${index}`,
+        status: 'done',
+        url: `${UrlImg}/${item}`,
+      })
+    )
   })
   const { detailProduct } = storeToRefs(dataProduct)
 
@@ -1058,6 +1231,16 @@
     {
       value: '1',
       label: 'kg',
+    },
+  ])
+  const statusProduct = ref<SelectProps['options']>([
+    {
+      value: '0',
+      label: 'Chưa kích hoạt',
+    },
+    {
+      value: '1',
+      label: 'Đang kích hoạt',
     },
   ])
   const columns = [
@@ -1150,7 +1333,6 @@
       reader.onerror = (error) => reject(error)
     })
   }
-  const UrlImg = import.meta.env.VITE_APP_IMG_URL
   const checked = ref<boolean>(false)
   const previewVisible = ref<boolean>(false)
   const previewImage = ref('')
@@ -1163,7 +1345,7 @@
   const isConfig = ref(true)
   const isDetail = ref(true)
   const isInfor = ref(true)
-  const fileList = ref<UploadProps['fileList']>([])
+
   const handleCancelImage = () => {
     previewVisible.value = false
     previewTitle.value = ''
@@ -1171,7 +1353,7 @@
 
   const res_1 = ref([])
   const res_2 = ref([])
-  const frc = (arr: any, arr2: any) => {
+  const getDataTableConfig = (arr: any, arr2: any) => {
     let result = []
     let i = 0
     let k = 0
@@ -1190,7 +1372,7 @@
         res_1.value = result
         k++
       }
-      frc(arr, arr2)
+      getDataTableConfig(arr, arr2)
       i++
     }
     while (i < arr2.length - 1) {
@@ -1207,7 +1389,7 @@
         res_2.value = result
         k++
       }
-      frc(arr, arr2)
+      getDataTableConfig(arr, arr2)
       i++
     }
   }
@@ -1271,7 +1453,7 @@
     specificationID: null,
     classifyID: null,
     nameClassifyID: null,
-    unitCode: '',
+    unitCode: null,
   })
   const dataUnit = reactive([
     {
@@ -1314,7 +1496,7 @@
     listGenerate.value.push(nameArr.value, ...mapArr.value)
     skuArr.value.push(dataCreateProduct.value.sku)
     listSku.value.push(skuArr.value, ...mapArr.value)
-    await frc(listGenerate.value, listSku.value)
+    await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
       title: item,
       code: index,
@@ -1366,30 +1548,35 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-
-  const createProduct = () => {
-    let dataSource = {
-      attribute_set_id: product.groupAttributeID,
-      list_unit_change: dataMapUnit.value,
-      list_classify: dataOption,
-      list_product_config: dataTableConfig.value.map((item: any) => ({
-        name: item.name,
-        sku: item.sku,
-        bar_code: item.barcode,
-        weight: item.weight,
-        weight_unit: item.weight_unit,
-        minimum: item.minimum,
-        maximum: item.maximum,
-        image: item.image1,
-      })),
-      unit_code: product.unitCode,
-    }
-    // console.log(dataOption)
-    // console.log(dataUnit)
-    // console.log(dataTableConfig.value)
-    let data = Object.assign({}, dataCreateProduct.value, dataSource)
-    dataProduct.createProductAction(data, toast, router, EndTimeLoading)
+  const onFinish = (values: any) => {
+    console.log('Success:', values)
   }
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo)
+  }
+  // const createProduct = () => {
+  //   let dataSource = {
+  //     attribute_set_id: product.groupAttributeID,
+  //     list_unit_change: dataMapUnit.value,
+  //     list_classify: dataOption,
+  //     list_product_config: dataTableConfig.value.map((item: any) => ({
+  //       name: item.name,
+  //       sku: item.sku,
+  //       bar_code: item.barcode,
+  //       weight: item.weight,
+  //       weight_unit: item.weight_unit,
+  //       minimum: item.minimum,
+  //       maximum: item.maximum,
+  //       image: item.image1,
+  //     })),
+  //     unit_code: product.unitCode,
+  //   }
+  //   // console.log(dataOption)
+  //   // console.log(dataUnit)
+  //   // console.log(dataTableConfig.value)
+  //   let data = Object.assign({}, dataCreateProduct.value, dataSource)
+  //   dataProduct.createProductAction(data, toast, router, EndTimeLoading)
+  // }
 </script>
 
 <style>
@@ -1405,11 +1592,12 @@
   .ant-anchor-ink {
     font-family: 'Font Awesome 5 Pro';
     /* content: '\f055'; */
-    font-weight: 500;
-    margin-left: 30px;
+    font-weight: 700;
+    margin-left: 20px;
   }
   .ant-anchor-link {
     padding: 7px 0 7px 0px;
+    margin-left: 30px;
   }
   #preview {
     display: flex;

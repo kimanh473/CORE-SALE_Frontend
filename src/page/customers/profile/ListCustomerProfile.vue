@@ -82,7 +82,7 @@
     width="540px"
   >
     <div class="outer">
-      <div class="p-4">
+      <div class="p-3">
         <p>Tạo mới tài khoản khách hàng</p>
         <div class="w-full inner">
           <Transition :duration="550" name="nested">
@@ -350,7 +350,7 @@
       profile_code: customerAccount.profile_code,
       username: customerAccount.username,
       fullname: customerAccount.fullname,
-      birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+      birth_day: dayjs(birth_day_dd_mm_yy.value).format(dateFormatRequest),
       gender: customerAccount.gender,
       email_personal: customerAccount.email,
       phone: customerAccount.phone,

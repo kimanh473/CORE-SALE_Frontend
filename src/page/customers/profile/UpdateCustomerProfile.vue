@@ -69,8 +69,10 @@
                               </div>
                               <div>
                                 <label for="" class="form-group-label"
-                                  >Tên<span class="text-red-600"></span
-                                ></label>
+                                  >Họ & tên<span class="text-red-600"
+                                    >*</span
+                                  ></label
+                                >
                                 <div>
                                   <input
                                     type="text"
@@ -172,6 +174,40 @@
                                   >
                                     {{ messageError?.phone[0] }}
                                   </p>-->
+                                </div>
+                              </div>
+                              <div>
+                                <label for="" class="form-group-label"
+                                  >website<span class="text-red-600"></span
+                                ></label>
+                                <div>
+                                  <a-select
+                                    show-search
+                                    class="form-control-input"
+                                    placeholder="Chọn website"
+                                    :options="listWeb"
+                                    v-model:value="
+                                      detailCustomerProfile.website_json
+                                    "
+                                    :fieldNames="{
+                                      label: 'web_name',
+                                      value: 'code',
+                                    }"
+                                    mode="multiple"
+                                  >
+                                  </a-select>
+                                </div>
+                              </div>
+                              <div>
+                                <label for="" class="form-group-label"
+                                  >Mã số thuế<span class="text-red-600"></span
+                                ></label>
+                                <div>
+                                  <input
+                                    type="text"
+                                    class="form-control-input"
+                                    placeholder="Nhập mã số thuế"
+                                  />
                                 </div>
                               </div>
 
@@ -1015,6 +1051,12 @@
   import { useLocation } from '../../../store/modules/location/location'
   import { useCustomerProfile } from '../../../store/modules/customers/customerProfile'
   import { useGroupCustomer } from '../../../store/modules/customers/customerGroup'
+  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
+
+  const dataWebsite = useWebCatalog()
+  dataWebsite.getAllWebCatalogAction()
+  const { listWeb } = storeToRefs(dataWebsite)
+  console.log(listWeb)
 
   const activeKey = ref('1')
   const route = useRoute()
@@ -1069,6 +1111,7 @@
     last_code,
     is_default_pay,
   } = storeToRefs(dataCustomerProfile)
+
   const { listAllCity, listAllDistrict, listAllWard } =
     storeToRefs(dataLocation)
   const { listGroupCustomer } = storeToRefs(dataGroupCustomer)
@@ -1285,7 +1328,7 @@
       customer_group: detailCustomerProfile.value.customer_group,
       code: detailCustomerProfile.value.code,
       name: detailCustomerProfile.value.name,
-      birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+      birth_day: dayjs(birth_day_dd_mm_yy.value).format(dateFormatRequest),
       gender: detailCustomerProfile.value.gender,
       email: detailCustomerProfile.value.email,
       phone: detailCustomerProfile.value.phone,
@@ -1315,7 +1358,7 @@
       customer_group: detailCustomerProfile.value.customer_group,
       code: detailCustomerProfile.value.code,
       name: detailCustomerProfile.value.name,
-      birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+      birth_day: dayjs(birth_day_dd_mm_yy.value).format(dateFormatRequest),
       gender: detailCustomerProfile.value.gender,
       email: detailCustomerProfile.value.email,
       phone: detailCustomerProfile.value.phone,
@@ -1343,7 +1386,7 @@
       customer_group: detailCustomerProfile.value.customer_group,
       code: detailCustomerProfile.value.code,
       name: detailCustomerProfile.value.name,
-      birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+      birth_day: dayjs(birth_day_dd_mm_yy.value).format(dateFormatRequest),
       gender: detailCustomerProfile.value.gender,
       email: detailCustomerProfile.value.email,
       phone: detailCustomerProfile.value.phone,
