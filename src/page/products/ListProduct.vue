@@ -38,12 +38,12 @@
         bordered
         row-key="id"
         ><template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'image'">
+          <template v-if="column.key === 'image' && record.image">
             <img
-              :src="UriImg + '/' + record.image[0]"
+              :src="UrlImg + '/' + record.image[0]"
               alt=""
-              width="20"
-              height="40"
+              width="60"
+              height="80"
             />
           </template>
           <template v-if="column.key === 'web_site_code'">
@@ -90,11 +90,13 @@
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useProduct } from '@/store/modules/store-setting/products'
-
+  // import { UrlImg } from '@/services/services'
   //   import { storeToRefs } from 'pinia'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
+  const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
+
   const route = useRoute()
   const router = useRouter()
   const toast = useToast()
@@ -174,7 +176,6 @@
       key: 'id',
     },
   ]
-  const UriImg = import.meta.env.VITE_APP_IMG_URL
 
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false

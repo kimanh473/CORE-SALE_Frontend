@@ -1,12 +1,13 @@
-import axios from 'axios';
-import router from '../router/router';
-const token = localStorage.getItem("TOKEN");
+import axios from 'axios'
+import router from '../router/router'
+import { useToast } from 'vue-toastification'
 // const API_URL = process.env.VUE_APP_API_URL;
-export const API_URL = import.meta.env.VITE_APP_BASE_API;
+export const API_URL = import.meta.env.VITE_APP_BASE_API
+export const UrlImg = import.meta.env.VITE_APP_IMG_URL
 const httpClient = axios.create({
   baseURL: API_URL,
-  headers: { Authorization: `Bearer ${token}` },
-});
+})
+
 // catch error
 // const errorInterceptor = (error: any) => {
 //   // check if it's a server error
@@ -32,14 +33,40 @@ const httpClient = axios.create({
 //   return Promise.reject(error);
 // }
 // Interceptor for responses
-const responseInterceptor = (response: any) => {
-  if (response.data.messages == 'Token has expired') {
-    router.push({ path: "/login" });
-    localStorage.removeItem('TOKEN')
-    localStorage.removeItem('authenticated')
-    window.location.reload()
+const token = localStorage.getItem('TOKEN')
+let isRefreshToken = false
+httpClient.interceptors.request.use(
+  function (request: any) {
+    // Đính token vào header mới
+    isRefreshToken = true
+    const newHeaders = {
+      ...request.headers,
+      Authorization: `Bearer ${token}`,
+    }
+
+    // Đính header mới vào lại request trước khi được gửi đi
+    request = {
+      ...request,
+      headers: newHeaders,
+    }
+    return request
+  },
+
+  function (error) {
+    // Xử lý lỗi
+    isRefreshToken = false
+    return Promise.reject(error)
   }
-  return response;
+)
+const responseInterceptor = (response: any) => {
+  // 5. After that, to clear all setup
+  if (response?.data?.status == 'failed') {
+    isRefreshToken = false
+    router.push({ path: '/login' })
+    useToast().info('Phiên đăng nhập đã hết hạn,vui lòng đăng nhập!!!')
+  }
+  return response
 }
-httpClient.interceptors.response.use(responseInterceptor);
-export default httpClient;
+httpClient.interceptors.response.use(responseInterceptor)
+
+export default httpClient

@@ -1183,7 +1183,7 @@
   import type { UploadProps } from 'ant-design-vue'
   import IconAddImg from '@/assets/images/icon_add_image.png'
   import { TreeSelect } from 'ant-design-vue'
-  const UrlImg = import.meta.env.VITE_APP_IMG_URL
+  const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
   const SHOW_PARENT = TreeSelect.SHOW_ALL
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
