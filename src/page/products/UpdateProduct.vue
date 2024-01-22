@@ -1196,7 +1196,7 @@
   const fileProductList = ref<UploadProps['fileList']>([])
   const dataProduct = useProduct()
   dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
-    fileList.value = detailProduct.value.image.map(
+    fileProductList.value = detailProduct.value.image.map(
       (item: Array<string>, index: number) => ({
         uid: index,
         name: `image ${index}`,

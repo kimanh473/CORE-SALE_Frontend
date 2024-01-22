@@ -70,7 +70,7 @@
   </section>
 </template>
 <script setup lang="ts">
-  import {useLocation} from "../../store/modules/location/location";
+  import { useLocation } from '../../store/modules/location/location'
 
   defineOptions({
     name: 'Login',
@@ -84,7 +84,7 @@
   const router = useRouter()
   //   const store = useStore()
   const userlog = userLogin()
-  const dataLocation = useLocation();
+  const dataLocation = useLocation()
 
   dataLocation.getListAllDistrictAction_2()
   dataLocation.getListAllWardAction_2()
