@@ -4,13 +4,17 @@ import { getAllProductsApi, getAllProductsNoPagingApi, createProductApi, getDeta
 export const useProduct = defineStore("Products", {
     state: () => ({
         listProduct: <any>[],
+        totalPage:<Number>null,
         listAllProduct: <any>[],
         listFiltered: <any>[],
         detailProduct: <any>{}
     }),
     getters: {
         getListProduct: (state: any) => {
-            return (payload: any) => state.listProduct = payload
+            return (payload: any) => {
+                state.listProduct = payload.data
+                state.totalPage = payload.total
+            }
         },
         getListAllProduct: (state: any) => {
             return (payload: any) => state.listAllProduct = payload
@@ -23,11 +27,12 @@ export const useProduct = defineStore("Products", {
         },
     },
     actions: {
-        async getListProductAction(perPage: number, page: number) {
+        async getListProductAction(perPage: number, page: number,EndTimeLoading:Function) {
             await getAllProductsApi(perPage, page)
                 .then((payload: any) => {
-                    let res = payload?.data?.data?.data
+                    let res = payload?.data?.data
                     this.getListProduct(res)
+                    EndTimeLoading()
                 })
                 .catch((err) => {
                     console.log(err)

@@ -56,232 +56,255 @@
           <div
             class="text-left px-4 py-2 w-full h-full format-scroll form-large-70 bg-white"
           >
-            <div class="flex">
-              <div class="w-1/2 pr-2">
-                <label for="" class="form-group-label"
-                  >Tên sản phẩm<span class="text-red-600">*</span>
-                </label>
-                <div>
-                  <a-form-item
-                    name="title"
-                    :rules="[{ required: true, message: 'Chưa nhập tiêu đề' }]"
-                  >
-                    <a-input
-                      type="text"
-                      class="w-full"
-                      placeholder="Nhập tên sản phẩm"
-                      v-model:value="product.title"
-                    >
-                    </a-input>
-                  </a-form-item>
-                </div>
-              </div>
-              <div class="w-1/2 pl-2">
-                <label for="" class="form-group-label"
-                  >Website<span class="text-red-600"></span> <span></span
-                ></label>
-                <div>
-                  <a-select
-                    class="w-full"
-                    placeholder="Chọn website"
-                    v-model:value="product.website"
-                    :options="listWeb"
-                    :fieldNames="{
-                      label: 'web_name',
-                      value: 'code',
-                    }"
-                    mode="multiple"
-                  >
-                  </a-select>
-                </div>
-              </div>
-            </div>
-            <div class="form-large-full">
-              <label for="" class="form-group-label"
-                >Ngành hàng<span class="text-red-600">*</span></label
-              >
-              <div>
-                <a-form-item
-                  name="category"
-                  :rules="[{ required: true, message: 'Chưa chọn ngành hàng' }]"
-                >
-                  <a-tree-select
-                    placeholder="Chọn ngành hàng"
-                    style="width: 100%"
-                    :tree-data="listTreeCategory"
-                    v-model:value="product.category"
-                    :fieldNames="{
-                      children: 'children',
-                      label: 'title',
-                      value: 'code',
-                    }"
-                    :show-checked-strategy="SHOW_PARENT"
-                    tree-checkable
-                    treeDefaultExpandAll
-                    multiple
-                  >
-                  </a-tree-select>
-                </a-form-item>
-              </div>
-            </div>
-            <div class="flex">
-              <div class="w-1/2 pr-2">
-                <label for="" class="form-group-label"
-                  >Bộ thuộc tính<span class="text-red-600">* </span>
-                  <span></span
-                ></label>
-                <div>
-                  <a-select
-                    class="w-full"
-                    placeholder="Chọn bộ thuộc tính"
-                    :options="listSetAttributeGroup"
-                    v-model:value="product.groupAttributeID"
-                    :fieldNames="{ label: 'title', value: 'id' }"
-                    @change="handleChangeAttributeGroup"
-                  >
-                  </a-select>
-                </div>
-              </div>
-              <div class="w-1/2 pl-2">
-                <label for="" class="form-group-label"
-                  >Thuế<span class="text-red-600"></span> <span></span
-                ></label>
-                <div>
-                  <a-select
-                    class="w-full"
-                    placeholder="Chọn loại thuế"
-                    :options="listTax"
-                    v-model:value="product.taxID"
-                    :fieldNames="{ label: 'title', value: 'id' }"
-                  >
-                  </a-select>
-                </div>
-              </div>
-            </div>
-            <div class="flex">
-              <div class="w-1/2 pr-2">
-                <label for="" class="form-group-label"
-                  >SKU<span class="text-red-600">* </span> <span></span
-                ></label>
-                <div>
-                  <a-form-item
-                    name="sku"
-                    :rules="[{ required: true, message: 'Chưa nhập mã sku' }]"
-                  >
-                    <a-input
-                      type="text"
-                      class="w-full"
-                      placeholder="Nhập mã sku"
-                      v-model:value="product.sku"
-                    >
-                    </a-input>
-                  </a-form-item>
-                </div>
-              </div>
-              <div class="w-1/2 pl-2">
-                <label for="" class="form-group-label"
-                  >Barcode<span class="text-red-600"></span> <span></span
-                ></label>
-                <div>
-                  <a-input
-                    type="text"
-                    class="w-full"
-                    placeholder="Nhập barcode"
-                    v-model:value="product.bar_code"
-                  >
-                  </a-input>
-                </div>
-              </div>
-            </div>
-            <div class="flex">
-              <div class="w-1/2 pr-2">
-                <label for="" class="form-group-label"
-                  >Khối lượng<span class="text-red-600"></span> <span></span
-                ></label>
-                <div class="flex">
-                  <a-input
-                    type="text"
-                    placeholder="Nhập khối lượng"
-                    v-model:value="product.weight"
-                  >
-                  </a-input>
-                  <a-select
-                    class="!w-[70px]"
-                    :options="weightUnit"
-                    v-model:value="product.weightUnit"
-                    @change="handleChangeUnit"
-                  >
-                  </a-select>
-                </div>
-              </div>
-              <div class="w-1/2 pl-2">
-                <label for="" class="form-group-label"
-                  >Đơn vị quy dổi<span class="text-red-600"></span> <span></span
-                ></label>
-                <div>
-                  <a-select
-                    class="w-full"
-                    placeholder="Chọn đơn vị quy đổi"
-                    :options="listProductUnit"
-                    v-model:value="product.unitCode"
-                    :fieldNames="{ label: 'title', value: 'id' }"
-                    @change="handleChangeUnit"
-                  >
-                  </a-select>
-                </div>
-              </div>
-            </div>
-            <div class="pt-2 pr-2 w-1/2">
-              Trạng thái sản phẩm
-              <a-select
-                class="w-full"
-                placeholder="Chọn trạng thái"
-                :options="statusProduct"
-                v-model:value="product.status"
-                @change="handleChangeUnit"
-              >
-              </a-select>
-            </div>
-            <div>
-              <label for="" class="form-group-label"
-                >Hình ảnh<span class="text-red-600"></span
-              ></label>
-              <div>
-                <a-upload
-                  class="form-group-label"
-                  list-type="picture-card"
-                  @preview="handlePreview"
-                  v-model:file-list="fileProductList"
-                >
+            <h4
+              class="form-section-title form-large-full cursor-pointer"
+              @click="isDefault = !isDefault"
+            >
+              <span v-show="isDefault == true">
+                <i class="fas fa-chevron-down cursor-pointer"></i>
+              </span>
+              <span v-show="isDefault == false"
+                ><i class="fas fa-chevron-right cursor-pointer"></i
+              ></span>
+              Mặc định
+            </h4>
+            <div v-if="isDefault">
+              <div class="flex">
+                <div class="w-1/2 pr-2">
+                  <label for="" class="form-group-label"
+                    >Tên sản phẩm<span class="text-red-600">*</span>
+                  </label>
                   <div>
-                    <plus-outlined />
-                    <div style="margin-top: 8px">Upload</div>
+                    <a-form-item
+                      name="title"
+                      :rules="[
+                        { required: true, message: 'Chưa nhập tiêu đề' },
+                      ]"
+                    >
+                      <a-input
+                        type="text"
+                        class="w-full"
+                        placeholder="Nhập tên sản phẩm"
+                        v-model:value="product.title"
+                      >
+                      </a-input>
+                    </a-form-item>
                   </div>
-                  <a-modal
-                    :visible="previewVisible"
-                    :footer="null"
-                    @cancel="handleCancelImage"
-                  >
-                    <img
-                      alt="example"
-                      style="width: 100%"
-                      :src="previewImage"
-                    />
-                  </a-modal>
-                </a-upload>
+                </div>
+                <div class="w-1/2 pl-2">
+                  <label for="" class="form-group-label"
+                    >Website<span class="text-red-600"></span> <span></span
+                  ></label>
+                  <div>
+                    <a-select
+                      class="w-full"
+                      placeholder="Chọn website"
+                      v-model:value="product.website"
+                      :options="listWeb"
+                      :fieldNames="{
+                        label: 'web_name',
+                        value: 'code',
+                      }"
+                      mode="multiple"
+                    >
+                    </a-select>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div>
-              <label for="" class="form-group-label"
-                >Mô tả<span class="text-red-600"></span
-              ></label>
-              <div>
-                <a-textarea
-                  type="text"
-                  placeholder="Nhập mô tả"
-                  v-model:value="product.desc"
+              <div class="form-large-full">
+                <label for="" class="form-group-label"
+                  >Ngành hàng<span class="text-red-600">*</span></label
                 >
-                </a-textarea>
+                <div>
+                  <a-form-item
+                    name="category"
+                    :rules="[
+                      { required: true, message: 'Chưa chọn ngành hàng' },
+                    ]"
+                  >
+                    <a-tree-select
+                      placeholder="Chọn ngành hàng"
+                      style="width: 100%"
+                      :tree-data="listTreeCategory"
+                      show-search
+                      v-model:value="product.category"
+                      :fieldNames="{
+                        children: 'children',
+                        label: 'title',
+                        value: 'code',
+                      }"
+                      tree-node-filter-prop="title"
+                      :show-checked-strategy="SHOW_PARENT"
+                      tree-checkable
+                      treeDefaultExpandAll
+                      multiple
+                    >
+                    </a-tree-select>
+                  </a-form-item>
+                </div>
+              </div>
+              <div class="flex">
+                <div class="w-1/2 pr-2">
+                  <label for="" class="form-group-label"
+                    >Bộ thuộc tính<span class="text-red-600">* </span>
+                    <span></span
+                  ></label>
+                  <div>
+                    <a-select
+                      class="w-full"
+                      placeholder="Chọn bộ thuộc tính"
+                      :options="listSetAttributeGroup"
+                      v-model:value="product.groupAttributeID"
+                      :fieldNames="{ label: 'title', value: 'id' }"
+                      @change="handleChangeAttributeGroup"
+                    >
+                    </a-select>
+                  </div>
+                </div>
+                <div class="w-1/2 pl-2">
+                  <label for="" class="form-group-label"
+                    >Thuế<span class="text-red-600"></span> <span></span
+                  ></label>
+                  <div>
+                    <a-select
+                      class="w-full"
+                      placeholder="Chọn loại thuế"
+                      :options="listTax"
+                      v-model:value="product.taxID"
+                      :fieldNames="{ label: 'title', value: 'id' }"
+                    >
+                    </a-select>
+                  </div>
+                </div>
+              </div>
+              <div class="flex">
+                <div class="w-1/2 pr-2">
+                  <label for="" class="form-group-label"
+                    >SKU<span class="text-red-600">* </span> <span></span
+                  ></label>
+                  <div>
+                    <a-form-item
+                      name="sku"
+                      :rules="[{ required: true, message: 'Chưa nhập mã sku' }]"
+                    >
+                      <a-input
+                        type="text"
+                        class="w-full"
+                        placeholder="Nhập mã sku"
+                        v-model:value="product.sku"
+                      >
+                      </a-input>
+                    </a-form-item>
+                  </div>
+                </div>
+                <div class="w-1/2 pl-2">
+                  <label for="" class="form-group-label"
+                    >Barcode<span class="text-red-600"></span> <span></span
+                  ></label>
+                  <div>
+                    <a-input
+                      type="text"
+                      class="w-full"
+                      placeholder="Nhập barcode"
+                      v-model:value="product.bar_code"
+                    >
+                    </a-input>
+                  </div>
+                </div>
+              </div>
+              <div class="flex">
+                <div class="w-1/2 pr-2">
+                  <label for="" class="form-group-label"
+                    >Khối lượng<span class="text-red-600"></span> <span></span
+                  ></label>
+                  <div class="flex">
+                    <a-input
+                      type="text"
+                      placeholder="Nhập khối lượng"
+                      v-model:value="product.weight"
+                    >
+                    </a-input>
+                    <a-select
+                      class="!w-[70px]"
+                      :options="weightUnit"
+                      v-model:value="product.weightUnit"
+                      @change="handleChangeUnit"
+                    >
+                    </a-select>
+                  </div>
+                </div>
+                <div class="w-1/2 pl-2">
+                  <label for="" class="form-group-label"
+                    >Đơn vị quy dổi<span class="text-red-600"></span>
+                    <span></span
+                  ></label>
+                  <div>
+                    <a-select
+                      class="w-full"
+                      placeholder="Chọn đơn vị quy đổi"
+                      :options="listProductUnit"
+                      v-model:value="product.unitCode"
+                      :fieldNames="{ label: 'title', value: 'id' }"
+                      @change="handleChangeUnit"
+                    >
+                    </a-select>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-2 pr-2 w-1/2">
+                Trạng thái sản phẩm
+                <a-select
+                  class="w-full"
+                  placeholder="Chọn trạng thái"
+                  :options="statusProduct"
+                  v-model:value="product.status"
+                  @change="handleChangeUnit"
+                >
+                </a-select>
+              </div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Hình ảnh<span class="text-red-600"></span
+                ></label>
+                <div>
+                  <a-upload
+                    class="form-group-label"
+                    list-type="picture-card"
+                    @preview="handlePreview"
+                    v-model:file-list="fileProductList"
+                  >
+                    <div>
+                      <plus-outlined />
+                      <div style="margin-top: 8px">Upload</div>
+                    </div>
+                    <a-modal
+                      :visible="previewVisible"
+                      :footer="null"
+                      @cancel="handleCancelImage"
+                    >
+                      <img
+                        alt="example"
+                        style="width: 100%"
+                        :src="previewImage"
+                      />
+                    </a-modal>
+                  </a-upload>
+                </div>
+              </div>
+              <div>
+                <label for="" class="form-group-label"
+                  >Mô tả<span class="text-red-600"></span
+                ></label>
+                <div>
+                  <a-textarea
+                    type="text"
+                    placeholder="Nhập mô tả"
+                    size="large"
+                    v-model:value="product.desc"
+                    :rows="8"
+                  >
+                  </a-textarea>
+                </div>
               </div>
             </div>
             <div v-for="(item, index) in indexAttribute" :key="index">
@@ -776,6 +799,9 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
+  const filterOption = (input: string, option: any) => {
+    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
@@ -899,6 +925,7 @@
   const isConfig = ref(true)
   const isDetail = ref(true)
   const isInfor = ref(true)
+  const isDefault = ref(true)
   const fileList = ref<UploadProps['fileList']>([])
   const fileProductList = ref<UploadProps['fileList']>([])
   const handleCancelImage = () => {
@@ -908,7 +935,7 @@
 
   const res_1 = ref([])
   const res_2 = ref([])
-  const frc = (arr: any, arr2: any) => {
+  const getDataTableConfig = (arr: any, arr2: any) => {
     let result = []
     let i = 0
     let k = 0
@@ -927,7 +954,7 @@
         res_1.value = result
         k++
       }
-      frc(arr, arr2)
+      getDataTableConfig(arr, arr2)
       i++
     }
     while (i < arr2.length - 1) {
@@ -944,7 +971,7 @@
         res_2.value = result
         k++
       }
-      frc(arr, arr2)
+      getDataTableConfig(arr, arr2)
       i++
     }
   }
@@ -1057,7 +1084,7 @@
     listGenerate.value.push(nameArr.value, ...mapArr.value)
     skuArr.value.push(product.sku)
     listSku.value.push(skuArr.value, ...mapArr.value)
-    await frc(listGenerate.value, listSku.value)
+    await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
       title: item,
       code: index,

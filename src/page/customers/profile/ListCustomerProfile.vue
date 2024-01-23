@@ -47,6 +47,7 @@
             <p v-if="record.gender == '0'">Nữ</p>
             <p v-if="record.gender == '2'">Khác</p>
           </template>
+
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
