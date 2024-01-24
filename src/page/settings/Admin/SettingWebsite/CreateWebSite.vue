@@ -116,7 +116,7 @@
     status: false,
   })
   const createInventory = () => {
-    let data = {
+    const data = {
       web_name: web.web_name,
       code: web.code,
       url: web.url,

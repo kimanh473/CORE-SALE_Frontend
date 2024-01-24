@@ -165,16 +165,16 @@
   import { useToast } from 'vue-toastification'
   // import { useUserProfile } from '@/store/modules/user/userProfile'
   // import { storeToRefs } from 'pinia'
-  const router = useRouter()
+  import { userLogin } from '@/store/modules/accounts/userLogin'
   import { usePasswordSetting } from '../../store/modules/accounts/password'
   // const store = useStore()
+  const userlog = userLogin()
+  const router = useRouter()
   const toast = useToast()
   const isOpenDetail = ref(false)
   const passSetting = usePasswordSetting()
   // const { userProfile, avatar } = storeToRefs(profile)
-  const format = ref(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  )
+
   const changePassword = reactive({
     current_password: '',
     password: '',
@@ -182,10 +182,11 @@
   })
   const logout = () => {
     // store.dispatch('userLogin/UserLogoutAction')
+    userlog.UserLogoutAction()
     router.push('/login')
-    localStorage.removeItem('TOKEN')
-    localStorage.removeItem('authenticated')
-    localStorage.removeItem('role')
+    // localStorage.removeItem('TOKEN')
+    // localStorage.removeItem('authenticated')
+    // localStorage.removeItem('role')
   }
   const handleOpenDetail = () => {
     isOpenDetail.value = true

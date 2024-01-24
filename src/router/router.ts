@@ -1,20 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import product from "./Product/Product"
-import category from "./Product/Category"
-import attribute from "./Product/AttributeProduct"
-import settingSale from "./Settings/SettingSale"
-import settingSystem from "./Settings/SettingSystem"
+import product from './Product/Product'
+import category from './Product/Category'
+import attribute from './Product/AttributeProduct'
+import settingSale from './Settings/SettingSale'
+import settingSystem from './Settings/SettingSystem'
 import productUnit from './Product/ProductUnit'
 import specification from './Product/Specification'
 import inventory from './Inventory/Inventory'
 import groupInventory from './Inventory/GroupInventory'
 import tax from './Product/Tax'
-import adjust from "./Product/AdjustPrice";
+import adjust from './Product/AdjustPrice'
 import currency from './Product/Currency'
 import customerProfile from './Customer/Profile'
 import customerAccount from './Customer/Account'
 import customerGroup from './Customer/Group'
-import order from "./Order/Order";
+import order from './Order/Order'
 type TRoute = {
   path: string
   component: () => Promise<any>
@@ -22,29 +22,34 @@ type TRoute = {
 }
 const LoadRoute = (array: Array<TRoute>) => {
   for (let i = 0; i < array?.length; i++) {
-    route.push(array[i]);
+    route.push(array[i])
   }
-};
+}
 const route: TRoute[] = [
   {
     path: '/list-source-product',
-    component: () => import('../page/settings/Shop-settings/ManageProduct/SourceProduct/ListSourceProduct.vue'),
+    component: () =>
+      import(
+        '../page/settings/Shop-settings/ManageProduct/SourceProduct/ListSourceProduct.vue'
+      ),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   {
     path: '/create-category',
-    component: () => import('../page/products/ProductCategory/CreateCategory.vue'),
+    component: () =>
+      import('../page/products/ProductCategory/CreateCategory.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   {
     path: '/update-category/:id',
-    component: () => import('../page/products/ProductCategory/UpdateCategory.vue'),
+    component: () =>
+      import('../page/products/ProductCategory/UpdateCategory.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   // {
@@ -83,50 +88,46 @@ const route: TRoute[] = [
   //   },
   // },
 
-
-
-
-
   {
     path: '/login',
     component: () => import('../page/accounts/LoginView.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   {
     path: '/confirm-email',
     component: () => import('../page/accounts/ConfirmEmail.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   {
     path: '/forgot-pass',
     component: () => import('../page/accounts/ForgotPass.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   {
     path: '/setting-menu',
     component: () => import('../page/settings/SettingMenu.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   {
     path: '/',
     component: () => import('../page/HomePage.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   {
     path: '/sales-list',
     component: () => import('../page/sales/sales_list.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
   // {
@@ -140,7 +141,7 @@ const route: TRoute[] = [
     path: '/:catchAll(.*)',
     component: () => import('../components/ErrorCom.vue'),
     meta: {
-      layout: "base-layout",
+      layout: 'base-layout',
     },
   },
 ]
@@ -162,5 +163,5 @@ LoadRoute(customerGroup)
 LoadRoute(order)
 export default createRouter({
   history: createWebHistory(),
-  routes: route
+  routes: route,
 })

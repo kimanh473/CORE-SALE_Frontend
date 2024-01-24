@@ -660,8 +660,6 @@
   const isInfor = ref<boolean>(true)
   const isDeliveryAddress = ref<boolean>(true)
   const isPayAddress = ref<boolean>(true)
-  const isContact = ref<boolean>(true)
-  const checked = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const activeKey = ref('1')
   const is_default = ref('')
@@ -694,24 +692,24 @@
 
   const { listGroupCustomer } = storeToRefs(dataGroupCustomer)
 
-  //const { messageError } = storeToRefs(dataCustomerProfile)
+  // const { messageError } = storeToRefs(dataCustomerProfile)
 
   // const handleAdd = ()
 
   const handleChangeCity = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllDistrictAction(value)
     dataOption[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
   }
 
   const handleChangeCityPay = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllDistrictAction(value)
     payDataOption[index].pay_address_detail = arr[0].title + ', ' + 'Việt Nam'
   }
 
   const handleChangeDistrict = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllWardAction(value)
     dataOption[index].address_detail =
       arr[0].title + ', ' + dataOption[index].address_detail
@@ -722,20 +720,20 @@
     option: any,
     index: number
   ) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllWardAction(value)
     payDataOption[index].pay_address_detail =
       arr[0].title + ', ' + payDataOption[index].pay_address_detail
   }
 
   const handleChangeWard = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataOption[index].address_detail =
       arr[0].title + ', ' + dataOption[index].address_detail
   }
 
   const handleChangeWardPay = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     payDataOption[index].pay_address_detail =
       arr[0].title + ', ' + payDataOption[index].pay_address_detail
   }
@@ -750,36 +748,36 @@
       option.code + last_code.value.substring(3).padStart(8, '0')
   }
 
-  const res_1 = ref([])
+  // const res_1 = ref([])
 
-  const frc = (arr: any) => {
-    let result = []
-    let i = 0
-    let k = 0
+  // const frc = (arr: any) => {
+  //   const result = []
+  //   let i = 0
+  //   let k = 0
 
-    while (i < arr.length - 1) {
-      while (k < 1) {
-        for (let m = 0; m < arr[0].length; m++) {
-          for (let j = 0; j < arr[1].length; j++) {
-            let a = arr[0][m]
-            let b = a + '_' + arr[1][j]
-            result.push(b)
-          }
-        }
-        arr[0] = result
-        arr.splice(1, 1)
-        res_1.value = result
-        k++
-      }
-      frc(arr)
-      i++
-    }
-    return res_1
-  }
+  //   while (i < arr.length - 1) {
+  //     while (k < 1) {
+  //       for (let m = 0; m < arr[0].length; m++) {
+  //         for (let j = 0; j < arr[1].length; j++) {
+  //           const a = arr[0][m]
+  //           const b = a + '_' + arr[1][j]
+  //           result.push(b)
+  //         }
+  //       }
+  //       arr[0] = result
+  //       arr.splice(1, 1)
+  //       res_1.value = result
+  //       k++
+  //     }
+  //     frc(arr)
+  //     i++
+  //   }
+  //   return res_1
+  // }
 
   const handleChangeIsDefault = (index: any) => {
     dataOption[index].is_default = '1'
-    let color = dataOption.filter((c: any, i: any) => i != index)
+    const color = dataOption.filter((c: any, i: any) => i != index)
     if (color) {
       color.map((item: any) => (item.is_default = '0'))
     }
@@ -787,7 +785,7 @@
 
   const handleChangeIsDefaultPay = (index: any) => {
     payDataOption[index].is_default_pay = '1'
-    let color = payDataOption.filter((c: any, i: any) => i != index)
+    const color = payDataOption.filter((c: any, i: any) => i != index)
     if (color) {
       color.map((item: any) => (item.is_default_pay = '0'))
     }
@@ -843,29 +841,29 @@
     payDataOption.push(data)
   }
 
-  const removeOptions = (index: number) => {
-    dataOption.splice(index, 1)
-  }
+  // const removeOptions = (index: number) => {
+  //   dataOption.splice(index, 1)
+  // }
 
-  const payRemoveOptions = (index: number) => {
-    dataOption.splice(index, 1)
-  }
+  // const payRemoveOptions = (index: number) => {
+  //   dataOption.splice(index, 1)
+  // }
 
-  const arrayInvent = ref([])
-  const arrayWeb = ref([])
+  // const arrayInvent = ref([])
+  // const arrayWeb = ref([])
 
-  const getListWeb = (webList: string[], inventList: string[]) => {
-    arrayWeb.value = webList
-    arrayInvent.value = inventList
-  }
+  // const getListWeb = (webList: string[], inventList: string[]) => {
+  //   arrayWeb.value = webList
+  //   arrayInvent.value = inventList
+  // }
 
-  const checkedInvent = (code: string) => {
-    if (arrayInvent?.value?.indexOf(code) > -1) {
-      return true
-    } else {
-      return false
-    }
-  }
+  // const checkedInvent = (code: string) => {
+  //   if (arrayInvent?.value?.indexOf(code) > -1) {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
 
   const EndTimeLoading = () => {
     isLoading.value = false
@@ -891,7 +889,7 @@
   })
 
   const createCustomerProfile = () => {
-    let data = {
+    const data = {
       code: customerProfile.code,
       name: customerProfile.name,
       birth_day: dayjs(value_birth_day.value).format(dateFormatRequest),

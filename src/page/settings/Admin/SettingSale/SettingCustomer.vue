@@ -157,11 +157,6 @@
   const systemSetting = useSystemSetting()
   systemSetting.detailSystemSettingAction('SETTING_CUSTOMER')
   const { dataSettingMail } = storeToRefs(systemSetting)
-  const checkAutoGroup = ref<boolean>(false)
-  const checkSendConfirm = ref<boolean>(false)
-  const checkConfirmMail = ref<boolean>(false)
-  const checkNewCustomer = ref<boolean>(false)
-  const checkDisableAccount = ref<boolean>(false)
   const updateCustomerSetting = () => {
     const data = {
       code: 'SETTING_CUSTOMER',

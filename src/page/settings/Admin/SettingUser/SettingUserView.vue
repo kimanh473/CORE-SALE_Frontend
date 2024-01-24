@@ -314,41 +314,41 @@
       key: 'id',
     },
   ]
-  interface DataItem {
-    key: number
-    name: any
-    created_at: any
-    updated_at: any
-  }
+  // interface DataItem {
+  //   key: number
+  //   name: any
+  //   created_at: any
+  //   updated_at: any
+  // }
   const groupPermission = ref()
   const fullnameReset = ref()
-  const rowSelection = ref({
-    checkStrictly: false,
-    onChange: (
-      selectedRowKeys: (string | number)[],
-      selectedRows: DataItem[]
-    ) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      )
-    },
-    onSelect: (
-      record: DataItem,
-      selected: boolean,
-      selectedRows: DataItem[]
-    ) => {
-      console.log(record, selected, selectedRows)
-    },
-    onSelectAll: (
-      selected: boolean,
-      selectedRows: DataItem[],
-      changeRows: DataItem[]
-    ) => {
-      console.log(selected, selectedRows, changeRows)
-    },
-  })
+  // const rowSelection = ref({
+  //   checkStrictly: false,
+  //   onChange: (
+  //     selectedRowKeys: (string | number)[],
+  //     selectedRows: DataItem[]
+  //   ) => {
+  //     console.log(
+  //       `selectedRowKeys: ${selectedRowKeys}`,
+  //       'selectedRows: ',
+  //       selectedRows
+  //     )
+  //   },
+  //   onSelect: (
+  //     record: DataItem,
+  //     selected: boolean,
+  //     selectedRows: DataItem[]
+  //   ) => {
+  //     console.log(record, selected, selectedRows)
+  //   },
+  //   onSelectAll: (
+  //     selected: boolean,
+  //     selectedRows: DataItem[],
+  //     changeRows: DataItem[]
+  //   ) => {
+  //     console.log(selected, selectedRows, changeRows)
+  //   },
+  // })
   const changePassword = reactive({
     password: '',
     password_confirmation: '',
@@ -373,7 +373,7 @@
         groupPermission.value = record
         fullnameReset.value = record?.fullname
         idSelected.value = record?.id
-        var menu = document.getElementById('contextMenu')
+        const menu = document.getElementById('contextMenu')
         menu.style.display = 'block'
         FormatModalX(menu, event)
         FormatModalY(menu, event)
@@ -390,7 +390,7 @@
   }
   const changeStatusAccount = (id: number, status: string) => {
     isLoading.value = true
-    let data = {
+    const data = {
       user_id: id,
       status: status == 'BLOCK' ? 'ACTIVE' : 'BLOCK',
     }
@@ -414,7 +414,7 @@
     changePassword.password_confirmation = ''
   }
   const resetPassword = () => {
-    let data = {
+    const data = {
       password: changePassword.password,
     }
     if (

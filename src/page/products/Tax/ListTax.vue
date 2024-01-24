@@ -72,12 +72,11 @@
   import Header from '../../../components/common/Header.vue'
   import { useListSpecification } from '../../../store/modules/store-setting/specification'
   import { useListTax } from '../../../store/modules/store-setting/tax'
-  import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive, computed } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
-  const route = useRoute()
   const router = useRouter()
   const toast = useToast()
   const isLoading = ref<boolean>(false)
@@ -87,7 +86,6 @@
   const { listTax } = storeToRefs(dataTax)
   const dataSpecification = useListSpecification()
   dataSpecification.getListSpecificationAction()
-  const { listSpecification } = storeToRefs(dataSpecification)
 
   const columns = [
     {

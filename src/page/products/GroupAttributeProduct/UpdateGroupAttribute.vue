@@ -188,6 +188,7 @@
   import 'ag-grid-community/styles/ag-theme-alpine.css'
   // Register the required feature modules with the Grid
   import { AgGridVue } from 'ag-grid-vue3'
+  import { DataAttribute } from '@/store/modules/store-setting/store.type'
   const router = useRouter()
   const route = useRoute()
   const toast = useToast()
@@ -221,7 +222,7 @@
     .getDetailAttributeGroupAction(Number(route.params.id))
     .then(() => {
       rightRowData.value = [
-        ...detailAttributeGroup?.value.attribute_detail.map(
+        ...detailAttributeGroup.value.attribute_detail.map(
           (item: DataAttribute) => ({
             id: item.id,
             key: item.id.toString(),
@@ -310,7 +311,7 @@
     },
   ]
   const onRowDragEnd = () => {
-    let rowData: any = []
+    const rowData: any = []
     rightApi.value.forEachNode((node: any) => rowData.push(node.data))
     rightRowData.value = rowData
   }
@@ -321,7 +322,7 @@
     const dropZoneParams1 = rightApi.value.getRowDropZoneParams({
       onDragStop: (params: any) => {
         // console.log(rightRowData.value)
-        var nodes = params.nodes
+        const nodes = params.nodes
         leftApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data
@@ -337,7 +338,7 @@
     })
     const dropZoneParams2 = leftApi.value.getRowDropZoneParams({
       onDragStop: (params: any) => {
-        var nodes = params.nodes
+        const nodes = params.nodes
         rightApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data
@@ -367,7 +368,7 @@
     }
   }
   const updateAttribute = () => {
-    let data = {
+    const data = {
       title: detailAttributeGroup.value.title,
       code: detailAttributeGroup.value.code,
       json_attribute: rightRowData.value.map((item: any) => item.code),

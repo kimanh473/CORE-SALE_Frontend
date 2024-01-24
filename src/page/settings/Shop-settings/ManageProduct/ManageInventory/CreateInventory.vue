@@ -453,20 +453,12 @@
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRouter } from 'vue-router'
-  // const selectedGroupInventory = ref(null)
-  // const selectedCity = ref(null)
-  // const selectedDistrict = ref(null)
-  // const selectedWard = ref(null)
   const router = useRouter()
   const toast = useToast()
   const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
-  // const checked = ref(false)
   const isLoading = ref<boolean>(false)
-  // const isReInput = ref<boolean>(true)
-
-  const jsonTypeCode = ref([])
   const filterOption = (input: string, option: any) => {
     return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
   }
@@ -507,13 +499,7 @@
 
   const dataGroupInventory = useGroupInventory()
   dataGroupInventory.getListGroupInventoryAction()
-  const optionGroup = ref([])
-  const { listActiveGroupInventory, detailGroupInventory, selectGroupInvent } =
-    storeToRefs(dataGroupInventory)
-  const getDetailGroupInventory = (id: number) => {
-    dataGroupInventory.getDetailGroupInventoryAction(id)
-  }
-
+  const { listActiveGroupInventory } = storeToRefs(dataGroupInventory)
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
@@ -535,8 +521,6 @@
   const getDataCity = () => {
     dataLocation.getListAllCityAction()
   }
-  const dataOp = ref([])
-
   // const handleChange = (value: any, option: any) => {
   //   option.map((item: any, index: number) => ({}))
   // }
@@ -555,8 +539,8 @@
     inventory.address = name.title + ', ' + inventory.address
   }
   const createInventory = () => {
-    let data = Object.assign(inventory)
-    let st: any = []
+    const data = Object.assign(inventory)
+    const st: any = []
     listActiveGroupInventory.value.map((t, option_id) => {
       t.options.map((t2, i2) => {
         if (inventory.type_code[t.id] && inventory.type_code[t.id] == t2.id) {
