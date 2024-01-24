@@ -1426,7 +1426,6 @@
     previewTitle.value =
       file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
   }
-
   const dataOption = reactive([
     {
       value: <SelectProps>[],

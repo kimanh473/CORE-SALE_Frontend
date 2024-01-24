@@ -34,16 +34,21 @@
         :columns="columns"
         :data-source="listProduct"
         :pagination="false"
-        v-model:current="current"
+        v-model:current="currentPage"
         bordered
         row-key="id"
-        ><template #bodyCell="{ column, record }">
+        ><template #bodyCell="{ column, record, index }">
+          <template v-if="column.key === 'stt'">
+            <div>
+              {{ index + perPage * (currentPage - 1) + 1 }}
+            </div>
+          </template>
           <template v-if="column.key === 'image' && record.image">
             <img
               :src="UrlImg + '/' + record.image[0]"
               alt=""
-              width="60"
-              height="80"
+              width="50"
+              height="50"
             />
           </template>
           <template v-if="column.key === 'web_site_code'">
@@ -62,15 +67,19 @@
           <a-switch v-model:checked="isCheck" />
         </template>
       </a-table>
-      <a-pagination
-        v-model:current="current"
-        v-model:pageSize="perPage"
-        show-quick-jumper
-        :total="totalPage"
-        @change="changePage"
-    /></template>
+    </template>
 
-    <template v-slot:footer>footer</template>
+    <template v-slot:footer
+      ><div class="text-left px-[20px] py-[10px]">
+        <a-pagination
+          v-model:current="currentPage"
+          v-model:pageSize="perPage"
+          show-quick-jumper
+          :total="totalPage"
+          @change="changePage"
+        />
+      </div>
+    </template>
   </base-layout>
 
   <modal-delete
@@ -86,7 +95,7 @@
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
-  import { useRouter } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'
   import { ref } from 'vue'
   import { useProduct } from '@/store/modules/store-setting/products'
   // import { UrlImg } from '@/services/services'
@@ -97,6 +106,7 @@
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const router = useRouter()
+  const route = useRoute()
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(dataWebsite)
@@ -107,16 +117,19 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const current = ref(1)
-  const perPage = ref(10)
   const dataProduct = useProduct()
-  dataProduct.getListProductAction(perPage.value, current.value, EndTimeLoading)
+  const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
+  const perPage = ref(10)
+  dataProduct.getListProductAction(
+    perPage.value,
+    Number(route.params.page),
+    EndTimeLoading
+  )
   const changePage = (pageNumber: number) => {
     isLoading.value = true
+    router.push(`/products-list/page/${pageNumber}`)
     dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
   }
-  const { listProduct, totalPage } = storeToRefs(dataProduct)
-  console.log(totalPage)
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
@@ -124,6 +137,7 @@
     {
       title: 'STT',
       dataIndex: 'id',
+      key: 'stt',
     },
     {
       title: 'Ảnh',

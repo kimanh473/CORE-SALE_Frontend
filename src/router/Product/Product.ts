@@ -2,7 +2,7 @@ import requireAuth from '../requireAuth'
 
 const product = [
   {
-    path: '/products-list',
+    path: '/products-list/page/:page',
     component: () => import('../../page/products/ListProduct.vue'),
     meta: {
       layout: 'base-layout',

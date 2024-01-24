@@ -268,14 +268,14 @@
           {
             label: 'SẢN PHẨM',
             icon: 'fab fa-product-hunt',
-            to: '/products-list',
+            to: '/products-list/page/1',
             permission: [''],
             smallLabel: 'SẢN PHẨM',
             children1: [
               {
                 icon: '',
                 label: 'Quản lý sản phẩm',
-                to: '/products-list',
+                to: '/products-list/page/1',
                 submenuGroup: '',
                 permission: [''],
               },
