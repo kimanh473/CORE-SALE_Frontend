@@ -1443,7 +1443,7 @@
     isShow: true,
   })
   const role = reactive({
-    //store
+    // store
     storeSetting: '',
     product: '',
     createProduct: '',
@@ -1490,10 +1490,10 @@
       role.importProduct,
       role.exportProduct
     )
-    let arr = groupAdmin.string_roles.filter(
+    const arr = groupAdmin.string_roles.filter(
       (item) => item != '' && item != null
     )
-    let data = {
+    const data = {
       title: groupAdmin.title,
       is_admin: groupAdmin.is_admin,
       is_default: groupAdmin.is_default,

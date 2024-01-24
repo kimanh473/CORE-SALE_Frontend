@@ -100,7 +100,7 @@
   import SideBar from '../../../../components/common/SideBar.vue'
   import Header from '../../../../components/common/Header.vue'
   import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
-  import { ref, reactive } from 'vue'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRoute, useRouter } from 'vue-router'
   import { storeToRefs } from 'pinia'
@@ -115,7 +115,7 @@
   dataWeb.getDetailWebAction(Number(route.params.id))
   const { detailWeb } = storeToRefs(dataWeb)
   const updateWeb = () => {
-    let data = {
+    const data = {
       web_name: detailWeb.value.web_name,
       code: detailWeb.value.code,
       url: detailWeb.value.url,

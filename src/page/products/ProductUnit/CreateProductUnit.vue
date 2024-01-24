@@ -110,7 +110,7 @@
   })
   const createProductUnit = () => {
     isLoading.value = true
-    let data = {
+    const data = {
       title: unit.title,
       code: unit.code,
       status: status.value == true ? '1' : '0',

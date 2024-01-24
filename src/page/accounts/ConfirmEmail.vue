@@ -75,7 +75,7 @@
 
   const confirm = () => {
     isLoading.value = true
-    let data = {
+    const data = {
       email: personEmail.value,
     }
     passSetting.sendEmailForgotPassAction(data, toast, router)

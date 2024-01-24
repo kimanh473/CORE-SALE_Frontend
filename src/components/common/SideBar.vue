@@ -118,9 +118,8 @@
 </template>
 <script>
   import { ref } from 'vue'
-  import { toggleSidebar } from './state'
-  import { collapsed } from './state'
-  import { sidebarWidth } from './state'
+  import { toggleSidebar, collapsed, sidebarWidth } from './state'
+
   import MenuItem from './MenuItem.vue'
   import SubMenuItem from './SubMenuItem.vue'
   import { useRouter } from 'vue-router'
@@ -140,8 +139,8 @@
       const titleSubmenuGroup = ref('')
       const logo = ref('')
       const toggleShowMenu = () => (showMenu.value = !showMenu.value)
-      const toggleShowMenuChil = () =>
-        (showMenuChil.value = !showMenuChil.value)
+      // const toggleShowMenuChil = () =>
+      //   (showMenuChil.value = !showMenuChil.value)
       const handleToSocial = () => {
         router.push({ path: '/', name: '' })
       }

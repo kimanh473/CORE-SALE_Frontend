@@ -161,12 +161,11 @@
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
   import { useListCurrency } from '../../../store/modules/store-setting/currency'
-  import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive, computed } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
-  const route = useRoute()
   const router = useRouter()
   const toast = useToast()
   const isLoading = ref<boolean>(false)
@@ -183,11 +182,6 @@
     confirm()
     state.searchText = selectedKeys[0]
     state.searchedColumn = dataIndex
-  }
-
-  const handleReset = (clearFilters: any) => {
-    clearFilters({ confirm: true })
-    state.searchText = ''
   }
 
   const searchInput = ref()

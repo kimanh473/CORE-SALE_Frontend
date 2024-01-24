@@ -13,7 +13,7 @@
     created() {
       document.onclick = hideMenu
       function hideMenu() {
-        let context = document.getElementById('contextMenu')
+        const context = document.getElementById('contextMenu')
         context.style.display = 'none'
       }
     },

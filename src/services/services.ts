@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from '../router/router'
-import { useToast } from 'vue-toastification'
+// import { useToast } from 'vue-toastification'
 // const API_URL = process.env.VUE_APP_API_URL;
 export const API_URL = import.meta.env.VITE_APP_BASE_API
 export const UrlImg = import.meta.env.VITE_APP_IMG_URL
@@ -36,7 +36,7 @@ const httpClient = axios.create({
 //   }
 // )
 const responseInterceptor = (response: any) => {
-  if (response.data.messages == 'Token has expired') {
+  if (response.data.messages === 'Token has expired') {
     router.push({ path: '/login' })
     localStorage.removeItem('TOKEN')
     localStorage.removeItem('authenticated')

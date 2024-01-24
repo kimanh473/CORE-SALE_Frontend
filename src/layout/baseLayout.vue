@@ -38,12 +38,10 @@
   // import Header from '../Components/admin/Header.vue'
   // import Sidebar from '../Components/Sidebar'
   // import Footer from '../Components/Footer'
-  import { ref } from 'vue'
   // import { library } from '@fortawesome/fontawesome-svg-core'
   // import { faCog } from '@fortawesome/free-solid-svg-icons'
 
   // library.add(faCog)
-  const collapsed = ref<boolean>(false)
 </script>
 <style scoped>
   #components-layout-demo-fixed-sider .logo {

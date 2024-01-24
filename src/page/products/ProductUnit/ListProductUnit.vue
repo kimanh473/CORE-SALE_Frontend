@@ -75,12 +75,11 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { useProductUnit } from '@/store/modules/store-setting/product-unit'
-  import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive, computed } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
-  const route = useRoute()
   const router = useRouter()
   const toast = useToast()
   const isLoading = ref<boolean>(false)

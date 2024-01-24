@@ -117,7 +117,7 @@
   import BaseLayout from '../../../layout/baseLayout.vue'
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
-  import { ref, reactive } from 'vue'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useListTax } from '../../../store/modules/store-setting/tax'
   import { useRouter, useRoute } from 'vue-router'
@@ -142,7 +142,7 @@
   //     desc: '',
   //   })
   const updateTax = () => {
-    let data = {
+    const data = {
       title: detailTax.value.title,
       code: detailTax.value.code,
       tax_rate: detailTax.value.tax_rate.toString(),

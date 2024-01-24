@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, computed } from 'vue'
+  import { ref, reactive } from 'vue'
   //   import { useStore } from 'vuex'
   import { useRouter } from 'vue-router'
   import { useToast } from 'vue-toastification'
@@ -103,7 +103,6 @@
   // const format = ref(
   //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
   // )
-  const isLoading = ref<boolean>(false)
   const passSetting = usePasswordSetting()
   const { personEmail } = storeToRefs(passSetting)
   const resetPassword = reactive({

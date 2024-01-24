@@ -42,7 +42,7 @@
                 padding: '0',
                 margin: '0',
                 top: '72px',
-                background: 'white',
+                background: 'white'
               }"
               :showInkInFixed="true"
               class="min-w-[200px] min-h-full mr-[10px]"
@@ -435,7 +435,7 @@
                     :options="listWeb"
                     :fieldNames="{
                       label: 'web_name',
-                      value: 'code',
+                      value: 'code'
                     }"
                     mode="multiple"
                   >
@@ -460,7 +460,7 @@
                     :fieldNames="{
                       children: 'children',
                       label: 'title',
-                      value: 'code',
+                      value: 'code'
                     }"
                     :show-checked-strategy="SHOW_PARENT"
                     tree-checkable
@@ -1201,7 +1201,7 @@
         uid: index,
         name: `image ${index}`,
         status: 'done',
-        url: `${UrlImg}/${item}`,
+        url: `${UrlImg}/${item}`
       })
     )
   })
@@ -1226,62 +1226,62 @@
   const weightUnit = ref<SelectProps['options']>([
     {
       value: '0',
-      label: 'g',
+      label: 'g'
     },
     {
       value: '1',
-      label: 'kg',
-    },
+      label: 'kg'
+    }
   ])
   const statusProduct = ref<SelectProps['options']>([
     {
       value: '0',
-      label: 'Chưa kích hoạt',
+      label: 'Chưa kích hoạt'
     },
     {
       value: '1',
-      label: 'Đang kích hoạt',
-    },
+      label: 'Đang kích hoạt'
+    }
   ])
   const columns = [
     {
       title: 'Phiên bản sản phẩm',
       key: 'group_1',
-      align: 'center',
+      align: 'center'
     },
     {
       title: 'Tên',
       key: 'name',
       align: 'center',
-      width: '12%',
+      width: '12%'
     },
     {
       title: 'SKU',
       key: 'sku',
       align: 'center',
-      width: '12%',
+      width: '12%'
     },
     {
       title: 'Barcode',
       key: 'bar_code',
-      align: 'center',
+      align: 'center'
     },
     {
       title: 'Khối lượng',
       key: 'weight',
       align: 'center',
-      width: '10%',
+      width: '10%'
     },
     {
       title: 'Tồn kho tối thiểu',
       key: 'minimum',
-      align: 'center',
+      align: 'center'
     },
     {
       title: 'Tồn kho tối đa',
       key: 'maximum',
-      align: 'center',
-    },
+      align: 'center'
+    }
   ]
 
   const dataCreateProduct = ref<any>({})
@@ -1289,7 +1289,7 @@
     indexAttribute.value = options.json_group_attribute_detail.map(
       (item: any) => ({
         title: item.title,
-        attribute: item.attribute_detail,
+        attribute: item.attribute_detail
       })
     )
   }
@@ -1430,13 +1430,13 @@
   const dataOption = reactive([
     {
       value: <SelectProps['options']>[],
-      title: '',
-    },
+      title: ''
+    }
   ])
   const addOptions = () => {
     const data = {
       value: <SelectProps['options']>[],
-      title: '',
+      title: ''
     }
     dataOption.push(data)
   }
@@ -1453,20 +1453,20 @@
     specificationID: null,
     classifyID: null,
     nameClassifyID: null,
-    unitCode: null,
+    unitCode: null
   })
   const dataUnit = reactive([
     {
       unit_standard: '',
       unit_exchange: '',
-      rate: '',
-    },
+      rate: ''
+    }
   ])
   const addUnits = () => {
     const data = {
       unit_standard: '',
       unit_exchange: '',
-      rate: '',
+      rate: ''
     }
     dataUnit.push(data)
   }
@@ -1478,7 +1478,7 @@
     dataMapUnit.value = dataUnit.map((item: any) => ({
       unit_standard: value,
       unit_exchange: item.unit_exchange,
-      rate: item.rate,
+      rate: item.rate
     }))
   }
   const lastGenerateList = ref<any>([])
@@ -1499,15 +1499,15 @@
     await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
       title: item,
-      code: index,
+      code: index
     }))
     lastGenerateSku.value = res_2.value.map((item: any) => ({
-      sku: item,
+      sku: item
     }))
     let arrTable = lastGenerateList.value.map((item: any, index: number) => ({
       title: item.title,
       code: item.code,
-      sku: lastGenerateSku.value[index].sku,
+      sku: lastGenerateSku.value[index].sku
     }))
 
     dataTableConfig.value = arrTable.map((item: any, index: number) => ({
@@ -1520,7 +1520,7 @@
       minimum: '',
       maximum: '',
       image: <UploadProps['fileList']>[],
-      image1: <any>[],
+      image1: <any>[]
     }))
   }
   const handleImageTable = async (event: any, index: number) => {

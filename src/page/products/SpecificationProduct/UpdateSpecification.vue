@@ -110,7 +110,7 @@
   import BaseLayout from '../../../layout/baseLayout.vue'
   import SideBar from '../../../components/common/SideBar.vue'
   import Header from '../../../components/common/Header.vue'
-  import { ref, reactive } from 'vue'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useListSpecification } from '../../../store/modules/store-setting/specification'
   import { useRouter, useRoute } from 'vue-router'
@@ -121,7 +121,6 @@
   const { detailSpecification } = storeToRefs(dataSpecification)
 
   const isLoading = ref<boolean>(false)
-  const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const EndTimeLoading = () => {
@@ -129,7 +128,7 @@
   }
 
   const updateSpecification = () => {
-    let data = {
+    const data = {
       title: detailSpecification.value.title,
       code: detailSpecification.value.code,
       unit: detailSpecification.value.unit,

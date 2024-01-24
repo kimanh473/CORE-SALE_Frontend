@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --declaration --emitDeclarationOnly && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext \".ts,.vue\" ",
+    "lint-fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",

@@ -1418,7 +1418,7 @@
   import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
   import { useRouter, useRoute } from 'vue-router'
   import { useToast } from 'vue-toastification'
-  import { computed, reactive, ref, watch } from 'vue'
+  import { reactive, ref } from 'vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
   const route = useRoute()
@@ -1437,7 +1437,7 @@
   const { listInventory } = storeToRefs(dataInventory)
   const dataAdminSetting = useAdminSetting()
   const role = reactive({
-    //store
+    // store
     storeSetting: '',
     product: '',
     createProduct: '',
@@ -1557,10 +1557,10 @@
       role.importProduct,
       role.exportProduct
     )
-    let arr = groupAdmin.string_roles.filter(
+    const arr = groupAdmin.string_roles.filter(
       (item) => item != '' && item != null
     )
-    let data = {
+    const data = {
       title: detailGroupPermission.value.title,
       is_admin: detailGroupPermission.value.is_admin,
       string_roles: arr,

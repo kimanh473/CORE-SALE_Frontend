@@ -171,7 +171,7 @@
     status: '0',
   })
   const createGroupInventory = () => {
-    let data = {
+    const data = {
       title: invent.title,
       code: invent.code,
       desc: invent.desc,

@@ -287,7 +287,6 @@
   import Header from '../../../components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
   // import { useLocation } from '../../../store/modules/location/location'
-  import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
@@ -300,15 +299,12 @@
   // const selectedWard = ref(null)
   const router = useRouter()
   const toast = useToast()
-  const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
-  const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
   const dataAttribute = useAttributeProduct()
   webCatalog.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
     isLoading.value = false
@@ -413,7 +409,7 @@
   // ) {
   //   isReInput.value = false
   // }
-  const showManageChoice = ref<Boolean>(false)
+  const showManageChoice = ref<boolean>(false)
   const handleChange = (value: string, options: any) => {
     if (value == 'selection') {
       showManageChoice.value = true
@@ -471,7 +467,7 @@
   //   attribute.address = name.title + ', ' + attribute.address
   // }
   const createAttribute = () => {
-    let data = {
+    const data = {
       attribute_code: attribute.attribute_code,
       attribute_model: '',
       backend_model: '',

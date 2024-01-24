@@ -231,7 +231,7 @@
   const defaultColDef = reactive({
     flex: 1,
     minWidth: 100,
-    filter: true,
+    filter: true
   })
   groupAttribute
     .getDetailSetAttributeGroupAction(Number(route.params.id))
@@ -242,9 +242,9 @@
             id: item.id,
             key: item.id.toString(),
             code: item.code,
-            title: item.title,
+            title: item.title
           })
-        ),
+        )
       ]
     })
   const leftColumns = reactive([
@@ -257,14 +257,14 @@
           return dragItemCount
         }
         return params.rowNode.data.title
-      },
+      }
     },
     {
       colId: 'checkbox',
       maxWidth: 50,
       checkboxSelection: true,
       suppressMenu: true,
-      headerCheckboxSelection: true,
+      headerCheckboxSelection: true
     },
     {
       field: 'title',
@@ -278,13 +278,13 @@
               return (
                 cellValue.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
               )
-            },
-          },
+            }
+          }
         ],
         filterPlaceholder: 'Nhập để tìm',
-        maxNumConditions: 1,
-      },
-    },
+        maxNumConditions: 1
+      }
+    }
   ])
   const rightColumns = [
     {
@@ -296,14 +296,14 @@
           return dragItemCount
         }
         return params.rowNode.data.title
-      },
+      }
     },
     {
       colId: 'checkbox',
       maxWidth: 50,
       checkboxSelection: true,
       suppressMenu: true,
-      headerCheckboxSelection: true,
+      headerCheckboxSelection: true
     },
     {
       field: 'title',
@@ -317,13 +317,13 @@
               return (
                 cellValue.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
               )
-            },
-          },
+            }
+          }
         ],
         filterPlaceholder: 'Nhập để tìm',
-        maxNumConditions: 1,
-      },
-    },
+        maxNumConditions: 1
+      }
+    }
   ]
   const onRowDragEnd = () => {
     let rowData: any = []
@@ -341,7 +341,7 @@
         leftApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data
-          }),
+          })
         })
       },
       onRowDragEnter(e: any) {
@@ -349,7 +349,7 @@
       },
       onRowDragEnd(e: any) {
         console.log('onRowDragEnd', e)
-      },
+      }
     })
     const dropZoneParams2 = leftApi.value.getRowDropZoneParams({
       onDragStop: (params: any) => {
@@ -357,7 +357,7 @@
         rightApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data
-          }),
+          })
         })
       },
       onRowDragEnter(e: any) {
@@ -365,7 +365,7 @@
       },
       onRowDragEnd(e: any) {
         console.log('onRowDragEnd', e)
-      },
+      }
     })
     leftApi.value.addRowDropZone(dropZoneParams1)
     rightApi.value.addRowDropZone(dropZoneParams2)
@@ -388,7 +388,7 @@
     code: '',
     status: '0',
     json_group_attribute: [],
-    json_group_specification: [],
+    json_group_specification: []
   })
   const updateAttributeCategory = () => {
     let data = {
@@ -396,7 +396,7 @@
       code: detailAttributeCategory.value.code,
       status: detailAttributeCategory.value.status,
       json_group_attribute: rightRowData.value.map((item: any) => item.code),
-      json_group_specification: <any>[],
+      json_group_specification: <any>[]
     }
     groupAttribute.updateAttributeCategoryAction(
       Number(route.params.id),
