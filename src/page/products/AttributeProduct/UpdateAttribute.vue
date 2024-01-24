@@ -282,8 +282,8 @@
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
-  import { useRouter } from 'vue-router'
-  import { useRoute } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
+
   import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
   import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
   // const selectedGroupInventory = ref(null)
@@ -293,10 +293,8 @@
   const router = useRouter()
   const route = useRoute()
   const toast = useToast()
-  const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
-  const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
   const dataAttribute = useAttributeProduct()
@@ -304,7 +302,6 @@
   const { detailAttribute } = storeToRefs(dataAttribute)
 
   webCatalog.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
     isLoading.value = false
@@ -404,7 +401,7 @@
   // ) {
   //   isReInput.value = false
   // }
-  const showManageChoice = ref<Boolean>(false)
+  const showManageChoice = ref<boolean>(false)
   const handleChange = (value: string, options: any) => {
     if (value == 'selection') {
       showManageChoice.value = true
@@ -438,7 +435,7 @@
   }
 
   const createAttribute = () => {
-    let data = {
+    const data = {
       attribute_code: detailAttribute.value.attribute_code,
       attribute_model: '',
       backend_model: '',

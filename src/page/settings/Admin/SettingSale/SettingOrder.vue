@@ -216,8 +216,6 @@
   //   formatTrueFasle(dataSettingMail.value.mail_to_customer_when_hasnt_paid)
   // )
   const shipMethod = ref([])
-  const afterHour = ref<Number>(0)
-
   const updateOrderSetting = () => {
     const data = {
       code: 'MAIL_TO_CUSTOMER',

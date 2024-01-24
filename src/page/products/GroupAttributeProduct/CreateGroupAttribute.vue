@@ -285,7 +285,7 @@
     },
   ]
   const onRowDragEnd = () => {
-    let rowData: any = []
+    const rowData: any = []
     rightApi.value.forEachNode((node: any) => rowData.push(node.data))
     rightRowData.value = rowData
   }
@@ -296,7 +296,7 @@
     const dropZoneParams1 = rightApi.value.getRowDropZoneParams({
       onDragStop: (params: any) => {
         // console.log(rightRowData.value)
-        var nodes = params.nodes
+        const nodes = params.nodes
         leftApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data
@@ -312,7 +312,7 @@
     })
     const dropZoneParams2 = leftApi.value.getRowDropZoneParams({
       onDragStop: (params: any) => {
-        var nodes = params.nodes
+        const nodes = params.nodes
         rightApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data

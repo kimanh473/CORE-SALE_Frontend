@@ -213,7 +213,6 @@
   const { listCurrencyInternational, defaultCurrency, defaultStatus } =
     storeToRefs(dataCurrency)
   const isLoading = ref<boolean>(false)
-  const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const EndTimeLoading = () => {
@@ -239,7 +238,7 @@
     isOpenConfirmDefault.value = false
   }
   const confirmCreateCurrency = () => {
-    let data = {
+    const data = {
       title: currencyTitle.value,
       code: currencyCode.value,
       status: currency.status,
@@ -251,7 +250,7 @@
     dataCurrency.createCurrencyAction(data, toast, router, EndTimeLoading)
   }
   const createCurrency = () => {
-    let data = {
+    const data = {
       title: currencyTitle.value,
       code: currencyCode.value,
       status: currency.status,

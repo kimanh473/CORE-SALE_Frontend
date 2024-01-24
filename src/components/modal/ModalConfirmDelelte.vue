@@ -50,7 +50,7 @@
           movementX: 0,
           movementY: 0,
         },
-        img_delete: img_delete,
+        img_delete,
       }
     },
     props: {

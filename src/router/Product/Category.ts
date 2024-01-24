@@ -1,13 +1,14 @@
-import requireAuth from "../requireAuth";
+import requireAuth from '../requireAuth'
 
 const category = [
-    {
-        path: '/category-list',
-        component: () => import('../../page/products/ProductCategory/CreateCategory.vue'),
-        meta: {
-            layout: "base-layout",
-        },
-        beforeEnter: requireAuth,
+  {
+    path: '/category-list',
+    component: () =>
+      import('../../page/products/ProductCategory/CreateCategory.vue'),
+    meta: {
+      layout: 'base-layout',
     },
+    beforeEnter: requireAuth,
+  },
 ]
-export default category;
+export default category

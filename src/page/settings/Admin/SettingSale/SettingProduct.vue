@@ -166,8 +166,6 @@
   const systemSetting = useSystemSetting()
   systemSetting.detailSystemSettingAction('SETTING_PRODUCT')
   const { dataSettingMail } = storeToRefs(systemSetting)
-  const checkEvaluate = ref<boolean>(false)
-  const checkChangeStatus = ref<boolean>(false)
   const updateProductSetting = () => {
     const data = {
       code: 'SETTING_PRODUCT',

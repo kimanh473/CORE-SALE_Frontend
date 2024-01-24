@@ -124,7 +124,6 @@
   const dataTax = useListTax()
   dataTax.getListTaxAction()
   const isLoading = ref<boolean>(false)
-  const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const EndTimeLoading = () => {
@@ -138,7 +137,7 @@
     desc: '',
   })
   const createTax = () => {
-    let data = {
+    const data = {
       title: tax.title,
       code: tax.code,
       tax_rate: tax.tax_rate.toString(),

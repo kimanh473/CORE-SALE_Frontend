@@ -4,7 +4,7 @@ import {
   UserLogoutApi,
 } from '../../../services/AccountServices/account.service'
 import { useToast } from 'vue-toastification'
-const toast = useToast()
+// const toast = useToast()
 export const userLogin = defineStore('UserLogin', {
   state: () => ({
     dataLogin: null,
@@ -23,7 +23,7 @@ export const userLogin = defineStore('UserLogin', {
     LoginAction(user: object, router: any) {
       UserLoginApi(user)
         .then((payload: any) => {
-          if (payload?.status == 'success') {
+          if (payload?.status === 'success') {
             this.setDataLogin(payload)
             router.push('/').then(() => {
               window.location.reload()
@@ -34,8 +34,8 @@ export const userLogin = defineStore('UserLogin', {
           }
         })
         .catch((err) => {
-          let arrMess = err.response.data.messages
-          let errMess = arrMess[Object.keys(arrMess)[0]]
+          const arrMess = err.response.data.messages
+          const errMess = arrMess[Object.keys(arrMess)[0]]
           useToast().error(errMess[0])
         })
     },
@@ -43,7 +43,7 @@ export const userLogin = defineStore('UserLogin', {
       const token = localStorage.getItem('TOKEN')
       UserLogoutApi(token)
         .then((payload) => {
-          if (payload.status == 'success') {
+          if (payload.status === 'success') {
             useToast().info('Hẹn gặp lại!!!!!')
             localStorage.removeItem('TOKEN')
             localStorage.removeItem('authenticated')

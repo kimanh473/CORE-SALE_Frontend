@@ -64,14 +64,13 @@
   import BaseLayout from '../../../../layout/baseLayout.vue'
   import SideBar from '../../../../components/common/SideBar.vue'
   import Header from '../../../../components/common/Header.vue'
-  import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useWebCatalog } from '../../../../store/modules//web-catalog/webcatalog'
   //   import { storeToRefs } from 'pinia'
   import ModalDelete from '../../../../components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
-  const route = useRoute()
   const router = useRouter()
   const toast = useToast()
   const dataWeb = useWebCatalog()

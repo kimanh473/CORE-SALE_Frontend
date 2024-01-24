@@ -55,7 +55,6 @@
   //   import TableResponsive from '../../../components/common/TableResponsive.vue'
   import { useSourceProduct } from '../../../../../store/modules/source-products/source-product'
   import { useRouter } from 'vue-router'
-  import { ref } from 'vue'
   //   import { Table } from 'ant-design-vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
@@ -81,11 +80,6 @@
       key: '',
     },
   ]
-
-  interface DataItem {
-    title: number
-    is_admin: any
-  }
 
   const CreateSourceProduct = () => {
     router.push('/create-source-product')

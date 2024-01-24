@@ -174,9 +174,7 @@
   const isOpenDetail = ref(false)
   const passSetting = usePasswordSetting()
   // const { userProfile, avatar } = storeToRefs(profile)
-  const format = ref(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  )
+
   const changePassword = reactive({
     current_password: '',
     password: '',

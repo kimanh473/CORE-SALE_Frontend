@@ -201,7 +201,7 @@
     isLoading.value = false
   }
   const updateGroupInventory = () => {
-    let data = {
+    const data = {
       title: detailGroupInventory.value.title,
       code: detailGroupInventory.value.code,
       desc: detailGroupInventory.value.desc,

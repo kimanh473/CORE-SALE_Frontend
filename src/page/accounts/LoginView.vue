@@ -71,15 +71,15 @@
 </template>
 <script setup lang="ts">
   import { useLocation } from '../../store/modules/location/location'
-
-  defineOptions({
-    name: 'Login',
-  })
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   //   import { useStore } from 'vuex'
   import bg_BTP from '../../assets/images/bg-BTP.jpg'
   import { userLogin } from '../../store/modules/accounts/userLogin'
+
+  defineOptions({
+    name: 'Login',
+  })
 
   const router = useRouter()
   //   const store = useStore()
@@ -100,7 +100,7 @@
     user.password = userSave.password
     savePassword.value = userSave.isCheck
   }
-  let errorMsg = ref('')
+  const errorMsg = ref('')
 
   const navigateToConfirmEmail = () => {
     router.push('/confirm-email')
