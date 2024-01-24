@@ -116,13 +116,7 @@ const route: TRoute[] = [
       layout: 'base-layout',
     },
   },
-  {
-    path: '/',
-    component: () => import('../page/HomePage.vue'),
-    meta: {
-      layout: 'base-layout',
-    },
-  },
+
   {
     path: '/sales-list',
     component: () => import('../page/sales/sales_list.vue'),

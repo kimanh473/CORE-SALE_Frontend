@@ -2,6 +2,14 @@ import requireAuth from '../requireAuth'
 
 const settingSystem = [
   {
+    path: '/',
+    component: () => import('../../page/HomePage.vue'),
+    meta: {
+      layout: 'base-layout',
+    },
+    beforeEnter: requireAuth,
+  },
+  {
     path: '/update-user/:id',
     component: () =>
       import('../../page/settings/Admin/SettingUser/UpdateUser.vue'),
