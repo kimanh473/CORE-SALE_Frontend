@@ -3,7 +3,7 @@ import requireAuth from '@/router/requireAuth'
 const order = [
   {
     path: '/list-order',
-    component: () => import('@/page/customers/order/ListOrder.vue'),
+    component: () => import('@/page/orders/ListOrder.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -11,7 +11,7 @@ const order = [
   },
   {
     path: '/create-order',
-    component: () => import('@/page/customers/order/CreateOrder.vue'),
+    component: () => import('@/page/orders/CreateOrder.vue'),
     meta: {
       layout: 'base-layout',
     },

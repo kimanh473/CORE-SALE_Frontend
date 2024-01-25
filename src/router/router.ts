@@ -118,8 +118,8 @@ const route: TRoute[] = [
   },
 
   {
-    path: '/sales-list',
-    component: () => import('@/page/sales/sales_list.vue'),
+    path: '/orders-list',
+    component: () => import('@/page/orders/ListOrder.vue'),
     meta: {
       layout: 'base-layout',
     },
