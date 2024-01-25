@@ -6,7 +6,7 @@ import {
   detailWebApi,
   deleteWebApi,
   updateWebApi,
-} from '../../../services/WebCatalogServices/webcatalog.service'
+} from '@/services/WebCatalogServices/webcatalog.service'
 import { DataWeb } from '@/store/modules/web-catalog/store.typeweb'
 export const useWebCatalog = defineStore('WebCatalog', {
   state: () => ({

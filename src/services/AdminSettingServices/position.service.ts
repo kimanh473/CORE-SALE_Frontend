@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getAllPositionNoPaginateApi = () => {
   return httpClient.get(`/setting/position/index`)
 }

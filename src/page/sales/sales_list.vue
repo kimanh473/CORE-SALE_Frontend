@@ -14,9 +14,9 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../layout/baseLayout.vue'
-  import SideBar from '../../components/common/SideBar.vue'
-  import Header from '../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
 </script>
 
 <style></style>

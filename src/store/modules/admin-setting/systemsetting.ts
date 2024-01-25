@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {
   updateSystemSettingApi,
   detailSystemSettingApi,
-} from '../../../services/AdminSettingServices/systemsetting.services'
+} from '@/services/AdminSettingServices/systemsetting.services'
 import { DataSystemSetting } from '@/store/modules/admin-setting/systemsetting.type'
 export const useSystemSetting = defineStore('SystemSetting', {
   state: () => ({

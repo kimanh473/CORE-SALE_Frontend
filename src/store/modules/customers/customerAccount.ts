@@ -7,9 +7,9 @@ import {
   createCustomerAccountInListProfileApi,
   updateCustomerAccountApi,
   deleteCustomerAccountApi,
-} from '../../../services/CustomerProfileServices/customerAccount.services'
+} from '@/services/CustomerProfileServices/customerAccount.services'
 
-import { changeStatusAccountApi } from '../../../services/AccountServices/passwordCustomer.service'
+import { changeStatusAccountApi } from '@/services/AccountServices/passwordCustomer.service'
 import dayjs from 'dayjs'
 import { DataCustomerAccount } from '@/store/modules/customers/customer.type'
 export const useCustomerAccount = defineStore('CustomerAccount', {

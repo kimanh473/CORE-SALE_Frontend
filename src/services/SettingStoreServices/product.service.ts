@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách sản phẩm
 const getAllProductsApi = (perPage: number, page: number) => {
   return httpClient.get(

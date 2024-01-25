@@ -5,7 +5,7 @@ import {
   getDetailSpecificationApi,
   updateSpecificationApi,
   deleteSpecificationApi,
-} from '../../../services/SettingStoreServices/specification.service'
+} from '@/services/SettingStoreServices/specification.service'
 import { DataSpecification } from '@/store/modules/store-setting/store.type'
 export const useListSpecification = defineStore('ListSpecification', {
   state: () => ({

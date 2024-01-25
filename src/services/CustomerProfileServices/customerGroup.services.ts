@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getAllGroupCustomerApi = () => {
   return httpClient.get(`/system-manage/customer-type/index-paginate`)
 }

@@ -56,8 +56,8 @@
 <script setup>
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
-  import bg_BTP from '../../assets/images/bg-BTP.jpg'
-  import { usePasswordSetting } from '../../store/modules/accounts/password'
+  import bg_BTP from '@/assets/images/bg-BTP.jpg'
+  import { usePasswordSetting } from '@/store/modules/accounts/password'
   import { useToast } from 'vue-toastification'
   const router = useRouter()
   const toast = useToast()

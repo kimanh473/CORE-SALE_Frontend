@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // list web không phân trang
 const getAllWebCatalogsApi = () => {
   return httpClient.get(`/setting/catalog-website/list-no-paginate`)

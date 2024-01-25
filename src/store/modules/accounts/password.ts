@@ -4,7 +4,7 @@ import {
   changePassByEmailConfirmApi,
   changePassApi,
   resetPassApi,
-} from '../../../services/AccountServices/password.service'
+} from '@/services/AccountServices/password.service'
 export const usePasswordSetting = defineStore('PasswordSetting', {
   state: () => ({
     personEmail: '',

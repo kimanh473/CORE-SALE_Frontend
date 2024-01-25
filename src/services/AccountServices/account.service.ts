@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_URL } from '../services'
+import { API_URL } from '@/services/services'
 // import httpClient from "../AccountServices/account.service";
 export const UserLoginApi = async (user: object) => {
   const res = await axios({

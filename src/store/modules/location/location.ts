@@ -5,7 +5,7 @@ import {
   GetAllWardsApi,
   GetAllWardsApiSecond,
   GetAllDistrictsApiSecond,
-} from '../../../services/LocationServices/location.service'
+} from '@/services/LocationServices/location.service'
 
 export const useLocation = defineStore('Location', {
   state: () => ({

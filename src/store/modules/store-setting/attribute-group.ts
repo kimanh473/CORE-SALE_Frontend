@@ -10,7 +10,7 @@ import {
   createAttributeCategoryApi,
   updateAttributeCategoryApi,
   deleteAttributeCategoryApi,
-} from '../../../services/SettingStoreServices/attributeGroup.service'
+} from '@/services/SettingStoreServices/attributeGroup.service'
 import {
   DataAttribute,
   DataGroupAttribute,

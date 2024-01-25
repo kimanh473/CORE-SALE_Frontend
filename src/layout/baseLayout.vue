@@ -35,9 +35,9 @@
 </template>
 
 <script setup lang="ts">
-  // import Header from '../Components/admin/Header.vue'
-  // import Sidebar from '../Components/Sidebar'
-  // import Footer from '../Components/Footer'
+  // import Header from '@/Components/admin/Header.vue'
+  // import Sidebar from '@/Components/Sidebar'
+  // import Footer from '@/Components/Footer'
   // import { library } from '@fortawesome/fontawesome-svg-core'
   // import { faCog } from '@fortawesome/free-solid-svg-icons'
 
@@ -48,7 +48,7 @@
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
-    background-image: url(../assets/images/btp.png);
+    background-image: url(@/assets/images/btp.png);
   }
   .site-layout .site-layout-background {
     background: #fff;

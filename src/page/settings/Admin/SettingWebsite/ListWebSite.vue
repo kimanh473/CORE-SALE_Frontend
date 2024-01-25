@@ -61,15 +61,15 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useWebCatalog } from '../../../../store/modules//web-catalog/webcatalog'
+  import { useWebCatalog } from '@/store/modules//web-catalog/webcatalog'
   //   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
   const toast = useToast()

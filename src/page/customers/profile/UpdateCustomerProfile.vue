@@ -1039,19 +1039,19 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
 
   import dayjs from 'dayjs'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRoute, useRouter } from 'vue-router'
-  import { useLocation } from '../../../store/modules/location/location'
-  import { useCustomerProfile } from '../../../store/modules/customers/customerProfile'
-  import { useGroupCustomer } from '../../../store/modules/customers/customerGroup'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
+  import { useLocation } from '@/store/modules/location/location'
+  import { useCustomerProfile } from '@/store/modules/customers/customerProfile'
+  import { useGroupCustomer } from '@/store/modules/customers/customerGroup'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
 
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()

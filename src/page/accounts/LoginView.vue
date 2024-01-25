@@ -70,12 +70,12 @@
   </section>
 </template>
 <script setup lang="ts">
-  import { useLocation } from '../../store/modules/location/location'
+  import { useLocation } from '@/store/modules/location/location'
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   //   import { useStore } from 'vuex'
-  import bg_BTP from '../../assets/images/bg-BTP.jpg'
-  import { userLogin } from '../../store/modules/accounts/userLogin'
+  import bg_BTP from '@/assets/images/bg-BTP.jpg'
+  import { userLogin } from '@/store/modules/accounts/userLogin'
 
   defineOptions({
     name: 'Login',

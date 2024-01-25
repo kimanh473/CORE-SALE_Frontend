@@ -198,15 +198,15 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../../components/common/SideBar.vue'
-  import Header from '../../../../../components/common/Header.vue'
-  import { useInventory } from '../../../../../store/modules/inventory/product-invetory'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useInventory } from '@/store/modules/inventory/product-invetory'
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { DataInventory } from '@/store/modules/inventory/inventory.type'
 
   // const route = useRoute()

@@ -5,7 +5,7 @@ import {
   updateInventoryApi,
   deleteInventoryApi,
   detailInventoryApi,
-} from '../../../services/InventoryServices/inventory.service'
+} from '@/services/InventoryServices/inventory.service'
 import {
   DataInventory,
   DetailInvent,
