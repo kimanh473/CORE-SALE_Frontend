@@ -48,7 +48,7 @@ export const useWebCatalog = defineStore('WebCatalog', {
     getAllWebPaginateAction() {
       getAllWebIndexsApi()
         .then((payload: any) => {
-          this.getListWebPagination(payload?.data?.data?.data)
+          this.getListWebPagination(payload?.data?.data?.data)      
         })
         .catch((err) => {
           console.log(err)
