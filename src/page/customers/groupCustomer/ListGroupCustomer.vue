@@ -474,14 +474,14 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useGroupCustomer } from '../../../store/modules/customers/customerGroup'
+  import { useGroupCustomer } from '@/store/modules/customers/customerGroup'
   //   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
 
   const toast = useToast()

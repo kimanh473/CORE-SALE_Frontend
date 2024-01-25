@@ -277,16 +277,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { useAdjustPrice } from '../../../store/modules/store-setting/adjust-price'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useAdjustPrice } from '@/store/modules/store-setting/adjust-price'
   import { useRouter } from 'vue-router'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { SearchOutlined } from '@ant-design/icons-vue'
   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import dayjs from 'dayjs'
   const router = useRouter()
   const toast = useToast()

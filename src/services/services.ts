@@ -1,5 +1,5 @@
 import axios from 'axios'
-import router from '../router/router'
+import router from '@/router/router'
 // import { useToast } from 'vue-toastification'
 // const API_URL = process.env.VUE_APP_API_URL;
 export const API_URL = import.meta.env.VITE_APP_BASE_API

@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getListTaxApi = () => {
   return httpClient.get(`/store/product/tax/index`)
 }

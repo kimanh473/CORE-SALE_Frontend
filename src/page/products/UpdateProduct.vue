@@ -1429,7 +1429,7 @@
   const dataOption = reactive([
     {
       value: <SelectProps>[],
-      title: ''
+      title:
     }
   ])
   const addOptions = () => {

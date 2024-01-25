@@ -30,7 +30,7 @@ const route: TRoute[] = [
     path: '/list-source-product',
     component: () =>
       import(
-        '../page/settings/Shop-settings/ManageProduct/SourceProduct/ListSourceProduct.vue'
+        '@/page/settings/Shop-settings/ManageProduct/SourceProduct/ListSourceProduct.vue'
       ),
     meta: {
       layout: 'base-layout',
@@ -39,7 +39,7 @@ const route: TRoute[] = [
   {
     path: '/create-category',
     component: () =>
-      import('../page/products/ProductCategory/CreateCategory.vue'),
+      import('@/page/products/ProductCategory/CreateCategory.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -47,42 +47,42 @@ const route: TRoute[] = [
   {
     path: '/update-category/:id',
     component: () =>
-      import('../page/products/ProductCategory/UpdateCategory.vue'),
+      import('@/page/products/ProductCategory/UpdateCategory.vue'),
     meta: {
       layout: 'base-layout',
     },
   },
   // {
   //   path: '/update-group-attribute/:id',
-  //   component: () => import('../page/products/GroupAttributeProduct/UpdateGroupAttribute.vue'),
+  //   component: () => import('@/page/products/GroupAttributeProduct/UpdateGroupAttribute.vue'),
   //   meta: {
   //     layout: "base-layout",
   //   },
   // },
   // {
   //   path: '/create-group-attribute',
-  //   component: () => import('../page/products/GroupAttributeProduct/CreateGroupAttribute.vue'),
+  //   component: () => import('@/page/products/GroupAttributeProduct/CreateGroupAttribute.vue'),
   //   meta: {
   //     layout: "base-layout",
   //   },
   // },
   // {
   //   path: '/list-attribute-group',
-  //   component: () => import('../page/products/GroupAttributeProduct/ListGroupAttributeProduct.vue'),
+  //   component: () => import('@/page/products/GroupAttributeProduct/ListGroupAttributeProduct.vue'),
   //   meta: {
   //     layout: "base-layout",
   //   },
   // },
   // {
   //   path: '/update-attribute-product',
-  //   component: () => import('../page/products/AttributeProduct/UpdateAttribute.vue'),
+  //   component: () => import('@/page/products/AttributeProduct/UpdateAttribute.vue'),
   //   meta: {
   //     layout: "base-layout",
   //   },
   // },
   // {
   //   path: '/create-attribute-product',
-  //   component: () => import('../page/products/AttributeProduct/CreateAttribute.vue'),
+  //   component: () => import('@/page/products/AttributeProduct/CreateAttribute.vue'),
   //   meta: {
   //     layout: "base-layout",
   //   },
@@ -90,28 +90,28 @@ const route: TRoute[] = [
 
   {
     path: '/login',
-    component: () => import('../page/accounts/LoginView.vue'),
+    component: () => import('@/page/accounts/LoginView.vue'),
     meta: {
       layout: 'base-layout',
     },
   },
   {
     path: '/confirm-email',
-    component: () => import('../page/accounts/ConfirmEmail.vue'),
+    component: () => import('@/page/accounts/ConfirmEmail.vue'),
     meta: {
       layout: 'base-layout',
     },
   },
   {
     path: '/forgot-pass',
-    component: () => import('../page/accounts/ForgotPass.vue'),
+    component: () => import('@/page/accounts/ForgotPass.vue'),
     meta: {
       layout: 'base-layout',
     },
   },
   {
     path: '/setting-menu',
-    component: () => import('../page/settings/SettingMenu.vue'),
+    component: () => import('@/page/settings/SettingMenu.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -119,21 +119,21 @@ const route: TRoute[] = [
 
   {
     path: '/sales-list',
-    component: () => import('../page/sales/sales_list.vue'),
+    component: () => import('@/page/sales/sales_list.vue'),
     meta: {
       layout: 'base-layout',
     },
   },
   // {
   //   path: '/products-list',
-  //   component: () => import('../page/products/products_list.vue'),
+  //   component: () => import('@/page/products/products_list.vue'),
   //   meta: {
   //     layout: "base-layout",
   //   },
   // },
   {
     path: '/:catchAll(.*)',
-    component: () => import('../components/ErrorCom.vue'),
+    component: () => import('@/components/ErrorCom.vue'),
     meta: {
       layout: 'base-layout',
     },

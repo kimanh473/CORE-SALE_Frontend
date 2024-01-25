@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getListCurrencyApi = () => {
   return httpClient.get(`/system-manage/currency/list`)
 }

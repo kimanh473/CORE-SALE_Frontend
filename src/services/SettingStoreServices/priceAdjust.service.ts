@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách bảng giá
 const getAdjustPriceApi = () => {
   return httpClient.get(`/system-manage/product-price-setting/index`)

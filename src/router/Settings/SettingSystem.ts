@@ -1,9 +1,9 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const settingSystem = [
   {
     path: '/',
-    component: () => import('../../page/HomePage.vue'),
+    component: () => import('@/page/HomePage.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -11,8 +11,7 @@ const settingSystem = [
   },
   {
     path: '/update-user/:id',
-    component: () =>
-      import('../../page/settings/Admin/SettingUser/UpdateUser.vue'),
+    component: () => import('@/page/settings/Admin/SettingUser/UpdateUser.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -20,8 +19,7 @@ const settingSystem = [
   },
   {
     path: '/create-user',
-    component: () =>
-      import('../../page/settings/Admin/SettingUser/CreateUser.vue'),
+    component: () => import('@/page/settings/Admin/SettingUser/CreateUser.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -30,7 +28,7 @@ const settingSystem = [
   {
     path: '/list-user',
     component: () =>
-      import('../../page/settings/Admin/SettingUser/SettingUserView.vue'),
+      import('@/page/settings/Admin/SettingUser/SettingUserView.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -39,7 +37,7 @@ const settingSystem = [
   {
     path: '/create-web',
     component: () =>
-      import('../../page/settings/Admin/SettingWebsite/CreateWebSite.vue'),
+      import('@/page/settings/Admin/SettingWebsite/CreateWebSite.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -48,7 +46,7 @@ const settingSystem = [
   {
     path: '/update-web/:id',
     component: () =>
-      import('../../page/settings/Admin/SettingWebsite/UpdateWebsite.vue'),
+      import('@/page/settings/Admin/SettingWebsite/UpdateWebsite.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -57,7 +55,7 @@ const settingSystem = [
   {
     path: '/list-web',
     component: () =>
-      import('../../page/settings/Admin/SettingWebsite/ListWebSite.vue'),
+      import('@/page/settings/Admin/SettingWebsite/ListWebSite.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -66,7 +64,7 @@ const settingSystem = [
   {
     path: '/group-admin-view',
     component: () =>
-      import('../../page/settings/Admin/SettingGroupAdmin/GroupAdminView.vue'),
+      import('@/page/settings/Admin/SettingGroupAdmin/GroupAdminView.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -75,7 +73,7 @@ const settingSystem = [
   {
     path: '/group-admin',
     component: () =>
-      import('../../page/settings/Admin/SettingGroupAdmin/GroupAdmin.vue'),
+      import('@/page/settings/Admin/SettingGroupAdmin/GroupAdmin.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -84,9 +82,7 @@ const settingSystem = [
   {
     path: '/create-group-admin',
     component: () =>
-      import(
-        '../../page/settings/Admin/SettingGroupAdmin/CreateAdminGroup.vue'
-      ),
+      import('@/page/settings/Admin/SettingGroupAdmin/CreateAdminGroup.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -95,9 +91,7 @@ const settingSystem = [
   {
     path: '/update-group-admin/:id',
     component: () =>
-      import(
-        '../../page/settings/Admin/SettingGroupAdmin/UpdateAdminGroup.vue'
-      ),
+      import('@/page/settings/Admin/SettingGroupAdmin/UpdateAdminGroup.vue'),
     meta: {
       layout: 'base-layout',
     },

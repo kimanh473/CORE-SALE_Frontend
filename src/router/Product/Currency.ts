@@ -1,9 +1,9 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const currency = [
   {
     path: '/list-currency',
-    component: () => import('../../page/products/Currency/ListCurrency.vue'),
+    component: () => import('@/page/products/Currency/ListCurrency.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -11,7 +11,7 @@ const currency = [
   },
   {
     path: '/create-currency',
-    component: () => import('../../page/products/Currency/CreateCurrency.vue'),
+    component: () => import('@/page/products/Currency/CreateCurrency.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -19,7 +19,7 @@ const currency = [
   },
   {
     path: '/update-currency/:id',
-    component: () => import('../../page/products/Currency/UpdateCurrency.vue'),
+    component: () => import('@/page/products/Currency/UpdateCurrency.vue'),
     meta: {
       layout: 'base-layout',
     },

@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getAllPermissionGroupsApi = (perPage: number, page: number) => {
   return httpClient.get(
     `/setting/permission-group/index?per_page=${perPage}&page=${page}`

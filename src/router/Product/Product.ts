@@ -1,9 +1,9 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const product = [
   {
     path: '/products-list/page/:page',
-    component: () => import('../../page/products/ListProduct.vue'),
+    component: () => import('@/page/products/ListProduct.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -11,7 +11,7 @@ const product = [
   },
   {
     path: '/create-product',
-    component: () => import('../../page/products/CreateProduct.vue'),
+    component: () => import('@/page/products/CreateProduct.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -19,7 +19,7 @@ const product = [
   },
   {
     path: '/update-product/:id',
-    component: () => import('../../page/products/UpdateProduct.vue'),
+    component: () => import('@/page/products/UpdateProduct.vue'),
     meta: {
       layout: 'base-layout',
     },

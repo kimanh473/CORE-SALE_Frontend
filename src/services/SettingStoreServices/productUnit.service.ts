@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getAllProductUnitApi = () => {
   return httpClient.get(`/setting/product-unit/index`)
 }

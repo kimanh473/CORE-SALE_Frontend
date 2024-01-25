@@ -5,7 +5,7 @@ import {
   createProductApi,
   getDetailProductApi,
   filterProductApi,
-} from '../../../services/SettingStoreServices/product.service'
+} from '@/services/SettingStoreServices/product.service'
 
 export const useProduct = defineStore('Products', {
   state: () => ({

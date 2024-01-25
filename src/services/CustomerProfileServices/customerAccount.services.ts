@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getAllCustomerAccountApi = () => {
   return httpClient.get(`/customer/account/index`)
 }

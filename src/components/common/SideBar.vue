@@ -17,7 +17,7 @@
             v-show="collapsed === true"
           >
             <img
-              src="../../assets/images/logo.png"
+              src="@/assets/images/logo.png"
               alt=""
               class="w-[45px] h-[45px]"
             />

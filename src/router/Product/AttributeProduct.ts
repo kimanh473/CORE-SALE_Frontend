@@ -1,12 +1,10 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const attribute = [
   {
     path: '/update-group-attribute/:id',
     component: () =>
-      import(
-        '../../page/products/GroupAttributeProduct/UpdateGroupAttribute.vue'
-      ),
+      import('@/page/products/GroupAttributeProduct/UpdateGroupAttribute.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -15,9 +13,7 @@ const attribute = [
   {
     path: '/create-group-attribute',
     component: () =>
-      import(
-        '../../page/products/GroupAttributeProduct/CreateGroupAttribute.vue'
-      ),
+      import('@/page/products/GroupAttributeProduct/CreateGroupAttribute.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -27,7 +23,7 @@ const attribute = [
     path: '/list-attribute-group',
     component: () =>
       import(
-        '../../page/products/GroupAttributeProduct/ListGroupAttributeProduct.vue'
+        '@/page/products/GroupAttributeProduct/ListGroupAttributeProduct.vue'
       ),
     meta: {
       layout: 'base-layout',
@@ -37,7 +33,7 @@ const attribute = [
   {
     path: '/update-attribute-product/:id',
     component: () =>
-      import('../../page/products/AttributeProduct/UpdateAttribute.vue'),
+      import('@/page/products/AttributeProduct/UpdateAttribute.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -46,7 +42,7 @@ const attribute = [
   {
     path: '/create-attribute-product',
     component: () =>
-      import('../../page/products/AttributeProduct/CreateAttribute.vue'),
+      import('@/page/products/AttributeProduct/CreateAttribute.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -55,7 +51,7 @@ const attribute = [
   {
     path: '/list-attribute-product',
     component: () =>
-      import('../../page/products/AttributeProduct/ListAttributeProduct.vue'),
+      import('@/page/products/AttributeProduct/ListAttributeProduct.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -64,7 +60,7 @@ const attribute = [
   {
     path: '/list-attribute-product',
     component: () =>
-      import('../../page/products/AttributeProduct/ListAttributeProduct.vue'),
+      import('@/page/products/AttributeProduct/ListAttributeProduct.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -73,7 +69,7 @@ const attribute = [
   {
     path: '/list-attribute-category',
     component: () =>
-      import('../../page/products/AttributeCategory/ListAttributeCategory.vue'),
+      import('@/page/products/AttributeCategory/ListAttributeCategory.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -82,9 +78,7 @@ const attribute = [
   {
     path: '/create-attribute-category',
     component: () =>
-      import(
-        '../../page/products/AttributeCategory/CreateAttributeCategory.vue'
-      ),
+      import('@/page/products/AttributeCategory/CreateAttributeCategory.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -93,9 +87,7 @@ const attribute = [
   {
     path: '/update-attribute-category/:id',
     component: () =>
-      import(
-        '../../page/products/AttributeCategory/UpdateAttributeCategory.vue'
-      ),
+      import('@/page/products/AttributeCategory/UpdateAttributeCategory.vue'),
     meta: {
       layout: 'base-layout',
     },
