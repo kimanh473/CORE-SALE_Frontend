@@ -1,11 +1,11 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const inventory = [
   {
     path: '/update-inventory/:id',
     component: () =>
       import(
-        '../../page/settings/Shop-settings/ManageProduct/ManageInventory/UpdateInventory.vue'
+        '@/page/settings/Shop-settings/ManageProduct/ManageInventory/UpdateInventory.vue'
       ),
     meta: {
       layout: 'base-layout',
@@ -16,7 +16,7 @@ const inventory = [
     path: '/create-inventory',
     component: () =>
       import(
-        '../../page/settings/Shop-settings/ManageProduct/ManageInventory/CreateInventory.vue'
+        '@/page/settings/Shop-settings/ManageProduct/ManageInventory/CreateInventory.vue'
       ),
     meta: {
       layout: 'base-layout',
@@ -27,7 +27,7 @@ const inventory = [
     path: '/list-inventory',
     component: () =>
       import(
-        '../../page/settings/Shop-settings/ManageProduct/ManageInventory/ListInventory.vue'
+        '@/page/settings/Shop-settings/ManageProduct/ManageInventory/ListInventory.vue'
       ),
     meta: {
       layout: 'base-layout',

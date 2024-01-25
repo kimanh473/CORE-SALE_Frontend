@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {
   UserLoginApi,
   UserLogoutApi,
-} from '../../../services/AccountServices/account.service'
+} from '@/services/AccountServices/account.service'
 import { useToast } from 'vue-toastification'
 // const toast = useToast()
 export const userLogin = defineStore('UserLogin', {

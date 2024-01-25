@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {
   getAllSourceProductsApi,
   createSourceProductApi,
-} from '../../../services/SourceProductServices/sourceProduct.services'
+} from '@/services/SourceProductServices/sourceProduct.services'
 export const useSourceProduct = defineStore('SourceProduct', {
   state: () => ({
     listSourceProduct: null,

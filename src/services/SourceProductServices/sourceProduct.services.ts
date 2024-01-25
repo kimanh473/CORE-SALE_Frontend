@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách kho
 const getAllSourceProductsApi = () => {
   return httpClient.get(

@@ -1,10 +1,9 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const customerProfile = [
   {
     path: '/list-customer-profile',
-    component: () =>
-      import('../../page/customers/profile/ListCustomerProfile.vue'),
+    component: () => import('@/page/customers/profile/ListCustomerProfile.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -13,7 +12,7 @@ const customerProfile = [
   {
     path: '/create-customer-profile',
     component: () =>
-      import('../../page/customers/profile/CreateCustomerProfile.vue'),
+      import('@/page/customers/profile/CreateCustomerProfile.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -22,7 +21,7 @@ const customerProfile = [
   {
     path: '/update-customer-profile/:id',
     component: () =>
-      import('../../page/customers/profile/UpdateCustomerProfile.vue'),
+      import('@/page/customers/profile/UpdateCustomerProfile.vue'),
     meta: {
       layout: 'base-layout',
     },

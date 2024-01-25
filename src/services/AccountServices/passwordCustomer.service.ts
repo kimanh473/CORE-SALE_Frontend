@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const sendEmailForgotPassApi = (data: object) => {
   return httpClient.post(`/auth/forgot-password`, data)
 }

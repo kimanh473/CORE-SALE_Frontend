@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAllDepartmentNoPaginateApi } from '../../../services/AdminSettingServices/department.service'
+import { getAllDepartmentNoPaginateApi } from '@/services/AdminSettingServices/department.service'
 import { DataDepartment } from '@/store/modules/admin-setting/systemsetting.type'
 export const useDepartment = defineStore('Departments', {
   state: () => ({

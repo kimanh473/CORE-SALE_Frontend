@@ -586,22 +586,19 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import ContextMenu from '../../../components/common/ContextMenu.vue'
-  import { useCustomerAccount } from '../../../store/modules/customers/customerAccount'
-  import { CustomerPasswordSetting } from '../../../store/modules/accounts/password-customer'
+  import ContextMenu from '@/components/common/ContextMenu.vue'
+  import { useCustomerAccount } from '@/store/modules/customers/customerAccount'
+  import { CustomerPasswordSetting } from '@/store/modules/accounts/password-customer'
   //   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
   import dayjs, { Dayjs } from 'dayjs'
-  import {
-    FormatModalX,
-    FormatModalY,
-  } from '../../../components/constants/FormatAll'
+  import { FormatModalX, FormatModalY } from '@/components/constants/FormatAll'
 
   const toast = useToast()
   const dataCustomerAccount = useCustomerAccount()

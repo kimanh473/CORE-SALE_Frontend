@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách ngành hàng
 const getAllCategoryApi = () => {
   return httpClient.get(`/setting/nganhhang/index`)

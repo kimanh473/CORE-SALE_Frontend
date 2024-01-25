@@ -1426,16 +1426,15 @@
     previewTitle.value =
       file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
   }
-
   const dataOption = reactive([
     {
-      value: <SelectProps['options']>[],
+      value: <SelectProps>[],
       title: ''
     }
   ])
   const addOptions = () => {
     const data = {
-      value: <SelectProps['options']>[],
+      value: <SelectProps>[],
       title: ''
     }
     dataOption.push(data)

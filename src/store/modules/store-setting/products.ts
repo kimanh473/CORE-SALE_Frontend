@@ -5,12 +5,13 @@ import {
   createProductApi,
   getDetailProductApi,
   filterProductApi,
-} from '../../../services/SettingStoreServices/product.service'
+} from '@/services/SettingStoreServices/product.service'
 
 export const useProduct = defineStore('Products', {
   state: () => ({
     listProduct: <any>[],
     totalPage: <number>null,
+    currentPage: <number>null,
     listAllProduct: <any>[],
     listFiltered: <any>[],
     detailProduct: <any>{},
@@ -20,6 +21,7 @@ export const useProduct = defineStore('Products', {
       return (payload: any) => {
         state.listProduct = payload.data
         state.totalPage = payload.total
+        state.currentPage = payload.current_page
       }
     },
     getListAllProduct: (state: any) => {
@@ -95,7 +97,7 @@ export const useProduct = defineStore('Products', {
           } else {
             toast.success('Tạo mới thành công')
             EndTimeLoading()
-            router.push('/products-list')
+            router.push('/products-list/page/1')
           }
         })
         .catch((err) => {

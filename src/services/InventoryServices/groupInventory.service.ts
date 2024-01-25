@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách nhóm kho
 const getAllGroupInventoryApi = () => {
   return httpClient.get(`/system-manage/product-inventory-type/index`)

@@ -9,7 +9,7 @@ import {
   deleteCustomerProfileApi,
   getLastCodeCustomerApi,
   getCheckAccountCustomerExistApi,
-} from '../../../services/CustomerProfileServices/customerProfile.services'
+} from '@/services/CustomerProfileServices/customerProfile.services'
 import { DataCustomerProfile } from '@/store/modules/customers/customer.type'
 export const useCustomerProfile = defineStore('CustomerProfile', {
   state: () => ({

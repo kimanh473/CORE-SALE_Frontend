@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAllPositionNoPaginateApi } from '../../../services/AdminSettingServices/position.service'
+import { getAllPositionNoPaginateApi } from '@/services/AdminSettingServices/position.service'
 import { DataPosition } from '@/store/modules/admin-setting/systemsetting.type'
 export const usePosition = defineStore('Positions', {
   state: () => ({
