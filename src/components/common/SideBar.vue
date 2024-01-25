@@ -237,13 +237,13 @@
             permission: [''],
             smallLabel: 'BÁN HÀNG',
             children1: [
-              // {
-              //   icon: '',
-              //   label: 'Quản lý đơn hàng ',
-              //   to: '/sales-list',
-              //   permission: [''],
-              //   submenuGroup: '',
-              // },
+               {
+                icon: '',
+                label: 'Quản lý đơn hàng ',
+                to: '/sales-list',
+                permission: [''],
+                submenuGroup: '',
+               },
               // {
               //   icon: '',
               //   label: 'Hóa đơn',
@@ -281,6 +281,27 @@
               },
               {
                 icon: '',
+                label: 'Thuộc tính sản phẩm',
+                to: '/list-attribute-product',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Nhóm thuộc tính sản phẩm',
+                to: '/list-attribute-group',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Bộ thuộc tính sản phẩm',
+                to: '/list-attribute-category',
+                submenuGroup: 'Sản phẩm',
+                permission: [''],
+              },
+              {
+                icon: '',
                 label: 'Điều chỉnh giá',
                 to: '/price-adjust',
                 submenuGroup: '',
@@ -304,20 +325,6 @@
                 icon: '',
                 label: 'Thông số',
                 to: '/list-specification',
-                submenuGroup: '',
-                permission: [''],
-              },
-              {
-                icon: '',
-                label: 'Thuế',
-                to: '/list-tax',
-                submenuGroup: '',
-                permission: [''],
-              },
-              {
-                icon: '',
-                label: 'Tiền tệ',
-                to: '/list-currency',
                 submenuGroup: '',
                 permission: [''],
               },
@@ -361,14 +368,14 @@
               },
             ],
           },
-          {
-            label: 'TIẾP THỊ',
-            icon: 'fal fa-bullhorn',
-            to: '/4',
-            submenuGroup: '',
-            permission: [''],
-            smallLabel: 'TIẾP THỊ',
-            children1: [
+          // {
+          //   label: 'TIẾP THỊ',
+          //   icon: 'fal fa-bullhorn',
+          //   to: '/4',
+          //   submenuGroup: '',
+          //   permission: [''],
+          //   smallLabel: 'TIẾP THỊ',
+          //   children1: [
               // {
               //   icon: '',
               //   label: 'Mã giảm giá',
@@ -395,15 +402,15 @@
               //   to: '/',
               //   permission: [''],
               // },
-            ],
-          },
-          {
-            label: 'NỘI DUNG',
-            icon: 'fal fa-clipboard-list-check',
-            to: '/5',
-            permission: [''],
-            smallLabel: 'NỘI DUNG',
-            children1: [
+          //   ],
+          // },
+          // {
+          //   label: 'NỘI DUNG',
+          //   icon: 'fal fa-clipboard-list-check',
+          //   to: '/5',
+          //   permission: [''],
+          //   smallLabel: 'NỘI DUNG',
+          //   children1: [
               // {
               //   icon: '',
               //   label: 'Danh sách nội dung',
@@ -439,30 +446,16 @@
               //   permission: [''],
               //   submenuGroup: '',
               // },
-            ],
-          },
-          {
-            label: 'BÁO CÁO',
-            icon: 'fal fa-chart-bar',
-            to: '/',
-            permission: [''],
-            smallLabel: 'BÁO CÁO',
-          },
-          {
-            label: 'CỬA HÀNG',
+            // ],
+          // },
+            {
+            label: 'KHO',
             icon: 'fal fa-warehouse',
             to: '/',
             permission: [''],
             smallLabel: 'CỬA HÀNG',
-            children1: [
-              {
-                icon: '',
-                label: 'Danh mục sản phẩm',
-                to: '/list-inventory',
-                submenuGroup: 'Sản phẩm',
-                permission: [''],
-              },
-              // {
+            // children1: [
+                            // {
               //   icon: '',
               //   label: 'Loại sản phẩm',
               //   to: '/asset-groups',
@@ -476,41 +469,20 @@
               //   submenuGroup: 'Sản phẩm',
               //   permission: [''],
               // },
-              {
-                icon: '',
-                label: 'Thông số',
-                to: '/list-product-unit',
-                submenuGroup: 'Sản phẩm',
-                permission: [''],
-              },
-              {
-                icon: '',
-                label: 'Bảng kích cỡ thông số',
-                to: '/list-specification',
-                submenuGroup: 'Sản phẩm',
-                permission: [''],
-              },
-              {
-                icon: '',
-                label: 'Thuộc tính sản phẩm',
-                to: '/list-attribute-product',
-                submenuGroup: 'Sản phẩm',
-                permission: [''],
-              },
-              {
-                icon: '',
-                label: 'Nhóm thuộc tính sản phẩm',
-                to: '/list-attribute-group',
-                submenuGroup: 'Sản phẩm',
-                permission: [''],
-              },
-              {
-                icon: '',
-                label: 'Bộ thuộc tính sản phẩm',
-                to: '/list-attribute-category',
-                submenuGroup: 'Sản phẩm',
-                permission: [''],
-              },
+              // {
+              //   icon: '',
+              //   label: 'Thông số',
+              //   to: '/list-product-unit',
+              //   submenuGroup: 'Sản phẩm',
+              //   permission: [''],
+              // },
+              // {
+              //   icon: '',
+              //   label: 'Bảng kích cỡ thông số',
+              //   to: '/list-specification',
+              //   submenuGroup: 'Sản phẩm',
+              //  permission: [''],
+              // },
               // {
               //   icon: '',
               //   label: 'Tiền tệ',
@@ -546,8 +518,8 @@
               //   submenuGroup: 'Sản phẩm',
               //   permission: [''],
               // },
-            ],
-            children2: [
+            // ],
+            children1: [
               // {
               //   icon: '',
               //   label: 'Nhóm khách hàng',
@@ -564,19 +536,24 @@
               // },
               {
                 icon: '',
-                label: 'Cài đặt kho',
+                label: 'Danh mục kho',
                 to: '/list-inventory',
-                submenuGroup: 'Kho',
                 permission: [''],
               },
               {
                 icon: '',
-                label: 'Cài đặt nhóm kho',
+                label: 'Danh mục nhóm kho',
                 to: '/list-group-inventory',
-                submenuGroup: 'Kho',
                 permission: [''],
               },
             ],
+          },
+          {
+            label: 'BÁO CÁO',
+            icon: 'fal fa-chart-bar',
+            to: '/',
+            permission: [''],
+            smallLabel: 'BÁO CÁO',
           },
           {
             label: 'CÀI ĐẶT',
@@ -634,6 +611,20 @@
               //   permission: [''],
               //   submenuGroup: 'Hệ thống',
               // },
+              {
+                icon: '',
+                label: 'Thuế',
+                to: '/list-tax',
+                submenuGroup: 'Khác',
+                permission: [''],
+              },
+              {
+                icon: '',
+                label: 'Tiền tệ',
+                to: '/list-currency',
+                submenuGroup: 'Khác',
+                permission: [''],
+              },
             ],
             children2: [
               {
