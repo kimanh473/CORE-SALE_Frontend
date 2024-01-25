@@ -17,7 +17,7 @@
             v-show="collapsed === true"
           >
             <img
-              src="../../assets/images/logo.png"
+              src="@/assets/images/logo.png"
               alt=""
               class="w-[45px] h-[45px]"
             />
@@ -118,9 +118,8 @@
 </template>
 <script>
   import { ref } from 'vue'
-  import { toggleSidebar } from './state'
-  import { collapsed } from './state'
-  import { sidebarWidth } from './state'
+  import { toggleSidebar, collapsed, sidebarWidth } from './state'
+
   import MenuItem from './MenuItem.vue'
   import SubMenuItem from './SubMenuItem.vue'
   import { useRouter } from 'vue-router'
@@ -140,8 +139,8 @@
       const titleSubmenuGroup = ref('')
       const logo = ref('')
       const toggleShowMenu = () => (showMenu.value = !showMenu.value)
-      const toggleShowMenuChil = () =>
-        (showMenuChil.value = !showMenuChil.value)
+      // const toggleShowMenuChil = () =>
+      //   (showMenuChil.value = !showMenuChil.value)
       const handleToSocial = () => {
         router.push({ path: '/', name: '' })
       }
@@ -269,14 +268,14 @@
           {
             label: 'SẢN PHẨM',
             icon: 'fab fa-product-hunt',
-            to: '/products-list',
+            to: '/products-list/page/1',
             permission: [''],
             smallLabel: 'SẢN PHẨM',
             children1: [
               {
                 icon: '',
                 label: 'Quản lý sản phẩm',
-                to: '/products-list',
+                to: '/products-list/page/1',
                 submenuGroup: '',
                 permission: [''],
               },

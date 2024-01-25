@@ -3,7 +3,7 @@
     <div class="flex flex-col items-center p-4 mt-2">
       <div class="py-2">
         <img
-          src="../../assets/images/t.png"
+          src="@/assets/images/t.png"
           style="
             height: 50px;
             width: 50px;
@@ -166,7 +166,7 @@
   // import { useUserProfile } from '@/store/modules/user/userProfile'
   // import { storeToRefs } from 'pinia'
   import { userLogin } from '@/store/modules/accounts/userLogin'
-  import { usePasswordSetting } from '../../store/modules/accounts/password'
+  import { usePasswordSetting } from '@/store/modules/accounts/password'
   // const store = useStore()
   const userlog = userLogin()
   const router = useRouter()
@@ -174,9 +174,7 @@
   const isOpenDetail = ref(false)
   const passSetting = usePasswordSetting()
   // const { userProfile, avatar } = storeToRefs(profile)
-  const format = ref(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  )
+
   const changePassword = reactive({
     current_password: '',
     password: '',

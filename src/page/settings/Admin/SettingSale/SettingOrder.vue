@@ -178,10 +178,10 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
-  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useSystemSetting } from '@/store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useToast } from 'vue-toastification'
@@ -216,8 +216,6 @@
   //   formatTrueFasle(dataSettingMail.value.mail_to_customer_when_hasnt_paid)
   // )
   const shipMethod = ref([])
-  const afterHour = ref<Number>(0)
-
   const updateOrderSetting = () => {
     const data = {
       code: 'MAIL_TO_CUSTOMER',

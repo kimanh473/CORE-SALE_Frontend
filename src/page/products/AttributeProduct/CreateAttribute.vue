@@ -282,33 +282,29 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  // import { useLocation } from '../../../store/modules/location/location'
-  import { storeToRefs } from 'pinia'
+  // import { useLocation } from '@/store/modules/location/location'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
   // const selectedWard = ref(null)
   const router = useRouter()
   const toast = useToast()
-  const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
-  const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
   const dataAttribute = useAttributeProduct()
   webCatalog.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(webCatalog)
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
     isLoading.value = false
@@ -413,7 +409,7 @@
   // ) {
   //   isReInput.value = false
   // }
-  const showManageChoice = ref<Boolean>(false)
+  const showManageChoice = ref<boolean>(false)
   const handleChange = (value: string, options: any) => {
     if (value == 'selection') {
       showManageChoice.value = true
@@ -471,7 +467,7 @@
   //   attribute.address = name.title + ', ' + attribute.address
   // }
   const createAttribute = () => {
-    let data = {
+    const data = {
       attribute_code: attribute.attribute_code,
       attribute_model: '',
       backend_model: '',

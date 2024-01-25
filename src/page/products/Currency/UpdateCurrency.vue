@@ -194,12 +194,12 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { ref, reactive, computed } from 'vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useListCurrency } from '../../../store/modules/store-setting/currency'
+  import { useListCurrency } from '@/store/modules/store-setting/currency'
   import { useRouter, useRoute } from 'vue-router'
   import { storeToRefs } from 'pinia'
   const dataCurrency = useListCurrency()
@@ -219,7 +219,6 @@
     defaultStatus,
   } = storeToRefs(dataCurrency)
   const isLoading = ref<boolean>(false)
-  const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const route = useRoute()
@@ -232,14 +231,8 @@
     detailCurrency.value.code = option.value
     detailCurrency.value.title = option.value
   }
-  const currency = reactive({
-    title: '',
-    code: '',
-    status: 0,
-    is_default: 0,
-  })
   const confirmCreateCurrency = () => {
-    let data = {
+    const data = {
       title: detailCurrency.value.title,
       code: detailCurrency.value.code,
       status: detailCurrency.value.status,
@@ -257,7 +250,7 @@
     )
   }
   const updateCurrency = () => {
-    let data = {
+    const data = {
       title: detailCurrency.value.title,
       code: detailCurrency.value.code,
       status: detailCurrency.value.status,

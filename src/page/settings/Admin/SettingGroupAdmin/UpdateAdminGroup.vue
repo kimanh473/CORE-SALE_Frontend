@@ -1409,16 +1409,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
-  import TableResponsive from '../../../../components/common/TableResponsive.vue'
-  import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
-  import { useInventory } from '../../../../store/modules/inventory/product-invetory'
-  import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import TableResponsive from '@/components/common/TableResponsive.vue'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useInventory } from '@/store/modules/inventory/product-invetory'
+  import { useAdminSetting } from '@/store/modules/admin-setting/adminsetting'
   import { useRouter, useRoute } from 'vue-router'
   import { useToast } from 'vue-toastification'
-  import { computed, reactive, ref, watch } from 'vue'
+  import { reactive, ref } from 'vue'
   import { storeToRefs } from 'pinia'
   const router = useRouter()
   const route = useRoute()
@@ -1437,7 +1437,7 @@
   const { listInventory } = storeToRefs(dataInventory)
   const dataAdminSetting = useAdminSetting()
   const role = reactive({
-    //store
+    // store
     storeSetting: '',
     product: '',
     createProduct: '',
@@ -1557,10 +1557,10 @@
       role.importProduct,
       role.exportProduct
     )
-    let arr = groupAdmin.string_roles.filter(
+    const arr = groupAdmin.string_roles.filter(
       (item) => item != '' && item != null
     )
-    let data = {
+    const data = {
       title: detailGroupPermission.value.title,
       is_admin: detailGroupPermission.value.is_admin,
       string_roles: arr,

@@ -1,24 +1,27 @@
-import httpClient from "../services";
-//Danh sách bảng giá
+import httpClient from '@/services/services'
+// Danh sách bảng giá
 const getAdjustPriceApi = () => {
-    return httpClient.get(`/system-manage/product-price-setting/index`);
-};
+  return httpClient.get(`/system-manage/product-price-setting/index`)
+}
 const getdetailAdjustPriceApi = (id: number) => {
-    return httpClient.get(`/system-manage/product-price-setting/show/${id}`);
-};
+  return httpClient.get(`/system-manage/product-price-setting/show/${id}`)
+}
 const createAdjustPriceApi = (data: object) => {
-    return httpClient.post(`/system-manage/product-price-setting/create`, data);
-};
+  return httpClient.post(`/system-manage/product-price-setting/create`, data)
+}
 const updateAdjustPriceApi = (id: number, data: object) => {
-    return httpClient.post(`/system-manage/product-price-setting/update/${id}`, data);
-};
+  return httpClient.post(
+    `/system-manage/product-price-setting/update/${id}`,
+    data
+  )
+}
 const deleteAdjustPriceApi = (id: number) => {
-    return httpClient.post(`/system-manage/product-price-setting/delete/${id}`);
-};
+  return httpClient.post(`/system-manage/product-price-setting/delete/${id}`)
+}
 export {
-    getAdjustPriceApi,
-    getdetailAdjustPriceApi,
-    createAdjustPriceApi,
-    updateAdjustPriceApi,
-    deleteAdjustPriceApi
-};
+  getAdjustPriceApi,
+  getdetailAdjustPriceApi,
+  createAdjustPriceApi,
+  updateAdjustPriceApi,
+  deleteAdjustPriceApi,
+}

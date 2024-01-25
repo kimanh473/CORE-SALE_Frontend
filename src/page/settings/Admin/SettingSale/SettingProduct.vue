@@ -152,10 +152,10 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
-  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useSystemSetting } from '@/store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useToast } from 'vue-toastification'
@@ -166,8 +166,6 @@
   const systemSetting = useSystemSetting()
   systemSetting.detailSystemSettingAction('SETTING_PRODUCT')
   const { dataSettingMail } = storeToRefs(systemSetting)
-  const checkEvaluate = ref<boolean>(false)
-  const checkChangeStatus = ref<boolean>(false)
   const updateProductSetting = () => {
     const data = {
       code: 'SETTING_PRODUCT',

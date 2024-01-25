@@ -433,25 +433,25 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  // import { useLocation } from '../../../store/modules/location/location'
+  // import { useLocation } from '@/store/modules/location/location'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import type { SelectProps } from 'ant-design-vue'
+  import type { TableColumnType } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useCategory } from '../../../store/modules/store-setting/category'
-  import { useProduct } from '../../../store/modules/store-setting/products'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useCategory } from '@/store/modules/store-setting/category'
+  import { useProduct } from '@/store/modules/store-setting/products'
+  // import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
   import { cloneDeep } from 'lodash-es'
   import type { UnwrapRef } from 'vue'
-  import dayjs, { Dayjs } from 'dayjs'
-  import type { TableColumnType } from 'ant-design-vue'
-  import { useAdjustPrice } from '../../../store/modules/store-setting/adjust-price'
+  import dayjs from 'dayjs'
+
+  import { useAdjustPrice } from '@/store/modules/store-setting/adjust-price'
   import { TreeSelect } from 'ant-design-vue'
   const SHOW_PARENT = TreeSelect.SHOW_ALL
   const dataAdjustPrice = useAdjustPrice()
@@ -461,16 +461,13 @@
   // const selectedWard = ref(null)
   const router = useRouter()
   const toast = useToast()
-  const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
   const isDetail = ref(true)
-  const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
   const dataCategory = useCategory()
   const dataProduct = useProduct()
-  const dataAttribute = useAttributeProduct()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
   console.log(listWeb.value)
@@ -478,7 +475,7 @@
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
   dataProduct.getListProductNoPagingAction()
-  const { listAllProduct, listFiltered } = storeToRefs(dataProduct)
+  const { listFiltered } = storeToRefs(dataProduct)
   const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
@@ -533,78 +530,78 @@
       align: 'center',
     },
   ]
-  const options1 = ref<SelectProps['options']>([
-    {
-      label: 'Text',
-      value: 'text',
-      backend_type: 'text',
-      frontend_input: 'text',
-    },
-    {
-      label: 'TextArea',
-      value: 'varchar',
-      backend_type: 'varchar',
-      frontend_input: 'textarea',
-    },
-    {
-      label: 'Ngày giờ',
-      value: 'date_time',
-      backend_type: 'varchar',
-      frontend_input: 'date-picker',
-    },
-    {
-      label: 'Hình ảnh',
-      value: 'gallery',
-      backend_type: 'gallery',
-      frontend_input: 'upload',
-    },
-    {
-      label: 'Nút bật tắt',
-      value: 'switch',
-      backend_type: 'varchar',
-      frontend_input: 'switch',
-    },
-    {
-      label: 'Lựa chọn',
-      value: 'selection',
-      backend_type: 'selection',
-      frontend_input: 'selection',
-    },
-    // {
-    //   label: 'Nhiều lựa chọn',
-    //   value: 'multiple_select',
-    // },
-  ])
-  const options2 = ref<SelectProps['options']>([
-    {
-      label: 'Không',
-      value: 'invalid',
-    },
-    {
-      label: 'Email',
-      value: 'email',
-    },
-    {
-      label: 'Url',
-      value: 'url',
-    },
-    {
-      label: 'Kí tự',
-      value: 'char',
-    },
-    {
-      label: 'Số nguyên',
-      value: 'integer',
-    },
-    {
-      label: 'Số thập phân',
-      value: 'decimal',
-    },
-    {
-      label: 'Kí tự hoặc số',
-      value: 'charOrNumber',
-    },
-  ])
+  // const options1 = ref<SelectProps['options']>([
+  //   {
+  //     label: 'Text',
+  //     value: 'text',
+  //     backend_type: 'text',
+  //     frontend_input: 'text',
+  //   },
+  //   {
+  //     label: 'TextArea',
+  //     value: 'varchar',
+  //     backend_type: 'varchar',
+  //     frontend_input: 'textarea',
+  //   },
+  //   {
+  //     label: 'Ngày giờ',
+  //     value: 'date_time',
+  //     backend_type: 'varchar',
+  //     frontend_input: 'date-picker',
+  //   },
+  //   {
+  //     label: 'Hình ảnh',
+  //     value: 'gallery',
+  //     backend_type: 'gallery',
+  //     frontend_input: 'upload',
+  //   },
+  //   {
+  //     label: 'Nút bật tắt',
+  //     value: 'switch',
+  //     backend_type: 'varchar',
+  //     frontend_input: 'switch',
+  //   },
+  //   {
+  //     label: 'Lựa chọn',
+  //     value: 'selection',
+  //     backend_type: 'selection',
+  //     frontend_input: 'selection',
+  //   },
+  //   // {
+  //   //   label: 'Nhiều lựa chọn',
+  //   //   value: 'multiple_select',
+  //   // },
+  // ])
+  // const options2 = ref<SelectProps['options']>([
+  //   {
+  //     label: 'Không',
+  //     value: 'invalid',
+  //   },
+  //   {
+  //     label: 'Email',
+  //     value: 'email',
+  //   },
+  //   {
+  //     label: 'Url',
+  //     value: 'url',
+  //   },
+  //   {
+  //     label: 'Kí tự',
+  //     value: 'char',
+  //   },
+  //   {
+  //     label: 'Số nguyên',
+  //     value: 'integer',
+  //   },
+  //   {
+  //     label: 'Số thập phân',
+  //     value: 'decimal',
+  //   },
+  //   {
+  //     label: 'Kí tự hoặc số',
+  //     value: 'charOrNumber',
+  //   },
+  // ])
   const adjust = reactive({
     title: '',
     website: [],
@@ -621,7 +618,7 @@
     },
   ])
   const addTime = () => {
-    let data = {
+    const data = {
       date_start: '',
       date_end: '',
       listed_price: '',
@@ -688,7 +685,7 @@
     dataTableDetail.value = arrAll
   }
   const filterProduct = () => {
-    let data = {
+    const data = {
       nganh_hang: adjust.category,
       website: adjust.website,
     }
@@ -723,7 +720,7 @@
   //   isReInput.value = false
   // }
 
-  const showManageChoice = ref<Boolean>(false)
+  const showManageChoice = ref<boolean>(false)
   const handleChange = (value: string, options: any) => {
     if (value == 'selection') {
       showManageChoice.value = true
@@ -787,7 +784,7 @@
   //   attribute.address = name.title + ', ' + attribute.address
   // }
   const createAdjustPrice = () => {
-    let data = {
+    const data = {
       title: adjust.title,
       website_list: adjust.website,
       nganh_hang_list: adjust.category,

@@ -247,35 +247,28 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import ContextMenu from '../../../components/common/ContextMenu.vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import ContextMenu from '@/components/common/ContextMenu.vue'
+  import { useRouter } from 'vue-router'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useCustomerProfile } from '../../../store/modules/customers/customerProfile'
+  import { useCustomerProfile } from '@/store/modules/customers/customerProfile'
   //   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
-  import { useLocation } from '../../../store/modules/location/location'
-  import {
-    FormatModalX,
-    FormatModalY,
-  } from '../../../components/constants/FormatAll'
-  import dayjs, { Dayjs } from 'dayjs'
-  import { useCustomerAccount } from '../../../store/modules/customers/customerAccount'
-  const route = useRoute()
+  import { FormatModalX, FormatModalY } from '@/components/constants/FormatAll'
+  import dayjs from 'dayjs'
+  import { useCustomerAccount } from '@/store/modules/customers/customerAccount'
   const router = useRouter()
   const toast = useToast()
   const dataCustomerProfile = useCustomerProfile()
-  const dataLocation = useLocation()
   const dataCustomerAccount = useCustomerAccount()
   const groupPermission = ref()
   const isActiveAdminGroup = ref<boolean>(false)
   const isOpenCreateAccount = ref<boolean>(false)
   const fullnameReset = ref()
-  const checkAccountExist = ref()
   const role = localStorage.getItem('role')
   const password_confirmation = ref('')
   const dateFormat = 'DD/MM/YYYY'
@@ -346,7 +339,7 @@
 
   const createCustomerAccount = () => {
     isLoading.value = true
-    let data = {
+    const data = {
       code: customerAccount.code,
       profile_code: customerAccount.profile_code,
       username: customerAccount.username,
@@ -387,7 +380,7 @@
 
         dataCustomerProfile.getDetailCustomerProfileAction(Number(record?.id))
 
-        var menu = document.getElementById('contextMenu')
+        const menu = document.getElementById('contextMenu')
         menu.style.display = 'block'
         FormatModalX(menu, event)
         FormatModalY(menu, event)

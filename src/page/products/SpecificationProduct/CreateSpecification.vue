@@ -107,16 +107,15 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useListSpecification } from '../../../store/modules/store-setting/specification'
+  import { useListSpecification } from '@/store/modules/store-setting/specification'
   import { useRouter } from 'vue-router'
   const dataSpecification = useListSpecification()
   const isLoading = ref<boolean>(false)
-  const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const EndTimeLoading = () => {
@@ -129,7 +128,7 @@
     desc: '',
   })
   const createSpecification = () => {
-    let data = {
+    const data = {
       title: specification.title,
       code: specification.code,
       unit: specification.unit,

@@ -441,25 +441,25 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  // import { useLocation } from '../../../store/modules/location/location'
+  // import { useLocation } from '@/store/modules/location/location'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import type { SelectProps } from 'ant-design-vue'
-  import { useRouter, useRoute } from 'vue-router'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useCategory } from '../../../store/modules/store-setting/category'
-  import { useProduct } from '../../../store/modules/store-setting/products'
-  import { useAdjustPrice } from '../../../store/modules/store-setting/adjust-price'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
-  import { cloneDeep, filter } from 'lodash-es'
-  import type { UnwrapRef } from 'vue'
-  import dayjs, { Dayjs } from 'dayjs'
   import type { TableColumnType } from 'ant-design-vue'
+  import { useRouter, useRoute } from 'vue-router'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useCategory } from '@/store/modules/store-setting/category'
+  import { useProduct } from '@/store/modules/store-setting/products'
+  import { useAdjustPrice } from '@/store/modules/store-setting/adjust-price'
+  // import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
+  import { cloneDeep } from 'lodash-es'
+  import type { UnwrapRef } from 'vue'
+  import dayjs from 'dayjs'
+
   import { TreeSelect } from 'ant-design-vue'
   const SHOW_PARENT = TreeSelect.SHOW_ALL
   // const selectedGroupInventory = ref(null)
@@ -469,16 +469,13 @@
   const router = useRouter()
   const route = useRoute()
   const toast = useToast()
-  const isAddress = ref(true)
   const isInfor = ref(true)
   const isContact = ref(true)
   const isDetail = ref(true)
-  const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
   const dataCategory = useCategory()
   const dataProduct = useProduct()
-  const dataAttribute = useAttributeProduct()
   webCatalog.getAllWebCatalogAction()
   const { listWeb } = storeToRefs(webCatalog)
   dataCategory.getListCategoryTreeAction()
@@ -495,7 +492,6 @@
     listTableDetail,
   } = storeToRefs(dataAdjustPrice)
 
-  const dataTableDetail = ref<any>([])
   // const isReInput = ref<boolean>(true)
   const EndTimeLoading = () => {
     isLoading.value = false
@@ -556,95 +552,95 @@
       align: 'center',
     },
   ]
-  const options1 = ref<SelectProps['options']>([
-    {
-      label: 'Text',
-      value: 'text',
-      backend_type: 'text',
-      frontend_input: 'text',
-    },
-    {
-      label: 'TextArea',
-      value: 'varchar',
-      backend_type: 'varchar',
-      frontend_input: 'textarea',
-    },
-    {
-      label: 'Ngày giờ',
-      value: 'date_time',
-      backend_type: 'varchar',
-      frontend_input: 'date-picker',
-    },
-    {
-      label: 'Hình ảnh',
-      value: 'gallery',
-      backend_type: 'gallery',
-      frontend_input: 'upload',
-    },
-    {
-      label: 'Nút bật tắt',
-      value: 'switch',
-      backend_type: 'varchar',
-      frontend_input: 'switch',
-    },
-    {
-      label: 'Lựa chọn',
-      value: 'selection',
-      backend_type: 'selection',
-      frontend_input: 'selection',
-    },
-    // {
-    //   label: 'Nhiều lựa chọn',
-    //   value: 'multiple_select',
-    // },
-  ])
-  const options2 = ref<SelectProps['options']>([
-    {
-      label: 'Không',
-      value: 'invalid',
-    },
-    {
-      label: 'Email',
-      value: 'email',
-    },
-    {
-      label: 'Url',
-      value: 'url',
-    },
-    {
-      label: 'Kí tự',
-      value: 'char',
-    },
-    {
-      label: 'Số nguyên',
-      value: 'integer',
-    },
-    {
-      label: 'Số thập phân',
-      value: 'decimal',
-    },
-    {
-      label: 'Kí tự hoặc số',
-      value: 'charOrNumber',
-    },
-  ])
-  const adjust = reactive({
-    title: '',
-    website: [],
-    category: [],
-    product: [],
-  })
-  const timeAdjustPrice = reactive([
-    {
-      date_start: '',
-      date_end: '',
-      listed_price: '',
-      wholesale_price: '',
-      retail_price: '',
-    },
-  ])
+  // const options1 = ref<SelectProps['options']>([
+  //   {
+  //     label: 'Text',
+  //     value: 'text',
+  //     backend_type: 'text',
+  //     frontend_input: 'text',
+  //   },
+  //   {
+  //     label: 'TextArea',
+  //     value: 'varchar',
+  //     backend_type: 'varchar',
+  //     frontend_input: 'textarea',
+  //   },
+  //   {
+  //     label: 'Ngày giờ',
+  //     value: 'date_time',
+  //     backend_type: 'varchar',
+  //     frontend_input: 'date-picker',
+  //   },
+  //   {
+  //     label: 'Hình ảnh',
+  //     value: 'gallery',
+  //     backend_type: 'gallery',
+  //     frontend_input: 'upload',
+  //   },
+  //   {
+  //     label: 'Nút bật tắt',
+  //     value: 'switch',
+  //     backend_type: 'varchar',
+  //     frontend_input: 'switch',
+  //   },
+  //   {
+  //     label: 'Lựa chọn',
+  //     value: 'selection',
+  //     backend_type: 'selection',
+  //     frontend_input: 'selection',
+  //   },
+  //   // {
+  //   //   label: 'Nhiều lựa chọn',
+  //   //   value: 'multiple_select',
+  //   // },
+  // ])
+  // const options2 = ref<SelectProps['options']>([
+  //   {
+  //     label: 'Không',
+  //     value: 'invalid',
+  //   },
+  //   {
+  //     label: 'Email',
+  //     value: 'email',
+  //   },
+  //   {
+  //     label: 'Url',
+  //     value: 'url',
+  //   },
+  //   {
+  //     label: 'Kí tự',
+  //     value: 'char',
+  //   },
+  //   {
+  //     label: 'Số nguyên',
+  //     value: 'integer',
+  //   },
+  //   {
+  //     label: 'Số thập phân',
+  //     value: 'decimal',
+  //   },
+  //   {
+  //     label: 'Kí tự hoặc số',
+  //     value: 'charOrNumber',
+  //   },
+  // ])
+  // const adjust = reactive({
+  //   title: '',
+  //   website: [],
+  //   category: [],
+  //   product: [],
+  // })
+  // const timeAdjustPrice = reactive([
+  //   {
+  //     date_start: '',
+  //     date_end: '',
+  //     listed_price: '',
+  //     wholesale_price: '',
+  //     retail_price: '',
+  //   },
+  // ])
   const addTime = () => {
-    let data = {
+    const data = {
       title: '',
       date_start: '',
       date_end: '',
@@ -737,7 +733,7 @@
   //   isReInput.value = false
   // }
 
-  const showManageChoice = ref<Boolean>(false)
+  const showManageChoice = ref<boolean>(false)
   const handleChange = (value: string, options: any) => {
     if (value == 'selection') {
       showManageChoice.value = true
@@ -799,7 +795,7 @@
   //   attribute.address = name.title + ', ' + attribute.address
   // }
   const createAttribute = () => {
-    let data = {
+    const data = {
       title: detailAdjustPrice.value.title,
       website_list: listCodeWeb.value,
       nganh_hang_list: listCodeCategory.value,

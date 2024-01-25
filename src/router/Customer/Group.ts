@@ -1,14 +1,15 @@
-import requireAuth from "../requireAuth";
+import requireAuth from '@/router/requireAuth'
 
 const customerGroup = [
-    {
-        path: '/list-group-customer',
-        component: () => import('../../page/customers/groupCustomer/ListGroupCustomer.vue'),
-        meta: {
-            layout: "base-layout",
-        },
-        beforeEnter: requireAuth,
-    }
+  {
+    path: '/list-group-customer',
+    component: () =>
+      import('@/page/customers/groupCustomer/ListGroupCustomer.vue'),
+    meta: {
+      layout: 'base-layout',
+    },
+    beforeEnter: requireAuth,
+  },
 ]
 
-export default customerGroup;
+export default customerGroup

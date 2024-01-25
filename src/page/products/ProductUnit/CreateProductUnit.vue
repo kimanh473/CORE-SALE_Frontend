@@ -88,12 +88,12 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useProductUnit } from '../../../store/modules/store-setting/product-unit'
+  import { useProductUnit } from '@/store/modules/store-setting/product-unit'
   import { useRouter } from 'vue-router'
   const dataUnit = useProductUnit()
   const isLoading = ref<boolean>(false)
@@ -110,7 +110,7 @@
   })
   const createProductUnit = () => {
     isLoading.value = true
-    let data = {
+    const data = {
       title: unit.title,
       code: unit.code,
       status: status.value == true ? '1' : '0',

@@ -236,34 +236,34 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  import { useLocation } from '../../../store/modules/location/location'
-  import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
-  import { useInventory } from '../../../store/modules/inventory/product-invetory'
-  import { useCategory } from '../../../store/modules/store-setting/category'
+  // import { useLocation } from '@/store/modules/location/location'
+  import { useGroupInventory } from '@/store/modules/inventory/group-inventory'
+  import { useInventory } from '@/store/modules/inventory/product-invetory'
+  import { useCategory } from '@/store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRouter } from 'vue-router'
+  // const isReInput = ref<boolean>(true)
+  import {
+    CarryOutOutlined,
+    SmileTwoTone,
+    PlusOutlined,
+  } from '@ant-design/icons-vue'
+  import type { TreeProps, UploadProps } from 'ant-design-vue'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
   // const selectedWard = ref(null)
   const router = useRouter()
   const toast = useToast()
-  const isAddress = ref(true)
   const isInfor = ref(true)
-  const isContact = ref(true)
   const checked = ref(false)
   const isLoading = ref<boolean>(false)
-  // const isReInput = ref<boolean>(true)
-  import { CarryOutOutlined, SmileTwoTone } from '@ant-design/icons-vue'
-  import type { TreeProps } from 'ant-design-vue'
-  import { PlusOutlined } from '@ant-design/icons-vue'
-  import type { UploadProps } from 'ant-design-vue'
 
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -386,8 +386,6 @@
   // }
   const dataDetailCategory = useCategory()
   dataDetailCategory.getDetailCategoryAction(12)
-  const { detailCategory } = storeToRefs(dataDetailCategory)
-
   const dataInventory = useInventory()
   const { messageError } = storeToRefs(dataInventory)
 
@@ -413,27 +411,27 @@
   //     desc: 'nguồn A tại hà nội',
   //     use_direct: '0',
   //   })
-  const dataLocation = useLocation()
-  const getDataCity = () => {
-    dataLocation.getListAllCityAction()
-  }
-  const { listAllCity, listAllDistrict, listAllWard } =
-    storeToRefs(dataLocation)
-  const handleChangeCity = (value: number, name: any) => {
-    dataLocation.getListAllDistrictAction(value)
+  // const dataLocation = useLocation()
+  // const getDataCity = () => {
+  //   dataLocation.getListAllCityAction()
+  // }
+  // const { listAllCity, listAllDistrict, listAllWard } =
+  //   storeToRefs(dataLocation)
+  // const handleChangeCity = (value: number, name: any) => {
+  //   dataLocation.getListAllDistrictAction(value)
 
-    inventory.address = name.title + ', ' + 'Việt Nam'
-  }
-  const handleChangeDistrict = (value: number, name: any) => {
-    dataLocation.getListAllWardAction(value)
-    inventory.address = name.title + ', ' + inventory.address
-  }
-  const handleChangeWard = (value: number, name: any) => {
-    inventory.address = name.title + ', ' + inventory.address
-  }
+  //   inventory.address = name.title + ', ' + 'Việt Nam'
+  // }
+  // const handleChangeDistrict = (value: number, name: any) => {
+  //   dataLocation.getListAllWardAction(value)
+  //   inventory.address = name.title + ', ' + inventory.address
+  // }
+  // const handleChangeWard = (value: number, name: any) => {
+  //   inventory.address = name.title + ', ' + inventory.address
+  // }
 
   const createInventory = () => {
-    let data = {
+    const data = {
       title: inventory.title,
       code: inventory.code,
       type_code: inventory.type_code,

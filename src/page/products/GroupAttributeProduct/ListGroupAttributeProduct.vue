@@ -249,20 +249,19 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { useAttributeGroup } from '../../../store/modules/store-setting/attribute-group'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
-  import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive, computed } from 'vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
+  import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const { listAttributeSpecification } = storeToRefs(dataAttribute)
-  const route = useRoute()
   const router = useRouter()
   const toast = useToast()
   const isLoading = ref<boolean>(false)
@@ -273,12 +272,12 @@
   const { listAttributeGroup } = storeToRefs(dataAttributeGroup)
   const columns = [
     {
-      title: 'Tên bộ thuộc tính',
-      dataIndex: 'code',
+      title: 'Tên nhóm thuộc tính',
+      dataIndex: 'title',
     },
     {
-      title: 'Thuộc web',
-      dataIndex: 'title',
+      title: 'Mã nhóm thuộc tính',
+      dataIndex: 'code',
       // sorter: (a: DataInventory, b: DataInventory) =>
       //   a.title.localeCompare(b.title),
     },
@@ -361,9 +360,6 @@
   }
   const handleClose = () => {
     isOpenConfirmDefault.value = false
-  }
-  const CreateSpecificationGroup = () => {
-    isOpenConfirmDefault.value = true
   }
 </script>
 <style>

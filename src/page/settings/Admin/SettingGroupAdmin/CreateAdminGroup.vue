@@ -1399,13 +1399,13 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
-  import TableResponsive from '../../../../components/common/TableResponsive.vue'
-  import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
-  import { useInventory } from '../../../../store/modules/inventory/product-invetory'
-  import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import TableResponsive from '@/components/common/TableResponsive.vue'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useInventory } from '@/store/modules/inventory/product-invetory'
+  import { useAdminSetting } from '@/store/modules/admin-setting/adminsetting'
   import { useRouter } from 'vue-router'
   import { useToast } from 'vue-toastification'
   import { reactive, ref } from 'vue'
@@ -1443,7 +1443,7 @@
     isShow: true,
   })
   const role = reactive({
-    //store
+    // store
     storeSetting: '',
     product: '',
     createProduct: '',
@@ -1490,10 +1490,10 @@
       role.importProduct,
       role.exportProduct
     )
-    let arr = groupAdmin.string_roles.filter(
+    const arr = groupAdmin.string_roles.filter(
       (item) => item != '' && item != null
     )
-    let data = {
+    const data = {
       title: groupAdmin.title,
       is_admin: groupAdmin.is_admin,
       is_default: groupAdmin.is_default,

@@ -159,10 +159,10 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
-  import { useSystemSetting } from '../../../../store/modules/admin-setting/systemsetting'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useSystemSetting } from '@/store/modules/admin-setting/systemsetting'
   import { ref } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useToast } from 'vue-toastification'
@@ -173,9 +173,6 @@
   const systemSetting = useSystemSetting()
   systemSetting.detailSystemSettingAction('SETTING_PROMOTION')
   const { dataSettingMail } = storeToRefs(systemSetting)
-  const checkCode = ref<boolean>(false)
-  const checkPromotions = ref<boolean>(false)
-  const checkBoth = ref<boolean>(false)
   const updateDiscountSetting = () => {
     const data = {
       code: 'SETTING_PROMOTION',

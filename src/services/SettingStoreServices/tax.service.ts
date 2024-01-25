@@ -1,23 +1,23 @@
-import httpClient from "../services";
+import httpClient from '@/services/services'
 const getListTaxApi = () => {
-    return httpClient.get(`/store/product/tax/index`);
-};
+  return httpClient.get(`/store/product/tax/index`)
+}
 const createTaxApi = (data: object) => {
-    return httpClient.post(`/store/product/tax/create`, data);
-};
+  return httpClient.post(`/store/product/tax/create`, data)
+}
 const updateTaxApi = (id: number, data: object) => {
-    return httpClient.post(`/store/product/tax/update/${id}`, data);
-};
+  return httpClient.post(`/store/product/tax/update/${id}`, data)
+}
 const deleteTaxApi = (id: number) => {
-    return httpClient.post(`/store/product/tax/delete/${id}`);
-};
+  return httpClient.post(`/store/product/tax/delete/${id}`)
+}
 const getDetailTaxApi = (id: number) => {
-    return httpClient.get(`/store/product/tax/show/${id}`);
-};
+  return httpClient.get(`/store/product/tax/show/${id}`)
+}
 export {
-    getListTaxApi,
-    createTaxApi,
-    getDetailTaxApi,
-    updateTaxApi,
-    deleteTaxApi
-};
+  getListTaxApi,
+  createTaxApi,
+  getDetailTaxApi,
+  updateTaxApi,
+  deleteTaxApi,
+}

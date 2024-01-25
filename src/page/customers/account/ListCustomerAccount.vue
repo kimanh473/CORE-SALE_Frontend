@@ -586,27 +586,20 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import ContextMenu from '../../../components/common/ContextMenu.vue'
-  import { useCustomerAccount } from '../../../store/modules/customers/customerAccount'
-  import { CustomerPasswordSetting } from '../../../store/modules/accounts/password-customer'
+  import ContextMenu from '@/components/common/ContextMenu.vue'
+  import { useCustomerAccount } from '@/store/modules/customers/customerAccount'
+  import { CustomerPasswordSetting } from '@/store/modules/accounts/password-customer'
   //   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
   import dayjs, { Dayjs } from 'dayjs'
-  import {
-    FormatModalX,
-    FormatModalY,
-  } from '../../../components/constants/FormatAll'
-  import { usePasswordSetting } from '../../../store/modules/accounts/password'
+  import { FormatModalX, FormatModalY } from '@/components/constants/FormatAll'
 
-  const route = useRoute()
-  const router = useRouter()
   const toast = useToast()
   const dataCustomerAccount = useCustomerAccount()
   dataCustomerAccount.getAllCustomerAccountPaginateAction()
@@ -617,7 +610,6 @@
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
   const isDeliveryAddress = ref<boolean>(true)
-  const isOpenConfirmDefault = ref<boolean>(false)
   const isOpenCreateModal = ref<boolean>(false)
   const isOpenUpdateModal = ref<boolean>(false)
   const isOpenResetPass = ref<boolean>(false)
@@ -689,7 +681,7 @@
 
         dataCustomerAccount.getDetailCustomerAccountAction(record?.id)
 
-        var menu = document.getElementById('contextMenu')
+        const menu = document.getElementById('contextMenu')
         menu.style.display = 'block'
         FormatModalX(menu, event)
         FormatModalY(menu, event)
@@ -705,22 +697,6 @@
     }
   }
 
-  const addOptions = () => {
-    const data = {
-      title: '',
-      address_country_id: '1',
-      address_district_id: '',
-      address_ward_id: '',
-      address_state_id: '',
-      address_detail: '',
-      is_default: '',
-    }
-  }
-
-  const navigateCreateOrder = () => {
-    router.push('create-order')
-  }
-
   const handleCloseCreateOrder = () => {
     isOpenCreateOrderModal.value = false
   }
@@ -731,10 +707,6 @@
 
   const handleOpenResetPass = () => {
     isOpenResetPass.value = true
-  }
-
-  const handleClose = () => {
-    isOpenConfirmDefault.value = false
   }
 
   const handleCloseConfirm = () => {
@@ -797,7 +769,7 @@
 
   const createCustomerAccount = () => {
     isLoading.value = true
-    let data = {
+    const data = {
       code: customerAccount.code,
       username: customerAccount.username,
       fullname: customerAccount.fullname,
@@ -830,22 +802,22 @@
 
   const createCustomerOrder = () => {
     isLoading.value = true
-    let data = {
-      code: customerOrder.code,
-      username: customerOrder.username,
-      fullname: customerOrder.fullname,
-      birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
-      gender: customerOrder.gender,
-      email_personal: customerOrder.email,
-      phone: customerOrder.phone,
-      web_code: 'HWK',
-    }
+    // const data = {
+    //   code: customerOrder.code,
+    //   username: customerOrder.username,
+    //   fullname: customerOrder.fullname,
+    //   birth_day: birth_day_dd_mm_yy.value.format(dateFormatRequest),
+    //   gender: customerOrder.gender,
+    //   email_personal: customerOrder.email,
+    //   phone: customerOrder.phone,
+    //   web_code: 'HWK',
+    // }
   }
 
   const updateCustomerAccount = () => {
     isLoading.value = true
-    let id = detailCustomerAccount.value.id
-    let data = {
+    const id = detailCustomerAccount.value.id
+    const data = {
       code: detailCustomerAccount.value.code,
       username: detailCustomerAccount.value.username,
       fullname: detailCustomerAccount.value.fullname,
@@ -866,7 +838,7 @@
 
   const changeStatusAccount = (id: number, status: string) => {
     isLoading.value = true
-    let data = {
+    const data = {
       user_id: id,
       status: status == 'BLOCK' ? 'ACTIVE' : 'BLOCK',
     }
@@ -874,7 +846,7 @@
   }
 
   const resetPassword = () => {
-    let data = {
+    const data = {
       password: changePassword.password,
     }
     if (

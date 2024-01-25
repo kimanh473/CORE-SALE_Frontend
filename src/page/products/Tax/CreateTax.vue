@@ -114,17 +114,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useListTax } from '../../../store/modules/store-setting/tax'
+  import { useListTax } from '@/store/modules/store-setting/tax'
   import { useRouter } from 'vue-router'
   const dataTax = useListTax()
   dataTax.getListTaxAction()
   const isLoading = ref<boolean>(false)
-  const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const EndTimeLoading = () => {
@@ -138,7 +137,7 @@
     desc: '',
   })
   const createTax = () => {
-    let data = {
+    const data = {
       title: tax.title,
       code: tax.code,
       tax_rate: tax.tax_rate.toString(),

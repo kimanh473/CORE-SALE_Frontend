@@ -1,80 +1,74 @@
 <script>
-import { useRoute } from "vue-router";
-import { computed, ref } from "vue";
-import { collapsed } from "./state";
-// import { FormatRole } from "@/constants/FormatAll";
-// import { useUserProfile } from "@/store/modules/user/userProfile";
-import { storeToRefs } from "pinia";
-export default {
-  name: "SubMenuItem",
-  props: {
-    to: { type: String, required: true },
-    label: { type: String, required: true },
-    smallLabel: { type: String },
-    icon: { type: String },
-    depth: { type: Number, required: true },
-    data: { type: Array },
-    permission: { type: Array },
-  },
-  setup(props) {
-    const route = useRoute();
-    const isActive = computed(() => route.path == props.to);
-    const showChildren = ref(true);
-    // const profile = useUserProfile();
-    // const { userProfile } = storeToRefs(profile);
-    // if (props.data) {
-    //   if (props.data.find((item) => item.to == route.path)) {
-    //     showChildren.value = true;
-    //   } else {
-    //     showChildren.value = false;
-    //   }
-    // }
-    const checkRoute = (index) => {
-      if (index == route.path) {
-        return true;
-      } else {
-        return false;
+  import { useRoute } from 'vue-router'
+  import { computed, ref } from 'vue'
+  import { collapsed } from './state'
+  // import { FormatRole } from "@/constants/FormatAll";
+  // import { useUserProfile } from "@/store/modules/user/userProfile";
+  export default {
+    name: 'SubMenuItem',
+    props: {
+      to: { type: String, required: true },
+      label: { type: String, required: true },
+      smallLabel: { type: String },
+      icon: { type: String },
+      depth: { type: Number, required: true },
+      data: { type: Array },
+      permission: { type: Array },
+    },
+    setup(props) {
+      const route = useRoute()
+      const isActive = computed(() => route.path == props.to)
+      const showChildren = ref(true)
+      // const profile = useUserProfile();
+      // const { userProfile } = storeToRefs(profile);
+      // if (props.data) {
+      //   if (props.data.find((item) => item.to == route.path)) {
+      //     showChildren.value = true;
+      //   } else {
+      //     showChildren.value = false;
+      //   }
+      // }
+      const checkRoute = (index) => {
+        if (index == route.path) {
+          return true
+        } else {
+          return false
+        }
       }
-    };
-    const toggleShowChildren = () => {
-      showChildren.value = !showChildren.value;
-    };
-    // const checkRole = (index) => {
-    //   for (let i = 0; i < index.length; i++) {
-    //     if (FormatRole(index[i], userProfile.value) == true) {
-    //       return true;
-    //     }
-    //   }
-    // };
-    const checkCenter = (index) => {
-      if (index == true) {
-        return "";
-      } else {
-        return "pl-4";
+      const toggleShowChildren = () => {
+        showChildren.value = !showChildren.value
       }
-    };
-    return {
-      isActive,
-      collapsed,
-      showChildren,
-      checkRoute,
-      // userProfile,
-      // checkRole,
-      toggleShowChildren,
-      checkCenter,
-    };
-  },
-};
+      // const checkRole = (index) => {
+      //   for (let i = 0; i < index.length; i++) {
+      //     if (FormatRole(index[i], userProfile.value) == true) {
+      //       return true;
+      //     }
+      //   }
+      // };
+      const checkCenter = (index) => {
+        if (index == true) {
+          return ''
+        } else {
+          return 'pl-4'
+        }
+      }
+      return {
+        isActive,
+        collapsed,
+        showChildren,
+        checkRoute,
+        // userProfile,
+        // checkRole,
+        toggleShowChildren,
+        checkCenter,
+      }
+    },
+  }
 </script>
 <template>
-  <div
-    class="menu-item flex-row"
-  >
+  <div class="menu-item flex-row">
     <div class="flex-row">
-      <router-link
-        :to="to"
-        class="flex items-center py-3"
-      >
+      <router-link :to="to" class="flex items-center py-3">
         <div class="flex items-center text-[var(--color-text-submenu)]">
           <div class="flex flex-col items-center">
             <div class="flex items-center" v-if="icon">

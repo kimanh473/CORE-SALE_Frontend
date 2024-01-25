@@ -431,16 +431,23 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  import { useCategory } from '../../../store/modules/store-setting/category'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import { useCategory } from '@/store/modules/store-setting/category'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRouter } from 'vue-router'
+  // const isReInput = ref<boolean>(true)
+  import {
+    CarryOutOutlined,
+    SmileTwoTone,
+    PlusOutlined,
+  } from '@ant-design/icons-vue'
+  import type { TreeProps, UploadProps } from 'ant-design-vue'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -448,7 +455,6 @@
   const router = useRouter()
   const toast = useToast()
   const isInfor = ref(true)
-  const checked = ref(false)
   const isLoading = ref<boolean>(false)
   const isOpenCreateCategory = ref<boolean>(false)
   const handleClose = () => {
@@ -473,11 +479,7 @@
       handleCloseConfirm
     )
   }
-  // const isReInput = ref<boolean>(true)
-  import { CarryOutOutlined, SmileTwoTone } from '@ant-design/icons-vue'
-  import type { TreeProps } from 'ant-design-vue'
-  import { PlusOutlined } from '@ant-design/icons-vue'
-  import type { UploadProps } from 'ant-design-vue'
+
   const filterOption = (input: string, option: any) => {
     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
   }
@@ -566,7 +568,7 @@
     dataCategory.getListCategoryAction()
   }
   const updateCategory = () => {
-    let data = {
+    const data = {
       title: category.title,
       desc: category.desc,
       parent_id: category.parent_id,
@@ -580,7 +582,7 @@
     )
   }
   const createCategory = () => {
-    let data = {
+    const data = {
       title: category.titleCreate,
       desc: category.descCreate,
       parent_id: category.parent_id_create,

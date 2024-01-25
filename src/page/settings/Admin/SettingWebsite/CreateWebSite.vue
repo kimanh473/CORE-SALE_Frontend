@@ -95,10 +95,10 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
-  import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRouter } from 'vue-router'
@@ -116,7 +116,7 @@
     status: false,
   })
   const createInventory = () => {
-    let data = {
+    const data = {
       web_name: web.web_name,
       code: web.code,
       url: web.url,

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import img_delete from '../../assets/images/delete.png'
+  import img_delete from '@/assets/images/delete.png'
   export default {
     data() {
       return {
@@ -50,7 +50,7 @@
           movementX: 0,
           movementY: 0,
         },
-        img_delete: img_delete,
+        img_delete,
       }
     },
     props: {

@@ -92,17 +92,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { ref, reactive } from 'vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useProductUnit } from '../../../store/modules/store-setting/product-unit'
+  import { useProductUnit } from '@/store/modules/store-setting/product-unit'
   import { useRouter, useRoute } from 'vue-router'
   import { storeToRefs } from 'pinia'
   const dataUnit = useProductUnit()
   const isLoading = ref<boolean>(false)
-  const status = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
   const route = useRoute()
@@ -111,15 +110,9 @@
   }
   dataUnit.getDetailProductUnitAction(Number(route.params.id))
   const { detailProductUnit } = storeToRefs(dataUnit)
-
-  const unit = reactive({
-    title: '',
-    code: '',
-    desc: '',
-  })
   const createProductUnit = () => {
     isLoading.value = true
-    let data = {
+    const data = {
       title: detailProductUnit.value.title,
       code: detailProductUnit.value.code,
       status: detailProductUnit.value.status,

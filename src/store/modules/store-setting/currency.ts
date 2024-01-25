@@ -6,49 +6,52 @@ import {
   getDetailCurrencyApi,
   updateCurrencyApi,
   getListCurrencyInternationalApi,
-  checkDefaultCurrencyApi
-} from '../../../services/SettingStoreServices/currency.service'
-
+  checkDefaultCurrencyApi,
+} from '@/services/SettingStoreServices/currency.service'
+import {
+  DataCurrency,
+  DataCurrencyInternational,
+} from '@/store/modules/store-setting/store.type'
 export const useListCurrency = defineStore('ListCurrency', {
   state: () => ({
     listCurrency: [] as DataCurrency[],
     detailCurrency: {} as DataCurrency,
     listCurrencyInternational: [] as DataCurrencyInternational[],
     defaultCurrency: '',
-    defaultStatus: ''
+    defaultStatus: '',
   }),
   getters: {
     getListCurrency: (state: any) => {
       return (payload: any) =>
-      (state.listCurrency = payload?.map((item: DataCurrency) => ({
-        id: item.id,
-        title: item.title,
-        code: item.code,
-        symbol: item.symbol,
-        symbol2: item.symbol2,
-        decimal_number: item.decimal_number,
-        rate: item.rate + '%',
-        is_default: item.is_default, // == '1' ? 'Có' : 'Không',
-        status: item.status, // == '1' ? 'Đang kích hoạt' : 'Chưa kích hoạt',
-        created_by_id: item.created_by_id,
-        created_by: item?.created_by,
-        updated_by_id: item.updated_by_id,
-        created_at: item.created_at,
-        updated_at: item.updated_at,
-        deleted_at: item.deleted_at,
-      })))
+        (state.listCurrency = payload?.map((item: DataCurrency) => ({
+          id: item.id,
+          title: item.title,
+          code: item.code,
+          symbol: item.symbol,
+          symbol2: item.symbol2,
+          decimal_number: item.decimal_number,
+          rate: item.rate + '%',
+          is_default: item.is_default, // == '1' ? 'Có' : 'Không',
+          status: item.status, // == '1' ? 'Đang kích hoạt' : 'Chưa kích hoạt',
+          created_by_id: item.created_by_id,
+          created_by: item?.created_by,
+          updated_by_id: item.updated_by_id,
+          created_at: item.created_at,
+          updated_at: item.updated_at,
+          deleted_at: item.deleted_at,
+        })))
     },
     getDetailCurrency: (state: any) => {
       return (payload: any) => (state.detailCurrency = payload)
     },
     getListCurrencyInternational: (state: any) => {
       return (payload: any) =>
-      (state.listCurrencyInternational = payload?.map(
-        (item: DataCurrencyInternational) => ({
-          value: item.code,
-          label: item.title,
-        })
-      ))
+        (state.listCurrencyInternational = payload?.map(
+          (item: DataCurrencyInternational) => ({
+            value: item.code,
+            label: item.title,
+          })
+        ))
     },
     getDefaultCurrency: (state: any) => {
       return (payload: any) => {
@@ -61,7 +64,7 @@ export const useListCurrency = defineStore('ListCurrency', {
     async getDefaultCurrencyAction() {
       await checkDefaultCurrencyApi()
         .then((payload: any) => {
-          let res = payload?.data
+          const res = payload?.data
           console.log(res)
           this.getDefaultCurrency(res)
         })
@@ -72,7 +75,7 @@ export const useListCurrency = defineStore('ListCurrency', {
     async getListCurrencyInternationalAction() {
       await getListCurrencyInternationalApi()
         .then((payload: any) => {
-          let res = payload?.data?.data
+          const res = payload?.data?.data
           console.log(res)
           this.getListCurrencyInternational(res)
         })
@@ -83,7 +86,7 @@ export const useListCurrency = defineStore('ListCurrency', {
     async getListCurrencyAction() {
       await getListCurrencyApi()
         .then((payload: any) => {
-          let res = payload?.data?.data
+          const res = payload?.data?.data
           this.getListCurrency(res)
         })
         .catch((err) => {
@@ -93,7 +96,7 @@ export const useListCurrency = defineStore('ListCurrency', {
     async getDetailCurrencyAction(id: number) {
       await getDetailCurrencyApi(id)
         .then((payload: any) => {
-          let res = payload?.data?.data
+          const res = payload?.data?.data
           this.getDetailCurrency(res)
         })
         .catch((err) => {
@@ -109,7 +112,7 @@ export const useListCurrency = defineStore('ListCurrency', {
     ) {
       await createCurrencyApi(data)
         .then((res) => {
-          if (res.data.status == 'failed') {
+          if (res.data.status === 'failed') {
             toast.error(res.data.messages)
             EndTimeLoading()
           } else {
@@ -122,8 +125,8 @@ export const useListCurrency = defineStore('ListCurrency', {
           // this.messageError = err.response.data.messages
           // console.log(this.messageError);
           console.log(err)
-          let arrMess = err.response.data.messages
-          let errMess = arrMess[Object.keys(arrMess)[0]]
+          const arrMess = err.response.data.messages
+          const errMess = arrMess[Object.keys(arrMess)[0]]
           toast.error(errMess[0])
         })
     },
@@ -137,7 +140,7 @@ export const useListCurrency = defineStore('ListCurrency', {
     ) {
       await updateCurrencyApi(id, data)
         .then((res) => {
-          if (res.data.status == 'failed') {
+          if (res.data.status === 'failed') {
             toast.error(res.data.messages)
             EndTimeLoading()
           } else {
@@ -150,8 +153,8 @@ export const useListCurrency = defineStore('ListCurrency', {
           // this.messageError = err.response.data.messages
           // console.log(this.messageError);
           console.log(err)
-          let arrMess = err.response.data.messages
-          let errMess = arrMess[Object.keys(arrMess)[0]]
+          const arrMess = err.response.data.messages
+          const errMess = arrMess[Object.keys(arrMess)[0]]
           toast.error(errMess[0])
         })
     },
@@ -163,7 +166,7 @@ export const useListCurrency = defineStore('ListCurrency', {
     ) {
       deleteCurrencyApi(id)
         .then((res) => {
-          if (res.data.status == 'success') {
+          if (res.data.status === 'success') {
             toast.success('Xóa thành công', 500)
             this.getListCurrencyAction()
           } else {

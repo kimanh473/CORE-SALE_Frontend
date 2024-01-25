@@ -1806,18 +1806,17 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  import TableResponsive from '../../../../components/common/TableResponsive.vue'
-  import { useGroupInventory } from '../../../../store/modules/inventory/group-inventory'
-  import { useInventory } from '../../../../store/modules/inventory/product-invetory'
-  import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
-  import { useAdminSetting } from '../../../../store/modules/admin-setting/adminsetting'
-  import { usePosition } from '../../../../store/modules/admin-setting/position'
-  import { useDepartment } from '../../../../store/modules/admin-setting/department'
-  import { useUserSetting } from '../../../../store/modules/users/users'
+  import TableResponsive from '@/components/common/TableResponsive.vue'
+  import { useInventory } from '@/store/modules/inventory/product-invetory'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useAdminSetting } from '@/store/modules/admin-setting/adminsetting'
+  import { usePosition } from '@/store/modules/admin-setting/position'
+  import { useDepartment } from '@/store/modules/admin-setting/department'
+  import { useUserSetting } from '@/store/modules/users/users'
   import { storeToRefs } from 'pinia'
   import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
@@ -1845,7 +1844,7 @@
   dataPosition.getListPositionAction()
   dataDepartment.getListDepartmentAction()
   const role = reactive({
-    //store
+    // store
     storeSetting: '',
     product: '',
     createProduct: '',
@@ -1872,8 +1871,7 @@
   const { listWeb } = storeToRefs(webCatalog)
   const dataAdminSetting = useAdminSetting()
   dataAdminSetting.getAllPermissionGroupsAction(10, 1)
-  const { listGroupPermission, detailGroupPermission } =
-    storeToRefs(dataAdminSetting)
+  const { listGroupPermission } = storeToRefs(dataAdminSetting)
 
   const groupAdmin = reactive({
     title: '',
@@ -1971,12 +1969,6 @@
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { messageError, listInventory } = storeToRefs(dataInventory)
-
-  const dataGroupInventory = useGroupInventory()
-  const getListGroupInventory = () => {
-    dataGroupInventory.getListGroupInventoryAction()
-  }
-  const { listGroupInventory } = storeToRefs(dataGroupInventory)
   // let options2 = ref<SelectProps['options']>([])
   //   const sourceProduct = reactive({
   //     title: 'nguồn A1',
@@ -2016,11 +2008,11 @@
       role.importProduct,
       role.exportProduct
     )
-    let arr = groupAdmin.string_roles.filter(
+    const arr = groupAdmin.string_roles.filter(
       (item) => item != '' && item != null
     )
     if (isChangePermissionInfo.value == true) {
-      let data = {
+      const data = {
         code: detailUser.value.code,
         username: detailUser.value.username,
         fullname: detailUser.value.fullname,
@@ -2044,7 +2036,7 @@
         EndTimeLoading
       )
     } else {
-      let data = {
+      const data = {
         code: detailUser.value.code,
         username: detailUser.value.username,
         fullname: detailUser.value.fullname,

@@ -474,25 +474,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { useRoute, useRouter } from 'vue-router'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import ContextMenu from '../../../components/common/ContextMenu.vue'
-  import { useGroupCustomer } from '../../../store/modules/customers/customerGroup'
+  import { useGroupCustomer } from '@/store/modules/customers/customerGroup'
   //   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
-  import dayjs, { Dayjs } from 'dayjs'
-  import {
-    FormatModalX,
-    FormatModalY,
-  } from '../../../components/constants/FormatAll'
 
-  const route = useRoute()
-  const router = useRouter()
   const toast = useToast()
   const dataGroupCustomer = useGroupCustomer()
   dataGroupCustomer.getAllGroupCustomerPaginateAction()
@@ -503,18 +494,8 @@
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
   const isDeliveryAddress = ref<boolean>(true)
-  const isOpenConfirmDefault = ref<boolean>(false)
   const isOpenCreateModal = ref<boolean>(false)
   const isOpenUpdateModal = ref<boolean>(false)
-  const isActiveAdminGroup = ref<boolean>(false)
-  const groupPermission = ref()
-  const fullnameReset = ref()
-
-  const dateFormat = 'DD/MM/YYYY'
-  const dateFormatRequest = 'YYYY/MM/DD'
-  const value_birth_day = ref<Dayjs>(dayjs('01/01/2015', dateFormat))
-  const is_default = ref<boolean>(false)
-
   const columns = [
     {
       title: 'Mã',
@@ -543,10 +524,6 @@
       key: 'id',
     },
   ]
-
-  const handleClose = () => {
-    isOpenConfirmDefault.value = false
-  }
 
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
@@ -613,7 +590,7 @@
   const createGroupCustomer = () => {
     isLoading.value = true
     data_rule_detail_arr.value.push(data_rule_detail)
-    let data = {
+    const data = {
       code: customerGroupAccount.code,
       title: customerGroupAccount.title,
       desc: customerGroupAccount.desc,
@@ -631,8 +608,8 @@
 
   const updateGroupCustomer = () => {
     isLoading.value = true
-    let id = detailGroupCustomer.value.id
-    let data = {
+    const id = detailGroupCustomer.value.id
+    const data = {
       code: detailGroupCustomer.value.code,
       title: detailGroupCustomer.value.title,
       desc: detailGroupCustomer.value.desc,

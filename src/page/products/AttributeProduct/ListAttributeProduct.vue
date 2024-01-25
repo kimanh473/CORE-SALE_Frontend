@@ -283,17 +283,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
-  import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive, computed } from 'vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
+  import { useRouter } from 'vue-router'
+  import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { SearchOutlined } from '@ant-design/icons-vue'
   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
-  const route = useRoute()
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   const router = useRouter()
   const toast = useToast()
   const isLoading = ref<boolean>(false)

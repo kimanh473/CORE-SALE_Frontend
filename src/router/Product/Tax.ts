@@ -1,29 +1,29 @@
-import requireAuth from "../requireAuth";
+import requireAuth from '@/router/requireAuth'
 
 const tax = [
-    {
-        path: '/list-tax',
-        component: () => import('../../page/products/Tax/ListTax.vue'),
-        meta: {
-            layout: "base-layout",
-        },
-        beforeEnter: requireAuth,
+  {
+    path: '/list-tax',
+    component: () => import('@/page/products/Tax/ListTax.vue'),
+    meta: {
+      layout: 'base-layout',
     },
-    {
-        path: '/create-tax',
-        component: () => import('../../page/products/Tax/CreateTax.vue'),
-        meta: {
-            layout: "base-layout",
-        },
-        beforeEnter: requireAuth,
+    beforeEnter: requireAuth,
+  },
+  {
+    path: '/create-tax',
+    component: () => import('@/page/products/Tax/CreateTax.vue'),
+    meta: {
+      layout: 'base-layout',
     },
-    {
-        path: '/update-tax/:id',
-        component: () => import('../../page/products/Tax/UpdateTax.vue'),
-        meta: {
-            layout: "base-layout",
-        },
-        beforeEnter: requireAuth,
+    beforeEnter: requireAuth,
+  },
+  {
+    path: '/update-tax/:id',
+    component: () => import('@/page/products/Tax/UpdateTax.vue'),
+    meta: {
+      layout: 'base-layout',
     },
+    beforeEnter: requireAuth,
+  },
 ]
-export default tax;
+export default tax

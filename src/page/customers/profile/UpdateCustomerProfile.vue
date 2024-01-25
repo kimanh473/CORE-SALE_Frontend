@@ -1039,19 +1039,19 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
 
-  import dayjs, { Dayjs } from 'dayjs'
+  import dayjs from 'dayjs'
   import { storeToRefs } from 'pinia'
-  import { ref, reactive, computed, toRaw } from 'vue'
+  import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRoute, useRouter } from 'vue-router'
-  import { useLocation } from '../../../store/modules/location/location'
-  import { useCustomerProfile } from '../../../store/modules/customers/customerProfile'
-  import { useGroupCustomer } from '../../../store/modules/customers/customerGroup'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
+  import { useLocation } from '@/store/modules/location/location'
+  import { useCustomerProfile } from '@/store/modules/customers/customerProfile'
+  import { useGroupCustomer } from '@/store/modules/customers/customerGroup'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
 
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
@@ -1065,8 +1065,6 @@
   const isInfor = ref<boolean>(true)
   const isDeliveryAddress = ref<boolean>(true)
   const isPayAddress = ref<boolean>(true)
-  const isContact = ref<boolean>(true)
-  const checked = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
 
   const isOpenConfirmDefault = ref<boolean>(false)
@@ -1084,12 +1082,6 @@
     isOpenCreatedPayAddress.value = false
   }
 
-  const radioStyle = reactive({
-    display: 'flex',
-    height: '30px',
-    lineHeight: '30px',
-  })
-
   const filterOption = (input: string, option: any) => {
     return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
   }
@@ -1105,7 +1097,6 @@
 
   const {
     detailCustomerProfile,
-    idState,
     is_default,
     birth_day_dd_mm_yy,
     last_code,
@@ -1117,27 +1108,26 @@
   const { listGroupCustomer } = storeToRefs(dataGroupCustomer)
   const dateFormat = 'DD/MM/YYYY'
   const dateFormatRequest = 'YYYY/MM/DD'
-  let arr_district = ref([])
 
-  let list_district_1 = JSON.parse(localStorage.getItem('list_district'))
-  let list_ward_1 = JSON.parse(localStorage.getItem('list_ward'))
+  const list_district_1 = JSON.parse(localStorage.getItem('list_district'))
+  const list_ward_1 = JSON.parse(localStorage.getItem('list_ward'))
 
   const handleChangeCity = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllDistrictAction(value)
     detailCustomerProfile.value.detail_delivery_address[index].address_detail =
       arr[0].title + ', ' + 'Việt Nam'
   }
 
   const handleChangeCityPay = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllDistrictAction(value)
     detailCustomerProfile.value.detail_pay_address[index].pay_address_detail =
       arr[0].title + ', ' + 'Việt Nam'
   }
 
   const handleChangeDistrict = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllWardAction(value)
     detailCustomerProfile.value.detail_delivery_address[index].address_detail =
       arr[0].title +
@@ -1150,7 +1140,7 @@
     option: any,
     index: number
   ) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllWardAction(value)
     detailCustomerProfile.value.detail_pay_address[index].pay_address_detail =
       arr[0].title +
@@ -1159,7 +1149,7 @@
   }
 
   const handleChangeWard = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     detailCustomerProfile.value.detail_delivery_address[index].address_detail =
       arr[0].title +
       ', ' +
@@ -1167,7 +1157,7 @@
   }
 
   const handleChangeWardPay = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     detailCustomerProfile.value.detail_pay_address[index].pay_address_detail =
       arr[0].title +
       ', ' +
@@ -1175,7 +1165,7 @@
   }
 
   const handleChangeCity_new = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllDistrictAction(value)
     dataOption[index].address_detail = arr[0].title + ', ' + 'Việt Nam'
   }
@@ -1185,7 +1175,7 @@
     option: any,
     index: number
   ) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllDistrictAction(value)
     payDataOption[index].pay_address_detail = arr[0].title + ', ' + 'Việt Nam'
   }
@@ -1195,7 +1185,7 @@
     option: any,
     index: number
   ) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllWardAction(value)
     dataOption[index].address_detail =
       arr[0].title + ', ' + dataOption[index].address_detail
@@ -1206,14 +1196,14 @@
     option: any,
     index: number
   ) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataLocation.getListAllWardAction(value)
     payDataOption[index].pay_address_detail =
       arr[0].title + ', ' + payDataOption[index].pay_address_detail
   }
 
   const handleChangeWard_new = (value: number, option: any, index: number) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     dataOption[index].address_detail =
       arr[0].title + ', ' + dataOption[index].address_detail
   }
@@ -1223,14 +1213,14 @@
     option: any,
     index: number
   ) => {
-    let arr = option.filter((item: any) => item.ID == value)
+    const arr = option.filter((item: any) => item.ID == value)
     payDataOption[index].pay_address_detail =
       arr[0].title + ', ' + payDataOption[index].pay_address_detail
   }
 
   const handleChangeIsDefault = (index: any) => {
     detailCustomerProfile.value.detail_delivery_address[index].is_default = '1'
-    let color = detailCustomerProfile.value.detail_delivery_address.filter(
+    const color = detailCustomerProfile.value.detail_delivery_address.filter(
       (c: any, i: any) => i != index
     )
     if (color) {
@@ -1240,7 +1230,7 @@
 
   const handleChangeIsDefaultPay = (index: any) => {
     detailCustomerProfile.value.detail_pay_address[index].is_default_pay = '1'
-    let color = detailCustomerProfile.value.detail_pay_address.filter(
+    const color = detailCustomerProfile.value.detail_pay_address.filter(
       (c: any, i: any) => i != index
     )
     if (color) {
@@ -1258,7 +1248,7 @@
 
   const addOptions = () => {
     isOpenConfirmDefault.value = true
-    let data_1 = {
+    const data_1 = {
       title: '',
       address_country_id: '1',
       address_district_id: '',
@@ -1274,7 +1264,7 @@
 
   const payAddOptions = () => {
     isOpenCreatedPayAddress.value = true
-    let data = {
+    const data = {
       title: '',
       address_country_id: '1',
       address_district_id: '',
@@ -1294,25 +1284,25 @@
     detailCustomerProfile.value.detail_pay_address.splice(index, 1)
   }
 
-  const removeOptions = (index: number) => {
-    dataOption.splice(index, 1)
-  }
+  // const removeOptions = (index: number) => {
+  //   dataOption.splice(index, 1)
+  // }
 
-  const arrayInvent = ref([])
-  const arrayWeb = ref([])
+  // const arrayInvent = ref([])
+  // const arrayWeb = ref([])
 
-  const getListWeb = (webList: string[], inventList: string[]) => {
-    arrayWeb.value = webList
-    arrayInvent.value = inventList
-  }
+  // const getListWeb = (webList: string[], inventList: string[]) => {
+  //   arrayWeb.value = webList
+  //   arrayInvent.value = inventList
+  // }
 
-  const checkedInvent = (code: string) => {
-    if (arrayInvent?.value?.indexOf(code) > -1) {
-      return true
-    } else {
-      return false
-    }
-  }
+  // const checkedInvent = (code: string) => {
+  //   if (arrayInvent?.value?.indexOf(code) > -1) {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
 
   const EndTimeLoading = () => {
     isLoading.value = false
@@ -1324,7 +1314,7 @@
   const createNewDeCustomerProfile = () => {
     isOpenConfirmDefault.value = false
     arr_address_de.value = dataOption
-    let data = {
+    const data = {
       customer_group: detailCustomerProfile.value.customer_group,
       code: detailCustomerProfile.value.code,
       name: detailCustomerProfile.value.name,
@@ -1354,7 +1344,7 @@
   const createNewPayAddress = () => {
     isOpenCreatedPayAddress.value = false
     arr_address_pay.value = payDataOption
-    let data = {
+    const data = {
       customer_group: detailCustomerProfile.value.customer_group,
       code: detailCustomerProfile.value.code,
       name: detailCustomerProfile.value.name,
@@ -1382,7 +1372,7 @@
   }
 
   const updateCustomerProfile = () => {
-    let data = {
+    const data = {
       customer_group: detailCustomerProfile.value.customer_group,
       code: detailCustomerProfile.value.code,
       name: detailCustomerProfile.value.name,
