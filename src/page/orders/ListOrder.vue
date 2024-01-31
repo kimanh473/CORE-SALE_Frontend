@@ -8,7 +8,7 @@
         <div class="flex grow">
           <div class="flex items-center">
             <div class="flex items-center">
-              <Transition name="slide-fade"></Transition>
+              <Transition name="slide-fade"> </Transition>
               <p class="longText pl-5 mb-0">Danh sách đơn hàng</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
@@ -23,7 +23,7 @@
         <div></div>
         <div
           class="button-create-new relative group rounded-md px-2"
-          title="Tạo mới Đơn hàng"
+          title="Tạo mới web"
           @click="CreateOrder()"
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới đơn hàng</p>
@@ -32,15 +32,22 @@
       <a-table
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listOrder"
+        :data-source="listProduct"
+        :pagination="false"
+        v-model:current="currentPage"
         bordered
         row-key="id"
-      >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'json_rule_detail'"> </template>
+        ><template #bodyCell="{ column, record, index }">
+          <template v-if="column.key === 'stt'">
+            <div>
+              {{ index + perPage * (currentPage - 1) + 1 }}
+            </div>
+          </template>
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;
-            <a @click="handleOpenDelete(record)">Xóa</a>
+            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
+              @click="handleOpenDelete(record)"
+              >Xóa</a
+            >
           </template>
         </template>
         <template #switch="{ text }">
@@ -48,49 +55,115 @@
         </template>
       </a-table>
     </template>
-    <template v-slot:footer>footer</template>
-  </base-layout>
-  <div>
-    <modal-delete
-      :isOpen="isOpenConfirm"
-      :handleCloseDetail="handleCloseConfirm"
-      :ConfirmDelete="handleDelete"
-    >
-    </modal-delete>
-  </div>
 
-  <!--  <loading-overlay :isLoading="isLoading"></loading-overlay>-->
-  <!--        tạo mới account-->
-  <!-- sửa tài khoản -->
+    <template v-slot:footer
+      ><div class="text-left px-[20px] py-[10px]">
+        <a-pagination
+          v-model:current="currentPage"
+          v-model:pageSize="perPage"
+          show-quick-jumper
+          :total="totalPage"
+          @change="changePage"
+        />
+      </div>
+    </template>
+  </base-layout>
+
+  <modal-delete
+    :isOpen="isOpenConfirm"
+    :handleCloseDetail="handleCloseConfirm"
+    :ConfirmDelete="handleDelete"
+  >
+  </modal-delete>
+  <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
 <script setup lang="ts">
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
+  import { useRoute, useRouter } from 'vue-router'
   import { ref } from 'vue'
-  import { useOrder } from '@/store/modules/order-service/order'
+  import { useProduct } from '@/store/modules/store-setting/products'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  import { useRouter } from 'vue-router'
+  const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
-  const dataOrder = useOrder()
-  dataOrder.getAllOrderPaginateAction()
-  const { listOrder } = storeToRefs(dataOrder)
+  const router = useRouter()
+  const route = useRoute()
+  const dataWebsite = useWebCatalog()
+  dataWebsite.getAllWebCatalogAction()
+  const { listWeb } = storeToRefs(dataWebsite)
+  function formatWeb(webcode: string) {
+    const webName = listWeb.value.find((item: any) => item.code == webcode)
+    return webName?.web_name
+  }
+  const EndTimeLoading = () => {
+    isLoading.value = false
+  }
+  const dataProduct = useProduct()
+  const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
+  const perPage = ref(10)
+  dataProduct.getListProductAction(
+    perPage.value,
+    Number(route.params.page),
+    EndTimeLoading
+  )
+  const changePage = (pageNumber: number) => {
+    isLoading.value = true
+    router.push(`/orders-list/page/${pageNumber}`)
+    dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
+  }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
-  const isOpenCreateModal = ref<boolean>(false)
-  const isOpenUpdateModal = ref<boolean>(false)
-  const router = useRouter()
   const columns = [
     {
-      title: 'Mã đơn hàng',
-      dataIndex: 'code',
+      title: 'STT',
+      dataIndex: 'id',
+      key: 'stt',
     },
     {
-      title: 'Mã khách hàng',
-      dataIndex: 'customer_account_code',
+      title: 'Ngày CT',
+      dataIndex: 'order_date',
+      key: 'order_date',
+    },
+    {
+      title: 'Số CT',
+      dataIndex: 'order_number',
+    },
+    {
+      title: 'Mã KH',
+      dataIndex: 'customer_code',
+    },
+    {
+      title: 'Tên KH',
+      dataIndex: `customer_name`,
+    },
+    {
+      title: 'Diễn giải',
+      dataIndex: 'descriptions',
+    },
+    {
+      title: 'Tiền hàng',
+      dataIndex: 'item_amount',
+    },
+    {
+      title: 'Tiền thuế',
+      dataIndex: 'tax_amount',
+    },
+    {
+      title: 'Tổng tiền',
+      dataIndex: 'sum_amount',
+    },
+    {
+      title: 'Nguồn gốc',
+      dataIndex: 'source',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
     },
     {
       title: 'Thao tác',
@@ -103,30 +176,26 @@
     isOpenConfirm.value = false
   }
 
-  const navigateUpdate = (id: number) => {
-    isOpenUpdateModal.value = true
+  const CreateOrder = () => {
+    router.push('/create-order')
   }
-
+  const navigateUpdate = (id: number) => {
+    router.push(`/update-product/${id}`)
+  }
   const idSelected = ref()
-
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
   }
-
   const handleDelete = () => {
-    isLoading.value = true
-  }
-
-  const openModalCreateGroupCustomer = () => {
-    isOpenCreateModal.value = true
-  }
-
-  const CreateOrder = () => {
-    router.push('/create-order')
-  }
-  const handleCloseCreate = () => {
-    isOpenCreateModal.value = false
+    // da.deleteWebAction(
+    //   Number(idSelected.value),
+    //   EndTimeLoading,
+    //   toast,
+    //   handleCloseConfirm
+    // )
+    // dataWeb.getAllWebPaginateAction()
+    // dataInventory.getListInventoryAction()
   }
 </script>
 <style>
