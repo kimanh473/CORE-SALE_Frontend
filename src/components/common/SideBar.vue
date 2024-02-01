@@ -233,14 +233,14 @@
           {
             label: 'BÁN HÀNG',
             icon: 'fal fa-usd-circle',
-            to: '/sales-list',
+            to: '/orders-list',
             permission: [''],
             smallLabel: 'BÁN HÀNG',
             children1: [
                {
                 icon: '',
                 label: 'Quản lý đơn hàng ',
-                to: '/sales-list',
+                to: '/orders-list/page/1',
                 permission: [''],
                 submenuGroup: '',
                },
