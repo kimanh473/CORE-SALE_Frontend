@@ -23,13 +23,7 @@
       </div>
     </div>
     <hr />
-    <router-link
-      class="options-item hover:bg-slate-200 hover:rounded-lg flex items-center"
-      to="/user"
-      ><span class="mr-2"><i class="fal fa-user text-base"></i></span>
-      <div class="title">Trang cá nhân</div>
-    </router-link>
-    <a
+    <!--<a
       class="options-item hover:bg-slate-200 hover:rounded-lg flex items-center"
       href=""
       @click.prevent="handleToSetting"
@@ -41,7 +35,8 @@
       @click.prevent="handleToTutorial"
       ><span class="mr-2"><i class="fal fa-book text-base"></i></span>
       <div class="title">Hướng dẫn sử dụng</div> </a
-    ><a
+    >
+  --><a
       class="options-item hover:bg-slate-200 hover:rounded-lg flex items-center pop-done pop-control pop-control-mousemove pop-connect"
       rel="theme"
       ><span class="mr-2"><i class="fal fa-brush text-base"></i></span>
@@ -97,7 +92,7 @@
       class="rounded-tl-lg rounded-tr-lg"
     >
       <div>
-        <h1 class="header-modal">đổi mật khẩu đăng nhập</h1>
+        <h1 class="header-modal">Đổi mật khẩu đăng nhập</h1>
         <div class="text-left p-2 w-[520px]">
           <div class="form-small">
             <label for="" class="form-group-label"
@@ -194,14 +189,14 @@
   const handleCloseDetail = () => {
     isOpenDetail.value = false
   }
-  const handleToSetting = () => {
-    router.push({
-      path: '/setting-menu',
-    })
-  }
-  const handleToTutorial = () => {
-    // router.push('/user-manual/timekeep/tab=1')
-  }
+  // const handleToSetting = () => {
+  //   router.push({
+  //     path: '/setting-menu',
+  //   })
+  // }
+  // const handleToTutorial = () => {
+  //   // router.push('/user-manual/timekeep/tab=1')
+  // }
   const changeColor = () => {
     // let color = e.target.value
     // const data = {

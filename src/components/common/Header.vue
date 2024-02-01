@@ -19,7 +19,8 @@
         <ul
           class="flex xxs222 items-center justify-center max-sm:mr-[60px] mb-[0px]"
         >
-          <!--          menu-->
+        
+          <!--          
           <li
             class="hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1"
             style="color: var(--color-primary)"
@@ -59,7 +60,7 @@
             style="color: var(--color-primary)"
           >
             <i class="fal fa-phone text-lg"></i>
-          </li>
+          </li>menu-->
           <li
             class="hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1 w-[60px]"
             @click="toggleActiveNotifyBox"
