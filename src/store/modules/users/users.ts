@@ -183,15 +183,14 @@ export const useUserSetting = defineStore('UserSetting', {
           EndTimeLoading()
         })
     },
-    async GetUserProfileAction() {
-      const token = localStorage.getItem('TOKEN')
-      await getDetailUsersApi(token)
+    async GetUserProfileAction(id: number) {
+      await getDetailUsersApi(id)
         .then((payload) => {
-          if (payload.status == 'Token is Invalid') {
-            this.LogoutErrorToken()
-          } else {
-            this.setDataUserProfile(payload)
-          }
+          if (payload.data.status === 'success') {
+            this.getDetailUsers(payload?.data?.data)
+          } 
+          //console.log(payload);
+          
         })
         .catch((err) => {
           this.LogoutErrorToken()

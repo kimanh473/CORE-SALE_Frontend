@@ -15,6 +15,7 @@ export const userLogin = defineStore('UserLogin', {
         localStorage.setItem('TOKEN', payload.token)
         localStorage.setItem('role', payload?.roles[0])
         localStorage.setItem('authenticated', 'true')
+        localStorage.setItem('ID', payload.user?.roles[0]?.id)
         state.dataLogin = payload
       }
     },
@@ -48,6 +49,7 @@ export const userLogin = defineStore('UserLogin', {
             localStorage.removeItem('TOKEN')
             localStorage.removeItem('authenticated')
             localStorage.removeItem('role')
+            localStorage.removeItem('ID')
           } else {
             useToast().error('Không thể đăng xuất!!!')
           }

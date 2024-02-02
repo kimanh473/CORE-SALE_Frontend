@@ -14,12 +14,10 @@
         />
       </div>
       <div class="uppercase font-medium" style="color: var(--color-primary)">
-        <!-- {{ userProfile.fullname }} -->
-        1
+        {{ detailUser.fullname }}
       </div>
       <div class="text-xs">
-        <!-- {{ userProfile.position?.title }} - {{ userProfile.department?.title }} -->
-        2
+        {{ detailUser?.position_title }} - {{ detailUser?.department_title }} 
       </div>
     </div>
     <hr />
@@ -158,8 +156,8 @@
   import { useRouter } from 'vue-router'
   // import { useStore } from 'vuex'
   import { useToast } from 'vue-toastification'
-  // import { useUserProfile } from '@/store/modules/user/userProfile'
-  // import { storeToRefs } from 'pinia'
+  import { useUserSetting } from '@/store/modules/users/users'
+  import { storeToRefs } from 'pinia'
   import { userLogin } from '@/store/modules/accounts/userLogin'
   import { usePasswordSetting } from '@/store/modules/accounts/password'
   // const store = useStore()
@@ -168,8 +166,12 @@
   const toast = useToast()
   const isOpenDetail = ref(false)
   const passSetting = usePasswordSetting()
-  // const { userProfile, avatar } = storeToRefs(profile)
-
+  const profile = useUserSetting()
+  const { detailUser } = storeToRefs(profile)
+  const user_id = localStorage.getItem('ID')
+  profile.GetUserProfileAction(Number(user_id))
+  // console.log(detailUser)
+  
   const changePassword = reactive({
     current_password: '',
     password: '',
