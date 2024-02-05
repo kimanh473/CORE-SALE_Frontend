@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getAllOrderApi } from '@/services/OrderServices/Order.services'
-import { Order } from '@/store/modules/order/order.type'
+import { Order } from '@/store/modules/orders/order.type'
 export const useOrder = defineStore('customerGroup', {
   state: () => ({
     listOrder: [] as Order[],

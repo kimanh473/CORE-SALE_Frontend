@@ -14,22 +14,14 @@
         />
       </div>
       <div class="uppercase font-medium" style="color: var(--color-primary)">
-        <!-- {{ userProfile.fullname }} -->
-        1
+        {{ detailUser.fullname }}
       </div>
       <div class="text-xs">
-        <!-- {{ userProfile.position?.title }} - {{ userProfile.department?.title }} -->
-        2
+        {{ detailUser?.position_title }} - {{ detailUser?.department_title }} 
       </div>
     </div>
     <hr />
-    <router-link
-      class="options-item hover:bg-slate-200 hover:rounded-lg flex items-center"
-      to="/user"
-      ><span class="mr-2"><i class="fal fa-user text-base"></i></span>
-      <div class="title">Trang cá nhân</div>
-    </router-link>
-    <a
+    <!--<a
       class="options-item hover:bg-slate-200 hover:rounded-lg flex items-center"
       href=""
       @click.prevent="handleToSetting"
@@ -41,7 +33,8 @@
       @click.prevent="handleToTutorial"
       ><span class="mr-2"><i class="fal fa-book text-base"></i></span>
       <div class="title">Hướng dẫn sử dụng</div> </a
-    ><a
+    >
+  --><a
       class="options-item hover:bg-slate-200 hover:rounded-lg flex items-center pop-done pop-control pop-control-mousemove pop-connect"
       rel="theme"
       ><span class="mr-2"><i class="fal fa-brush text-base"></i></span>
@@ -97,7 +90,7 @@
       class="rounded-tl-lg rounded-tr-lg"
     >
       <div>
-        <h1 class="header-modal">đổi mật khẩu đăng nhập</h1>
+        <h1 class="header-modal">Đổi mật khẩu đăng nhập</h1>
         <div class="text-left p-2 w-[520px]">
           <div class="form-small">
             <label for="" class="form-group-label"
@@ -163,8 +156,8 @@
   import { useRouter } from 'vue-router'
   // import { useStore } from 'vuex'
   import { useToast } from 'vue-toastification'
-  // import { useUserProfile } from '@/store/modules/user/userProfile'
-  // import { storeToRefs } from 'pinia'
+  import { useUserSetting } from '@/store/modules/users/users'
+  import { storeToRefs } from 'pinia'
   import { userLogin } from '@/store/modules/accounts/userLogin'
   import { usePasswordSetting } from '@/store/modules/accounts/password'
   // const store = useStore()
@@ -173,8 +166,12 @@
   const toast = useToast()
   const isOpenDetail = ref(false)
   const passSetting = usePasswordSetting()
-  // const { userProfile, avatar } = storeToRefs(profile)
-
+  const profile = useUserSetting()
+  const { detailUser } = storeToRefs(profile)
+  const user_id = localStorage.getItem('ID')
+  profile.GetUserProfileAction(Number(user_id))
+  // console.log(detailUser)
+  
   const changePassword = reactive({
     current_password: '',
     password: '',
@@ -194,14 +191,14 @@
   const handleCloseDetail = () => {
     isOpenDetail.value = false
   }
-  const handleToSetting = () => {
-    router.push({
-      path: '/setting-menu',
-    })
-  }
-  const handleToTutorial = () => {
-    // router.push('/user-manual/timekeep/tab=1')
-  }
+  // const handleToSetting = () => {
+  //   router.push({
+  //     path: '/setting-menu',
+  //   })
+  // }
+  // const handleToTutorial = () => {
+  //   // router.push('/user-manual/timekeep/tab=1')
+  // }
   const changeColor = () => {
     // let color = e.target.value
     // const data = {
