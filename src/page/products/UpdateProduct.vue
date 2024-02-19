@@ -707,7 +707,10 @@
               >
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
-                  }}<span class="text-red-600">* </span> <span></span
+                  }}<span v-if="item1.is_required == '1'" class="text-red-600"
+                    >*
+                  </span>
+                  <span></span
                 ></label>
                 <div v-for="(map, mapIndex) in typeProduct">
                   <component
@@ -1428,7 +1431,7 @@
   }
   const dataOption = reactive([
     {
-      value: <SelectProps>[],
+      value: <SelectProps | null>[],
       title: ''
     }
   ])
