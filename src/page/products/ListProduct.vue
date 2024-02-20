@@ -19,7 +19,7 @@
                 <appstore-outlined />
               </template>
               <template #title>Chọn sàn</template>
-              <a-menu-item-group title="Item 1">
+              <a-menu-item-group title="Sàn TMĐT">
                 <a-menu-item key="setting:1" @click="ShowProductShopee()"
                   >Shopee</a-menu-item
                 >

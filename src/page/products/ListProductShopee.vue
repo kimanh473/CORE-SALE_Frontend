@@ -140,6 +140,8 @@
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
+  // import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
+
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const toast = useToast()

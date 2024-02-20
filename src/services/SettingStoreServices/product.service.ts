@@ -28,6 +28,17 @@ const deleteProductApi = (id: number) => {
 const filterProductApi = (data: object) => {
   return httpClient.post(`/catalog/product/filter`, data)
 }
+
+
+//Danh sách sản phẩm sàn Shopee
+const getAllProductsShopeeNoPagingApi = () => {
+  return httpClient.get(`/shopee/product/get_item_list`)
+}
+const getAllProductsShopeeApi = (offset: any, perPage: number, page: number) => {
+  return httpClient.get(
+    `/shopee/product/get_item_list?per_page=${perPage}&page=${page}`,offset
+  )
+}
 export {
   getAllProductsApi,
   createProductApi,
@@ -36,4 +47,6 @@ export {
   filterProductApi,
   deleteProductApi,
   updateProductApi,
+  getAllProductsShopeeNoPagingApi,
+  getAllProductsShopeeApi
 }
