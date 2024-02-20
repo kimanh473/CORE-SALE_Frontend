@@ -25,5 +25,14 @@ const product = [
     },
     beforeEnter: requireAuth,
   },
+  //sp sàn shopee
+  {
+    path: '/products-list-shopee/page/:page',
+    component: () => import('@/page/products/ListProductShopee.vue'),
+    meta: {
+      layout: 'base-layout',
+    },
+    beforeEnter: requireAuth,
+  },
 ]
 export default product

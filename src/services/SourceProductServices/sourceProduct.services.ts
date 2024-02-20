@@ -12,4 +12,9 @@ const createSourceProductApi = (data: Object) => {
     data
   )
 }
-export { getAllSourceProductsApi, createSourceProductApi }
+//xóa kho
+const deleteSourceProductApi = (id:number)=>{
+  return httpClient.post(`/catalog-product/setting/inventory-source-location/delete`)
+}
+
+export { getAllSourceProductsApi, createSourceProductApi, deleteSourceProductApi }

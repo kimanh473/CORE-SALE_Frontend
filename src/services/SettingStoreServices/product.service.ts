@@ -16,6 +16,14 @@ const createProductApi = (data: object) => {
 const getDetailProductApi = (id: number) => {
   return httpClient.get(`/catalog/product/show/${id}`)
 }
+//Sửa sản phẩm
+const updateProductApi = (id: number, data: object) =>{
+  return httpClient.post(`/catalog/product/update/${id}`,data)
+}
+// Xóa sản phẩm
+const deleteProductApi = (id: number) => {
+  return httpClient.post(`/catalog/product/delete/${id}`)
+}
 // lọc sản phẩm theo ngành hàng,website
 const filterProductApi = (data: object) => {
   return httpClient.post(`/catalog/product/filter`, data)
@@ -26,4 +34,6 @@ export {
   getDetailProductApi,
   getAllProductsNoPagingApi,
   filterProductApi,
+  deleteProductApi,
+  updateProductApi
 }

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import {
   getAllSourceProductsApi,
   createSourceProductApi,
+  deleteSourceProductApi
 } from '@/services/SourceProductServices/sourceProduct.services'
 export const useSourceProduct = defineStore('SourceProduct', {
   state: () => ({
@@ -43,6 +44,29 @@ export const useSourceProduct = defineStore('SourceProduct', {
         .catch((err) => {
           toast.error('Tạo mới thất bại')
           console.log(err)
+        })
+    },
+    deleteSourceProductAction(
+      id: number,
+      EndTimeLoading: Function,
+      toast: any,
+      handleCloseConfirm: Function
+    ) {
+      deleteSourceProductApi(id)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            toast.success('Xóa thành công', 500)
+            this.getListProductAction()
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+          EndTimeLoading()
+          handleCloseConfirm()
+        })
+        .catch((err) => {
+          console.log(err)
+          handleCloseConfirm()
+          EndTimeLoading()
         })
     },
   },
