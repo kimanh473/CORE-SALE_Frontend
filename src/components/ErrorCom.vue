@@ -1,6 +1,10 @@
 <script setup lang="ts"></script>
 <template>
-  <h1>404 not found</h1>
+  <img
+    src="https://www.artzstudio.com/content/images/wordpress/2020/05/404-error-not-found-page-lost.png"
+    class="flex align-center max-w-4xl"
+  />
+  <!-- <h1 class="text-red-700 text-2xl">404 not found</h1> -->
 </template>
 <style>
   .menu {

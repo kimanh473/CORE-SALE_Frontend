@@ -551,7 +551,6 @@
       })
     })
     data.type_code = st.filter((val: any) => val)
-
     dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)
   }
 </script>

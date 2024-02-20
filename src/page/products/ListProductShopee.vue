@@ -9,7 +9,7 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Danh sách sản phẩm</p>
+              <p class="longText pl-5 mb-0">Danh sách sản phẩm sàn Shopee</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -18,26 +18,47 @@
     </template>
     <template v-slot:content class="relative">
       <div
-        class="!my-4 !py-[10px] !mx-[10px] px-3.5 bg-slate-500 rounded flex justify-between"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex px-3.5 justify-between"
       >
-        <!-- button dẫn đến trang sp sàn shopee -->
-        <div
-          class="button bg-white left-32 h-9 group rounded-md px-2 cursor-pointer hover:bg-gray-200"
-          title="Sản phẩm sàn Shopee"
-          @click="ShowProductShopee()"
-        >
-          <p class="text-[14px] mt-1 px-1">Sản phẩm sàn Shopee</p>
+        <div>
+          <a-button
+            type="primary"
+            :disabled="!hasSelected"
+            :loading="state.loading"
+            @click="start"
+          >
+            Đẩy lên sàn
+          </a-button>
+          <span
+            style="
+              margin-left: 8px;
+              margin-left: 8px;
+              margin-top: 4px;
+              color: white;
+            "
+          >
+            <template v-if="hasSelected">
+              {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
+            </template>
+          </span>
         </div>
-        <div
-          class="button-create-new relative group rounded-md px-2"
-          title="Tạo mới web"
-          @click="CreateProduct()"
-        >
-          <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+        <div>
+          <a-button
+            type="primary"
+            :disabled="!hasSelectedDelete"
+            :loading="state.loadingDel"
+            @click="handleOpenDeleteAllProduct"
+          >
+            Xóa tất cả
+          </a-button>
         </div>
       </div>
       <a-table
         class="!p-[10px]"
+        :row-selection="{
+          selectedRowKeys: state.selectedRowKeys,
+          onChange: onSelectChange,
+        }"
         :columns="columns"
         :data-source="listProduct"
         :pagination="false"
@@ -95,6 +116,12 @@
     :ConfirmDelete="handleDelete"
   >
   </modal-delete>
+  <modal-delete-all
+    :isOpenAll="isOpenConfirmAll"
+    :handleCloseDetailAll="handleCloseConfirmAll"
+    :ConfirmDeleteAll="handleDeleteAll"
+  ></modal-delete-all>
+
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
@@ -103,12 +130,12 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { ref } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   import { useProduct } from '@/store/modules/store-setting/products'
-  // import { UrlImg } from '@/services/services'
-  //   import { storeToRefs } from 'pinia'
   import { useToast } from 'vue-toastification'
+  // import { UrlImg } from '@/services/services'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
+  import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
@@ -129,19 +156,33 @@
   const dataProduct = useProduct()
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
   const perPage = ref(10)
+  // let listProductShopee = []
   dataProduct.getListProductAction(
     perPage.value,
     Number(route.params.page),
     EndTimeLoading
   )
+  // .then(() => {
+  //   listProductShopee = listProduct.value.filter((item: any) => {
+  //     return item.web_site_code.indexOf('shopee') != -1
+  //   })
+  //   console.log(listProduct.value)
+
+  //   console.log(listProductShopee)
+  // })
+
   const changePage = (pageNumber: number) => {
     isLoading.value = true
-    router.push(`/products-list/page/${pageNumber}`)
+    router.push(`/products-list-shopee/page/${pageNumber}`)
     dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
   }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const isOpenConfirmAll = ref<boolean>(false)
+  const handleCloseConfirmAll = () => {
+    isOpenConfirmAll.value = false
+  }
   const columns = [
     {
       title: 'STT',
@@ -200,14 +241,6 @@
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
-
-  const CreateProduct = () => {
-    router.push('/create-product')
-  }
-  //link đến trang sp sàn shopee
-  const ShowProductShopee = () => {
-    router.push('/products-list-shopee/page/:page')
-  }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
   }
@@ -215,7 +248,7 @@
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
-    console.log(idSelected.value)
+    console.log(idSelected)
   }
   // const handleDelete = () => {
   //   // da.deleteWebAction(
@@ -227,6 +260,7 @@
   //   // dataWeb.getAllWebPaginateAction()
   //   // dataInventory.getListInventoryAction()
   // }
+
   const handleDelete = () => {
     isLoading.value = true
     dataProduct.deleteProductAction(
@@ -237,6 +271,64 @@
       perPage.value,
       Number(route.params.page)
     )
+  }
+  type Key = string | number
+  const state = reactive<{
+    selectedRowKeys: Key[]
+    loading: boolean
+    loadingDel: boolean
+  }>({
+    selectedRowKeys: [], // Check here to configure the default column
+    loading: false,
+    loadingDel: false,
+  })
+  const hasSelected = computed(() => state.selectedRowKeys.length > 0)
+  const hasSelectedDelete = computed(() => state.selectedRowKeys.length > 1)
+  const start = () => {
+    state.loading = true
+    // ajax request after empty completing
+    for (let i = 0; i < state.selectedRowKeys.length; i++) {
+      console.log(`push ${state.selectedRowKeys[i]}`)
+      console.log('------')
+      // dataProduct.pushAllProductShopeeAction(
+      //   Number(state.selectedRowKeys[i]),
+      //   toast
+      // )
+    }
+    // ajax request after empty completing
+    setTimeout(() => {
+      state.loading = false
+      state.selectedRowKeys = []
+      handleCloseConfirmAll()
+      EndTimeLoading()
+      console.log('Push all')
+    }, 1000)
+  }
+  const handleOpenDeleteAllProduct = () => {
+    isOpenConfirmAll.value = true
+  }
+  const handleDeleteAll = () => {
+    state.loadingDel = true
+    for (let i = 0; i < state.selectedRowKeys.length; i++) {
+      console.log(`delete ${state.selectedRowKeys[i]}`)
+      console.log('------')
+      // dataProduct.deleteAllProductAction(
+      //     //   Number(state.selectedRowKeys[i]),
+      //     //   toast
+      // )
+    }
+    setTimeout(() => {
+      state.loadingDel = false
+      state.selectedRowKeys = []
+      handleCloseConfirmAll()
+      EndTimeLoading()
+      console.log('Del all')
+    }, 1000)
+  }
+
+  const onSelectChange = (selectedRowKeys: any) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    state.selectedRowKeys = selectedRowKeys
   }
 </script>
 <style>
