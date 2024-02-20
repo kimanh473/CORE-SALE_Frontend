@@ -88,17 +88,17 @@
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
+  // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const router = useRouter()
   const route = useRoute()
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(dataWebsite)
-  function formatWeb(webcode: string) {
-    const webName = listWeb.value.find((item: any) => item.code == webcode)
-    return webName?.web_name
-  }
+  // const { listWeb } = storeToRefs(dataWebsite)
+  // function formatWeb(webcode: string) {
+  //   const webName = listWeb.value.find((item: any) => item.code == webcode)
+  //   return webName?.web_name
+  // }
   const EndTimeLoading = () => {
     isLoading.value = false
   }

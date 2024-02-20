@@ -9,7 +9,9 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Danh sách sản phẩm sàn Shopee</p>
+              <p class="longText pl-5 mb-0 font-bold">
+                Danh sách sản phẩm sàn Shopee
+              </p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -85,10 +87,10 @@
             </div>
           </template>
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
-              @click="handleOpenDelete(record)"
-              >Xóa</a
-            >
+            <a @click="handlePushProduct(record.id)">Ẩn</a>&nbsp;|&nbsp;<a
+              @click="navigateUpdate(record.id)"
+              >Sửa</a
+            >&nbsp;|&nbsp;<a @click="handleOpenDelete(record)">Xóa</a>
           </template>
         </template>
         <template #switch="{ text }">
@@ -244,6 +246,7 @@
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
   }
+  const handlePushProduct = (id: number) => {}
   const idSelected = ref()
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
@@ -312,16 +315,22 @@
     for (let i = 0; i < state.selectedRowKeys.length; i++) {
       console.log(`delete ${state.selectedRowKeys[i]}`)
       console.log('------')
-      // dataProduct.deleteAllProductAction(
-      //     //   Number(state.selectedRowKeys[i]),
-      //     //   toast
-      // )
+      dataProduct.deleteAllProductAction(
+        Number(state.selectedRowKeys[i]),
+        toast
+      )
     }
     setTimeout(() => {
       state.loadingDel = false
       state.selectedRowKeys = []
+      dataProduct.getListProductAction(
+        perPage.value,
+        Number(route.params.page),
+        EndTimeLoading
+      )
       handleCloseConfirmAll()
       EndTimeLoading()
+
       console.log('Del all')
     }, 1000)
   }
@@ -329,6 +338,7 @@
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
     state.selectedRowKeys = selectedRowKeys
+    console.log(selectedRowKeys)
   }
 </script>
 <style>

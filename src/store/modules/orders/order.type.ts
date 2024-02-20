@@ -3,7 +3,6 @@ export interface RecepientAddress {
   code: string
 }
 
-
 export interface Order {
   id: number
   code: string
