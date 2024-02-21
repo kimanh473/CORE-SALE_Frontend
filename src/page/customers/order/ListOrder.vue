@@ -70,7 +70,7 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { ref } from 'vue'
-  import { useOrder } from '@/store/modules/order-service/order'
+  import { useOrder } from '@/store/modules/orders/orders'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
 
