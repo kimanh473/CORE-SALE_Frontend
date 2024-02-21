@@ -17,7 +17,7 @@
         {{ detailUser.fullname }}
       </div>
       <div class="text-xs">
-        {{ detailUser?.position_title }} - {{ detailUser?.department_title }} 
+        {{ detailUser?.position_title }} - {{ detailUser?.department_title }}
       </div>
     </div>
     <hr />
@@ -171,7 +171,7 @@
   const user_id = localStorage.getItem('ID')
   profile.GetUserProfileAction(Number(user_id))
   // console.log(detailUser)
-  
+
   const changePassword = reactive({
     current_password: '',
     password: '',
