@@ -6,6 +6,7 @@ import {
   getDetailProductApi,
   filterProductApi,
   deleteProductApi,
+  deleteAllProductApi,
   // updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
 // import { update } from 'lodash-es'
@@ -137,18 +138,29 @@ export const useProduct = defineStore('Products', {
           EndTimeLoading()
         })
     },
-    deleteAllProductAction(id: number, toast: any) {
-      deleteProductApi(id)
+    deleteAllProductAction(
+      ids: any,
+      EndTimeLoading: Function,
+      toast: any,
+      handleCloseConfirmAll: Function,
+      perPage: number,
+      page: number
+    ) {
+      deleteAllProductApi(ids)
         .then((res) => {
           if (res.data.status === 'success') {
             toast.success('Xóa thành công', 500)
-            // this.getListProductAction(perPage, page, EndTimeLoading)
+            this.getListProductAction(perPage, page, EndTimeLoading)
           } else {
             toast.error(res.data.messages, 500)
           }
+          EndTimeLoading()
+          handleCloseConfirmAll()
         })
         .catch((err) => {
           console.log(err)
+          EndTimeLoading()
+          handleCloseConfirmAll()
         })
     },
     // async updateProductAction(

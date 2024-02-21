@@ -20,7 +20,7 @@
               </template>
               <template #title>Chọn sàn</template>
               <a-menu-item-group title="Sàn TMĐT">
-                <a-menu-item key="setting:1" @click="ShowProductShopee()"
+                <a-menu-item key="setting:1" @click="ShowProductShopee(1)"
                   >Shopee</a-menu-item
                 >
                 <a-menu-item key="setting:2">Lazada</a-menu-item>
@@ -157,6 +157,7 @@
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
   import { AppstoreOutlined } from '@ant-design/icons-vue'
+  import { before } from 'lodash-es'
   const current = ref<string[]>([])
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -244,7 +245,7 @@
     },
   ]
 
-  type Key = string | number
+  type Key = string
   const state = reactive<{
     selectedRowKeys: Key[]
     loading: boolean
@@ -254,14 +255,18 @@
     loading: false,
     loadingDel: false,
   })
+  const deleteAllProduct = ref()
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
+    deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
+    console.log(deleteAllProduct)
     state.selectedRowKeys = selectedRowKeys
-    console.log(selectedRowKeys)
+    console.log(state.selectedRowKeys)
   }
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
   const hasSelectedDelete = computed(() => state.selectedRowKeys.length > 1)
-
+  // const ids = state.selectedRowKeys.map((item: number) => String(item))
+  // console.log(ids)
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
@@ -270,8 +275,8 @@
     router.push('/create-product')
   }
   // link đến trang sp sàn shopee
-  const ShowProductShopee = () => {
-    router.push('/products-list-shopee/page/:page')
+  const ShowProductShopee = (page: number) => {
+    router.push(`/products-list-shopee/page/${page}`)
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
@@ -310,29 +315,36 @@
   const isOpenConfirmAll = ref<boolean>(false)
   const handleCloseConfirmAll = () => {
     isOpenConfirmAll.value = false
+    console.log('del cai nay', state.selectedRowKeys)
   }
   const handleDeleteAll = () => {
     state.loadingDel = true
-    for (let i = 0; i < state.selectedRowKeys.length; i++) {
-      console.log(`delete ${state.selectedRowKeys[i]}`)
-      console.log('------')
-      dataProduct.deleteAllProductAction(
-        Number(state.selectedRowKeys[i]),
-        toast
-      )
+
+    console.log(`delete ${state.selectedRowKeys}`)
+    console.log('------')
+    // note
+    console.log(`ids`, deleteAllProduct)
+    const data = {
+      ids: deleteAllProduct,
     }
+    dataProduct.deleteAllProductAction(
+      data,
+      EndTimeLoading,
+      toast,
+      handleCloseConfirm,
+      perPage.value,
+      Number(route.params.page)
+    )
     setTimeout(() => {
       state.loadingDel = false
       state.selectedRowKeys = []
-      dataProduct.getListProductAction(
-        perPage.value,
-        Number(route.params.page),
-        EndTimeLoading
-      )
+      // dataProduct.getListProductAction(
+      //   perPage.value,
+      //   Number(route.params.page),
+      //   EndTimeLoading
+      // )
       handleCloseConfirmAll()
-      EndTimeLoading()
-
-      console.log('Del all')
+      console.log(`json mang ids`)
     }, 1000)
   }
 </script>
@@ -357,5 +369,10 @@
     right: 0px;
     z-index: 9999;
     justify-items: center;
+  }
+
+  .ant-menu-submenu-title {
+    display: flex !important;
+    align-items: center !important;
   }
 </style>

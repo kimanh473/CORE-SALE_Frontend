@@ -24,20 +24,33 @@ const updateProductApi = (id: number, data: object) => {
 const deleteProductApi = (id: number) => {
   return httpClient.post(`/catalog/product/delete/${id}`)
 }
+// Xóa nhiều sản phẩm
+const deleteAllProductApi = (ids: any) => {
+  return httpClient.post(`/catalog/product/deleteall`, ids)
+}
 // lọc sản phẩm theo ngành hàng,website
 const filterProductApi = (data: object) => {
   return httpClient.post(`/catalog/product/filter`, data)
 }
 
-
-//Danh sách sản phẩm sàn Shopee
+// Danh sách sản phẩm sàn Shopee
 const getAllProductsShopeeNoPagingApi = () => {
   return httpClient.get(`/shopee/product/get_item_list`)
 }
-const getAllProductsShopeeApi = (offset: any, perPage: number, page: number) => {
+const getAllProductsShopeeApi = (pageSize: number, page: number) => {
+  page = (page - 1) * pageSize
   return httpClient.get(
-    `/shopee/product/get_item_list?per_page=${perPage}&page=${page}`,offset
+    `/shopee/product/get_item_list?offset=${page}&page_size=${pageSize}&item_status=NORMAL`
   )
+}
+
+//Đăng nhập vào shopee
+const getShopShopeeApi = () => {
+  return httpClient.post(`shopee/auth-shop`)
+}
+
+const getBackToListShopeeProductApi = () => {
+  return httpClient.post(`shopee/set-auth-code`)
 }
 export {
   getAllProductsApi,
@@ -46,7 +59,10 @@ export {
   getAllProductsNoPagingApi,
   filterProductApi,
   deleteProductApi,
+  deleteAllProductApi,
   updateProductApi,
   getAllProductsShopeeNoPagingApi,
-  getAllProductsShopeeApi
+  getAllProductsShopeeApi,
+  getShopShopeeApi,
+  getBackToListShopeeProductApi
 }

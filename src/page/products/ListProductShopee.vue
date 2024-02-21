@@ -133,14 +133,14 @@
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
-  import { useProduct } from '@/store/modules/store-setting/products'
+  // import { useProduct } from '@/store/modules/store-setting/products'
   import { useToast } from 'vue-toastification'
   // import { UrlImg } from '@/services/services'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  // import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
+  import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
 
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -157,7 +157,7 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const dataProduct = useProduct()
+  const dataProduct = useProductShopee()
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
   const perPage = ref(10)
   // let listProductShopee = []
