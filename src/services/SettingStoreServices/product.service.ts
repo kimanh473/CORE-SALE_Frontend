@@ -44,7 +44,7 @@ const getAllProductsShopeeApi = (pageSize: number, page: number) => {
   )
 }
 
-//Đăng nhập vào shopee
+// Đăng nhập vào shopee
 const getShopShopeeApi = () => {
   return httpClient.post(`shopee/auth-shop`)
 }
@@ -64,5 +64,5 @@ export {
   getAllProductsShopeeNoPagingApi,
   getAllProductsShopeeApi,
   getShopShopeeApi,
-  getBackToListShopeeProductApi
+  getBackToListShopeeProductApi,
 }

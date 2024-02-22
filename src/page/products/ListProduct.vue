@@ -157,7 +157,6 @@
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
   import { AppstoreOutlined } from '@ant-design/icons-vue'
-  import { before } from 'lodash-es'
   const current = ref<string[]>([])
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -259,7 +258,7 @@
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
     deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
-    console.log(deleteAllProduct)
+    console.log('check convert number->string', deleteAllProduct.value)
     state.selectedRowKeys = selectedRowKeys
     console.log(state.selectedRowKeys)
   }
@@ -315,36 +314,55 @@
   const isOpenConfirmAll = ref<boolean>(false)
   const handleCloseConfirmAll = () => {
     isOpenConfirmAll.value = false
-    console.log('del cai nay', state.selectedRowKeys)
   }
+
+  // delete all dùng api xóa all (đang lỗi gửi mảng id)
+  // const handleDeleteAll = () => {
+  //   state.loadingDel = true
+  //   console.log(`delete ${state.selectedRowKeys}`)
+  //   console.log('------')
+  //   const data = {
+  //     ids: deleteAllProduct.value,
+  //   }
+  //   console.log('gửi cái này', data)
+  //   dataProduct.deleteAllProductAction(
+  //     data,
+  //     EndTimeLoading,
+  //     toast,
+  //     handleCloseConfirm,
+  //     perPage.value,
+  //     Number(route.params.page)
+  //   )
+  //   setTimeout(() => {
+  //     state.loadingDel = false
+  //     state.selectedRowKeys = []
+  //     handleCloseConfirmAll()
+  //   }, 1000)
+  // }
+
+  //delete all ko dùng api xóa all
   const handleDeleteAll = () => {
     state.loadingDel = true
-
-    console.log(`delete ${state.selectedRowKeys}`)
-    console.log('------')
-    // note
-    console.log(`ids`, deleteAllProduct)
-    const data = {
-      ids: deleteAllProduct,
+    for (let i = 0; i < state.selectedRowKeys.length; i++) {
+      console.log(`delete ${state.selectedRowKeys[i]}`)
+      console.log('------')
+      dataProduct.deleteAllProductAction(
+        Number(state.selectedRowKeys[i]),
+        toast
+      )
     }
-    dataProduct.deleteAllProductAction(
-      data,
-      EndTimeLoading,
-      toast,
-      handleCloseConfirm,
-      perPage.value,
-      Number(route.params.page)
-    )
     setTimeout(() => {
       state.loadingDel = false
       state.selectedRowKeys = []
-      // dataProduct.getListProductAction(
-      //   perPage.value,
-      //   Number(route.params.page),
-      //   EndTimeLoading
-      // )
+      dataProduct.getListProductAction(
+        perPage.value,
+        Number(route.params.page),
+        EndTimeLoading
+      )
       handleCloseConfirmAll()
-      console.log(`json mang ids`)
+      EndTimeLoading()
+
+      console.log('Del all')
     }, 1000)
   }
 </script>

@@ -1,4 +1,3 @@
-import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import {
   getAllProductsShopeeApi,
@@ -45,20 +44,19 @@ export const useProductShopee = defineStore('ProductsShopee', {
       page: number,
       EndTimeLoading: Function
     ) {
-      await getAllProductsShopeeApi(perPage, page)  
+      await getAllProductsShopeeApi(perPage, page)
         .then((payload: any) => {
-          console.log(payload);
+          console.log(payload)
           const res = payload?.data?.data
           console.log(res)
           console.log(res.message)
-          if (res.message === 'Invalid access_token.') {
-            getShopShopeeApi()
-              .then((payload2: any)=>{
-                console.log(payload2);
-                const resShopee = payload2?.data
-                window.location = resShopee.url
-            })
-          }
+          // if (res.message === 'Invalid access_token.') {
+          //   getShopShopeeApi().then((payload2: any) => {
+          //     console.log(payload2)
+          //     const resShopee = payload2?.data
+          //     window.location = resShopee.url
+          //   })
+          // }
           this.getListProduct(res)
           EndTimeLoading()
         })

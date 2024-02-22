@@ -138,29 +138,49 @@ export const useProduct = defineStore('Products', {
           EndTimeLoading()
         })
     },
+    
+    //del all cho api xóa all
+    // deleteAllProductAction(
+    //   ids: any,
+    //   EndTimeLoading: Function,
+    //   toast: any,
+    //   handleCloseConfirmAll: Function,
+    //   perPage: number,
+    //   page: number
+    // ) {
+    //   deleteAllProductApi(ids)
+    //     .then((res) => {
+    //       if (res.data.status === 'success') {
+    //         toast.success('Xóa thành công', 500)
+    //         this.getListProductAction(perPage, page, EndTimeLoading)
+    //       } else {
+    //         toast.error(res.data.messages, 500)
+    //       }
+    //       EndTimeLoading()
+    //       handleCloseConfirmAll()
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //       EndTimeLoading()
+    //       handleCloseConfirmAll()
+    //     })
+    // },
+
+    //delall ko dùng api deleteall
     deleteAllProductAction(
-      ids: any,
-      EndTimeLoading: Function,
+      id: number,
       toast: any,
-      handleCloseConfirmAll: Function,
-      perPage: number,
-      page: number
     ) {
-      deleteAllProductApi(ids)
+      deleteProductApi(id)
         .then((res) => {
           if (res.data.status === 'success') {
             toast.success('Xóa thành công', 500)
-            this.getListProductAction(perPage, page, EndTimeLoading)
           } else {
             toast.error(res.data.messages, 500)
           }
-          EndTimeLoading()
-          handleCloseConfirmAll()
         })
         .catch((err) => {
           console.log(err)
-          EndTimeLoading()
-          handleCloseConfirmAll()
         })
     },
     // async updateProductAction(
