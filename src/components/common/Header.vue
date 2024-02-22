@@ -19,7 +19,6 @@
         <ul
           class="flex xxs222 items-center justify-center max-sm:mr-[60px] mb-[0px]"
         >
-        
           <!--          
           <li
             class="hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1"
@@ -132,11 +131,11 @@
   import { ref } from 'vue'
   import AccountBox from '@/components/sidebar/AccountBox.vue'
   defineProps<{ isShowSearch: boolean }>()
-  const activeMenu = ref(false)
+  // const activeMenu = ref(false)
   const activeNotifyBox = ref(false)
   const activeAccountBox = ref(false)
-  const toggleActiveMenu = () => (activeMenu.value = !activeMenu.value)
-  const onClickOutsideMenuBox = () => (activeMenu.value = false)
+  // const toggleActiveMenu = () => (activeMenu.value = !activeMenu.value)
+  // const onClickOutsideMenuBox = () => (activeMenu.value = false)
   const toggleActiveNotifyBox = () =>
     (activeNotifyBox.value = !activeNotifyBox.value)
   const onClickOutsideNotifyBox = () => (activeNotifyBox.value = false)

@@ -32,7 +32,7 @@
       <a-table
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listProduct"
+        :data-source="listOrderTest"
         :pagination="false"
         v-model:current="currentPage"
         bordered
@@ -47,7 +47,7 @@
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
               >Xóa</a
-            >
+            >&nbsp;|&nbsp;<a @click="handleToDetail(record.id)">Xem chi tiết</a>
           </template>
         </template>
         <template #switch="{ text }">
@@ -83,27 +83,27 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { ref } from 'vue'
+  import { reactive, ref } from 'vue'
   import { useProduct } from '@/store/modules/store-setting/products'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
+  // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const router = useRouter()
   const route = useRoute()
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(dataWebsite)
-  function formatWeb(webcode: string) {
-    const webName = listWeb.value.find((item: any) => item.code == webcode)
-    return webName?.web_name
-  }
+  // const { listWeb } = storeToRefs(dataWebsite)
+  // function formatWeb(webcode: string) {
+  //   const webName = listWeb.value.find((item: any) => item.code == webcode)
+  //   return webName?.web_name
+  // }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
   const dataProduct = useProduct()
-  const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
+  const { totalPage, currentPage } = storeToRefs(dataProduct)
   const perPage = ref(10)
   dataProduct.getListProductAction(
     perPage.value,
@@ -118,6 +118,47 @@
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const listOrderTest = reactive([
+    {
+      id: 1,
+      order_date: '12/12/2023',
+      order_number: '3wdsad',
+      customer_code: '434esdfsf',
+      customer_name: 'test',
+      item_amount: '456',
+      tax_amount: '23',
+      sum_amount: '479',
+      source: 'hn',
+      status: '1',
+      descriptions: 'zsesz',
+    },
+    {
+      id: 2,
+      order_date: '12/12/2023',
+      order_number: '3wdsad23',
+      customer_code: '434esdfsxf',
+      customer_name: 'test1',
+      item_amount: '456',
+      tax_amount: '23',
+      sum_amount: '479',
+      source: 'hn',
+      status: '1',
+      descriptions: 'zsesz',
+    },
+    {
+      id: 3,
+      order_date: '12/12/2023',
+      order_number: '3wdsadd',
+      customer_code: '434esdfsfsda',
+      customer_name: 'test2',
+      item_amount: '456',
+      tax_amount: '23',
+      sum_amount: '479',
+      source: 'hn',
+      status: '1',
+      descriptions: 'zsesz',
+    },
+  ])
   const columns = [
     {
       title: 'STT',
@@ -125,12 +166,12 @@
       key: 'stt',
     },
     {
-      title: 'Ngày CT',
+      title: 'Ngày tạo',
       dataIndex: 'order_date',
       key: 'order_date',
     },
     {
-      title: 'Số CT',
+      title: 'Mã ĐH',
       dataIndex: 'order_number',
     },
     {
@@ -140,10 +181,6 @@
     {
       title: 'Tên KH',
       dataIndex: `customer_name`,
-    },
-    {
-      title: 'Diễn giải',
-      dataIndex: 'descriptions',
     },
     {
       title: 'Tiền hàng',
@@ -166,6 +203,10 @@
       dataIndex: 'status',
     },
     {
+      title: 'Diễn giải',
+      dataIndex: 'descriptions',
+    },
+    {
       title: 'Thao tác',
       dataIndex: 'id',
       key: 'id',
@@ -186,6 +227,9 @@
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
+  }
+  const handleToDetail = (id: number) => {
+    router.push(`/detail-order/${id}`)
   }
   const handleDelete = () => {
     // da.deleteWebAction(

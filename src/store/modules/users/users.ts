@@ -188,9 +188,8 @@ export const useUserSetting = defineStore('UserSetting', {
         .then((payload) => {
           if (payload.data.status === 'success') {
             this.getDetailUsers(payload?.data?.data)
-          } 
-          //console.log(payload);
-          
+          }
+          // console.log(payload);
         })
         .catch((err) => {
           this.LogoutErrorToken()

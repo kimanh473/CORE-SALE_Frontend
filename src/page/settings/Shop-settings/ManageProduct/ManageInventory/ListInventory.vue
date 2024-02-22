@@ -322,7 +322,7 @@
     selectedRowKeys.value = selectedRowKeys1
   }
 
-  //ka
+  // ka
   const handleCloseConfirmAll = () => {
     isOpenConfirmAll.value = false
   }
@@ -355,7 +355,7 @@
       console.log('Del all')
     }, 1000)
   }
-  //ka
+  // ka
 
   // const rowSelection = ref({
   //   checkStrictly: false,

@@ -707,9 +707,12 @@
               >
                 <label for="" class="form-group-label"
                   >{{ item1.frontend_label
-                  }}<span class="text-red-600">* </span> <span></span
+                  }}<span v-if="item1.is_required == '1'" class="text-red-600"
+                    >*
+                  </span>
+                  <span></span
                 ></label>
-                <div v-for="(map, mapIndex) in typeProduct">
+                <div v-for="(map, mapIndex) in typeProduct" :key="mapIndex">
                   <component
                     :is="`a-${map.type}`"
                     :options="item1.option_detail"
@@ -966,7 +969,10 @@
                         >{{ itemSpec1.frontend_label
                         }}<span class="text-red-600">* </span> <span></span
                       ></label>
-                      <div v-for="(map, mapIndex) in typeProduct">
+                      <div
+                        v-for="(map, mapIndex) in typeProduct"
+                        :key="mapIndex"
+                      >
                         <component
                           :is="`a-${map.type}`"
                           :options="itemSpec1.option_detail"
@@ -1170,10 +1176,8 @@
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
-  import dayjs, { Dayjs } from 'dayjs'
-  import { ref, reactive, watch } from 'vue'
-  import { useToast } from 'vue-toastification'
-  import { useGroupInventory } from '@/store/modules/inventory/group-inventory'
+  import { ref, reactive } from 'vue'
+  // import { useToast } from 'vue-toastification'
   import { useRoute, useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
@@ -1185,9 +1189,8 @@
   import { useCategory } from '@/store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { typeProduct } from '@/page/products/configProduct'
-  import type { SelectProps } from 'ant-design-vue'
-  import type { UploadProps } from 'ant-design-vue'
-  import IconAddImg from '@/assets/images/icon_add_image.png'
+  import type { SelectProps, UploadProps } from 'ant-design-vue'
+
   import { TreeSelect } from 'ant-design-vue'
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
   const SHOW_PARENT = TreeSelect.SHOW_ALL
@@ -1220,14 +1223,12 @@
   const dataProductUnit = useProductUnit()
   dataProductUnit.getListProductUnitAction()
   const { listProductUnit } = storeToRefs(dataProductUnit)
-  const img = ref(IconAddImg)
   const indexAttribute = ref()
   const specDefault = ref()
   dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
-  const dateFormat = 'DD/MM/YYYY'
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
@@ -1299,7 +1300,6 @@
       })
     )
   }
-  const url = ref()
   // const checkJPG = (file: any) => {
   //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
   //   if (!isJPG) {
@@ -1339,17 +1339,9 @@
       reader.onerror = (error) => reject(error)
     })
   }
-  const checked = ref<boolean>(false)
   const previewVisible = ref<boolean>(false)
   const previewImage = ref('')
-  const previewImageOld = ref('')
   const previewTitle = ref('')
-  const isConfig1 = ref(false)
-  const isConfig2 = ref(false)
-  const isConfig3 = ref(false)
-  const isPrice = ref(true)
-  const isConfig = ref(true)
-  const isDetail = ref(true)
   const isInfor = ref(true)
 
   const handleCancelImage = () => {
@@ -1360,7 +1352,7 @@
   const res_1 = ref([])
   const res_2 = ref([])
   const getDataTableConfig = (arr: any, arr2: any) => {
-    let result = []
+    const result = []
     let i = 0
     let k = 0
 
@@ -1368,8 +1360,8 @@
       while (k < 1) {
         for (let m = 0; m < arr[0].length; m++) {
           for (let j = 0; j < arr[1].length; j++) {
-            let a = arr[0][m]
-            let b = a + '_' + arr[1][j]
+            const a = arr[0][m]
+            const b = a + '_' + arr[1][j]
             result.push(b)
           }
         }
@@ -1385,8 +1377,8 @@
       while (k < 1) {
         for (let m = 0; m < arr2[0].length; m++) {
           for (let j = 0; j < arr2[1].length; j++) {
-            let a = arr2[0][m]
-            let b = a + '_' + arr2[1][j]
+            const a = arr2[0][m]
+            const b = a + '_' + arr2[1][j]
             result.push(b)
           }
         }
@@ -1400,7 +1392,6 @@
     }
   }
   const listGenerate = ref<any>([])
-  const listGenerateMap = ref<any>([])
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
   const handleChangeClassify = (valueClassify: any) => {
@@ -1434,7 +1425,7 @@
   }
   const dataOption = reactive([
     {
-      value: <SelectProps>[],
+      value: <SelectProps | null>[],
       title: '',
     },
   ])
@@ -1509,7 +1500,7 @@
     lastGenerateSku.value = res_2.value.map((item: any) => ({
       sku: item,
     }))
-    let arrTable = lastGenerateList.value.map((item: any, index: number) => ({
+    const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
       title: item.title,
       code: item.code,
       sku: lastGenerateSku.value[index].sku,
@@ -1544,22 +1535,18 @@
   const { listWeb } = storeToRefs(webCatalog)
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
-  const { listAttributeProduct } = storeToRefs(dataAttribute)
-  const showManageChoice = ref<Boolean>(false)
-  const dataGroupInventory = useGroupInventory()
   const isLoading = ref<boolean>(false)
-  const toast = useToast()
+  // const toast = useToast()
   const router = useRouter()
-  const EndTimeLoading = () => {
-    isLoading.value = false
-  }
+  // const EndTimeLoading = () => {
+  //   isLoading.value = false
+  // }
   const onFinish = (values: any) => {
     console.log('Success:', values)
   }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
   }
-  const dataUpdateProduct = ref<any>({})
   const updateProduct = () => {
     // const dataSource = {
     //   attribute_set_id: product.groupAttributeID,

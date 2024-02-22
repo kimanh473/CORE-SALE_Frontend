@@ -101,7 +101,7 @@ export const useInventory = defineStore('Inventory', {
           toast.error(errMess[0])
         })
     },
-    
+
     async updateInventoryAction(
       id: number,
       data: Object,
@@ -130,7 +130,7 @@ export const useInventory = defineStore('Inventory', {
           toast.error(errMess[0])
         })
     },
-    
+
     deleteInventoryAction(
       id: number,
       EndTimeLoading: Function,
@@ -155,10 +155,7 @@ export const useInventory = defineStore('Inventory', {
         })
     },
 
-    deleteAllInventoryAction(
-      id: number,
-      toast: any,
-    ) {
+    deleteAllInventoryAction(id: number, toast: any) {
       deleteInventoryApi(id)
         .then((res) => {
           if (res.data.status === 'success') {

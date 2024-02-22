@@ -25,7 +25,7 @@ const product = [
     },
     beforeEnter: requireAuth,
   },
-  //sp sàn shopee
+  // sp sàn shopee
   {
     path: '/products-list-shopee/page/:page',
     component: () => import('@/page/products/ListProductShopee.vue'),

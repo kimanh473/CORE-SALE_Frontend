@@ -40,7 +40,7 @@
                 height: 'fit-content',
                 position: 'fixed',
                 top: '72px',
-                background: 'white'
+                background: 'white',
               }"
               :showInkInFixed="true"
               class="min-w-[200px] min-h-full mr-[10px]"
@@ -78,7 +78,7 @@
                     <a-form-item
                       name="title"
                       :rules="[
-                        { required: true, message: 'Chưa nhập tiêu đề' }
+                        { required: true, message: 'Chưa nhập tiêu đề' },
                       ]"
                     >
                       <a-input
@@ -103,7 +103,7 @@
                       :options="listWeb"
                       :fieldNames="{
                         label: 'web_name',
-                        value: 'code'
+                        value: 'code',
                       }"
                       mode="multiple"
                     >
@@ -119,7 +119,7 @@
                   <a-form-item
                     name="category"
                     :rules="[
-                      { required: true, message: 'Chưa chọn ngành hàng' }
+                      { required: true, message: 'Chưa chọn ngành hàng' },
                     ]"
                   >
                     <a-tree-select
@@ -131,7 +131,7 @@
                       :fieldNames="{
                         children: 'children',
                         label: 'title',
-                        value: 'code'
+                        value: 'code',
                       }"
                       tree-node-filter-prop="title"
                       :show-checked-strategy="SHOW_PARENT"
@@ -331,7 +331,7 @@
                   >{{ item1.frontend_label
                   }}<span class="text-red-600">* </span> <span></span
                 ></label>
-                <div v-for="(map, mapIndex) in typeProduct">
+                <div v-for="(map, mapIndex) in typeProduct" :key="mapIndex">
                   <component
                     :is="`a-${map.type}`"
                     :options="item1.option_detail"
@@ -572,7 +572,10 @@
                         >{{ itemSpec1.frontend_label
                         }}<span class="text-red-600">* </span> <span></span
                       ></label>
-                      <div v-for="(map, mapIndex) in typeProduct">
+                      <div
+                        v-for="(map, mapIndex) in typeProduct"
+                        :key="mapIndex"
+                      >
                         <component
                           :is="`a-${map.type}`"
                           :options="itemSpec1.option_detail"
@@ -759,9 +762,8 @@
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
-  import { ref, reactive, watch } from 'vue'
+  import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useGroupInventory } from '@/store/modules/inventory/group-inventory'
   import { useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
@@ -773,11 +775,18 @@
   import { useCategory } from '@/store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { typeProduct } from '@/page/products/configProduct'
-  import dayjs, { Dayjs } from 'dayjs'
-  import type { SelectProps } from 'ant-design-vue'
-  import type { UploadProps } from 'ant-design-vue'
-  import IconAddImg from '@/assets/images/icon_add_image.png'
+  import dayjs from 'dayjs'
+  import type { SelectProps, UploadProps } from 'ant-design-vue'
+
   import { TreeSelect } from 'ant-design-vue'
+
+  const dataOption = reactive([
+    {
+      value: <SelectProps>[],
+      title: '',
+    },
+  ])
+
   const SHOW_PARENT = TreeSelect.SHOW_ALL
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
@@ -792,76 +801,72 @@
   const dataTax = useListTax()
   dataTax.getListTaxAction()
   const { listTax } = storeToRefs(dataTax)
-  const img = ref(IconAddImg)
   const indexAttribute = ref()
   const specDefault = ref()
   dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
-  const filterOption = (input: string, option: any) => {
-    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-  }
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
       value: '0',
-      label: 'g'
+      label: 'g',
     },
     {
       value: '1',
-      label: 'kg'
-    }
+      label: 'kg',
+    },
   ])
   const statusProduct = ref<SelectProps['options']>([
     {
       value: '0',
-      label: 'Chưa kích hoạt'
+      label: 'Chưa kích hoạt',
     },
     {
       value: '1',
-      label: 'Đang kích hoạt'
-    }
+      label: 'Đang kích hoạt',
+    },
   ])
   const columns = [
     {
       title: 'Phiên bản sản phẩm',
       key: 'group_1',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'Tên',
       key: 'name',
       align: 'center',
-      width: '12%'
+      width: '12%',
     },
     {
       title: 'SKU',
       key: 'sku',
       align: 'center',
-      width: '12%'
+      width: '12%',
     },
     {
       title: 'Barcode',
       key: 'bar_code',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'Khối lượng',
       key: 'weight',
       align: 'center',
-      width: '10%'
+      width: '10%',
     },
     {
       title: 'Tồn kho tối thiểu',
       key: 'minimum',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'Tồn kho tối đa',
       key: 'maximum',
-      align: 'center'
-    }
+      align: 'center',
+    },
   ]
 
   const dataCreateProduct = ref<any>({})
@@ -869,11 +874,10 @@
     indexAttribute.value = options.json_group_attribute_detail.map(
       (item: any) => ({
         title: item.title,
-        attribute: item.attribute_detail
+        attribute: item.attribute_detail,
       })
     )
   }
-  const url = ref()
   // const checkJPG = (file: any) => {
   //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
   //   if (!isJPG) {
@@ -914,16 +918,9 @@
       reader.onerror = (error) => reject(error)
     })
   }
-  const checked = ref<boolean>(false)
   const previewVisible = ref<boolean>(false)
   const previewImage = ref('')
   const previewTitle = ref('')
-  const isConfig1 = ref(false)
-  const isConfig2 = ref(false)
-  const isConfig3 = ref(false)
-  const isPrice = ref(true)
-  const isConfig = ref(true)
-  const isDetail = ref(true)
   const isInfor = ref(true)
   const isDefault = ref(true)
   const fileList = ref<UploadProps['fileList']>([])
@@ -936,7 +933,7 @@
   const res_1 = ref([])
   const res_2 = ref([])
   const getDataTableConfig = (arr: any, arr2: any) => {
-    let result = []
+    const result = []
     let i = 0
     let k = 0
 
@@ -944,8 +941,8 @@
       while (k < 1) {
         for (let m = 0; m < arr[0].length; m++) {
           for (let j = 0; j < arr[1].length; j++) {
-            let a = arr[0][m]
-            let b = a + '_' + arr[1][j]
+            const a = arr[0][m]
+            const b = a + '_' + arr[1][j]
             result.push(b)
           }
         }
@@ -961,8 +958,8 @@
       while (k < 1) {
         for (let m = 0; m < arr2[0].length; m++) {
           for (let j = 0; j < arr2[1].length; j++) {
-            let a = arr2[0][m]
-            let b = a + '_' + arr2[1][j]
+            const a = arr2[0][m]
+            const b = a + '_' + arr2[1][j]
             result.push(b)
           }
         }
@@ -976,7 +973,6 @@
     }
   }
   const listGenerate = ref<any>([])
-  const listGenerateMap = ref<any>([])
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
   const handleChangeClassify = (valueClassify: any) => {
@@ -1008,17 +1004,10 @@
     previewTitle.value =
       file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
   }
-
-  const dataOption = reactive([
-    {
-      value: <SelectProps>[],
-      title: ''
-    }
-  ])
   const addOptions = () => {
     const data = {
       value: <SelectProps>[],
-      title: ''
+      title: '',
     }
     dataOption.push(data)
   }
@@ -1041,20 +1030,20 @@
     unitCode: null,
     weight: '',
     weightUnit: '1',
-    status: '0'
+    status: '0',
   })
   const dataUnit = reactive([
     {
       unit_standard: '',
       unit_exchange: '',
-      rate: ''
-    }
+      rate: '',
+    },
   ])
   const addUnits = () => {
     const data = {
       unit_standard: '',
       unit_exchange: '',
-      rate: ''
+      rate: '',
     }
     dataUnit.push(data)
   }
@@ -1066,7 +1055,7 @@
     dataMapUnit.value = dataUnit.map((item: any) => ({
       unit_standard: value,
       unit_exchange: item.unit_exchange,
-      rate: item.rate
+      rate: item.rate,
     }))
   }
   const lastGenerateList = ref<any>([])
@@ -1087,15 +1076,15 @@
     await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
       title: item,
-      code: index
+      code: index,
     }))
     lastGenerateSku.value = res_2.value.map((item: any) => ({
-      sku: item
+      sku: item,
     }))
-    let arrTable = lastGenerateList.value.map((item: any, index: number) => ({
+    const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
       title: item.title,
       code: item.code,
-      sku: lastGenerateSku.value[index].sku
+      sku: lastGenerateSku.value[index].sku,
     }))
 
     dataTableConfig.value = arrTable.map((item: any, index: number) => ({
@@ -1108,7 +1097,7 @@
       minimum: '',
       maximum: '',
       image: <UploadProps['fileList']>[],
-      image1: <any>[]
+      image1: <any>[],
     }))
   }
   const handleImageTable = async (event: any, index: number) => {
@@ -1128,9 +1117,6 @@
   const { listWeb } = storeToRefs(webCatalog)
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
-  const { listAttributeProduct } = storeToRefs(dataAttribute)
-  const showManageChoice = ref<Boolean>(false)
-  const dataGroupInventory = useGroupInventory()
   const isLoading = ref<boolean>(false)
   const toast = useToast()
   const router = useRouter()
@@ -1141,7 +1127,7 @@
   // const createProduct = () => {}
   const onFinish = (values: any) => {
     console.log('Success:', values)
-    let dataSource = {
+    const dataSource = {
       title: product.title,
       attribute_set_id: product.groupAttributeID,
       website: product.website,
@@ -1166,13 +1152,13 @@
         weight_unit: item.weight_unit,
         minimum: item.minimum,
         maximum: item.maximum,
-        image: item.image1
-      }))
+        image: item.image1,
+      })),
     }
     // console.log(dataOption)
     // console.log(dataUnit)
     // console.log(dataTableConfig.value)
-    let data = Object.assign({}, dataCreateProduct.value, dataSource)
+    const data = Object.assign({}, dataCreateProduct.value, dataSource)
     dataProduct.createProductAction(data, toast, router, EndTimeLoading)
   }
   const onFinishFailed = (errorInfo: any) => {
