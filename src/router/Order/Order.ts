@@ -17,5 +17,13 @@ const order = [
     },
     beforeEnter: requireAuth,
   },
+  {
+    path: '/detail-order/:id',
+    component: () => import('@/page/orders/DetailOrder.vue'),
+    meta: {
+      layout: 'base-layout',
+    },
+    beforeEnter: requireAuth,
+  },
 ]
 export default order

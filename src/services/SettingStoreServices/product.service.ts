@@ -64,5 +64,5 @@ export {
   getAllProductsShopeeNoPagingApi,
   getAllProductsShopeeApi,
   getShopShopeeApi,
-  getBackToListShopeeProductApi,
+  getBackToListShopeeProductApi
 }

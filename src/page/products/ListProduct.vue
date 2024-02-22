@@ -273,9 +273,9 @@
   const CreateProduct = () => {
     router.push('/create-product')
   }
-  // link đến trang sp sàn shopee
-  const ShowProductShopee = (page: number) => {
-    router.push(`/products-list-shopee/page/${page}`)
+  //link đến trang sp sàn shopee
+  const ShowProductShopee = () => {
+    router.push('/products-list-shopee/page/:page')
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
