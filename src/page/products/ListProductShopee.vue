@@ -158,10 +158,12 @@
     isLoading.value = false
   }
   const dataProduct = useProductShopee()
+  const time_range_field = 'create_time'
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
   const perPage = ref(10)
   // let listProductShopee = []
   dataProduct.getListProductAction(
+    time_range_field,
     perPage.value,
     Number(route.params.page),
     EndTimeLoading
@@ -178,7 +180,13 @@
   const changePage = (pageNumber: number) => {
     isLoading.value = true
     router.push(`/products-list-shopee/page/${pageNumber}`)
-    dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
+    dataProduct.getListProductAction(
+      time_range_field,
+      perPage.value,
+      pageNumber,
+      EndTimeLoading
+    )
+    // dataProduct.getListProductAction(perPage, page, EndTimeLoading)
   }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
@@ -326,6 +334,7 @@
       state.loadingDel = false
       state.selectedRowKeys = []
       dataProduct.getListProductAction(
+        time_range_field,
         perPage.value,
         Number(route.params.page),
         EndTimeLoading

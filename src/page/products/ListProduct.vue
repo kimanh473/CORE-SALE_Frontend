@@ -274,8 +274,8 @@
     router.push('/create-product')
   }
   //link đến trang sp sàn shopee
-  const ShowProductShopee = () => {
-    router.push('/products-list-shopee/page/:page')
+  const ShowProductShopee = (page: number) => {
+    router.push(`/products-list-shopee/page/${page}`)
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
@@ -324,19 +324,19 @@
   //   const data = {
   //     ids: deleteAllProduct.value,
   //   }
-  //   console.log('gửi cái này', data)
+  //   console.log('data', data)
+  //   console.log('gửi cái này', JSON.stringify(data))
   //   dataProduct.deleteAllProductAction(
-  //     data,
+  //     JSON.stringify(data),
   //     EndTimeLoading,
   //     toast,
-  //     handleCloseConfirm,
+  //     handleCloseConfirmAll,
   //     perPage.value,
   //     Number(route.params.page)
   //   )
   //   setTimeout(() => {
   //     state.loadingDel = false
   //     state.selectedRowKeys = []
-  //     handleCloseConfirmAll()
   //   }, 1000)
   // }
 

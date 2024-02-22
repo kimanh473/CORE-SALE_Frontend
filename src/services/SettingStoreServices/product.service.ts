@@ -17,16 +17,16 @@ const getDetailProductApi = (id: number) => {
   return httpClient.get(`/catalog/product/show/${id}`)
 }
 // Sửa sản phẩm
-const updateProductApi = (id: number, data: object) => {
-  return httpClient.post(`/catalog/product/update/${id}`, data)
+const updateProductApi = (id: number, data: Object) => {
+  return httpClient.post(`/catalog/product/update/${id}`,data)
 }
 // Xóa sản phẩm
 const deleteProductApi = (id: number) => {
   return httpClient.post(`/catalog/product/delete/${id}`)
 }
 // Xóa nhiều sản phẩm
-const deleteAllProductApi = (ids: any) => {
-  return httpClient.post(`/catalog/product/deleteall`, ids)
+const deleteAllProductApi = (data: any) => {
+  return httpClient.post(`/catalog/product/deleteall`, data)
 }
 // lọc sản phẩm theo ngành hàng,website
 const filterProductApi = (data: object) => {
@@ -35,15 +35,17 @@ const filterProductApi = (data: object) => {
 
 // Danh sách sản phẩm sàn Shopee
 const getAllProductsShopeeNoPagingApi = () => {
+  
   return httpClient.get(`/shopee/product/get_item_list`)
 }
-const getAllProductsShopeeApi = (pageSize: number, page: number) => {
-  page = (page - 1) * pageSize
-  return httpClient.get(
-    `/shopee/product/get_item_list?offset=${page}&page_size=${pageSize}&item_status=NORMAL`
+const getAllProductShopeeToDBApi = (time_range_field : any) => {
+  return httpClient.get(`/shopee/order/get_order_list_sp`,time_range_field)
+}
+const getAllProductsShopeeApi = (perPage: number, page: number) => {
+  return httpClient.post(
+    `/shopee/order/get_order_list_db?per_page=${perPage}&page=${page}`
   )
 }
-
 // Đăng nhập vào shopee
 const getShopShopeeApi = () => {
   return httpClient.post(`shopee/auth-shop`)
@@ -64,5 +66,6 @@ export {
   getAllProductsShopeeNoPagingApi,
   getAllProductsShopeeApi,
   getShopShopeeApi,
-  getBackToListShopeeProductApi
+  getBackToListShopeeProductApi,
+  getAllProductShopeeToDBApi
 }

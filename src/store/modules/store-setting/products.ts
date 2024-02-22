@@ -7,7 +7,7 @@ import {
   filterProductApi,
   deleteProductApi,
   deleteAllProductApi,
-  // updateProductApi,
+  updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
 import { update } from 'lodash-es'
 
@@ -138,29 +138,78 @@ export const useProduct = defineStore('Products', {
           EndTimeLoading()
         })
     },
-    async updateProductAction(
-      id:number,
-      data: object,
-      toast: any,
-    ) {
+
+    //delete all ko dùng api delete all
+    deleteAllProductAction(
+      id: number,
+      toast: any
+    ){
       deleteProductApi(id)
         .then((res) => {
-        if (res.data.status === 'failed') {
-          toast.error(res.data.messages)
-          EndTimeLoading()
-        } else {
-          toast.success('Cập nhật thành công')
-          router.push('/products-list/page/1')
-          EndTimeLoading()
-        }
-      })
-      .catch((err) => {
-        this.messageError = err.response?.data?.messages
-        console.log(err)
-        const arrMess = err.response.data.messages
-        const errMess = arrMess[Object.keys(arrMess)[0]]
-        toast.error(errMess[0])
-      })
-    }
+          if (res.data.status === 'success') {
+            toast.success('Xóa thành công', 500)
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+          })
+        .catch((err) => {
+          console.log(err)
+        })
+      },
+
+    //delete all dùng api delete all
+    // deleteAllProductAction(
+    //   data: any,
+    //   EndTimeLoading: Function,
+    //   toast: any,
+    //   handleCloseConfirmAll: Function,
+    //   perPage: number,
+    //   page: number
+    // ) {
+    //   deleteAllProductApi(data)
+    //     .then((res) => {
+    //       if (res.data.status === 'success') {
+    //         toast.success('Xóa thành công', 500)
+    //         this.getListProductAction(perPage, page, EndTimeLoading)
+    //       } else {
+    //         toast.error(res.data.messages, 500)
+    //       }
+    //       EndTimeLoading()
+    //       handleCloseConfirmAll()
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //       handleCloseConfirmAll()
+    //       EndTimeLoading()
+    //     })
+    // },
+
+    //sửa sản phẩm
+    async updateProductAction(
+      id: number,
+      data: Object,
+      toast: any,
+      router: any,
+      EndTimeLoading: Function
+    ) {
+      await updateProductApi(id, data)
+        .then((res) => {
+          if (res.data.status === 'failed') {
+            toast.error(res.data.messages)
+            EndTimeLoading()
+          } else {
+            toast.success('Cập nhật thành công')
+            router.push('/products-list/page/1')
+            EndTimeLoading()
+          }
+        })
+        .catch((err) => {
+          this.messageError = err.response?.data?.messages
+          console.log(err)
+          const arrMess = err.response.data.messages
+          const errMess = arrMess[Object.keys(arrMess)[0]]
+          toast.error(errMess[0])
+        })
+      }
   },
 })

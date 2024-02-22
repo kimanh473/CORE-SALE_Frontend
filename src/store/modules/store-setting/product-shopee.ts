@@ -1,3 +1,4 @@
+import { dataDetailNew } from './store.type';
 import { defineStore } from 'pinia'
 import {
   getAllProductsShopeeApi,
@@ -6,6 +7,7 @@ import {
   filterProductApi,
   deleteProductApi,
   getShopShopeeApi,
+  getAllProductShopeeToDBApi
   // getBackToListShopeeProductApi
   // updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
@@ -40,16 +42,37 @@ export const useProductShopee = defineStore('ProductsShopee', {
   },
   actions: {
     async getListProductAction(
+      time_range_field: any,
       perPage: number,
       page: number,
       EndTimeLoading: Function
+      
     ) {
-      await getAllProductsShopeeApi(perPage, page)
-        .then((payload: any) => {
-          console.log(payload)
-          const res = payload?.data?.data
-          console.log(res)
-          console.log(res.message)
+      await getAllProductShopeeToDBApi(time_range_field)
+        .then((payload1: any) => {
+          const res = payload1?.data
+          console.log(res);
+          
+          if (res.status === 'success'){
+            getAllProductsShopeeApi(perPage,page)
+              .then((payload2:any) => {
+                const resShopee = payload2?.data?.data
+                this.getListProduct(resShopee)
+              }) 
+          }
+          EndTimeLoading()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+      
+      // await getAllProductsShopeeApi(perPage, page)
+      //   .then((payload: any) => {
+      //     console.log(payload)
+      //     const res = payload?.data?.data
+      //     console.log(res)
+      //     console.log(res.message)
           // if (res.message === 'Invalid access_token.') {
           //   getShopShopeeApi().then((payload2: any) => {
           //     console.log(payload2)
@@ -57,13 +80,13 @@ export const useProductShopee = defineStore('ProductsShopee', {
           //     window.location = resShopee.url
           //   })
           // }
-          this.getListProduct(res)
-          EndTimeLoading()
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
+    //       this.getListProduct(res)
+    //       EndTimeLoading()
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
     async getListProductNoPagingAction() {
       await getAllProductsShopeeNoPagingApi()
         .then((payload: any) => {

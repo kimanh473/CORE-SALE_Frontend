@@ -1177,7 +1177,7 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
-  // import { useToast } from 'vue-toastification'
+  import { useToast } from 'vue-toastification'
   import { useRoute, useRouter } from 'vue-router'
   import { PlusOutlined } from '@ant-design/icons-vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
@@ -1536,11 +1536,11 @@
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const isLoading = ref<boolean>(false)
-  // const toast = useToast()
+  const toast = useToast()
   const router = useRouter()
-  // const EndTimeLoading = () => {
-  //   isLoading.value = false
-  // }
+  const EndTimeLoading = () => {
+    isLoading.value = false
+  }
   const onFinish = (values: any) => {
     console.log('Success:', values)
   }
@@ -1548,33 +1548,33 @@
     console.log('Failed:', errorInfo)
   }
   const updateProduct = () => {
-    // const dataSource = {
-    //   attribute_set_id: product.groupAttributeID,
-    //   list_unit_change: dataMapUnit.value,
-    //   list_classify: dataOption,
-    //   list_product_config: dataTableConfig.value.map((item: any) => ({
-    //     name: item.name,
-    //     sku: item.sku,
-    //     bar_code: item.barcode,
-    //     weight: item.weight,
-    //     weight_unit: item.weight_unit,
-    //     minimum: item.minimum,
-    //     maximum: item.maximum,
-    //     image: item.image1,
-    //   })),
-    //   unit_code: product.unitCode,
-    // }
-    //   console.log(dataOption)
-    //   console.log(dataUnit)
-    //   console.log(dataTableConfig.value)
-    // let data = Object.assign({}, dataUpdateProduct.value, dataSource)
-    // dataProduct.updateProductAction(
-    //   Number(detailProduct.value.id),
-    //   data,
-    //   toast,
-    //   router,
-    //   EndTimeLoading
-    // )
+    const dataSource = {
+      attribute_set_id: product.groupAttributeID,
+      list_unit_change: dataMapUnit.value,
+      list_classify: dataOption,
+      list_product_config: dataTableConfig.value.map((item: any) => ({
+        name: item.name,
+        sku: item.sku,
+        bar_code: item.barcode,
+        weight: item.weight,
+        weight_unit: item.weight_unit,
+        minimum: item.minimum,
+        maximum: item.maximum,
+        image: item.image1,
+      })),
+      unit_code: product.unitCode,
+    }
+    console.log(dataOption)
+    console.log(dataUnit)
+    console.log(dataTableConfig.value)
+    let data = Object.assign({}, detailProduct.value, dataSource)
+    dataProduct.updateProductAction(
+      Number(detailProduct.value.id),
+      data,
+      toast,
+      router,
+      EndTimeLoading
+    )
   }
 </script>
 
