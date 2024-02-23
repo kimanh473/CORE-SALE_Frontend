@@ -29,10 +29,11 @@
           <p class="text-[14px] mt-1 px-1">Tạo mới đơn hàng</p>
         </div>
       </div>
+
       <a-table
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listOrderTest"
+        :data-source="listOrder"
         :pagination="false"
         v-model:current="currentPage"
         bordered
@@ -83,10 +84,10 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { reactive, ref } from 'vue'
-  import { useProduct } from '@/store/modules/store-setting/products'
+  import { ref } from 'vue'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useOrder } from '@/store/modules/orders/orders'
   import { storeToRefs } from 'pinia'
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -102,10 +103,10 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const dataProduct = useProduct()
-  const { totalPage, currentPage } = storeToRefs(dataProduct)
+  const dataOrder = useOrder()
+  const { totalPage, currentPage } = storeToRefs(dataOrder)
   const perPage = ref(10)
-  dataProduct.getListProductAction(
+  dataOrder.getAllOrderPaginateAction(
     perPage.value,
     Number(route.params.page),
     EndTimeLoading
@@ -113,52 +114,18 @@
   const changePage = (pageNumber: number) => {
     isLoading.value = true
     router.push(`/orders-list/page/${pageNumber}`)
-    dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
+    dataOrder.getAllOrderPaginateAction(
+      perPage.value,
+      pageNumber,
+      EndTimeLoading
+    )
   }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
-  const listOrderTest = reactive([
-    {
-      id: 1,
-      order_date: '12/12/2023',
-      order_number: '3wdsad',
-      customer_code: '434esdfsf',
-      customer_name: 'test',
-      item_amount: '456',
-      tax_amount: '23',
-      sum_amount: '479',
-      source: 'hn',
-      status: '1',
-      descriptions: 'zsesz',
-    },
-    {
-      id: 2,
-      order_date: '12/12/2023',
-      order_number: '3wdsad23',
-      customer_code: '434esdfsxf',
-      customer_name: 'test1',
-      item_amount: '456',
-      tax_amount: '23',
-      sum_amount: '479',
-      source: 'hn',
-      status: '1',
-      descriptions: 'zsesz',
-    },
-    {
-      id: 3,
-      order_date: '12/12/2023',
-      order_number: '3wdsadd',
-      customer_code: '434esdfsfsda',
-      customer_name: 'test2',
-      item_amount: '456',
-      tax_amount: '23',
-      sum_amount: '479',
-      source: 'hn',
-      status: '1',
-      descriptions: 'zsesz',
-    },
-  ])
+
+  const { listOrder } = storeToRefs(dataOrder)
+
   const columns = [
     {
       title: 'STT',
@@ -167,32 +134,32 @@
     },
     {
       title: 'Ngày tạo',
-      dataIndex: 'order_date',
-      key: 'order_date',
+      dataIndex: 'create_time_order',
+      key: 'create_time_order',
     },
     {
       title: 'Mã ĐH',
-      dataIndex: 'order_number',
+      dataIndex: 'order_sn',
     },
     {
       title: 'Mã KH',
-      dataIndex: 'customer_code',
+      dataIndex: 'buyer_user_id',
     },
     {
       title: 'Tên KH',
-      dataIndex: `customer_name`,
+      dataIndex: `buyer_username`,
     },
     {
       title: 'Tiền hàng',
-      dataIndex: 'item_amount',
+      dataIndex: 'total_amount',
     },
     {
       title: 'Tiền thuế',
-      dataIndex: 'tax_amount',
+      dataIndex: 'tax_money',
     },
     {
       title: 'Tổng tiền',
-      dataIndex: 'sum_amount',
+      dataIndex: 'total_amount',
     },
     {
       title: 'Nguồn gốc',
@@ -200,11 +167,11 @@
     },
     {
       title: 'Trạng thái',
-      dataIndex: 'status',
+      dataIndex: 'order_status',
     },
     {
       title: 'Diễn giải',
-      dataIndex: 'descriptions',
+      dataIndex: 'note',
     },
     {
       title: 'Thao tác',

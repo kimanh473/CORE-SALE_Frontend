@@ -1,6 +1,9 @@
 import httpClient from '@/services/services'
-const getAllOrderApi = () => {
-  return httpClient.get(`/user/order/list-order`)
+const getAllOrderApi = (perPage: number, page: number) => {
+  // return httpClient.get(`/user/order/list-order`)
+  return httpClient.get(
+    `shopee/order/get_order_list_db?per_page=${perPage}&page=${page}`
+  )
 }
 
 // const createGroupCustomerApi = (data: object) => {
@@ -8,7 +11,8 @@ const getAllOrderApi = () => {
 // }
 
 const getDetailOrderApi = (id: number) => {
-  return httpClient.get(`/order/show/${id}`)
+  // return httpClient.get(`/order/show/${id}`)
+  return httpClient.get(`shopee/order/get_order_detail_db/${id}`)
 }
 
 // const updateGroupCustomerApi = (id: number, data: object) => {

@@ -73,7 +73,9 @@
               </a-col>
               <a-col :span="6">
                 <div>
-                  <a id="code" value="Test" class="pl-6 pr-4">: Test</a>
+                  <a id="code" value="Test" class="pl-6 pr-4"
+                    >: {{ detailOrder.order_sn }}</a
+                  >
                   <i class="far fa-clone cursor-pointer"></i>
                 </div>
                 <div><a class="pl-6 pr-4">: Test</a></div>
@@ -183,6 +185,14 @@
           </div>
           <div class="w-full bg-white p-4">
             <div class="text-divider">Lịch sử đơn hàng</div>
+            <a-steps direction="vertical" :current="1">
+              <a-step title="Chuẩn bị hàng" description="15:05 11/9/2023"
+                ><template #icon> <i class="fal fa-gift"></i> </template
+              ></a-step>
+
+              <a-step title="Đơn hàng mới" description="15:05 11/9/2023" />
+              <a-step title="Đang giao" description="15:05 11/9/2023" />
+            </a-steps>
           </div>
         </div>
       </div>
@@ -196,23 +206,25 @@
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
-  //   import { useRoute, useRouter } from 'vue-router'
+  import { useRoute } from 'vue-router'
   import { ref, reactive } from 'vue'
-  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useOrder } from '@/store/modules/orders/orders'
+  import { storeToRefs } from 'pinia'
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
-
+  const EndTimeLoading = () => {
+    isLoading.value = false
+  }
   //   const router = useRouter()
-  //   const route = useRoute()
-  const dataWebsite = useWebCatalog()
-  dataWebsite.getAllWebCatalogAction()
+  const route = useRoute()
+  const dataOrder = useOrder()
+  dataOrder.getDetailOrderAction(Number(route.params.id), EndTimeLoading)
+  const { detailOrder } = storeToRefs(dataOrder)
   // const { listWeb } = storeToRefs(dataWebsite)
   // function formatWeb(webcode: string) {
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
   //   return webName?.web_name
   // }
-  //   const EndTimeLoading = () => {
-  //     isLoading.value = false
-  //   }
+
   const listOrderTest = reactive([
     {
       id: 1,

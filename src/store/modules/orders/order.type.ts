@@ -22,3 +22,15 @@ export interface Order {
   created_at: string
   updated_at: string
 }
+export interface OrderShopee {
+  id: number
+  code: string
+  order_sn: string
+  order_status: string
+  buyer_username: string
+  buyer_user_id: string
+  create_time_order: string
+  total_amount: string
+  note: string
+  tax_money: string
+}
