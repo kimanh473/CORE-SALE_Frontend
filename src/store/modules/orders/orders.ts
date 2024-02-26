@@ -3,11 +3,11 @@ import {
   getAllOrderApi,
   getDetailOrderApi,
 } from '@/services/OrderServices/Order.services'
-import { Order } from '@/store/modules/orders/order.type'
+import { Order, OrderDetail } from '@/store/modules/orders/order.type'
 export const useOrder = defineStore('customerGroup', {
   state: () => ({
     listOrder: [] as Order[],
-    detailOrder: {} as Order,
+    detailOrder: {} as OrderDetail,
     totalPage: <number>null,
     currentPage: <number>null,
   }),

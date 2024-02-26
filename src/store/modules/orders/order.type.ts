@@ -34,3 +34,66 @@ export interface OrderShopee {
   note: string
   tax_money: string
 }
+export interface ProductOrderDetail {
+  item_id: number
+  item_name: string
+  item_sku: string
+  model_id: number
+  model_name: string
+  model_sku: string
+  model_quantity_purchased: number
+  model_original_price: number
+  model_discounted_price: number
+  wholesale: boolean
+  weight: Float64Array
+  add_on_deal: boolean
+  main_item: boolean
+  add_on_deal_id: number
+  promotion_type: string
+  promotion_id: number
+  order_item_id: number
+  promotion_group_id: number
+  image_info: {
+    image_url: string
+  }
+  product_location_id: Array<String>
+  is_prescription_item: boolean
+  is_b2c_owned_item: boolean
+}
+export interface ItemPackage {
+  item_id: number
+  model_id: number
+  model_quantity: number
+  order_item_id: number
+  promotion_group_id: number
+  product_location_id: string
+}
+export interface PackageOrderDetail {
+  package_number: string
+  group_shipment_id: number
+  logistics_status: string
+  shipping_carrier: string
+  item_list: Array<ItemPackage>
+  parcel_chargeable_weight_gram: number
+}
+export interface OrderDetail {
+  id: string
+  order_status: string
+  shop_id: string
+  order_sn: string
+  total_amount: string
+  order_chargeable_weight_gram: string
+  payment_method: string
+  currency: string
+  days_to_ship: string
+  estimated_shipping_fee: string
+  note: string
+  noteupdate: string
+  paytime: string
+  create_time_order: string
+  buyer_user_id: string
+  buyer_username: string
+  region: string
+  product_detail: Array<ProductOrderDetail>
+  packeage_list: Array<PackageOrderDetail>
+}
