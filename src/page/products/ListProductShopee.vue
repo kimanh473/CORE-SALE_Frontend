@@ -9,7 +9,9 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Danh sách sản phẩm sàn Shopee</p>
+              <p class="longText pl-5 mb-0 font-bold">
+                Danh sách sản phẩm sàn Shopee
+              </p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -18,10 +20,12 @@
     </template>
     <template v-slot:content class="relative">
       <div
-        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex px-3.5 justify-between"
+        id="task-bar-list"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div>
           <a-button
+            class="button-push-up"
             type="primary"
             :disabled="!hasSelected"
             :loading="state.loading"
@@ -29,28 +33,19 @@
           >
             Đẩy lên sàn
           </a-button>
-          <span
-            style="
-              margin-left: 8px;
-              margin-left: 8px;
-              margin-top: 4px;
-              color: white;
-            "
-          >
+          <span class="ml-2 mt-1 text-white">
             <template v-if="hasSelected">
               {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
             </template>
           </span>
         </div>
-        <div>
-          <a-button
-            type="primary"
-            :disabled="!hasSelectedDelete"
-            :loading="state.loadingDel"
-            @click="handleOpenDeleteAllProduct"
-          >
-            Xóa tất cả
-          </a-button>
+        <div
+          class="button-delete relative group rounded-md px-2"
+          title="Xóa tất cả"
+          @click="handleOpenDeleteAllProduct"
+          v-show="showDeleteAll"
+        >
+          <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
         </div>
       </div>
       <a-table
@@ -85,10 +80,10 @@
             </div>
           </template>
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
-              @click="handleOpenDelete(record)"
-              >Xóa</a
-            >
+            <a @click="handlePushProduct(record.id)">Ẩn</a>&nbsp;|&nbsp;<a
+              @click="navigateUpdate(record.id)"
+              >Sửa</a
+            >&nbsp;|&nbsp;<a @click="handleOpenDelete(record)">Xóa</a>
           </template>
         </template>
         <template #switch="{ text }">
@@ -98,7 +93,7 @@
     </template>
 
     <template v-slot:footer
-      ><div class="text-left px-[20px] py-[10px]">
+      ><div class="text-left px-[20px] py-[10px] flex justify-between">
         <a-pagination
           v-model:current="currentPage"
           v-model:pageSize="perPage"
@@ -106,6 +101,12 @@
           :total="totalPage"
           @change="changePage"
         />
+        <button
+          class="back-top bg-slate-500 focus:outline-none"
+          @click="backTop"
+        >
+          <p class="text-white text-2xl mb-1.5">↑</p>
+        </button>
       </div>
     </template>
   </base-layout>
@@ -131,13 +132,16 @@
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
-  import { useProduct } from '@/store/modules/store-setting/products'
+  // import { useProduct } from '@/store/modules/store-setting/products'
   import { useToast } from 'vue-toastification'
   // import { UrlImg } from '@/services/services'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
+  // import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
+  import { useProduct } from '@/store/modules/store-setting/products'
+
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const toast = useToast()
@@ -154,9 +158,16 @@
     isLoading.value = false
   }
   const dataProduct = useProduct()
+  // const time_range_field = 'create_time'
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
   const perPage = ref(10)
   // let listProductShopee = []
+  // dataProduct.getListProductAction(
+  //   time_range_field,
+  //   perPage.value,
+  //   Number(route.params.page),
+  //   EndTimeLoading
+  // )
   dataProduct.getListProductAction(
     perPage.value,
     Number(route.params.page),
@@ -175,6 +186,13 @@
     isLoading.value = true
     router.push(`/products-list-shopee/page/${pageNumber}`)
     dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
+    // dataProduct.getListProductAction(
+    //   time_range_field,
+    //   perPage.value,
+    //   pageNumber,
+    //   EndTimeLoading
+    // )
+    // dataProduct.getListProductAction(perPage, page, EndTimeLoading)
   }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
@@ -237,13 +255,14 @@
       key: 'id',
     },
   ]
-
+  const showDeleteAll = computed(() => state.selectedRowKeys.length > 1)
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
   }
+  const handlePushProduct = (id: number) => {}
   const idSelected = ref()
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
@@ -283,7 +302,6 @@
     loadingDel: false,
   })
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
-  const hasSelectedDelete = computed(() => state.selectedRowKeys.length > 1)
   const start = () => {
     state.loading = true
     // ajax request after empty completing
@@ -307,28 +325,69 @@
   const handleOpenDeleteAllProduct = () => {
     isOpenConfirmAll.value = true
   }
+  // const handleDeleteAll = () => {
+  //   state.loadingDel = true
+  //   for (let i = 0; i < state.selectedRowKeys.length; i++) {
+  //     console.log(`delete ${state.selectedRowKeys[i]}`)
+  //     console.log('------')
+  //     dataProduct.deleteAllProductAction(
+  //       Number(state.selectedRowKeys[i]),
+  //       toast
+  //     )
+  //   }
+  //   setTimeout(() => {
+  //     state.loadingDel = false
+  //     state.selectedRowKeys = []
+  //     dataProduct.getListProductAction(
+  //       perPage.value,
+  //       Number(route.params.page),
+  //       EndTimeLoading
+  //     )
+  //     // dataProduct.getListProductAction(
+  //     //   time_range_field,
+  //     //   perPage.value,
+  //     //   Number(route.params.page),
+  //     //   EndTimeLoading
+  //     // )
+  //     handleCloseConfirmAll()
+  //     EndTimeLoading()
+
+  //     console.log('Del all')
+  //   }, 1000)
+  // }
+  const deleteAllProduct = ref()
+  // delete all dùng api xóa all
   const handleDeleteAll = () => {
-    state.loadingDel = true
-    for (let i = 0; i < state.selectedRowKeys.length; i++) {
-      console.log(`delete ${state.selectedRowKeys[i]}`)
-      console.log('------')
-      // dataProduct.deleteAllProductAction(
-      //     //   Number(state.selectedRowKeys[i]),
-      //     //   toast
-      // )
+    console.log(`delete ${state.selectedRowKeys}`)
+    console.log('------')
+    const data = {
+      ids: deleteAllProduct.value,
     }
+
+    // console.log('data', data)
+    dataProduct.deleteAllProductAction(
+      Object(JSON.stringify(data)),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirmAll,
+      perPage.value,
+      Number(route.params.page)
+    )
     setTimeout(() => {
       state.loadingDel = false
       state.selectedRowKeys = []
-      handleCloseConfirmAll()
-      EndTimeLoading()
-      console.log('Del all')
     }, 1000)
   }
 
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
     state.selectedRowKeys = selectedRowKeys
+    console.log(selectedRowKeys)
+  }
+
+  const backTop = () => {
+    const viewTaskBar = document.getElementById('task-bar-list')
+    viewTaskBar.scrollIntoView({ behavior: 'smooth' })
   }
 </script>
 <style>

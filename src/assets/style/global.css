@@ -177,9 +177,10 @@ body {
     font-weight: 500;
   }
   
-  .button-create:hover {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 20px;
+  .button-create-new:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
   }
+
   .button-delete {
     cursor: pointer;
     margin-left: 10px;
@@ -200,12 +201,23 @@ body {
     content: "\f1f8";
     font-weight: 500;
     margin-top: 2px;
+    margin-right: 2px;
   }
   
   .button-delete:hover {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 20px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
   }
-  
+
+  .button-push-up{
+    cursor: pointer;
+    margin-left: 10px;
+    min-height: 35px;
+    min-width: 35px;
+    display: flex;
+    justify-content: center;
+    max-width: 2200px;
+  }
+
   .iconRotate {
     transform: rotate(270deg);
     transition: all linear 0.3s;
@@ -1478,4 +1490,17 @@ body {
   .ant-modal-content{
     border-top-left-radius:8px !important;
     border-top-right-radius:8px !important;
+  }
+
+  /* quay về đầu trang */
+  .back-top{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .back-top:hover{
+    border: 1px solid white;
   }

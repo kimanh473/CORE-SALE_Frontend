@@ -1,16 +1,18 @@
 import { defineStore } from 'pinia'
 import {
-  getAllProductsApi,
-  getAllProductsNoPagingApi,
-  createProductApi,
+  getAllProductsShopeeApi,
+  getAllProductsShopeeNoPagingApi,
   getDetailProductApi,
   filterProductApi,
   deleteProductApi,
-  deleteAllProductApi,
-  updateProductApi,
+  // getShopShopeeApi,
+  getAllProductShopeeToDBApi,
+  // getBackToListShopeeProductApi
+  // updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
+// import { update } from 'lodash-es'
 
-export const useProduct = defineStore('Products', {
+export const useProductShopee = defineStore('ProductsShopee', {
   state: () => ({
     listProduct: <any>[],
     totalPage: <number>null,
@@ -39,22 +41,51 @@ export const useProduct = defineStore('Products', {
   },
   actions: {
     async getListProductAction(
+      time_range_field: any,
       perPage: number,
       page: number,
       EndTimeLoading: Function
     ) {
-      await getAllProductsApi(perPage, page)
-        .then((payload: any) => {
-          const res = payload?.data?.data
-          this.getListProduct(res)
+      await getAllProductShopeeToDBApi(time_range_field)
+        .then((payload1: any) => {
+          const res = payload1?.data
+          console.log(res)
+
+          if (res.status === 'success') {
+            getAllProductsShopeeApi(perPage, page).then((payload2: any) => {
+              const resShopee = payload2?.data?.data
+              this.getListProduct(resShopee)
+            })
+          }
           EndTimeLoading()
         })
         .catch((err) => {
           console.log(err)
         })
     },
+
+    // await getAllProductsShopeeApi(perPage, page)
+    //   .then((payload: any) => {
+    //     console.log(payload)
+    //     const res = payload?.data?.data
+    //     console.log(res)
+    //     console.log(res.message)
+    // if (res.message === 'Invalid access_token.') {
+    //   getShopShopeeApi().then((payload2: any) => {
+    //     console.log(payload2)
+    //     const resShopee = payload2?.data
+    //     window.location = resShopee.url
+    //   })
+    // }
+    //       this.getListProduct(res)
+    //       EndTimeLoading()
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
     async getListProductNoPagingAction() {
-      await getAllProductsNoPagingApi()
+      await getAllProductsShopeeNoPagingApi()
         .then((payload: any) => {
           const res = payload?.data?.data?.data
           console.log(res)
@@ -85,33 +116,7 @@ export const useProduct = defineStore('Products', {
           console.log(err)
         })
     },
-    async createProductAction(
-      data: object,
-      toast: any,
-      router: any,
-      EndTimeLoading: Function
-      // handleCloseCreate: Function
-    ) {
-      await createProductApi(data)
-        .then((res) => {
-          if (res.data.status === 'failed') {
-            toast.error(res.data.messages)
-            EndTimeLoading()
-          } else {
-            toast.success('Tạo mới thành công')
-            EndTimeLoading()
-            router.push('/products-list/page/1')
-          }
-        })
-        .catch((err) => {
-          // this.messageError = err.response.data.messages
-          // console.log(this.messageError);
-          console.log(err)
-          const arrMess = err.response.data.messages
-          const errMess = arrMess[Object.keys(arrMess)[0]]
-          toast.error(errMess[0])
-        })
-    },
+
     deleteProductAction(
       id: number,
       EndTimeLoading: Function,
@@ -137,75 +142,45 @@ export const useProduct = defineStore('Products', {
           EndTimeLoading()
         })
     },
-
-    // delete all ko dùng api delete all
-    // deleteAllProductAction(id: number, toast: any) {
-    //   deleteProductApi(id)
-    //     .then((res) => {
-    //       if (res.data.status === 'success') {
-    //         toast.success('Xóa thành công', 500)
-    //       } else {
-    //         toast.error(res.data.messages, 500)
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-    // },
-
-    // delete all dùng api delete all
-    deleteAllProductAction(
-      data: Object,
-      EndTimeLoading: Function,
-      toast: any,
-      handleCloseConfirmAll: Function,
-      perPage: number,
-      page: number
-    ) {
-      deleteAllProductApi(data)
+    deleteAllProductAction(id: number, toast: any) {
+      deleteProductApi(id)
         .then((res) => {
           if (res.data.status === 'success') {
             toast.success('Xóa thành công', 500)
-            this.getListProductAction(perPage, page, EndTimeLoading)
+            // this.getListProductAction(perPage, page, EndTimeLoading)
           } else {
             toast.error(res.data.messages, 500)
           }
-          EndTimeLoading()
-          handleCloseConfirmAll()
         })
         .catch((err) => {
           console.log(err)
-          handleCloseConfirmAll()
-          EndTimeLoading()
         })
     },
-
-    // sửa sản phẩm
-    async updateProductAction(
-      id: number,
-      data: Object,
-      toast: any,
-      router: any,
-      EndTimeLoading: Function
-    ) {
-      await updateProductApi(id, data)
-        .then((res) => {
-          if (res.data.status === 'failed') {
-            toast.error(res.data.messages)
-            EndTimeLoading()
-          } else {
-            toast.success('Cập nhật thành công')
-            router.push('/products-list/page/1')
-            EndTimeLoading()
-          }
-        })
-        .catch((err) => {
-          this.messageError = err.response?.data?.messages
-          console.log(err)
-          const arrMess = err.response.data.messages
-          const errMess = arrMess[Object.keys(arrMess)[0]]
-          toast.error(errMess[0])
-        })
-    },
+    // async updateProductAction(
+    //   id: number,
+    //   data: object,
+    //   toast: any,
+    //   router: any,
+    //   EndTimeLoading: Function
+    // ) {
+    // await updateProductApi(id, data)
+    //     .then((res) => {
+    //       if (res.data.status === 'failed') {
+    //         toast.error(res.data.messages)
+    //         EndTimeLoading()
+    //       } else {
+    //         toast.success('Cập nhật thành công')
+    //         router.push('/products-list/page/1')
+    //         EndTimeLoading()
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       this.messageError = err.response?.data?.messages
+    //       console.log(err)
+    //       const arrMess = err.response.data.messages
+    //       const errMess = arrMess[Object.keys(arrMess)[0]]
+    //       toast.error(errMess[0])
+    //     })
+    // },
   },
 })

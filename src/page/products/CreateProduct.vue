@@ -1202,6 +1202,7 @@
     font-weight: 700;
     margin-left: 30px;
   }
+
   #preview {
     display: flex;
     justify-content: center;
