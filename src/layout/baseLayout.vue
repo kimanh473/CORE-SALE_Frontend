@@ -24,7 +24,7 @@
           style="min-height: auto; overflow: auto; z-index: 15"
           class="mx-3 my-2"
         >
-          <slot name="content"></slot>
+          <slot name="content"> </slot>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center' }">
           <slot name="footer"></slot>

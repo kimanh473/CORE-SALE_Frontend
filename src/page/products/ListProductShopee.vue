@@ -44,15 +44,13 @@
             </template>
           </span>
         </div>
-        <div>
-          <a-button
-            type="primary"
-            :disabled="!hasSelectedDelete"
-            :loading="state.loadingDel"
-            @click="handleOpenDeleteAllProduct"
-          >
-            Xóa tất cả
-          </a-button>
+        <div
+          class="button-delete relative group rounded-md px-2"
+          title="Xóa tất cả"
+          @click="handleOpenDeleteAllProduct"
+          v-show="showDeleteAll"
+        >
+          <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
         </div>
       </div>
       <a-table
@@ -249,7 +247,7 @@
       key: 'id',
     },
   ]
-
+  const showDeleteAll = computed(() => state.selectedRowKeys.length > 1)
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }

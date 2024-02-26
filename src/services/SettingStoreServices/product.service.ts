@@ -26,7 +26,7 @@ const deleteProductApi = (id: number) => {
 }
 // Xóa nhiều sản phẩm
 const deleteAllProductApi = (data: any) => {
-  return httpClient.post(`/catalog/product/deleteall`, data)
+  return httpClient.post(`/catalog/product/deleteAll`, data)
 }
 // lọc sản phẩm theo ngành hàng,website
 const filterProductApi = (data: object) => {

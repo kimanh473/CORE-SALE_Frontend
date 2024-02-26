@@ -38,40 +38,34 @@
     </template>
     <template v-slot:content class="relative">
       <div
+        id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <div>
-          <a-button
-            class="ml-3"
-            type="primary"
-            :disabled="!hasSelectedDelete"
-            :loading="state.loadingDel"
+        <span style="margin-left: 10px; margin-top: 6px; color: white">
+          <template v-if="hasSelected">
+            {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
+          </template>
+        </span>
+        <div class="flex">
+          <div
+            class="button-delete relative group rounded-md px-2"
+            title="Xóa tất cả"
             @click="handleOpenDeleteAllProduct"
+            v-show="showDeleteAll"
           >
-            Xóa tất cả
-          </a-button>
-          <span
-            style="
-              margin-left: 8px;
-              margin-left: 8px;
-              margin-top: 4px;
-              color: white;
-            "
+            <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
+          </div>
+          <div
+            class="button-create-new relative group rounded-md px-2"
+            title="Tạo mới web"
+            @click="CreateProduct()"
           >
-            <template v-if="hasSelected">
-              {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
-            </template>
-          </span>
-        </div>
-        <div
-          class="button-create-new relative group rounded-md px-2"
-          title="Tạo mới web"
-          @click="CreateProduct()"
-        >
-          <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+            <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+          </div>
         </div>
       </div>
       <a-table
+        id="table-data-list-sp"
         class="!p-[10px]"
         :row-selection="{
           selectedRowKeys: state.selectedRowKeys,
@@ -115,8 +109,8 @@
       </a-table>
     </template>
 
-    <template v-slot:footer
-      ><div class="text-left px-[20px] py-[10px]">
+    <template v-slot:footer>
+      <div class="text-left px-[20px] py-[10px] flex justify-between">
         <a-pagination
           v-model:current="currentPage"
           v-model:pageSize="perPage"
@@ -124,6 +118,9 @@
           :total="totalPage"
           @change="changePage"
         />
+        <button class="back-top" @click="backTop">
+          <p style="color: #ffffff; font-size: 150%">↑</p>
+        </button>
       </div>
     </template>
   </base-layout>
@@ -254,6 +251,7 @@
     loading: false,
     loadingDel: false,
   })
+
   const deleteAllProduct = ref()
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
@@ -263,7 +261,8 @@
     console.log(state.selectedRowKeys)
   }
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
-  const hasSelectedDelete = computed(() => state.selectedRowKeys.length > 1)
+
+  const showDeleteAll = computed(() => state.selectedRowKeys.length > 1)
   // const ids = state.selectedRowKeys.map((item: number) => String(item))
   // console.log(ids)
   const handleCloseConfirm = () => {
@@ -307,18 +306,16 @@
       Number(route.params.page)
     )
   }
-
+  const isOpenConfirmAll = ref<boolean>(false)
   const handleOpenDeleteAllProduct = () => {
     isOpenConfirmAll.value = true
   }
-  const isOpenConfirmAll = ref<boolean>(false)
   const handleCloseConfirmAll = () => {
     isOpenConfirmAll.value = false
   }
 
   // delete all dùng api xóa all (đang lỗi gửi mảng id)
   // const handleDeleteAll = () => {
-  //   state.loadingDel = true
   //   console.log(`delete ${state.selectedRowKeys}`)
   //   console.log('------')
   //   const data = {
@@ -365,6 +362,12 @@
       console.log('Del all')
     }, 1000)
   }
+
+  const backTop = () => {
+    var viewHeader = document.getElementById('task-bar-list')
+    console.log(viewHeader)
+    viewHeader.scrollIntoView({ behavior: 'smooth' })
+  }
 </script>
 <style>
   #components-layout-demo-side .logo {
@@ -392,5 +395,16 @@
   .ant-menu-submenu-title {
     display: flex !important;
     align-items: center !important;
+  }
+  .back-top {
+    background-color: royalblue;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 40px;
+    right: 30px;
   }
 </style>
