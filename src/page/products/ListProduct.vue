@@ -41,7 +41,7 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <span style="margin-left: 10px; margin-top: 6px; color: white">
+        <span class="ml-2 mt-1.5 text-white">
           <template v-if="hasSelected">
             {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
           </template>
@@ -118,8 +118,11 @@
           :total="totalPage"
           @change="changePage"
         />
-        <button class="back-top" @click="backTop">
-          <p style="color: #ffffff; font-size: 150%">↑</p>
+        <button
+          class="back-top bg-slate-500 focus:outline-none"
+          @click="backTop"
+        >
+          <p class="text-white text-2xl mb-1.5">↑</p>
         </button>
       </div>
     </template>
@@ -272,7 +275,7 @@
   const CreateProduct = () => {
     router.push('/create-product')
   }
-  //link đến trang sp sàn shopee
+  // link đến trang sp sàn shopee
   const ShowProductShopee = (page: number) => {
     router.push(`/products-list-shopee/page/${page}`)
   }
@@ -314,59 +317,58 @@
     isOpenConfirmAll.value = false
   }
 
-  // delete all dùng api xóa all (đang lỗi gửi mảng id)
-  // const handleDeleteAll = () => {
-  //   console.log(`delete ${state.selectedRowKeys}`)
-  //   console.log('------')
-  //   const data = {
-  //     ids: deleteAllProduct.value,
-  //   }
-  //   console.log('data', data)
-  //   console.log('gửi cái này', JSON.stringify(data))
-  //   dataProduct.deleteAllProductAction(
-  //     JSON.stringify(data),
-  //     EndTimeLoading,
-  //     toast,
-  //     handleCloseConfirmAll,
-  //     perPage.value,
-  //     Number(route.params.page)
-  //   )
-  //   setTimeout(() => {
-  //     state.loadingDel = false
-  //     state.selectedRowKeys = []
-  //   }, 1000)
-  // }
-
-  //delete all ko dùng api xóa all
+  // delete all dùng api xóa all
   const handleDeleteAll = () => {
-    state.loadingDel = true
-    for (let i = 0; i < state.selectedRowKeys.length; i++) {
-      console.log(`delete ${state.selectedRowKeys[i]}`)
-      console.log('------')
-      dataProduct.deleteAllProductAction(
-        Number(state.selectedRowKeys[i]),
-        toast
-      )
+    console.log(`delete ${state.selectedRowKeys}`)
+    console.log('------')
+    const data = {
+      ids: deleteAllProduct.value,
     }
+
+    // console.log('data', data)
+    dataProduct.deleteAllProductAction(
+      Object(JSON.stringify(data)),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirmAll,
+      perPage.value,
+      Number(route.params.page)
+    )
     setTimeout(() => {
       state.loadingDel = false
       state.selectedRowKeys = []
-      dataProduct.getListProductAction(
-        perPage.value,
-        Number(route.params.page),
-        EndTimeLoading
-      )
-      handleCloseConfirmAll()
-      EndTimeLoading()
-
-      console.log('Del all')
     }, 1000)
   }
 
+  // delete all ko dùng api xóa all (chạy ok)
+  // const handleDeleteAll = () => {
+  //   state.loadingDel = true
+  //   for (let i = 0; i < state.selectedRowKeys.length; i++) {
+  //     console.log(`delete ${state.selectedRowKeys[i]}`)
+  //     console.log('------')
+  //     dataProduct.deleteAllProductAction(
+  //       Number(state.selectedRowKeys[i]),
+  //       toast
+  //     )
+  //   }
+  //   setTimeout(() => {
+  //     state.loadingDel = false
+  //     state.selectedRowKeys = []
+  //     dataProduct.getListProductAction(
+  //       perPage.value,
+  //       Number(route.params.page),
+  //       EndTimeLoading
+  //     )
+  //     handleCloseConfirmAll()
+  //     EndTimeLoading()
+
+  //     console.log('Del all')
+  //   }, 1000)
+  // }
+
   const backTop = () => {
-    var viewHeader = document.getElementById('task-bar-list')
-    console.log(viewHeader)
-    viewHeader.scrollIntoView({ behavior: 'smooth' })
+    const viewTaskBar = document.getElementById('task-bar-list')
+    viewTaskBar.scrollIntoView({ behavior: 'smooth' })
   }
 </script>
 <style>
@@ -395,16 +397,5 @@
   .ant-menu-submenu-title {
     display: flex !important;
     align-items: center !important;
-  }
-  .back-top {
-    background-color: royalblue;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    bottom: 40px;
-    right: 30px;
   }
 </style>

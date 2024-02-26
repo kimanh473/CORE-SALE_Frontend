@@ -1,4 +1,3 @@
-import { dataDetailNew } from './store.type';
 import { defineStore } from 'pinia'
 import {
   getAllProductsShopeeApi,
@@ -6,8 +5,8 @@ import {
   getDetailProductApi,
   filterProductApi,
   deleteProductApi,
-  getShopShopeeApi,
-  getAllProductShopeeToDBApi
+  // getShopShopeeApi,
+  getAllProductShopeeToDBApi,
   // getBackToListShopeeProductApi
   // updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
@@ -46,19 +45,17 @@ export const useProductShopee = defineStore('ProductsShopee', {
       perPage: number,
       page: number,
       EndTimeLoading: Function
-      
     ) {
       await getAllProductShopeeToDBApi(time_range_field)
         .then((payload1: any) => {
           const res = payload1?.data
-          console.log(res);
-          
-          if (res.status === 'success'){
-            getAllProductsShopeeApi(perPage,page)
-              .then((payload2:any) => {
-                const resShopee = payload2?.data?.data
-                this.getListProduct(resShopee)
-              }) 
+          console.log(res)
+
+          if (res.status === 'success') {
+            getAllProductsShopeeApi(perPage, page).then((payload2: any) => {
+              const resShopee = payload2?.data?.data
+              this.getListProduct(resShopee)
+            })
           }
           EndTimeLoading()
         })
@@ -66,20 +63,20 @@ export const useProductShopee = defineStore('ProductsShopee', {
           console.log(err)
         })
     },
-      
-      // await getAllProductsShopeeApi(perPage, page)
-      //   .then((payload: any) => {
-      //     console.log(payload)
-      //     const res = payload?.data?.data
-      //     console.log(res)
-      //     console.log(res.message)
-          // if (res.message === 'Invalid access_token.') {
-          //   getShopShopeeApi().then((payload2: any) => {
-          //     console.log(payload2)
-          //     const resShopee = payload2?.data
-          //     window.location = resShopee.url
-          //   })
-          // }
+
+    // await getAllProductsShopeeApi(perPage, page)
+    //   .then((payload: any) => {
+    //     console.log(payload)
+    //     const res = payload?.data?.data
+    //     console.log(res)
+    //     console.log(res.message)
+    // if (res.message === 'Invalid access_token.') {
+    //   getShopShopeeApi().then((payload2: any) => {
+    //     console.log(payload2)
+    //     const resShopee = payload2?.data
+    //     window.location = resShopee.url
+    //   })
+    // }
     //       this.getListProduct(res)
     //       EndTimeLoading()
     //     })

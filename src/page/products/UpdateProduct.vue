@@ -1567,7 +1567,7 @@
     console.log(dataOption)
     console.log(dataUnit)
     console.log(dataTableConfig.value)
-    let data = Object.assign({}, detailProduct.value, dataSource)
+    const data = Object.assign({}, detailProduct.value, dataSource)
     dataProduct.updateProductAction(
       Number(detailProduct.value.id),
       data,

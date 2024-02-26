@@ -20,10 +20,12 @@
     </template>
     <template v-slot:content class="relative">
       <div
-        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex px-3.5 justify-between"
+        id="task-bar-list"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div>
           <a-button
+            class="button-push-up"
             type="primary"
             :disabled="!hasSelected"
             :loading="state.loading"
@@ -31,14 +33,7 @@
           >
             Đẩy lên sàn
           </a-button>
-          <span
-            style="
-              margin-left: 8px;
-              margin-left: 8px;
-              margin-top: 4px;
-              color: white;
-            "
-          >
+          <span class="ml-2 mt-1 text-white">
             <template v-if="hasSelected">
               {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
             </template>
@@ -98,7 +93,7 @@
     </template>
 
     <template v-slot:footer
-      ><div class="text-left px-[20px] py-[10px]">
+      ><div class="text-left px-[20px] py-[10px] flex justify-between">
         <a-pagination
           v-model:current="currentPage"
           v-model:pageSize="perPage"
@@ -106,6 +101,12 @@
           :total="totalPage"
           @change="changePage"
         />
+        <button
+          class="back-top bg-slate-500 focus:outline-none"
+          @click="backTop"
+        >
+          <p class="text-white text-2xl mb-1.5">↑</p>
+        </button>
       </div>
     </template>
   </base-layout>
@@ -138,7 +139,8 @@
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
+  // import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
+  import { useProduct } from '@/store/modules/store-setting/products'
 
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -155,13 +157,18 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const dataProduct = useProductShopee()
-  const time_range_field = 'create_time'
+  const dataProduct = useProduct()
+  // const time_range_field = 'create_time'
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
   const perPage = ref(10)
   // let listProductShopee = []
+  // dataProduct.getListProductAction(
+  //   time_range_field,
+  //   perPage.value,
+  //   Number(route.params.page),
+  //   EndTimeLoading
+  // )
   dataProduct.getListProductAction(
-    time_range_field,
     perPage.value,
     Number(route.params.page),
     EndTimeLoading
@@ -178,12 +185,13 @@
   const changePage = (pageNumber: number) => {
     isLoading.value = true
     router.push(`/products-list-shopee/page/${pageNumber}`)
-    dataProduct.getListProductAction(
-      time_range_field,
-      perPage.value,
-      pageNumber,
-      EndTimeLoading
-    )
+    dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
+    // dataProduct.getListProductAction(
+    //   time_range_field,
+    //   perPage.value,
+    //   pageNumber,
+    //   EndTimeLoading
+    // )
     // dataProduct.getListProductAction(perPage, page, EndTimeLoading)
   }
   const isCheck = ref<boolean>(false)
@@ -294,7 +302,6 @@
     loadingDel: false,
   })
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
-  const hasSelectedDelete = computed(() => state.selectedRowKeys.length > 1)
   const start = () => {
     state.loading = true
     // ajax request after empty completing
@@ -318,29 +325,57 @@
   const handleOpenDeleteAllProduct = () => {
     isOpenConfirmAll.value = true
   }
+  // const handleDeleteAll = () => {
+  //   state.loadingDel = true
+  //   for (let i = 0; i < state.selectedRowKeys.length; i++) {
+  //     console.log(`delete ${state.selectedRowKeys[i]}`)
+  //     console.log('------')
+  //     dataProduct.deleteAllProductAction(
+  //       Number(state.selectedRowKeys[i]),
+  //       toast
+  //     )
+  //   }
+  //   setTimeout(() => {
+  //     state.loadingDel = false
+  //     state.selectedRowKeys = []
+  //     dataProduct.getListProductAction(
+  //       perPage.value,
+  //       Number(route.params.page),
+  //       EndTimeLoading
+  //     )
+  //     // dataProduct.getListProductAction(
+  //     //   time_range_field,
+  //     //   perPage.value,
+  //     //   Number(route.params.page),
+  //     //   EndTimeLoading
+  //     // )
+  //     handleCloseConfirmAll()
+  //     EndTimeLoading()
+
+  //     console.log('Del all')
+  //   }, 1000)
+  // }
+  const deleteAllProduct = ref()
+  // delete all dùng api xóa all
   const handleDeleteAll = () => {
-    state.loadingDel = true
-    for (let i = 0; i < state.selectedRowKeys.length; i++) {
-      console.log(`delete ${state.selectedRowKeys[i]}`)
-      console.log('------')
-      dataProduct.deleteAllProductAction(
-        Number(state.selectedRowKeys[i]),
-        toast
-      )
+    console.log(`delete ${state.selectedRowKeys}`)
+    console.log('------')
+    const data = {
+      ids: deleteAllProduct.value,
     }
+
+    // console.log('data', data)
+    dataProduct.deleteAllProductAction(
+      Object(JSON.stringify(data)),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirmAll,
+      perPage.value,
+      Number(route.params.page)
+    )
     setTimeout(() => {
       state.loadingDel = false
       state.selectedRowKeys = []
-      dataProduct.getListProductAction(
-        time_range_field,
-        perPage.value,
-        Number(route.params.page),
-        EndTimeLoading
-      )
-      handleCloseConfirmAll()
-      EndTimeLoading()
-
-      console.log('Del all')
     }, 1000)
   }
 
@@ -348,6 +383,11 @@
     console.log('selectedRowKeys changed: ', selectedRowKeys)
     state.selectedRowKeys = selectedRowKeys
     console.log(selectedRowKeys)
+  }
+
+  const backTop = () => {
+    const viewTaskBar = document.getElementById('task-bar-list')
+    viewTaskBar.scrollIntoView({ behavior: 'smooth' })
   }
 </script>
 <style>

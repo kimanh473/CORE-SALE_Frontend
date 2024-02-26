@@ -9,7 +9,6 @@ import {
   deleteAllProductApi,
   updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
-import { update } from 'lodash-es'
 
 export const useProduct = defineStore('Products', {
   state: () => ({
@@ -139,52 +138,49 @@ export const useProduct = defineStore('Products', {
         })
     },
 
-    //delete all ko dùng api delete all
-    deleteAllProductAction(
-      id: number,
-      toast: any
-    ){
-      deleteProductApi(id)
-        .then((res) => {
-          if (res.data.status === 'success') {
-            toast.success('Xóa thành công', 500)
-          } else {
-            toast.error(res.data.messages, 500)
-          }
-          })
-        .catch((err) => {
-          console.log(err)
-        })
-      },
-
-    //delete all dùng api delete all
-    // deleteAllProductAction(
-    //   data: any,
-    //   EndTimeLoading: Function,
-    //   toast: any,
-    //   handleCloseConfirmAll: Function,
-    //   perPage: number,
-    //   page: number
-    // ) {
-    //   deleteAllProductApi(data)
+    // delete all ko dùng api delete all
+    // deleteAllProductAction(id: number, toast: any) {
+    //   deleteProductApi(id)
     //     .then((res) => {
     //       if (res.data.status === 'success') {
     //         toast.success('Xóa thành công', 500)
-    //         this.getListProductAction(perPage, page, EndTimeLoading)
     //       } else {
     //         toast.error(res.data.messages, 500)
     //       }
-    //       EndTimeLoading()
-    //       handleCloseConfirmAll()
     //     })
     //     .catch((err) => {
     //       console.log(err)
-    //       handleCloseConfirmAll()
-    //       EndTimeLoading()
     //     })
     // },
 
-    //sửa sản phẩm
+    // delete all dùng api delete all
+    deleteAllProductAction(
+      data: Object,
+      EndTimeLoading: Function,
+      toast: any,
+      handleCloseConfirmAll: Function,
+      perPage: number,
+      page: number
+    ) {
+      deleteAllProductApi(data)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            toast.success('Xóa thành công', 500)
+            this.getListProductAction(perPage, page, EndTimeLoading)
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+          EndTimeLoading()
+          handleCloseConfirmAll()
+        })
+        .catch((err) => {
+          console.log(err)
+          handleCloseConfirmAll()
+          EndTimeLoading()
+        })
+    },
+
+    // sửa sản phẩm
     async updateProductAction(
       id: number,
       data: Object,
@@ -210,6 +206,6 @@ export const useProduct = defineStore('Products', {
           const errMess = arrMess[Object.keys(arrMess)[0]]
           toast.error(errMess[0])
         })
-      }
+    },
   },
 })
