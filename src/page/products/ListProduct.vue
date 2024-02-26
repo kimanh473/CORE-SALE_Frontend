@@ -9,35 +9,68 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Danh sách sản phẩm</p>
+              <p class="longText pl-5 mb-0 font-bold">Danh sách sản phẩm</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
+          <a-menu v-model:selectedMenu="current" mode="horizontal">
+            <a-sub-menu key="sub1">
+              <template #icon>
+                <appstore-outlined />
+              </template>
+              <template #title>Chọn sàn</template>
+              <a-menu-item-group title="Sàn TMĐT">
+                <a-menu-item key="setting:1" @click="ShowProductShopee(1)"
+                  >Shopee</a-menu-item
+                >
+                <a-menu-item key="setting:2">Lazada</a-menu-item>
+                <a-menu-item key="setting:3">Tiki</a-menu-item>
+                <a-menu-item key="setting:4">Tiktok</a-menu-item>
+              </a-menu-item-group>
+              <a-menu-item-group title="Item 2">
+                <a-menu-item key="setting:5">Option 3</a-menu-item>
+                <a-menu-item key="setting:6">Option 4</a-menu-item>
+              </a-menu-item-group>
+            </a-sub-menu>
+          </a-menu>
         </div>
       </Header>
     </template>
     <template v-slot:content class="relative">
       <div
-        class="!my-4 !py-[10px] !mx-[10px] px-3.5 bg-slate-500 rounded flex justify-between"
+        id="task-bar-list"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <!-- button dẫn đến trang sp sàn shopee -->
-        <div
-          class="button bg-white left-32 h-9 group rounded-md px-2 cursor-pointer hover:bg-gray-200"
-          title="Sản phẩm sàn Shopee"
-          @click="ShowProductShopee()"
-        >
-          <p class="text-[14px] mt-1 px-1">Sản phẩm sàn Shopee</p>
-        </div>
-        <div
-          class="button-create-new relative group rounded-md px-2"
-          title="Tạo mới web"
-          @click="CreateProduct()"
-        >
-          <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+        <span class="ml-2 mt-1.5 text-white">
+          <template v-if="hasSelected">
+            {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
+          </template>
+        </span>
+        <div class="flex">
+          <div
+            class="button-delete relative group rounded-md px-2"
+            title="Xóa tất cả"
+            @click="handleOpenDeleteAllProduct"
+            v-show="showDeleteAll"
+          >
+            <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
+          </div>
+          <div
+            class="button-create-new relative group rounded-md px-2"
+            title="Tạo mới web"
+            @click="CreateProduct()"
+          >
+            <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+          </div>
         </div>
       </div>
       <a-table
+        id="table-data-list-sp"
         class="!p-[10px]"
+        :row-selection="{
+          selectedRowKeys: state.selectedRowKeys,
+          onChange: onSelectChange,
+        }"
         :columns="columns"
         :data-source="listProduct"
         :pagination="false"
@@ -76,8 +109,8 @@
       </a-table>
     </template>
 
-    <template v-slot:footer
-      ><div class="text-left px-[20px] py-[10px]">
+    <template v-slot:footer>
+      <div class="text-left px-[20px] py-[10px] flex justify-between">
         <a-pagination
           v-model:current="currentPage"
           v-model:pageSize="perPage"
@@ -85,6 +118,12 @@
           :total="totalPage"
           @change="changePage"
         />
+        <button
+          class="back-top bg-slate-500 focus:outline-none"
+          @click="backTop"
+        >
+          <p class="text-white text-2xl mb-1.5">↑</p>
+        </button>
       </div>
     </template>
   </base-layout>
@@ -95,6 +134,11 @@
     :ConfirmDelete="handleDelete"
   >
   </modal-delete>
+  <modal-delete-all
+    :isOpenAll="isOpenConfirmAll"
+    :handleCloseDetailAll="handleCloseConfirmAll"
+    :ConfirmDeleteAll="handleDeleteAll"
+  ></modal-delete-all>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
@@ -103,14 +147,17 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { ref } from 'vue'
+  import { reactive, ref, computed } from 'vue'
   import { useProduct } from '@/store/modules/store-setting/products'
   // import { UrlImg } from '@/services/services'
   //   import { storeToRefs } from 'pinia'
   import { useToast } from 'vue-toastification'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
+  import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
+  import { AppstoreOutlined } from '@ant-design/icons-vue'
+  const current = ref<string[]>([])
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const toast = useToast()
@@ -197,6 +244,30 @@
     },
   ]
 
+  type Key = string
+  const state = reactive<{
+    selectedRowKeys: Key[]
+    loading: boolean
+    loadingDel: boolean
+  }>({
+    selectedRowKeys: [], // Check here to configure the default column
+    loading: false,
+    loadingDel: false,
+  })
+
+  const deleteAllProduct = ref()
+  const onSelectChange = (selectedRowKeys: any) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
+    console.log('check convert number->string', deleteAllProduct.value)
+    state.selectedRowKeys = selectedRowKeys
+    console.log(state.selectedRowKeys)
+  }
+  const hasSelected = computed(() => state.selectedRowKeys.length > 0)
+
+  const showDeleteAll = computed(() => state.selectedRowKeys.length > 1)
+  // const ids = state.selectedRowKeys.map((item: number) => String(item))
+  // console.log(ids)
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
@@ -205,8 +276,8 @@
     router.push('/create-product')
   }
   // link đến trang sp sàn shopee
-  const ShowProductShopee = () => {
-    router.push('/products-list-shopee/page/:page')
+  const ShowProductShopee = (page: number) => {
+    router.push(`/products-list-shopee/page/${page}`)
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
@@ -238,6 +309,67 @@
       Number(route.params.page)
     )
   }
+  const isOpenConfirmAll = ref<boolean>(false)
+  const handleOpenDeleteAllProduct = () => {
+    isOpenConfirmAll.value = true
+  }
+  const handleCloseConfirmAll = () => {
+    isOpenConfirmAll.value = false
+  }
+
+  // delete all dùng api xóa all
+  const handleDeleteAll = () => {
+    console.log(`delete ${state.selectedRowKeys}`)
+    console.log('------')
+    const data = {
+      ids: deleteAllProduct.value,
+    }
+
+    // console.log('data', data)
+    dataProduct.deleteAllProductAction(
+      Object(JSON.stringify(data)),
+      EndTimeLoading,
+      toast,
+      handleCloseConfirmAll,
+      perPage.value,
+      Number(route.params.page)
+    )
+    setTimeout(() => {
+      state.loadingDel = false
+      state.selectedRowKeys = []
+    }, 1000)
+  }
+
+  // delete all ko dùng api xóa all (chạy ok)
+  // const handleDeleteAll = () => {
+  //   state.loadingDel = true
+  //   for (let i = 0; i < state.selectedRowKeys.length; i++) {
+  //     console.log(`delete ${state.selectedRowKeys[i]}`)
+  //     console.log('------')
+  //     dataProduct.deleteAllProductAction(
+  //       Number(state.selectedRowKeys[i]),
+  //       toast
+  //     )
+  //   }
+  //   setTimeout(() => {
+  //     state.loadingDel = false
+  //     state.selectedRowKeys = []
+  //     dataProduct.getListProductAction(
+  //       perPage.value,
+  //       Number(route.params.page),
+  //       EndTimeLoading
+  //     )
+  //     handleCloseConfirmAll()
+  //     EndTimeLoading()
+
+  //     console.log('Del all')
+  //   }, 1000)
+  // }
+
+  const backTop = () => {
+    const viewTaskBar = document.getElementById('task-bar-list')
+    viewTaskBar.scrollIntoView({ behavior: 'smooth' })
+  }
 </script>
 <style>
   #components-layout-demo-side .logo {
@@ -260,5 +392,10 @@
     right: 0px;
     z-index: 9999;
     justify-items: center;
+  }
+
+  .ant-menu-submenu-title {
+    display: flex !important;
+    align-items: center !important;
   }
 </style>
