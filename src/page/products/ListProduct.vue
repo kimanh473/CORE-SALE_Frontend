@@ -14,23 +14,16 @@
             </div>
           </div>
           <a-menu v-model:selectedMenu="current" mode="horizontal">
-            <a-sub-menu key="sub1">
+            <a-sub-menu key="sub" class="flex">
               <template #icon>
-                <appstore-outlined />
+                <i class="far fa-chevron-double-down"></i>
               </template>
-              <template #title>Chọn sàn</template>
-              <a-menu-item-group title="Sàn TMĐT">
-                <a-menu-item key="setting:1" @click="ShowProductShopee(1)"
-                  >Shopee</a-menu-item
-                >
-                <a-menu-item key="setting:2">Lazada</a-menu-item>
-                <a-menu-item key="setting:3">Tiki</a-menu-item>
-                <a-menu-item key="setting:4">Tiktok</a-menu-item>
-              </a-menu-item-group>
-              <a-menu-item-group title="Item 2">
-                <a-menu-item key="setting:5">Option 3</a-menu-item>
-                <a-menu-item key="setting:6">Option 4</a-menu-item>
-              </a-menu-item-group>
+              <a-menu-item key="setting:1" @click="ShowProductShopee(1)"
+                >Shopee</a-menu-item
+              >
+              <a-menu-item key="setting:2">Lazada</a-menu-item>
+              <a-menu-item key="setting:3">Tiki</a-menu-item>
+              <a-menu-item key="setting:4">Tiktok</a-menu-item>
             </a-sub-menu>
           </a-menu>
         </div>
@@ -156,7 +149,6 @@
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  import { AppstoreOutlined } from '@ant-design/icons-vue'
   const current = ref<string[]>([])
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -395,7 +387,14 @@
   }
 
   .ant-menu-submenu-title {
+    padding-top: 6px !important;
     display: flex !important;
     align-items: center !important;
+  }
+
+  .ant-menu-overflow-item {
+    padding: 2px !important;
+    display: flex !important;
+    border: 0px !important;
   }
 </style>

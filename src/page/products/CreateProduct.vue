@@ -122,7 +122,7 @@
                       { required: true, message: 'Chưa chọn ngành hàng' },
                     ]"
                   >
-                    <a-tree-select
+                    <!-- <a-tree-select
                       placeholder="Chọn ngành hàng"
                       style="width: 100%"
                       :tree-data="listTreeCategory"
@@ -139,7 +139,17 @@
                       treeDefaultExpandAll
                       multiple
                     >
-                    </a-tree-select>
+                    </a-tree-select> -->
+                    <a-cascader
+                      v-model:value="product.category"
+                      :options="listTreeCategory"
+                      placeholder="Chọn ngành hàng"
+                      :fieldNames="{
+                        children: 'children',
+                        label: 'title',
+                        value: 'code',
+                      }"
+                    />
                   </a-form-item>
                 </div>
               </div>
@@ -782,8 +792,9 @@
   import type { SelectProps, UploadProps } from 'ant-design-vue'
 
   // import IconAddImg from '@/assets/images/icon_add_image.png'
-  import { TreeSelect } from 'ant-design-vue'
-  const SHOW_PARENT = TreeSelect.SHOW_ALL
+  // import { TreeSelect } from 'ant-design-vue'
+
+  // const SHOW_PARENT = TreeSelect.SHOW_ALL
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
@@ -869,7 +880,7 @@
       align: 'center',
     },
   ]
-
+  console.log('log', listTreeCategory)
   const dataCreateProduct = ref<any>({})
   const handleChangeAttributeGroup = (value: any, options: any) => {
     indexAttribute.value = options.json_group_attribute_detail.map(
