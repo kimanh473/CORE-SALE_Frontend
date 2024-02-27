@@ -42,8 +42,8 @@ export const useOrder = defineStore('customerGroup', {
           console.log(err)
         })
     },
-    getDetailOrderAction(id: number, EndTimeLoading: Function) {
-      getDetailOrderApi(id)
+    async getDetailOrderAction(id: number, EndTimeLoading: Function) {
+      await getDetailOrderApi(id)
         .then((payload: any) => {
           console.log(payload?.data?.data?.order_detail)
           const res = payload?.data?.data?.order_detail

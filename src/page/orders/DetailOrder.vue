@@ -161,25 +161,39 @@
                     alt=""
                     width="50"
                     height="50"
-                  /> </template
-              ></template>
+                  />
+                </template>
+                <template v-if="column.key === 'discount' && record.image_info">
+                  {{
+                    record.model_original_price - record.model_discounted_price
+                  }}
+                </template></template
+              >
             </a-table>
           </div>
           <div class="pt-4">
             <div class="flex justify-end pr-8">
               <div class="pr-14">
-                <div>Tổng tiền (1 sản phẩm)</div>
+                <div>
+                  Tổng tiền ({{ detailOrder?.product_detail?.length }} sản phẩm)
+                </div>
                 <div>Chiết khấu</div>
                 <div>Phí giao hàng</div>
                 <div>Mã giảm giá</div>
                 <div class="font-bold">Khách phải trả</div>
               </div>
               <div class="text-end">
-                <div>900</div>
+                <div>{{ totalOrigin }}</div>
+                <div>{{ totalDiscount }}</div>
+                <div>{{ detailOrder.estimated_shipping_fee }}</div>
                 <div>0</div>
-                <div>1000</div>
-                <div>0</div>
-                <div>1900</div>
+                <div>
+                  {{
+                    totalOrigin -
+                    totalDiscount +
+                    Number(detailOrder.estimated_shipping_fee)
+                  }}
+                </div>
               </div>
             </div>
           </div>
@@ -238,8 +252,19 @@
   //   const router = useRouter()
   const route = useRoute()
   const dataOrder = useOrder()
-  dataOrder.getDetailOrderAction(Number(route.params.id), EndTimeLoading)
+  const totalOrigin = ref(0)
+  const totalDiscount = ref(0)
+  dataOrder
+    .getDetailOrderAction(Number(route.params.id), EndTimeLoading)
+    .then(() => {
+      detailOrder.value.product_detail.map((item: any) => {
+        totalOrigin.value += item.model_original_price
+        totalDiscount.value +=
+          item.model_original_price - item.model_discounted_price
+      })
+    })
   const { detailOrder } = storeToRefs(dataOrder)
+
   // const { listWeb } = storeToRefs(dataWebsite)
   // function formatWeb(webcode: string) {
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
@@ -294,11 +319,11 @@
     },
     {
       title: 'Đơn vị',
-      dataIndex: 'item_name',
+      dataIndex: '',
     },
     {
       title: 'Số lượng',
-      dataIndex: 'item_name',
+      dataIndex: 'model_quantity_purchased',
     },
     {
       title: 'Đơn giá',
@@ -306,7 +331,8 @@
     },
     {
       title: 'Chiết khấu',
-      dataIndex: 'model_discounted_price',
+      dataIndex: 'discount',
+      key: 'discount',
     },
     {
       title: 'Thuế',
