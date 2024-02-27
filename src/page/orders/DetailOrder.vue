@@ -82,12 +82,16 @@
                   <a class="pl-6 pr-4">: {{ detailOrder.order_sn }}</a>
                 </div>
                 <div>
-                  <a class="pl-6 pr-4"
+                  <a
+                    class="pl-6 pr-4"
+                    v-if="detailOrder && detailOrder.packeage_list"
                     >: {{ detailOrder?.packeage_list[0]?.shipping_carrier }}</a
                   >
                 </div>
                 <div>
-                  <span class="pl-6 pr-4"
+                  <span
+                    class="pl-6 pr-4"
+                    v-if="detailOrder && detailOrder.packeage_list"
                     >:
                     {{
                       detailOrder?.packeage_list[0]
@@ -286,6 +290,14 @@
     },
     {
       title: 'Tên sản phẩm',
+      dataIndex: 'item_name',
+    },
+    {
+      title: 'Đơn vị',
+      dataIndex: 'item_name',
+    },
+    {
+      title: 'Số lượng',
       dataIndex: 'item_name',
     },
     {
