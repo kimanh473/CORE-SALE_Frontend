@@ -84,9 +84,6 @@
               height="50"
             />
           </template>
-          <template v-if="column.key === 'name'">
-            <div>{{}}</div>
-          </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
               {{ formatWeb(item) }}
