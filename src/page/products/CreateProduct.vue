@@ -1152,7 +1152,6 @@
 
   // const createProduct = () => {}
   const onFinish = (values: any) => {
-    console.log('Success:', values)
     const dataSource = {
       name: product.name,
       attribute_set_id: product.groupAttributeID,

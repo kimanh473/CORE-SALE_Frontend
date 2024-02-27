@@ -769,7 +769,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct.list_classify.length > 0"
+                  v-show="detailProduct?.list_classify?.length > 0"
                   v-if="item1.attribute_code == 'classify_product'"
                   class="bg-[#E8E9EB]"
                 >
@@ -824,7 +824,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct.list_unit_change.length > 0"
+                  v-show="detailProduct?.list_unit_change?.length > 0"
                   v-if="item1.attribute_code == 'unit_change'"
                   class="bg-[#E8E9EB]"
                 >
@@ -880,7 +880,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct.list_classify.length > 0"
+                  v-show="detailProduct?.list_classify?.length > 0"
                   v-if="item1.attribute_code == 'classify_product'"
                 >
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>

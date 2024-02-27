@@ -75,7 +75,7 @@
   import { storeToRefs } from 'pinia'
 
   const dataOrder = useOrder()
-  dataOrder.getAllOrderPaginateAction()
+  // dataOrder.getAllOrderPaginateAction()
   const { listOrder } = storeToRefs(dataOrder)
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)

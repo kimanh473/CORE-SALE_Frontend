@@ -1,33 +1,23 @@
 import { defineStore } from 'pinia'
-import { getAllOrderApi } from '@/services/OrderServices/Order.services'
-import { Order } from '@/store/modules/orders/order.type'
+import {
+  getAllOrderApi,
+  getDetailOrderApi,
+} from '@/services/OrderServices/Order.services'
+import { Order, OrderDetail } from '@/store/modules/orders/order.type'
 export const useOrder = defineStore('customerGroup', {
   state: () => ({
     listOrder: [] as Order[],
-    detailOrder: {} as Order,
+    detailOrder: {} as OrderDetail,
+    totalPage: <number>null,
+    currentPage: <number>null,
   }),
   getters: {
     getListOrderPagination: (state: any) => {
-      return (payload: any) =>
-        (state.listOrder = payload?.map((item: any) => ({
-          id: item.id,
-          code: item.code,
-          customer_account_code: item.customer_account_code,
-          discount_detail: item.discount_detail,
-          transport_detail: item.transport_detail,
-          web_code: item.web_code,
-          address_country_id: item.address_country_id,
-          address_state_id: item.address_state_id,
-          address_district_id: item.address_district_id,
-          address_ward_id: item.address_ward_id,
-          address_detail: item.address_detail,
-          user_created: item.user_created,
-          auth_created: item.auth_created,
-          customer_created: item.customer_created,
-          json_product_detail: item.json_product_detail,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-        })))
+      return (payload: any) => {
+        state.listOrder = payload.data
+        state.totalPage = payload.total
+        state.currentPage = payload.current_page
+      }
     },
     getDetailOrder: (state: any) => {
       return (payload: any) => {
@@ -37,11 +27,28 @@ export const useOrder = defineStore('customerGroup', {
   },
 
   actions: {
-    getAllOrderPaginateAction() {
-      getAllOrderApi()
+    getAllOrderPaginateAction(
+      perPage: number,
+      page: number,
+      EndTimeLoading: Function
+    ) {
+      getAllOrderApi(perPage, page)
         .then((payload: any) => {
-          const res = payload?.data?.data?.data
+          const res = payload?.data?.data
           this.getListOrderPagination(res)
+          EndTimeLoading()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    async getDetailOrderAction(id: number, EndTimeLoading: Function) {
+      await getDetailOrderApi(id)
+        .then((payload: any) => {
+          console.log(payload?.data?.data?.order_detail)
+          const res = payload?.data?.data?.order_detail
+          this.getDetailOrder(res)
+          EndTimeLoading()
         })
         .catch((err) => {
           console.log(err)

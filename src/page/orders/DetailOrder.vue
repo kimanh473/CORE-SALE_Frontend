@@ -29,12 +29,12 @@
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ giao hàng</div>
                 <div>Test-232313123 <a class="pl-6">Thay đổi</a></div>
-                <div>Copyright © 2024 Tailwind Labs Inc.</div></a-col
+                <div>30 Trương Định, Thịnh Liệt, Hoàng Mai, Hà Nội.</div></a-col
               >
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ thanh toán</div>
                 <div>Test-232313123<a class="pl-6">Thay đổi</a></div>
-                <div>Copyright © 2024 Tailwind Labs Inc.</div></a-col
+                <div>30 Trương Định, Thịnh Liệt, Hoàng Mai, Hà Nội.</div></a-col
               >
             </a-row>
           </div>
@@ -73,21 +73,38 @@
               </a-col>
               <a-col :span="6">
                 <div>
-                  <a id="code" value="Test" class="pl-6 pr-4">: Test</a>
+                  <a id="code" value="Test" class="pl-6 pr-4"
+                    >: {{ detailOrder.order_sn }}</a
+                  >
                   <i class="far fa-clone cursor-pointer"></i>
                 </div>
-                <div><a class="pl-6 pr-4">: Test</a></div>
                 <div>
-                  <a class="pl-6 pr-4">: Tiki Trader</a>
+                  <a class="pl-6 pr-4">: {{ detailOrder.order_sn }}</a>
                 </div>
                 <div>
-                  <span class="pl-6 pr-4">: 1000 g</span>
+                  <a
+                    class="pl-6 pr-4"
+                    v-if="detailOrder && detailOrder.packeage_list"
+                    >: {{ detailOrder?.packeage_list[0]?.shipping_carrier }}</a
+                  >
                 </div>
                 <div>
-                  <span class="pl-6 pr-4">: 10 x 10 x 10 (cm)</span>
+                  <span
+                    class="pl-6 pr-4"
+                    v-if="detailOrder && detailOrder.packeage_list"
+                    >:
+                    {{
+                      detailOrder?.packeage_list[0]
+                        ?.parcel_chargeable_weight_gram
+                    }}
+                    g</span
+                  >
                 </div>
                 <div>
-                  <span class="pl-6 pr-4">: Không cho xem hàng</span>
+                  <span class="pl-6 pr-4">: </span>
+                </div>
+                <div>
+                  <span class="pl-6 pr-4">: </span>
                 </div>
               </a-col>
               <a-col :span="4"> </a-col>
@@ -96,27 +113,29 @@
                   <span>Phí trả ĐTVC</span>
                 </div>
                 <div>Tổng tiền thu hộ COD</div>
-                <div>Nhà vận chuyển</div>
                 <div>Đối soát</div>
                 <div>Hình thức giao hàng</div>
-                <div>Yêu cầu</div>
               </a-col>
               <a-col :span="6">
                 <div>
-                  <a id="code" value="Test" class="pl-6 pr-4">: Test</a>
-                </div>
-                <div><a class="pl-6 pr-4">: Test</a></div>
-                <div>
-                  <a class="pl-6 pr-4">: Tiki Trader</a>
-                </div>
-                <div>
-                  <span class="pl-6 pr-4">: 1000 g</span>
+                  <span class="pl-6 pr-4"
+                    >:
+                    {{ detailOrder.estimated_shipping_fee }}
+                    đ</span
+                  >
                 </div>
                 <div>
-                  <span class="pl-6 pr-4">: 10 x 10 x 10 (cm)</span>
+                  <span class="pl-6 pr-4"
+                    >:
+                    {{ detailOrder.estimated_shipping_fee }}
+                    đ</span
+                  >
                 </div>
                 <div>
-                  <span class="pl-6 pr-4">: Không cho xem hàng</span>
+                  <span class="pl-6 pr-4">: Chưa đối soát</span>
+                </div>
+                <div>
+                  <span class="pl-6 pr-4">: </span>
                 </div>
               </a-col>
             </a-row>
@@ -131,36 +150,50 @@
             <a-table
               class="!p-[10px]"
               :columns="columns"
-              :data-source="listOrderTest"
+              :data-source="detailOrder.product_detail"
               :pagination="false"
               row-key="id"
             >
-              <template #bodyCell="{ column, record, index }"
-                ><template v-if="column.key === 'image' && record.image">
+              <template #bodyCell="{ column, record }"
+                ><template v-if="column.key === 'image' && record.image_info">
                   <img
-                    :src="record.image"
+                    :src="record.image_info.image_url"
                     alt=""
                     width="50"
                     height="50"
-                  /> </template
-              ></template>
+                  />
+                </template>
+                <template v-if="column.key === 'discount' && record.image_info">
+                  {{
+                    record.model_original_price - record.model_discounted_price
+                  }}
+                </template></template
+              >
             </a-table>
           </div>
           <div class="pt-4">
             <div class="flex justify-end pr-8">
               <div class="pr-14">
-                <div>Tổng tiền (1 sản phẩm)</div>
+                <div>
+                  Tổng tiền ({{ detailOrder?.product_detail?.length }} sản phẩm)
+                </div>
                 <div>Chiết khấu</div>
                 <div>Phí giao hàng</div>
                 <div>Mã giảm giá</div>
                 <div class="font-bold">Khách phải trả</div>
               </div>
               <div class="text-end">
-                <div>900</div>
+                <div>{{ totalOrigin }}</div>
+                <div>{{ totalDiscount }}</div>
+                <div>{{ detailOrder.estimated_shipping_fee }}</div>
                 <div>0</div>
-                <div>1000</div>
-                <div>0</div>
-                <div>1900</div>
+                <div>
+                  {{
+                    totalOrigin -
+                    totalDiscount +
+                    Number(detailOrder.estimated_shipping_fee)
+                  }}
+                </div>
               </div>
             </div>
           </div>
@@ -178,11 +211,23 @@
           </div>
           <div class="w-full bg-white p-4">
             <h4 class="form-section-title-order w-full m-0">Ghi chú</h4>
-            <a-textarea class="form-control-input" placeholder="Nhập ghi chú">
+            <a-textarea
+              class="form-control-input"
+              v-model:value="detailOrder.note"
+              placeholder="Nhập ghi chú"
+            >
             </a-textarea>
           </div>
           <div class="w-full bg-white p-4">
             <div class="text-divider">Lịch sử đơn hàng</div>
+            <a-steps direction="vertical" :current="1">
+              <a-step title="Chuẩn bị hàng" description="15:05 11/9/2023"
+                ><template #icon> <i class="fal fa-gift"></i> </template
+              ></a-step>
+
+              <a-step title="Đơn hàng mới" description="15:05 11/9/2023" />
+              <a-step title="Đang giao" description="15:05 11/9/2023" />
+            </a-steps>
           </div>
         </div>
       </div>
@@ -196,55 +241,68 @@
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
-  //   import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive } from 'vue'
-  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useRoute } from 'vue-router'
+  import { ref } from 'vue'
+  import { useOrder } from '@/store/modules/orders/orders'
+  import { storeToRefs } from 'pinia'
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
-
+  const EndTimeLoading = () => {
+    isLoading.value = false
+  }
   //   const router = useRouter()
-  //   const route = useRoute()
-  const dataWebsite = useWebCatalog()
-  dataWebsite.getAllWebCatalogAction()
+  const route = useRoute()
+  const dataOrder = useOrder()
+  const totalOrigin = ref(0)
+  const totalDiscount = ref(0)
+  dataOrder
+    .getDetailOrderAction(Number(route.params.id), EndTimeLoading)
+    .then(() => {
+      detailOrder.value.product_detail.map((item: any) => {
+        totalOrigin.value += item.model_original_price
+        totalDiscount.value +=
+          item.model_original_price - item.model_discounted_price
+      })
+    })
+  const { detailOrder } = storeToRefs(dataOrder)
+
   // const { listWeb } = storeToRefs(dataWebsite)
   // function formatWeb(webcode: string) {
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
   //   return webName?.web_name
   // }
-  //   const EndTimeLoading = () => {
-  //     isLoading.value = false
-  //   }
-  const listOrderTest = reactive([
-    {
-      id: 1,
-      image:
-        'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg',
-      name: 'sp1',
-      unit_price: '1000',
-      discount: '10',
-      tax: '0',
-      fixed_price: '900',
-    },
-    {
-      id: 2,
-      image:
-        'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg',
-      name: 'sp2',
-      unit_price: '2000',
-      discount: '20',
-      tax: '10',
-      fixed_price: '1600',
-    },
-    {
-      id: 3,
-      image:
-        'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg',
-      name: 'sp3',
-      unit_price: '3000',
-      discount: '30',
-      tax: '15',
-      fixed_price: '2000',
-    },
-  ])
+
+  // const listOrderTest = reactive([
+  //   {
+  //     id: 1,
+  //     image:
+  //       'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg',
+  //     name: 'sp1',
+  //     unit_price: '1000',
+  //     discount: '10',
+  //     tax: '0',
+  //     fixed_price: '900',
+  //   },
+  //   {
+  //     id: 2,
+  //     image:
+  //       'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg',
+  //     name: 'sp2',
+  //     unit_price: '2000',
+  //     discount: '20',
+  //     tax: '10',
+  //     fixed_price: '1600',
+  //   },
+  //   {
+  //     id: 3,
+  //     image:
+  //       'https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg',
+  //     name: 'sp3',
+  //     unit_price: '3000',
+  //     discount: '30',
+  //     tax: '15',
+  //     fixed_price: '2000',
+  //   },
+  // ])
   const columns = [
     {
       title: 'STT',
@@ -252,20 +310,29 @@
     },
     {
       title: 'Ảnh',
-      dataIndex: 'image',
+      dataIndex: 'image_info',
       key: 'image',
     },
     {
       title: 'Tên sản phẩm',
-      dataIndex: 'name',
+      dataIndex: 'item_name',
+    },
+    {
+      title: 'Đơn vị',
+      dataIndex: '',
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'model_quantity_purchased',
     },
     {
       title: 'Đơn giá',
-      dataIndex: 'unit_price',
+      dataIndex: 'model_original_price',
     },
     {
       title: 'Chiết khấu',
       dataIndex: 'discount',
+      key: 'discount',
     },
     {
       title: 'Thuế',
@@ -273,7 +340,7 @@
     },
     {
       title: 'Thành tiền',
-      dataIndex: 'fixed_price',
+      dataIndex: 'model_discounted_price',
     },
   ]
   const isLoading = ref<boolean>(false)
