@@ -449,10 +449,10 @@
               >
               <div>
                 <a-form-item
-                  name="category"
+                  :name="detailProduct.category"
                   :rules="[{ required: true, message: 'Chưa chọn ngành hàng' }]"
                 >
-                  <a-tree-select
+                  <!-- <a-tree-select
                     placeholder="Chọn ngành hàng"
                     style="width: 100%"
                     :tree-data="listTreeCategory"
@@ -467,7 +467,17 @@
                     treeDefaultExpandAll
                     multiple
                   >
-                  </a-tree-select>
+                  </a-tree-select> -->
+                  <a-cascader
+                    v-model:value="detailProduct.nganh_hang_code"
+                    :options="listTreeCategory"
+                    placeholder="Chọn ngành hàng"
+                    :fieldNames="{
+                      children: 'children',
+                      label: 'title',
+                      value: 'code',
+                    }"
+                  />
                 </a-form-item>
               </div>
             </div>
@@ -512,7 +522,7 @@
                 ></label>
                 <div>
                   <a-form-item
-                    name="title"
+                    name="sku"
                     :rules="[{ required: true, message: 'Chưa nhập mã sku' }]"
                   >
                     <a-input
@@ -1164,6 +1174,7 @@
             <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
+            <button class="bg-black text-white" @click="checkTest">test</button>
           </div>
         </div></template
       >
@@ -1191,9 +1202,8 @@
   import { typeProduct } from '@/page/products/configProduct'
   import type { SelectProps, UploadProps } from 'ant-design-vue'
 
-  import { TreeSelect } from 'ant-design-vue'
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
-  const SHOW_PARENT = TreeSelect.SHOW_ALL
+  // const SHOW_PARENT = TreeSelect.SHOW_ALL
   const dataCategory = useCategory()
   dataCategory.getListCategoryTreeAction()
   const { listTreeCategory } = storeToRefs(dataCategory)
@@ -1546,6 +1556,9 @@
   }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
+  }
+  const checkTest = () => {
+    console.log('nganh hang', detailProduct)
   }
   const updateProduct = () => {
     const dataSource = {
