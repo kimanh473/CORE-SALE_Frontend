@@ -195,6 +195,7 @@
     {
       title: 'Tên sản phẩm',
       dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'SKU',
@@ -319,7 +320,7 @@
 
     // console.log('data', data)
     dataProduct.deleteAllProductAction(
-      Object(JSON.stringify(data)),
+      Object(data),
       EndTimeLoading,
       toast,
       handleCloseConfirmAll,
