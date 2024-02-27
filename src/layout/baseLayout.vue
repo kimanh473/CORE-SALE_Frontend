@@ -26,7 +26,7 @@
         >
           <slot name="content"> </slot>
         </a-layout-content>
-        <a-layout-footer :style="{ textAlign: 'center' }">
+        <a-layout-footer class="z-50" :style="{ textAlign: 'center' }">
           <slot name="footer"></slot>
         </a-layout-footer>
       </a-layout>

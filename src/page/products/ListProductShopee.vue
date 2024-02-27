@@ -7,13 +7,24 @@
       <Header :is-show-search="false">
         <div class="flex grow">
           <div class="flex items-center">
-            <div class="flex items-center">
+            <a-breadcrumb class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0 font-bold">
-                Danh sách sản phẩm sàn Shopee
-              </p>
-              <div class="icon-filter-approval relative group"></div>
-            </div>
+              <!-- <i
+                class="far fa-chevron-double-left pl-4 hover:text-cyan-500"
+                @click="backToAllProduct(1)"
+              ></i> -->
+
+              <a-breadcrumb-item
+                class="longText pl-5 font-bold hover:text-cyan-500 hover:cursor-pointer"
+                @click="backToAllProduct(1)"
+              >
+                Danh sách sản phẩm
+              </a-breadcrumb-item>
+              <a-breadcrumb-item class="pl-1 font-bold"
+                >Shopee</a-breadcrumb-item
+              >
+              <!-- <div class="icon-filter-approval relative group"></div> -->
+            </a-breadcrumb>
           </div>
         </div>
       </Header>
@@ -140,7 +151,7 @@
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
   // import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
-  import { useProduct } from '@/store/modules/store-setting/products'
+  import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
 
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -157,10 +168,11 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const dataProduct = useProduct()
-  // const time_range_field = 'create_time'
+  const dataProduct = useProductShopee()
+  const web_site_code = 'shopee'
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
   const perPage = ref(10)
+
   // let listProductShopee = []
   // dataProduct.getListProductAction(
   //   time_range_field,
@@ -169,6 +181,7 @@
   //   EndTimeLoading
   // )
   dataProduct.getListProductAction(
+    web_site_code,
     perPage.value,
     Number(route.params.page),
     EndTimeLoading
@@ -185,7 +198,12 @@
   const changePage = (pageNumber: number) => {
     isLoading.value = true
     router.push(`/products-list-shopee/page/${pageNumber}`)
-    dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
+    dataProduct.getListProductAction(
+      web_site_code,
+      perPage.value,
+      pageNumber,
+      EndTimeLoading
+    )
     // dataProduct.getListProductAction(
     //   time_range_field,
     //   perPage.value,
@@ -198,6 +216,7 @@
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
   const isOpenConfirmAll = ref<boolean>(false)
+  const deleteAllProduct = ref()
   const handleCloseConfirmAll = () => {
     isOpenConfirmAll.value = false
   }
@@ -261,6 +280,12 @@
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
+  }
+  const onSelectChange = (selectedRowKeys: any) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
+    state.selectedRowKeys = selectedRowKeys
+    console.log(selectedRowKeys)
   }
   const handlePushProduct = (id: number) => {}
   const idSelected = ref()
@@ -355,7 +380,7 @@
   //     console.log('Del all')
   //   }, 1000)
   // }
-  const deleteAllProduct = ref()
+
   // delete all dùng api xóa all
   const handleDeleteAll = () => {
     console.log(`delete ${state.selectedRowKeys}`)
@@ -366,7 +391,7 @@
 
     // console.log('data', data)
     dataProduct.deleteAllProductAction(
-      Object(JSON.stringify(data)),
+      Object(data),
       EndTimeLoading,
       toast,
       handleCloseConfirmAll,
@@ -379,12 +404,9 @@
     }, 1000)
   }
 
-  const onSelectChange = (selectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
-    state.selectedRowKeys = selectedRowKeys
-    console.log(selectedRowKeys)
+  const backToAllProduct = (page: number) => {
+    router.push(`/products-list/page/${page}`)
   }
-
   const backTop = () => {
     const viewTaskBar = document.getElementById('task-bar-list')
     viewTaskBar.scrollIntoView({ behavior: 'smooth' })
