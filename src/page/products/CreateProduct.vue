@@ -76,7 +76,7 @@
                   </label>
                   <div>
                     <a-form-item
-                      name="title"
+                      name="name"
                       :rules="[
                         { required: true, message: 'Chưa nhập tiêu đề' },
                       ]"
@@ -762,6 +762,7 @@
             <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
+            <button class="button-close-modal" @click="testLog">Test</button>
           </div>
         </div></template
       >
@@ -1091,6 +1092,7 @@
   const skuArr = ref<any>([])
   const listSku = ref<any>([])
   const addClassify = async () => {
+    console.log('product', product)
     nameArr.value = []
     listGenerate.value = []
     skuArr.value = []
@@ -1148,6 +1150,11 @@
   const router = useRouter()
   const EndTimeLoading = () => {
     isLoading.value = false
+  }
+
+  const testLog = () => {
+    console.log('phan loai', dataTableConfig)
+    console.log('product cuoi', product)
   }
 
   // const createProduct = () => {}

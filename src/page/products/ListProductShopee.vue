@@ -312,6 +312,7 @@
       EndTimeLoading,
       toast,
       handleCloseConfirm,
+      web_site_code,
       perPage.value,
       Number(route.params.page)
     )
@@ -395,6 +396,7 @@
       EndTimeLoading,
       toast,
       handleCloseConfirmAll,
+      web_site_code,
       perPage.value,
       Number(route.params.page)
     )

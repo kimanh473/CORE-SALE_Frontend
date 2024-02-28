@@ -118,6 +118,7 @@ export const useProductShopee = defineStore('ProductsShopee', {
       EndTimeLoading: Function,
       toast: any,
       handleCloseConfirm: Function,
+      web_site_code: string,
       perPage: number,
       page: number
     ) {
@@ -125,7 +126,12 @@ export const useProductShopee = defineStore('ProductsShopee', {
         .then((res) => {
           if (res.data.status === 'success') {
             toast.success('Xóa thành công', 500)
-            this.getListProductAction(perPage, page, EndTimeLoading)
+            this.getListProductAction(
+              web_site_code,
+              perPage,
+              page,
+              EndTimeLoading
+            )
           } else {
             toast.error(res.data.messages, 500)
           }
@@ -159,6 +165,7 @@ export const useProductShopee = defineStore('ProductsShopee', {
       EndTimeLoading: Function,
       toast: any,
       handleCloseConfirmAll: Function,
+      web_site_code: string,
       perPage: number,
       page: number
     ) {
@@ -166,7 +173,7 @@ export const useProductShopee = defineStore('ProductsShopee', {
         .then((res) => {
           if (res.data.status === 'success') {
             toast.success('Xóa thành công', 500)
-            this.getListProductAction(perPage, page, EndTimeLoading)
+            this.getListProductAction(web_site_code, perPage, page)
           } else {
             toast.error(res.data.messages, 500)
           }
