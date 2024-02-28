@@ -417,7 +417,7 @@
                       type="text"
                       class="w-full"
                       placeholder="Nhập tên sản phẩm"
-                      v-model:value="detailProduct.title"
+                      v-model:value="detailProduct.name"
                     >
                     </a-input>
                   </a-form-item>
@@ -886,7 +886,7 @@
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
                   <a-table
                     :columns="columns"
-                    :data-source="dataTableConfig"
+                    :data-source="detailProduct?.list_product_config"
                     :pagination="false"
                     bordered
                   >

@@ -44,6 +44,11 @@
               {{ index + perPage * (currentPage - 1) + 1 }}
             </div>
           </template>
+          <template v-if="column.key === 'order_sn'">
+            <a @click="handleToDetail(record.id)">
+              {{ record.order_sn }}
+            </a>
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -140,6 +145,7 @@
     {
       title: 'Mã ĐH',
       dataIndex: 'order_sn',
+      key: 'order_sn',
     },
     {
       title: 'Mã KH',
@@ -163,7 +169,7 @@
     },
     {
       title: 'Nguồn gốc',
-      dataIndex: 'source',
+      dataIndex: 'shop_name',
     },
     {
       title: 'Trạng thái',
