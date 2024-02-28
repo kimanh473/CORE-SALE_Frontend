@@ -1152,11 +1152,6 @@
     isLoading.value = false
   }
 
-  const testLog = () => {
-    console.log('phan loai', dataTableConfig)
-    console.log('product cuoi', product)
-  }
-
   // const createProduct = () => {}
   const onFinish = (values: any) => {
     const dataSource = {
@@ -1195,6 +1190,10 @@
   }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
+  }
+  const testLog = () => {
+    console.log('phan loai', dataTableConfig)
+    console.log('product cuoi', product)
   }
 </script>
 
