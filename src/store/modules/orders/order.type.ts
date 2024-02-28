@@ -76,6 +76,11 @@ export interface PackageOrderDetail {
   item_list: Array<ItemPackage>
   parcel_chargeable_weight_gram: number
 }
+export interface TrackingOrderDetail {
+  update_time: number
+  description: string
+  logistics_status: string
+}
 export interface OrderDetail {
   id: string
   order_status: string
@@ -94,6 +99,8 @@ export interface OrderDetail {
   buyer_user_id: string
   buyer_username: string
   region: string
+  cod: number
   product_detail: Array<ProductOrderDetail>
-  packeage_list: Array<PackageOrderDetail>
+  package_list: Array<PackageOrderDetail>
+  tracking_info: Array<TrackingOrderDetail>
 }
