@@ -1174,7 +1174,7 @@
             <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
-            <button class="bg-black text-white" @click="checkTest">test</button>
+            <button class="button-close-modal" @click="checkTest">Test</button>
           </div>
         </div></template
       >
@@ -1340,6 +1340,7 @@
     } else {
       dataCreateProduct.value[input_name] = detailProduct.value[input_name]
     }
+    console.log('handleChange', dataCreateProduct)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -1489,11 +1490,13 @@
   }
   const lastGenerateList = ref<any>([])
   const lastGenerateSku = ref<any>([])
+  // const dataTableConfig = detailProduct.value.list_product_config
   const dataTableConfig = ref<any>([])
 
   const skuArr = ref<any>([])
   const listSku = ref<any>([])
   const addClassify = async () => {
+    console.log('dataCreate in add', dataCreateProduct)
     nameArr.value = []
     listGenerate.value = []
     skuArr.value = []
@@ -1504,21 +1507,24 @@
     listSku.value.push(skuArr.value, ...mapArr.value)
     await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
-      title: item,
+      name: item,
       code: index,
     }))
+
     lastGenerateSku.value = res_2.value.map((item: any) => ({
       sku: item,
     }))
+    console.log('last', lastGenerateSku)
     const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
-      title: item.title,
+      name: item.name,
       code: item.code,
       sku: lastGenerateSku.value[index].sku,
     }))
+    console.log('arrTable', arrTable)
 
     dataTableConfig.value = arrTable.map((item: any, index: number) => ({
       id: index,
-      name: item.title,
+      name: item.name,
       sku: item.sku,
       bar_code: '',
       weight: '',
@@ -1558,7 +1564,11 @@
     console.log('Failed:', errorInfo)
   }
   const checkTest = () => {
-    console.log('nganh hang', detailProduct)
+    // console.log('dataCreate', dataCreateProduct)
+    // console.log('dataConfig', dataTableConfig)
+    console.log('detailsp', detailProduct)
+    console.log('res_1', res_1)
+    console.log('dataOption', dataOption)
   }
   const updateProduct = () => {
     const dataSource = {

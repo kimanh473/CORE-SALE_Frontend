@@ -37,12 +37,14 @@ const filterProductApi = (data: object) => {
 const getAllProductsShopeeNoPagingApi = () => {
   return httpClient.get(`/catalog/product/index`)
 }
-const getAllProductShopeeToDBApi = (time_range_field: any) => {
-  return httpClient.get(`/shopee/order/get_order_list_sp`, time_range_field)
-}
-const getAllProductsShopeeApi = (perPage: number, page: number) => {
-  return httpClient.post(
-    `/shopee/order/get_order_list_db?per_page=${perPage}&page=${page}`
+
+const getAllProductsShopeeApi = (
+  web_site_code: string,
+  perPage: number,
+  page: number
+) => {
+  return httpClient.get(
+    `/catalog/product/list_Product/${web_site_code}?per_page=${perPage}&page=${page}`
   )
 }
 // Đăng nhập vào shopee
@@ -66,5 +68,4 @@ export {
   getAllProductsShopeeApi,
   getShopShopeeApi,
   getBackToListShopeeProductApi,
-  getAllProductShopeeToDBApi,
 }

@@ -76,7 +76,7 @@
                   </label>
                   <div>
                     <a-form-item
-                      name="title"
+                      name="name"
                       :rules="[
                         { required: true, message: 'Chưa nhập tiêu đề' },
                       ]"
@@ -85,7 +85,7 @@
                         type="text"
                         class="w-full"
                         placeholder="Nhập tên sản phẩm"
-                        v-model:value="product.title"
+                        v-model:value="product.name"
                       >
                       </a-input>
                     </a-form-item>
@@ -762,6 +762,7 @@
             <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
+            <button class="button-close-modal" @click="testLog">Test</button>
           </div>
         </div></template
       >
@@ -1041,7 +1042,7 @@
     dataOption.splice(index, 1)
   }
   const product = reactive({
-    title: '',
+    name: '',
     sku: '',
     bar_code: '',
     code: '',
@@ -1091,31 +1092,32 @@
   const skuArr = ref<any>([])
   const listSku = ref<any>([])
   const addClassify = async () => {
+    console.log('product', product)
     nameArr.value = []
     listGenerate.value = []
     skuArr.value = []
     listSku.value = []
-    nameArr.value.push(product.title)
+    nameArr.value.push(product.name)
     listGenerate.value.push(nameArr.value, ...mapArr.value)
     skuArr.value.push(product.sku)
     listSku.value.push(skuArr.value, ...mapArr.value)
     await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
-      title: item,
+      name: item,
       code: index,
     }))
     lastGenerateSku.value = res_2.value.map((item: any) => ({
       sku: item,
     }))
     const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
-      title: item.title,
+      name: item.name,
       code: item.code,
       sku: lastGenerateSku.value[index].sku,
     }))
 
     dataTableConfig.value = arrTable.map((item: any, index: number) => ({
       id: index,
-      name: item.title,
+      name: item.name,
       sku: item.sku,
       bar_code: '',
       weight: product.weight,
@@ -1150,10 +1152,15 @@
     isLoading.value = false
   }
 
+  const testLog = () => {
+    console.log('phan loai', dataTableConfig)
+    console.log('product cuoi', product)
+  }
+
   // const createProduct = () => {}
   const onFinish = (values: any) => {
     const dataSource = {
-      title: product.title,
+      name: product.name,
       attribute_set_id: product.groupAttributeID,
       website: product.website,
       nganh_hang: product.category,
