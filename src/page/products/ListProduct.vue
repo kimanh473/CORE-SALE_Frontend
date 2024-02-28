@@ -252,9 +252,7 @@
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
     deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
-    console.log('check convert number->string', deleteAllProduct.value)
     state.selectedRowKeys = selectedRowKeys
-    console.log(state.selectedRowKeys)
   }
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
 
@@ -279,7 +277,6 @@
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
-    console.log(idSelected.value)
   }
   // const handleDelete = () => {
   //   // da.deleteWebAction(
@@ -312,8 +309,6 @@
 
   // delete all dùng api xóa all
   const handleDeleteAll = () => {
-    console.log(`delete ${state.selectedRowKeys}`)
-    console.log('------')
     const data = {
       ids: deleteAllProduct.value,
     }
