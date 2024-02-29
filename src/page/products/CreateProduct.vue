@@ -1109,6 +1109,7 @@
     lastGenerateSku.value = res_2.value.map((item: any) => ({
       sku: item,
     }))
+
     const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
       name: item.name,
       code: item.code,

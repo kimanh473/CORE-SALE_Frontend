@@ -508,7 +508,7 @@
                     class="w-full"
                     placeholder="Chọn loại thuế"
                     :options="listTax"
-                    v-model:value="product.taxID"
+                    v-model:value="detailProduct.tax_id"
                     :fieldNames="{ label: 'title', value: 'id' }"
                   >
                   </a-select>
@@ -886,7 +886,7 @@
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
                   <a-table
                     :columns="columns"
-                    :data-source="detailProduct?.list_product_config"
+                    :data-source="detailProduct.list_classify"
                     :pagination="false"
                     bordered
                   >
@@ -1214,18 +1214,25 @@
   const fileList = ref<UploadProps['fileList']>([])
   const fileProductList = ref<UploadProps['fileList']>([])
   const dataProduct = useProduct()
-  dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
-    fileProductList.value = detailProduct.value.image.map(
-      (item: Array<string>, index: number) => ({
-        uid: index,
-        name: `image ${index}`,
-        status: 'done',
-        url: `${UrlImg}/${item}`,
-      })
-    )
-  })
   const { detailProduct } = storeToRefs(dataProduct)
-
+  const dataTableConfig = ref()
+  dataProduct
+    .getDetailProductAction(Number(route.params.id))
+    .then(() => {
+      fileProductList.value = detailProduct.value.image.map(
+        (item: Array<string>, index: number) => ({
+          uid: index,
+          name: `image ${index}`,
+          status: 'done',
+          url: `${UrlImg}/${item}`,
+        })
+      )
+    })
+    .then(() => {
+      dataTableConfig.value = detailProduct.value.list_product_config
+      console.log('test detail', dataTableConfig.value)
+      console.log('testttt', detailProduct.value.list_product_config)
+    })
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -1340,7 +1347,6 @@
     } else {
       dataCreateProduct.value[input_name] = detailProduct.value[input_name]
     }
-    console.log('handleChange', dataCreateProduct)
   }
   function getBase64(file: File) {
     return new Promise((resolve, reject) => {
@@ -1445,13 +1451,13 @@
       value: <SelectProps>[],
       title: '',
     }
-    dataOption.push(data)
+    detailProduct.value.list_classify.push(data)
   }
   const removeOptions = (index: number) => {
-    dataOption.splice(index, 1)
+    detailProduct.value.list_classify.splice(index, 1)
   }
   const product = reactive({
-    title: '',
+    name: '',
     code: '',
     desc: '',
     webID: null,
@@ -1490,20 +1496,18 @@
   }
   const lastGenerateList = ref<any>([])
   const lastGenerateSku = ref<any>([])
-  // const dataTableConfig = detailProduct.value.list_product_config
-  const dataTableConfig = ref<any>([])
 
   const skuArr = ref<any>([])
   const listSku = ref<any>([])
   const addClassify = async () => {
-    console.log('dataCreate in add', dataCreateProduct)
+    console.log('dataCreate in add', dataTableConfig.value)
     nameArr.value = []
     listGenerate.value = []
     skuArr.value = []
     listSku.value = []
-    nameArr.value.push(dataCreateProduct.value.name)
+    nameArr.value.push(detailProduct.value.name)
     listGenerate.value.push(nameArr.value, ...mapArr.value)
-    skuArr.value.push(dataCreateProduct.value.sku)
+    skuArr.value.push(detailProduct.value.sku)
     listSku.value.push(skuArr.value, ...mapArr.value)
     await getDataTableConfig(listGenerate.value, listSku.value)
     lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
@@ -1514,13 +1518,11 @@
     lastGenerateSku.value = res_2.value.map((item: any) => ({
       sku: item,
     }))
-    console.log('last', lastGenerateSku)
     const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
       name: item.name,
       code: item.code,
       sku: lastGenerateSku.value[index].sku,
     }))
-    console.log('arrTable', arrTable)
 
     dataTableConfig.value = arrTable.map((item: any, index: number) => ({
       id: index,
@@ -1569,6 +1571,7 @@
     console.log('detailsp', detailProduct)
     console.log('res_1', res_1)
     console.log('dataOption', dataOption)
+    console.log('handleChange', dataCreateProduct.value)
   }
   const updateProduct = () => {
     const dataSource = {
