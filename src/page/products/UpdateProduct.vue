@@ -492,7 +492,7 @@
                     class="w-full"
                     placeholder="Chọn bộ thuộc tính"
                     :options="listSetAttributeGroup"
-                    v-model:value="product.groupAttributeID"
+                    v-model:value="detailProduct.attribute_set_id"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     @change="handleChangeAttributeGroup"
                   >

@@ -17,7 +17,7 @@
       </Header>
     </template>
     <template v-slot:content class="relative">
-      <div
+      <!-- <div
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div></div>
@@ -28,8 +28,14 @@
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới đơn hàng</p>
         </div>
-      </div>
-
+      </div> -->
+      <a-menu mode="horizontal">
+        <a-menu-item key="1"> Trạng thái 1 </a-menu-item>
+        <a-menu-item key="2"> Trạng thái 2 </a-menu-item>
+        <a-menu-item key="3"> Trạng thái 3 </a-menu-item>
+        <a-menu-item key="4"> Trạng thái 4 </a-menu-item>
+        <a-menu-item key="5"> Trạng thái 5 </a-menu-item>
+      </a-menu>
       <a-table
         class="!p-[10px]"
         :columns="columns"
@@ -50,10 +56,7 @@
             </a>
           </template>
           <template v-if="column.key === 'id'">
-            <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
-              @click="handleOpenDelete(record)"
-              >Xóa</a
-            >&nbsp;|&nbsp;<a @click="handleToDetail(record.id)">Xem chi tiết</a>
+            &nbsp;<a @click="handleToDetail(record.id)">Xem chi tiết</a>
           </template>
         </template>
         <template #switch="{ text }">
@@ -190,17 +193,17 @@
     isOpenConfirm.value = false
   }
 
-  const CreateOrder = () => {
-    router.push('/create-order')
-  }
-  const navigateUpdate = (id: number) => {
-    router.push(`/update-product/${id}`)
-  }
-  const idSelected = ref()
-  const handleOpenDelete = (record: any) => {
-    isOpenConfirm.value = true
-    idSelected.value = record.id
-  }
+  // const CreateOrder = () => {
+  //   router.push('/create-order')
+  // }
+  // const navigateUpdate = (id: number) => {
+  //   router.push(`/update-product/${id}`)
+  // }
+  // const idSelected = ref()
+  // const handleOpenDelete = (record: any) => {
+  //   isOpenConfirm.value = true
+  //   idSelected.value = record.id
+  // }
   const handleToDetail = (id: number) => {
     router.push(`/detail-order/${id}`)
   }

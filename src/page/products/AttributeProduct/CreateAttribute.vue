@@ -484,7 +484,7 @@
       is_unique: attribute.is_unique,
       is_specification: attribute.is_specification,
       note: '',
-      option_detail: dataOption,
+      options: dataOption,
     }
     dataAttribute.createAttributeAction(data, toast, router, EndTimeLoading)
     // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)

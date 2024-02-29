@@ -239,6 +239,22 @@
               </div>
             </div>
           </div>
+          <h4 class="form-section-title-order w-full m-0">
+            <span class="pr-2">
+              <i class="fal fa-exchange"></i>
+            </span>
+            Điều chỉnh đặt hàng
+          </h4>
+          <div class="rounded-md border-2">
+            <a-table
+              class="!p-[10px]"
+              :columns="columns"
+              :data-source="detailOrder.product_detail"
+              :pagination="false"
+              row-key="id"
+            >
+            </a-table>
+          </div>
         </div>
         <div class="w-1/3 px-4">
           <div class="w-full bg-white p-4 mb-4">
