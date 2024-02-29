@@ -492,7 +492,7 @@
                     class="w-full"
                     placeholder="Chọn bộ thuộc tính"
                     :options="listSetAttributeGroup"
-                    v-model:value="product.groupAttributeID"
+                    v-model:value="detailProduct.attribute_set_id"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     @change="handleChangeAttributeGroup"
                   >
@@ -886,19 +886,20 @@
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
                   <a-table
                     :columns="columns"
-                    :data-source="detailProduct.list_classify"
+                    :data-source="dataTableConfig"
                     :pagination="false"
                     bordered
                   >
                     <template #bodyCell="{ column, record }">
                       <template v-if="column.key === 'group_1'"
                         ><div>
+                          {{ fileProductSetting }}
                           <a-upload
                             class="form-group-label"
                             list-type="picture-card"
                             @preview="handlePreview"
-                            v-model:file-list="record.image"
                             @change="handleImageTable($event, record.id)"
+                            v-model:file-list="fileProductSetting"
                           >
                             <div>
                               <plus-outlined />
@@ -1213,26 +1214,25 @@
   const route = useRoute()
   const fileList = ref<UploadProps['fileList']>([])
   const fileProductList = ref<UploadProps['fileList']>([])
+  const fileProductSetting = ref<UploadProps['fileList']>([])
   const dataProduct = useProduct()
   const { detailProduct } = storeToRefs(dataProduct)
-  const dataTableConfig = ref()
-  dataProduct
-    .getDetailProductAction(Number(route.params.id))
-    .then(() => {
-      fileProductList.value = detailProduct.value.image.map(
-        (item: Array<string>, index: number) => ({
-          uid: index,
-          name: `image ${index}`,
-          status: 'done',
-          url: `${UrlImg}/${item}`,
-        })
-      )
-    })
-    .then(() => {
-      dataTableConfig.value = detailProduct.value.list_product_config
-      console.log('test detail', dataTableConfig.value)
-      console.log('testttt', detailProduct.value.list_product_config)
-    })
+  const dataTableConfig = ref<any>([])
+  dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
+    fileProductList.value = detailProduct.value.image.map(
+      (item: Array<string>, index: number) => ({
+        uid: index,
+        name: `image ${index}`,
+        status: 'done',
+        url: `${UrlImg}/${item}`,
+      })
+    )
+    dataTableConfig.value = detailProduct.value.list_product_config
+    const arr = detailProduct.value.list_product_config.map(
+      (item: any) => item.image
+    )
+    console.log(arr)
+  })
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
   const { listSetAttributeGroup, listDefault, listSpecDefault } =
@@ -1412,7 +1412,10 @@
   const mapArr = ref<any>([])
   const nameArr = ref<any>([])
   const handleChangeClassify = (valueClassify: any) => {
-    mapArr.value = dataOption.map((item: any) => item.value)
+    mapArr.value = detailProduct?.value?.list_classify?.map(
+      (item: any) => item.value
+    )
+    console.log(mapArr.value)
 
     // listGenerate.value = res_1.value.map((item: any, index: any) => ({
     //   title: item,

@@ -759,7 +759,7 @@
           <div class="p-4 text-left">
             <button class="button-modal" html-type="submit">Cập nhật</button>
 
-            <button class="button-close-modal" @click="router.go(-1)">
+            <button class="button-close-modal" @click="CancelCreate">
               Hủy bỏ
             </button>
             <button class="button-close-modal" @click="testLog">Test</button>
@@ -881,7 +881,6 @@
       align: 'center',
     },
   ]
-  console.log('log', listTreeCategory)
   const dataCreateProduct = ref<any>({})
   const handleChangeAttributeGroup = (value: any, options: any) => {
     indexAttribute.value = options.json_group_attribute_detail.map(
@@ -1151,6 +1150,9 @@
   const router = useRouter()
   const EndTimeLoading = () => {
     isLoading.value = false
+  }
+  const CancelCreate = () => {
+    router.push('/products-list/page/1')
   }
 
   // const createProduct = () => {}
