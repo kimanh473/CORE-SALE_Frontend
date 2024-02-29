@@ -1109,6 +1109,7 @@
     lastGenerateSku.value = res_2.value.map((item: any) => ({
       sku: item,
     }))
+
     const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
       name: item.name,
       code: item.code,
@@ -1152,11 +1153,6 @@
     isLoading.value = false
   }
 
-  const testLog = () => {
-    console.log('phan loai', dataTableConfig)
-    console.log('product cuoi', product)
-  }
-
   // const createProduct = () => {}
   const onFinish = (values: any) => {
     const dataSource = {
@@ -1195,6 +1191,10 @@
   }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
+  }
+  const testLog = () => {
+    console.log('phan loai', dataTableConfig)
+    console.log('product cuoi', product)
   }
 </script>
 
