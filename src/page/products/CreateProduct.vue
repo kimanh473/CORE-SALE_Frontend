@@ -1108,6 +1108,7 @@
     lastGenerateSku.value = res_2.value.map((item: any) => ({
       sku: item,
     }))
+
     const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
       name: item.name,
       code: item.code,
@@ -1149,11 +1150,6 @@
   const router = useRouter()
   const EndTimeLoading = () => {
     isLoading.value = false
-  }
-
-  const testLog = () => {
-    console.log('phan loai', dataTableConfig)
-    console.log('product cuoi', product)
   }
   const CancelCreate = () => {
     router.push('/products-list/page/1')
@@ -1197,6 +1193,10 @@
   }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
+  }
+  const testLog = () => {
+    console.log('phan loai', dataTableConfig)
+    console.log('product cuoi', product)
   }
 </script>
 
