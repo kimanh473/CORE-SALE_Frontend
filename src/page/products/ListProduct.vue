@@ -84,6 +84,10 @@
               height="50"
             />
           </template>
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
               {{ formatWeb(item) }}
@@ -212,6 +216,7 @@
     {
       title: 'Trạng thái',
       dataIndex: 'status',
+      key: 'status',
     },
     {
       title: 'Website',

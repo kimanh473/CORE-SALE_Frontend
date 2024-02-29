@@ -34,9 +34,22 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <div>
+        <span class="ml-2 mt-1 text-white">
+          <template v-if="hasSelected">
+            {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
+          </template>
+        </span>
+        <div class="flex">
+          <div
+            class="button-delete relative group rounded-md px-2"
+            title="Xóa tất cả"
+            @click="handleOpenDeleteAllProduct"
+            v-show="showDeleteAll"
+          >
+            <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
+          </div>
           <a-button
-            class="button-push-up"
+            class="button-push-up mr-3"
             type="primary"
             :disabled="!hasSelected"
             :loading="state.loading"
@@ -44,19 +57,6 @@
           >
             Đẩy lên sàn
           </a-button>
-          <span class="ml-2 mt-1 text-white">
-            <template v-if="hasSelected">
-              {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
-            </template>
-          </span>
-        </div>
-        <div
-          class="button-delete relative group rounded-md px-2"
-          title="Xóa tất cả"
-          @click="handleOpenDeleteAllProduct"
-          v-show="showDeleteAll"
-        >
-          <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
         </div>
       </div>
       <a-table
