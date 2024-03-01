@@ -48,15 +48,44 @@
           >
             <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
           </div>
-          <a-button
-            class="button-push-up mr-3"
-            type="primary"
-            :disabled="!hasSelected"
-            :loading="state.loading"
+          <div
+            class="button-custom update-list-button bg-amber-500 relative group rounded-md px-2"
+            title="Cập nhật"
+          >
+            <p class="text-[14px] mt-1 px-1">Cập nhật</p>
+          </div>
+          <div
+            class="button-custom export-button bg-red-500 relative group rounded-md px-2"
+            title="Export"
+          >
+            <p class="text-[14px] mt-1 px-1">Export</p>
+          </div>
+          <div
+            class="button-custom import-button bg-red-500 relative group rounded-md px-2"
+            title="Import"
+          >
+            <p class="text-[14px] mt-1 px-1">Import</p>
+          </div>
+          <div
+            class="button-custom hide-product bg-green-500 relative group rounded-md px-2 mr-3"
+            title="Ẩn sản phẩm"
+          >
+            <p class="text-[14px] mt-1 px-1">Ẩn sản phẩm</p>
+          </div>
+          <div
+            class="button-custom push-product bg-green-500 relative group rounded-md px-2 mr-3"
+            title="Đẩy sản phẩm"
             @click="start"
           >
-            Đẩy lên sàn
-          </a-button>
+            <p class="text-[14px] mt-1 px-1">Đẩy sản phẩm</p>
+          </div>
+          <div
+            class="button-create-new relative group rounded-md px-2"
+            title="Tạo mới sản phẩm"
+            @click="CreateProduct()"
+          >
+            <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+          </div>
         </div>
       </div>
       <a-table
@@ -84,6 +113,10 @@
               width="50"
               height="50"
             />
+          </template>
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
           </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
@@ -250,6 +283,8 @@
     {
       title: 'Trạng thái',
       dataIndex: 'status',
+      align: 'center',
+      key: 'status',
     },
     {
       title: 'Website',
@@ -277,6 +312,9 @@
   const showDeleteAll = computed(() => state.selectedRowKeys.length > 1)
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
+  }
+  const CreateProduct = () => {
+    router.push('/create-product')
   }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
@@ -320,16 +358,15 @@
   type Key = string | number
   const state = reactive<{
     selectedRowKeys: Key[]
-    loading: boolean
+
     loadingDel: boolean
   }>({
     selectedRowKeys: [], // Check here to configure the default column
-    loading: false,
+
     loadingDel: false,
   })
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
   const start = () => {
-    state.loading = true
     // ajax request after empty completing
     for (let i = 0; i < state.selectedRowKeys.length; i++) {
       console.log(`push ${state.selectedRowKeys[i]}`)
@@ -341,7 +378,6 @@
     }
     // ajax request after empty completing
     setTimeout(() => {
-      state.loading = false
       state.selectedRowKeys = []
       handleCloseConfirmAll()
       EndTimeLoading()
@@ -435,5 +471,37 @@
     right: 0px;
     z-index: 9999;
     justify-items: center;
+  }
+
+  .export-button::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f56e';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .update-list-button::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f021';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .push-product::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f062';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .hide-product::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f063';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
   }
 </style>

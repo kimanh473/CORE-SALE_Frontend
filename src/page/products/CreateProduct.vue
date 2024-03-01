@@ -759,7 +759,7 @@
           <div class="p-4 text-left">
             <button class="button-modal" html-type="submit">Cập nhật</button>
 
-            <button class="button-close-modal" @click="CancelCreate">
+            <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
             <button class="button-close-modal" @click="testLog">Test</button>
@@ -1150,9 +1150,6 @@
   const router = useRouter()
   const EndTimeLoading = () => {
     isLoading.value = false
-  }
-  const CancelCreate = () => {
-    router.push('/products-list/page/1')
   }
 
   // const createProduct = () => {}
