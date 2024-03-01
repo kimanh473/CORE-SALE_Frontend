@@ -9,7 +9,9 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Chi tiết đơn hàng</p>
+              <p class="longText pl-5 mb-0">
+                Chi tiết đơn hàng - {{ detailOrder.order_sn }}
+              </p>
             </div>
           </div>
         </div>
@@ -28,12 +30,12 @@
             <a-row class="p-4">
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ giao hàng</div>
-                <div>{{ detailOrder.buyer_username }}-232313123</div>
+                <div>{{ detailOrder.buyer_username }} - SĐT</div>
                 <div>30 Trương Định, Thịnh Liệt, Hoàng Mai, Hà Nội.</div></a-col
               >
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ thanh toán</div>
-                <div>{{ detailOrder.buyer_username }}-232313123</div>
+                <div>{{ detailOrder.buyer_username }} - SĐT</div>
                 <div>30 Trương Định, Thịnh Liệt, Hoàng Mai, Hà Nội.</div></a-col
               >
             </a-row>
@@ -80,8 +82,9 @@
                   >
                   <i
                     @click="copy(detailOrder.order_sn)"
-                    class="far fa-clone cursor-pointer"
+                    class="far fa-clone cursor-pointer pr-2"
                   ></i>
+                  <span v-if="copied"><i class="far fa-check"></i></span>
                 </div>
                 <div>
                   <span
@@ -247,6 +250,13 @@
               :pagination="false"
               row-key="id"
             >
+              <template #bodyCell="{ column, record, index }"
+                ><template v-if="column.key === 'model_discounted_price'"
+                  >{{
+                    FormatPrice(record.model_discounted_price)
+                  }}&#8363;</template
+                >
+              </template>
             </a-table>
           </div>
           <h4 class="form-section-title-order w-full m-0">
@@ -293,13 +303,7 @@
         <div class="w-1/3 px-4">
           <div class="w-full bg-white p-4 mb-4">
             <h4 class="form-section-title-order w-full m-0">Kênh bán hàng</h4>
-            <a-select
-              show-search
-              class="form-control-input"
-              placeholder="Chọn kênh"
-              :fieldNames="{ label: 'code', value: 'id' }"
-            >
-            </a-select>
+            Test
           </div>
           <div class="w-full bg-white p-4">
             <h4 class="form-section-title-order w-full m-0">Ghi chú</h4>
@@ -314,7 +318,7 @@
             <div class="text-divider">Lịch sử đơn hàng</div>
             <a-steps
               v-if="
-                detailOrder?.tracking_info ||
+                detailOrder?.tracking_info &&
                 detailOrder?.tracking_info?.length > 0
               "
               direction="vertical"
@@ -375,7 +379,7 @@
       })
     })
   const { detailOrder } = storeToRefs(dataOrder)
-  const { copy } = useClipboard()
+  const { copy, copied } = useClipboard()
   // const { listWeb } = storeToRefs(dataWebsite)
   // function formatWeb(webcode: string) {
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
