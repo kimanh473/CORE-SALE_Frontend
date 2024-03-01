@@ -171,7 +171,7 @@
       dataIndex: 'total_amount',
     },
     {
-      title: 'Nguồn gốc',
+      title: 'Shop',
       dataIndex: 'shop_name',
     },
     {

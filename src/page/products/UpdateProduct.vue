@@ -580,7 +580,7 @@
                     class="form-control-input"
                     placeholder="Chọn đơn vị tính"
                     :options="listProductUnit"
-                    v-model:value="product.unitCode"
+                    v-model:value="detailProduct.unit_id"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     @change="handleChangeUnit"
                   >
@@ -636,7 +636,7 @@
                 <a-textarea
                   type="text"
                   placeholder="Nhập mô tả"
-                  v-model:value="product.desc"
+                  v-model:value="detailProduct.desc"
                 >
                 </a-textarea>
               </div>
@@ -893,7 +893,6 @@
                     <template #bodyCell="{ column, record }">
                       <template v-if="column.key === 'group_1'"
                         ><div>
-                          {{ fileProductSetting }}
                           <a-upload
                             class="form-group-label"
                             list-type="picture-card"
@@ -1219,7 +1218,7 @@
   const { detailProduct } = storeToRefs(dataProduct)
   const dataTableConfig = ref<any>([])
   dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
-    fileProductList.value = detailProduct.value.image.map(
+    fileProductList.value = detailProduct?.value?.image?.map(
       (item: Array<string>, index: number) => ({
         uid: index,
         name: `image ${index}`,
@@ -1228,10 +1227,17 @@
       })
     )
     dataTableConfig.value = detailProduct.value.list_product_config
-    const arr = detailProduct.value.list_product_config.map(
+    const arr = detailProduct.value?.list_product_config?.map(
       (item: any) => item.image
     )
-    console.log(arr)
+    fileProductSetting.value = arr?.map(
+      (item: Array<string>, index: number) => ({
+        uid: index,
+        name: `image ${index}`,
+        status: 'done',
+        url: `${item}`,
+      })
+    )
   })
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
