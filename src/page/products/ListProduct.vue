@@ -90,7 +90,7 @@
           </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
-              {{ formatWeb(item) }}
+              <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
             </div>
           </template>
           <template v-if="column.key === 'id'">

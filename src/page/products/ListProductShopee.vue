@@ -69,6 +69,7 @@
           <div
             class="button-custom hide-product bg-green-500 relative group rounded-md px-2 mr-3"
             title="Ẩn sản phẩm"
+            @click="HideAllProductShopee"
           >
             <p class="text-[14px] mt-1 px-1">Ẩn sản phẩm</p>
           </div>
@@ -124,9 +125,10 @@
             </div>
           </template>
           <template v-if="column.key === 'id'">
-            <a @click="handlePushProduct(record.id)">Ẩn</a>&nbsp;|&nbsp;<a
-              @click="navigateUpdate(record.id)"
-              >Sửa</a
+            <a @click="pushProductShopee(record)">Đẩy</a>&nbsp;|&nbsp;<a
+              @click="hideProductShopee(record)"
+              >Ẩn</a
+            >&nbsp;|&nbsp;<a @click="navigateUpdate(record.id)">Sửa</a
             >&nbsp;|&nbsp;<a @click="handleOpenDelete(record)">Xóa</a>
           </template>
         </template>
@@ -183,8 +185,8 @@
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  // import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
   import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
+  import type { UploadProps } from 'ant-design-vue'
 
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -201,6 +203,8 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const fileProductList = ref<UploadProps['fileList']>([])
+  const fileProductSetting = ref<UploadProps['fileList']>([])
   const dataProduct = useProductShopee()
   const web_site_code = 'shopee'
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
@@ -213,12 +217,34 @@
   //   Number(route.params.page),
   //   EndTimeLoading
   // )
-  dataProduct.getListProductAction(
-    web_site_code,
-    perPage.value,
-    Number(route.params.page),
-    EndTimeLoading
-  )
+  dataProduct
+    .getListProductAction(
+      web_site_code,
+      perPage.value,
+      Number(route.params.page),
+      EndTimeLoading
+    )
+    .then(() => {
+      fileProductList.value = listProduct?.value?.image?.map(
+        (item: Array<string>, index: number) => ({
+          uid: index,
+          name: `image ${index}`,
+          status: 'done',
+          url: `${UrlImg}/${item}`,
+        })
+      )
+      const arr = listProduct?.value?.list_product_config?.map(
+        (item: any) => item.image
+      )
+      fileProductSetting.value = arr?.map(
+        (item: Array<string>, index: number) => ({
+          uid: index,
+          name: `image ${index}`,
+          status: 'done',
+          url: `${item}`,
+        })
+      )
+    })
   // .then(() => {
   //   listProductShopee = listProduct.value.filter((item: any) => {
   //     return item.web_site_code.indexOf('shopee') != -1
@@ -249,7 +275,7 @@
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
   const isOpenConfirmAll = ref<boolean>(false)
-  const deleteAllProduct = ref()
+  const selectAllProduct = ref()
   const handleCloseConfirmAll = () => {
     isOpenConfirmAll.value = false
   }
@@ -321,16 +347,37 @@
   }
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
-    deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
+    selectAllProduct.value = selectedRowKeys.map((item: number) => String(item))
     state.selectedRowKeys = selectedRowKeys
-    console.log(selectedRowKeys)
+    console.log('?', selectAllProduct)
   }
-  const handlePushProduct = (id: number) => {}
   const idSelected = ref()
+  const pushProductShopee = (record: any) => {
+    idSelected.value = record.id
+    dataProduct.PushProductAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      web_site_code,
+      perPage.value,
+      Number(route.params.page)
+    )
+  }
+  const hideProductShopee = (record: any) => {
+    idSelected.value = record.id
+    dataProduct.HideProductAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      web_site_code,
+      perPage.value,
+      Number(route.params.page)
+    )
+  }
+
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
-    console.log(idSelected)
   }
   // const handleDelete = () => {
   //   // da.deleteWebAction(
@@ -387,6 +434,7 @@
   const handleOpenDeleteAllProduct = () => {
     isOpenConfirmAll.value = true
   }
+
   // const handleDeleteAll = () => {
   //   state.loadingDel = true
   //   for (let i = 0; i < state.selectedRowKeys.length; i++) {
@@ -420,10 +468,8 @@
 
   // delete all dùng api xóa all
   const handleDeleteAll = () => {
-    console.log(`delete ${state.selectedRowKeys}`)
-    console.log('------')
     const data = {
-      ids: deleteAllProduct.value,
+      ids: selectAllProduct.value,
     }
 
     // console.log('data', data)
@@ -432,6 +478,27 @@
       EndTimeLoading,
       toast,
       handleCloseConfirmAll,
+      web_site_code,
+      perPage.value,
+      Number(route.params.page)
+    )
+    setTimeout(() => {
+      state.loadingDel = false
+      state.selectedRowKeys = []
+    }, 1000)
+  }
+
+  const HideAllProductShopee = () => {
+    const data = {
+      ids: selectAllProduct.value,
+    }
+    console.log(data)
+
+    // console.log('data', data)
+    dataProduct.HideAllProductAction(
+      Object(data),
+      EndTimeLoading,
+      toast,
       web_site_code,
       perPage.value,
       Number(route.params.page)
