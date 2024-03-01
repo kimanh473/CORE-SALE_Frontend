@@ -410,7 +410,7 @@
                 ></label>
                 <div>
                   <a-form-item
-                    name="title"
+                    name="name"
                     :rules="[{ required: true, message: 'Chưa nhập tiêu đề' }]"
                   >
                     <a-input
@@ -573,14 +573,15 @@
               </div>
               <div class="w-1/2 pl-2">
                 <label for="" class="form-group-label"
-                  >Đơn vị tính<span class="text-red-600"></span> <span></span
+                  >Đơn vị quy chuẩn<span class="text-red-600"></span>
+                  <span></span
                 ></label>
                 <div>
                   <a-select
                     class="form-control-input"
-                    placeholder="Chọn đơn vị tính"
+                    placeholder="Chọn đơn vị quy chuẩn"
                     :options="listProductUnit"
-                    v-model:value="detailProduct.unit_id"
+                    v-model:value="detailProduct.unit_code"
                     :fieldNames="{ label: 'title', value: 'id' }"
                     @change="handleChangeUnit"
                   >
@@ -1164,17 +1165,11 @@
       <template v-slot:footer
         ><div class="bg-slate-300">
           <div class="p-4 text-left">
-            <button
-              class="button-modal"
-              html-type="submit"
-              @click="updateProduct()"
-            >
-              Cập nhật
-            </button>
+            <button class="button-modal" html-type="submit">Cập nhật</button>
             <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
-            <button class="button-close-modal" @click="checkTest">Test</button>
+            <!-- <button class="button-close-modal" @click="checkTest">Test</button> -->
           </div>
         </div></template
       >
@@ -1568,21 +1563,19 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
-  }
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
-  const checkTest = () => {
-    // console.log('dataCreate', dataCreateProduct)
-    // console.log('dataConfig', dataTableConfig)
-    console.log('detailsp', detailProduct)
-    console.log('res_1', res_1)
-    console.log('dataOption', dataOption)
-    console.log('handleChange', dataCreateProduct.value)
-  }
-  const updateProduct = () => {
+  // const onFinish = (values: any) => {
+  //   console.log('Success:', values)
+  // }
+
+  // const checkTest = () => {
+  // console.log('dataCreate', dataCreateProduct)
+  // console.log('dataConfig', dataTableConfig)
+  //   console.log('detailsp', detailProduct)
+  //   console.log('res_1', res_1)
+  //   console.log('dataOption', dataOption)
+  //   console.log('handleChange', dataCreateProduct.value)
+  // }
+  const onFinish = () => {
     const dataSource = {
       attribute_set_id: product.groupAttributeID,
       list_unit_change: dataMapUnit.value,
@@ -1599,9 +1592,6 @@
       })),
       unit_code: product.unitCode,
     }
-    console.log(dataOption)
-    console.log(dataUnit)
-    console.log(dataTableConfig.value)
     const data = Object.assign({}, detailProduct.value, dataSource)
     dataProduct.updateProductAction(
       Number(detailProduct.value.id),
@@ -1610,6 +1600,9 @@
       router,
       EndTimeLoading
     )
+  }
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo)
   }
 </script>
 

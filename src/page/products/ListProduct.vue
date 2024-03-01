@@ -50,7 +50,7 @@
           </div>
           <div
             class="button-create-new relative group rounded-md px-2"
-            title="Tạo mới web"
+            title="Tạo mới sản phẩm"
             @click="CreateProduct()"
           >
             <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
@@ -212,10 +212,12 @@
     {
       title: 'Bộ thuộc tính',
       dataIndex: 'attribute_set_id',
+      key: 'attribute_set_id',
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
+      align: 'center',
       key: 'status',
     },
     {

@@ -137,7 +137,6 @@ body {
   
   .button-create-new {
     cursor: pointer;
-    margin-left: 10px;
     margin-right: 10px;
     min-height: 35px;
     min-width: 35px;
@@ -207,7 +206,31 @@ body {
   .button-delete:hover {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
   }
+  .button-custom {
+    cursor: pointer;
+    /* margin-left: 10px; */
+    margin-right: 10px;
+    min-height: 35px;
+    min-width: 35px;
+    display: flex;
+    justify-content: center;
+    font-size: 1.3em;
+    color: white;
+    height: 30px;
+    max-width: 2200px;
+  }
+  .button-custom:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 10px;
+  }
+  .import-button::before {
+    font-family: "Font Awesome 5 Pro";
+    content: "\f56f";
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
 
+  
   .button-push-up{
     cursor: pointer;
     margin-left: 10px;

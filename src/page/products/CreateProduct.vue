@@ -245,7 +245,7 @@
                 </div>
                 <div class="w-1/2 pl-2">
                   <label for="" class="form-group-label"
-                    >Đơn vị quy dổi<span class="text-red-600"></span>
+                    >Đơn vị quy đổi<span class="text-red-600"></span>
                     <span></span
                   ></label>
                   <div>
@@ -759,10 +759,10 @@
           <div class="p-4 text-left">
             <button class="button-modal" html-type="submit">Cập nhật</button>
 
-            <button class="button-close-modal" @click="CancelCreate">
+            <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
-            <button class="button-close-modal" @click="testLog">Test</button>
+            <!-- <button class="button-close-modal" @click="testLog">Test</button> -->
           </div>
         </div></template
       >
@@ -1151,9 +1151,6 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const CancelCreate = () => {
-    router.push('/products-list/page/1')
-  }
 
   // const createProduct = () => {}
   const onFinish = (values: any) => {
@@ -1194,10 +1191,10 @@
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
   }
-  const testLog = () => {
-    console.log('phan loai', dataTableConfig)
-    console.log('product cuoi', product)
-  }
+  // const testLog = () => {
+  //   console.log('phan loai', dataTableConfig)
+  //   console.log('product cuoi', product)
+  // }
 </script>
 
 <style>
