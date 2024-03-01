@@ -28,19 +28,12 @@
             <a-row class="p-4">
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ giao hàng</div>
-                <div>
-                  {{ detailOrder.buyer_username }}-232313123
-                  <a class="pl-6">Thay đổi</a>
-                </div>
+                <div>{{ detailOrder.buyer_username }}-232313123</div>
                 <div>30 Trương Định, Thịnh Liệt, Hoàng Mai, Hà Nội.</div></a-col
               >
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ thanh toán</div>
-                <div>
-                  {{ detailOrder.buyer_username }}-232313123<a class="pl-6"
-                    >Thay đổi</a
-                  >
-                </div>
+                <div>{{ detailOrder.buyer_username }}-232313123</div>
                 <div>30 Trương Định, Thịnh Liệt, Hoàng Mai, Hà Nội.</div></a-col
               >
             </a-row>
@@ -56,9 +49,9 @@
               <a-col :span="12">
                 <div>
                   Phương thức thanh toán
-                  <a class="pl-6">{{
+                  <span class="pl-6">{{
                     FormatPayMethod(detailOrder.payment_method)
-                  }}</a>
+                  }}</span>
                 </div>
               </a-col>
             </a-row>
@@ -82,20 +75,20 @@
               </a-col>
               <a-col :span="6">
                 <div>
-                  <a id="code" value="Test" class="pl-6 pr-4"
-                    >: {{ detailOrder.order_sn }}</a
+                  <span id="code" value="Test" class="pl-6 pr-4"
+                    >: {{ detailOrder.order_sn }}</span
                   >
                   <i
                     @click="copy(detailOrder.order_sn)"
                     class="far fa-clone cursor-pointer"
                   ></i>
                 </div>
-
                 <div>
-                  <a
+                  <span
                     class="pl-6 pr-4"
                     v-if="detailOrder && detailOrder.package_list"
-                    >: {{ detailOrder?.package_list[0]?.shipping_carrier }}</a
+                    >:
+                    {{ detailOrder?.package_list[0]?.shipping_carrier }}</span
                   >
                 </div>
                 <div>
@@ -129,14 +122,15 @@
               <a-col :span="6">
                 <div>
                   <span class="pl-6 pr-4"
-                    >: &#8363;{{
+                    >:
+                    {{
                       FormatPrice(Number(detailOrder.estimated_shipping_fee))
-                    }}
+                    }}&#8363;
                   </span>
                 </div>
                 <div>
                   <span class="pl-6 pr-4"
-                    >: &#8363;{{ FormatPrice(Number(detailOrder.cod)) }}
+                    >: {{ FormatPrice(Number(detailOrder.cod)) }}&#8363;
                   </span>
                 </div>
                 <div>
@@ -175,26 +169,26 @@
                   />
                 </template>
                 <template v-if="column.key === 'discount' && record.image_info">
-                  &#8363;{{
+                  {{
                     FormatPrice(
                       record.model_original_price -
                         record.model_discounted_price
                     )
-                  }}
+                  }}&#8363;
                 </template>
                 <template
                   v-if="
                     column.key === 'model_original_price' && record.image_info
                   "
                 >
-                  &#8363;{{ FormatPrice(record.model_original_price) }}
+                  {{ FormatPrice(record.model_original_price) }}&#8363;
                 </template>
                 <template
                   v-if="
                     column.key === 'model_discounted_price' && record.image_info
                   "
                 >
-                  &#8363;{{ FormatPrice(record.model_discounted_price) }}
+                  {{ FormatPrice(record.model_discounted_price) }}&#8363;
                 </template></template
               >
             </a-table>
@@ -206,7 +200,7 @@
                   Tổng tiền ({{ detailOrder?.product_detail?.length }} sản phẩm)
                 </div>
                 <div>Chiết khấu</div>
-                <div>Tiền thuế</div>
+                <div>Tiền thuế (VAT)</div>
                 <div>Voucher sàn TMĐT</div>
                 <div>Voucher shop</div>
                 <div>Phí giao hàng</div>
@@ -215,26 +209,26 @@
                 <div class="font-bold">Khách phải trả</div>
               </div>
               <div class="text-end">
-                <div>&#8363;{{ FormatPrice(totalOrigin) }}</div>
-                <div>- &#8363;{{ FormatPrice(totalDiscount) }}</div>
-                <div>&#8363;0</div>
-                <div>&#8363;0</div>
-                <div>&#8363;0</div>
+                <div>{{ FormatPrice(totalOrigin) }}&#8363;</div>
+                <div>- {{ FormatPrice(totalDiscount) }}&#8363;</div>
+                <div>0&#8363;</div>
+                <div>0&#8363;</div>
+                <div>0&#8363;</div>
                 <div>
-                  &#8363;{{
+                  {{
                     FormatPrice(Number(detailOrder.estimated_shipping_fee))
-                  }}
+                  }}&#8363;
                 </div>
-                <div>&#8363;0</div>
-                <div>&#8363;0</div>
+                <div>0&#8363;</div>
+                <div>0&#8363;</div>
                 <div>
-                  &#8363;{{
+                  {{
                     FormatPrice(
                       totalOrigin -
                         totalDiscount +
                         Number(detailOrder.estimated_shipping_fee)
                     )
-                  }}
+                  }}&#8363;
                 </div>
               </div>
             </div>
@@ -248,12 +242,52 @@
           <div class="rounded-md border-2">
             <a-table
               class="!p-[10px]"
-              :columns="columns"
+              :columns="columnSetting"
               :data-source="detailOrder.product_detail"
               :pagination="false"
               row-key="id"
             >
             </a-table>
+          </div>
+          <h4 class="form-section-title-order w-full m-0">
+            <span class="pr-2">
+              <i class="fas fa-money-bill-wave"></i>
+            </span>
+            Số tiền cuối cùng
+          </h4>
+          <div class="rounded-md border-2">
+            <div class="p-4 flex justify-end">
+              <span class="font-bold pr-8">Doanh thu đơn hàng (cuối cùng)</span
+              ><span
+                >{{
+                  FormatPrice(
+                    totalOrigin -
+                      totalDiscount +
+                      Number(detailOrder.estimated_shipping_fee)
+                  )
+                }}&#8363;</span
+              >
+            </div>
+          </div>
+          <h4 class="form-section-title-order w-full m-0">
+            <span class="pr-2">
+              <i class="fas fa-hand-holding-usd"></i>
+            </span>
+            Thanh toán người mua
+          </h4>
+          <div class="rounded-md border-2">
+            <div class="p-4 flex justify-end">
+              <span class="font-bold pr-8">Tổng tiền thanh toán</span
+              ><span
+                >{{
+                  FormatPrice(
+                    totalOrigin -
+                      totalDiscount +
+                      Number(detailOrder.estimated_shipping_fee)
+                  )
+                }}&#8363;</span
+              >
+            </div>
           </div>
         </div>
         <div class="w-1/3 px-4">
@@ -278,7 +312,14 @@
           </div>
           <div class="w-full bg-white p-4">
             <div class="text-divider">Lịch sử đơn hàng</div>
-            <a-steps direction="vertical" progress-dot>
+            <a-steps
+              v-if="
+                detailOrder?.tracking_info ||
+                detailOrder?.tracking_info?.length > 0
+              "
+              direction="vertical"
+              progress-dot
+            >
               <a-step
                 v-for="(item, index) in detailOrder.tracking_info"
                 :key="index"
@@ -288,6 +329,11 @@
                 "
               />
             </a-steps>
+            <a-empty v-else
+              ><template #description>
+                <span> Không có dữ liệu </span>
+              </template></a-empty
+            >
           </div>
         </div>
       </div>
@@ -407,6 +453,22 @@
     },
     {
       title: 'Thành tiền',
+      dataIndex: 'model_discounted_price',
+      key: 'model_discounted_price',
+    },
+  ]
+  const columnSetting = [
+    {
+      title: 'Ngày hoàn thành điều chỉnh',
+      dataIndex: 'discount',
+      key: 'discount',
+    },
+    {
+      title: 'Lý do điều chỉnh ',
+      dataIndex: 'tax',
+    },
+    {
+      title: 'Số tiền thanh toán',
       dataIndex: 'model_discounted_price',
       key: 'model_discounted_price',
     },
