@@ -32,9 +32,9 @@
     <template v-slot:content class="relative">
       <div
         id="task-bar-list"
-        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-300 rounded flex justify-between"
       >
-        <span class="ml-2 mt-1 text-white">
+        <span class="ml-2 mt-1.5 text-slate-700">
           <template v-if="hasSelected">
             {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
           </template>
@@ -120,7 +120,7 @@
           </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
-              {{ formatWeb(item) }}
+              <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
             </div>
           </template>
           <template v-if="column.key === 'id'">

@@ -245,7 +245,7 @@
                 </div>
                 <div class="w-1/2 pl-2">
                   <label for="" class="form-group-label"
-                    >Đơn vị quy dổi<span class="text-red-600"></span>
+                    >Đơn vị quy đổi<span class="text-red-600"></span>
                     <span></span
                   ></label>
                   <div>
@@ -762,7 +762,7 @@
             <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
-            <button class="button-close-modal" @click="testLog">Test</button>
+            <!-- <button class="button-close-modal" @click="testLog">Test</button> -->
           </div>
         </div></template
       >
@@ -1191,10 +1191,10 @@
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
   }
-  const testLog = () => {
-    console.log('phan loai', dataTableConfig)
-    console.log('product cuoi', product)
-  }
+  // const testLog = () => {
+  //   console.log('phan loai', dataTableConfig)
+  //   console.log('product cuoi', product)
+  // }
 </script>
 
 <style>
