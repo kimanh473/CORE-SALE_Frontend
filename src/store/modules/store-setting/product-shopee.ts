@@ -6,9 +6,9 @@ import {
   filterProductApi,
   deleteProductApi,
   deleteAllProductApi,
-  // getShopShopeeApi,
-  // getAllProductShopeeToDBApi,
-  // getBackToListShopeeProductApi
+  hideAllProductShopeeApi,
+  hideProductShopeeApi,
+  pushProductShopeeApi,
   // updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
 // import { update } from 'lodash-es'
@@ -173,7 +173,12 @@ export const useProductShopee = defineStore('ProductsShopee', {
         .then((res) => {
           if (res.data.status === 'success') {
             toast.success('Xóa thành công', 500)
-            this.getListProductAction(web_site_code, perPage, page)
+            this.getListProductAction(
+              web_site_code,
+              perPage,
+              page,
+              EndTimeLoading
+            )
           } else {
             toast.error(res.data.messages, 500)
           }
@@ -183,6 +188,93 @@ export const useProductShopee = defineStore('ProductsShopee', {
         .catch((err) => {
           console.log(err)
           handleCloseConfirmAll()
+          EndTimeLoading()
+        })
+    },
+
+    PushProductAction(
+      id: number,
+      EndTimeLoading: Function,
+      toast: any,
+      web_site_code: string,
+      perPage: number,
+      page: number
+    ) {
+      pushProductShopeeApi(id)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            toast.success('Đẩy thành công', 500)
+            this.getListProductAction(
+              web_site_code,
+              perPage,
+              page,
+              EndTimeLoading
+            )
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+          EndTimeLoading()
+        })
+        .catch((err) => {
+          console.log(err)
+          EndTimeLoading()
+        })
+    },
+
+    HideProductAction(
+      id: number,
+      EndTimeLoading: Function,
+      toast: any,
+      web_site_code: string,
+      perPage: number,
+      page: number
+    ) {
+      hideProductShopeeApi(id)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            toast.success('Ẩn thành công', 500)
+            this.getListProductAction(
+              web_site_code,
+              perPage,
+              page,
+              EndTimeLoading
+            )
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+          EndTimeLoading()
+        })
+        .catch((err) => {
+          console.log(err)
+          EndTimeLoading()
+        })
+    },
+
+    HideAllProductAction(
+      data: Object,
+      EndTimeLoading: Function,
+      toast: any,
+      web_site_code: string,
+      perPage: number,
+      page: number
+    ) {
+      hideAllProductShopeeApi(data)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            toast.success('Ẩn thành công', 500)
+            this.getListProductAction(
+              web_site_code,
+              perPage,
+              page,
+              EndTimeLoading
+            )
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+          EndTimeLoading()
+        })
+        .catch((err) => {
+          console.log(err)
           EndTimeLoading()
         })
     },
