@@ -55,6 +55,15 @@
               {{ record.order_sn }}
             </a>
           </template>
+          <template v-if="column.key === 'total_amount'">
+            {{ FormatPrice(record.total_amount) }}&#8363;
+          </template>
+          <template v-if="column.key === 'tax_money'">
+            {{ FormatPrice(record.tax_money) }}&#8363;
+          </template>
+          <template v-if="column.key === 'order_status'">
+            {{ FormatOrderStatus(record.order_status) }}
+          </template>
           <template v-if="column.key === 'id'">
             &nbsp;<a @click="handleToDetail(record.id)">Xem chi tiết</a>
           </template>
@@ -96,6 +105,10 @@
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { useOrder } from '@/store/modules/orders/orders'
+  import {
+    FormatPrice,
+    FormatOrderStatus,
+  } from '@/components/constants/FormatAll'
   import { storeToRefs } from 'pinia'
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -161,14 +174,20 @@
     {
       title: 'Tiền hàng',
       dataIndex: 'total_amount',
+      key: 'total_amount',
+      align: 'right',
     },
     {
       title: 'Tiền thuế',
       dataIndex: 'tax_money',
+      key: 'tax_money',
+      align: 'right',
     },
     {
       title: 'Tổng tiền',
       dataIndex: 'total_amount',
+      key: 'total_amount',
+      align: 'right',
     },
     {
       title: 'Shop',
@@ -177,6 +196,7 @@
     {
       title: 'Trạng thái',
       dataIndex: 'order_status',
+      key: 'order_status',
     },
     {
       title: 'Diễn giải',
