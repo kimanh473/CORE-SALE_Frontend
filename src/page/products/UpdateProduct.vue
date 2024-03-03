@@ -1166,11 +1166,7 @@
         ><div class="bg-slate-300">
           <div class="p-4 text-left">
             <button class="button-modal" html-type="submit">Cập nhật</button>
-            <button
-              class="button-close-modal"
-              html-type="cancel"
-              @click="router.go(-1)"
-            >
+            <button class="button-close-modal" @click.prevent="router.go(-1)">
               Hủy bỏ
             </button>
             <!-- <button class="button-close-modal" @click="checkTest">Test</button> -->
@@ -1489,10 +1485,10 @@
       unit_exchange: '',
       rate: '',
     }
-    dataUnit.push(data)
+    detailProduct.value.list_unit_change.push(data)
   }
   const removeUnits = (index: number) => {
-    dataUnit.splice(index, 1)
+    detailProduct.value.list_unit_change.splice(index, 1)
   }
   const dataMapUnit = ref<any>([])
   const handleChangeUnit = (value: any) => {
