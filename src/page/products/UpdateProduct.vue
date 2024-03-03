@@ -1166,7 +1166,11 @@
         ><div class="bg-slate-300">
           <div class="p-4 text-left">
             <button class="button-modal" html-type="submit">Cập nhật</button>
-            <button class="button-close-modal" @click="router.go(-1)">
+            <button
+              class="button-close-modal"
+              html-type="cancel"
+              @click="router.go(-1)"
+            >
               Hủy bỏ
             </button>
             <!-- <button class="button-close-modal" @click="checkTest">Test</button> -->

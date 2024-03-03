@@ -76,7 +76,7 @@
           <div
             class="button-custom push-product bg-green-500 relative group rounded-md px-2 mr-3"
             title="Đẩy sản phẩm"
-            @click="start"
+            @click="PushAllProductShopee"
           >
             <p class="text-[14px] mt-1 px-1">Đẩy sản phẩm</p>
           </div>
@@ -98,6 +98,7 @@
         :columns="columns"
         :data-source="listProduct"
         :pagination="false"
+        :scroll="{ x: 'calc(700px + 50%)' }"
         v-model:current="currentPage"
         bordered
         row-key="id"
@@ -119,10 +120,21 @@
             <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
             <a-tag v-else>Tắt</a-tag>
           </template>
+          <template v-if="column.key === 'status_sync'">
+            <a-tag v-if="record.status === '1'" color="green"
+              >Liên kết thành công</a-tag
+            >
+            <a-tag v-else color="red">Liên kết lỗi</a-tag>
+          </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
               <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
             </div>
+          </template>
+          <template v-if="column.key === 'retail_price'">
+            <!-- <p>
+              {{ record.retail_price }}
+            </p> -->
           </template>
           <template v-if="column.key === 'id'">
             <a @click="pushProductShopee(record)">Đẩy</a>&nbsp;|&nbsp;<a
@@ -204,7 +216,7 @@
     isLoading.value = false
   }
   const fileProductList = ref<UploadProps['fileList']>([])
-  const fileProductSetting = ref<UploadProps['fileList']>([])
+  // const fileProductSetting = ref<UploadProps['fileList']>([])
   const dataProduct = useProductShopee()
   const web_site_code = 'shopee'
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
@@ -231,17 +243,6 @@
           name: `image ${index}`,
           status: 'done',
           url: `${UrlImg}/${item}`,
-        })
-      )
-      const arr = listProduct?.value?.list_product_config?.map(
-        (item: any) => item.image
-      )
-      fileProductSetting.value = arr?.map(
-        (item: Array<string>, index: number) => ({
-          uid: index,
-          name: `image ${index}`,
-          status: 'done',
-          url: `${item}`,
         })
       )
     })
@@ -284,57 +285,100 @@
       title: 'STT',
       dataIndex: 'id',
       key: 'stt',
+      width: 60,
+      align: 'center',
+      fixed: 'left',
     },
     {
       title: 'Ảnh',
       dataIndex: 'image',
       key: 'image',
+      width: 100,
+      fixed: 'left',
     },
     {
       title: 'Tên sản phẩm',
       dataIndex: 'name',
+      width: 300,
+      fixed: 'left',
     },
     {
       title: 'SKU',
       dataIndex: 'sku',
+      width: 150,
     },
     {
       title: 'Loại sản phẩm',
       dataIndex: `type_id`,
+      width: 100,
     },
     {
       title: 'Bộ thuộc tính',
       dataIndex: 'attribute_set_id',
+      width: 100,
     },
     {
-      title: 'Trạng thái',
+      title: 'Trạng thái sản phẩm',
       dataIndex: 'status',
       align: 'center',
       key: 'status',
+      width: 100,
+    },
+    {
+      title: 'Trạng thái đồng bộ',
+      dataIndex: 'status',
+      align: 'center',
+      key: 'status_sync',
+      width: 180,
     },
     {
       title: 'Website',
       dataIndex: 'web_site_code',
       key: 'web_site_code',
+      width: 100,
+    },
+    {
+      title: 'Shop',
+      dataIndex: 'shop_id',
+      key: 'shop_id',
+      width: 150,
     },
     {
       title: 'Giá niêm yết',
       dataIndex: 'listed_price',
+      key: 'listed_price',
+      width: 120,
+      align: 'right',
     },
     {
       title: 'Giá sỉ',
       dataIndex: 'wholesale_price',
+      key: 'wholesale_price',
+      width: 120,
+      align: 'right',
     },
     {
       title: 'Giá lẻ',
       dataIndex: 'retail_price',
+      key: 'retail_price',
+      width: 120,
+      align: 'right',
     },
     {
       title: 'Thao tác',
       dataIndex: 'id',
       key: 'id',
+      fixed: 'right',
+      width: 170,
     },
   ]
+  // const formatPrice = (price: any) => {
+  //   const chunks = price.match(/.{1,3}/g)
+  //   // Nghịch đảo mảng con
+  //   const reversedChunks = chunks.reverse()
+  //   // Nối các phần tử của mảng con lại thành chuỗi mới, ngăn cách nhau bằng dấu ','
+  //   return reversedChunks.join(', ')
+  // }
   const showDeleteAll = computed(() => state.selectedRowKeys.length > 1)
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
@@ -413,24 +457,7 @@
     loadingDel: false,
   })
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
-  const start = () => {
-    // ajax request after empty completing
-    for (let i = 0; i < state.selectedRowKeys.length; i++) {
-      console.log(`push ${state.selectedRowKeys[i]}`)
-      console.log('------')
-      // dataProduct.pushAllProductShopeeAction(
-      //   Number(state.selectedRowKeys[i]),
-      //   toast
-      // )
-    }
-    // ajax request after empty completing
-    setTimeout(() => {
-      state.selectedRowKeys = []
-      handleCloseConfirmAll()
-      EndTimeLoading()
-      console.log('Push all')
-    }, 1000)
-  }
+
   const handleOpenDeleteAllProduct = () => {
     isOpenConfirmAll.value = true
   }
@@ -496,6 +523,27 @@
 
     // console.log('data', data)
     dataProduct.HideAllProductAction(
+      Object(data),
+      EndTimeLoading,
+      toast,
+      web_site_code,
+      perPage.value,
+      Number(route.params.page)
+    )
+    setTimeout(() => {
+      state.loadingDel = false
+      state.selectedRowKeys = []
+    }, 1000)
+  }
+
+  const PushAllProductShopee = () => {
+    const data = {
+      ids: selectAllProduct.value,
+    }
+    console.log(data)
+
+    // console.log('data', data)
+    dataProduct.PushAllProductAction(
       Object(data),
       EndTimeLoading,
       toast,
