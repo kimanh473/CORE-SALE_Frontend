@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {
   UserLoginApi,
   UserLogoutApi,
-} from '../../../services/AccountServices/account.service'
+} from '@/services/AccountServices/account.service'
 import { useToast } from 'vue-toastification'
 // const toast = useToast()
 export const userLogin = defineStore('UserLogin', {
@@ -15,6 +15,7 @@ export const userLogin = defineStore('UserLogin', {
         localStorage.setItem('TOKEN', payload.token)
         localStorage.setItem('role', payload?.roles[0])
         localStorage.setItem('authenticated', 'true')
+        localStorage.setItem('ID', payload.user?.roles[0]?.id)
         state.dataLogin = payload
       }
     },
@@ -25,7 +26,7 @@ export const userLogin = defineStore('UserLogin', {
         .then((payload: any) => {
           if (payload?.status === 'success') {
             this.setDataLogin(payload)
-            router.push('/').then(() => {
+            router.push('/orders-list/page/1').then(() => {
               window.location.reload()
             })
             useToast().info('Chào mừng bạn đến với BTP holding!!')
@@ -48,6 +49,7 @@ export const userLogin = defineStore('UserLogin', {
             localStorage.removeItem('TOKEN')
             localStorage.removeItem('authenticated')
             localStorage.removeItem('role')
+            localStorage.removeItem('ID')
           } else {
             useToast().error('Không thể đăng xuất!!!')
           }

@@ -5,7 +5,7 @@ import {
   createAdjustPriceApi,
   updateAdjustPriceApi,
   deleteAdjustPriceApi,
-} from '../../../services/SettingStoreServices/priceAdjust.service'
+} from '@/services/SettingStoreServices/priceAdjust.service'
 import dayjs from 'dayjs'
 import {
   DataAdjustPrice,

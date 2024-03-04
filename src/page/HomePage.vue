@@ -2,7 +2,7 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-        <img src="../assets/images/btp.png" />
+        <img src="@/assets/images/btp.png" />
       </div> -->
       <SideBar />
     </template>
@@ -23,9 +23,13 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../layout/baseLayout.vue'
-  import SideBar from '../components/common/SideBar.vue'
-  import Header from '../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  // test API
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  const dataWebsite = useWebCatalog()
+  dataWebsite.getAllWebCatalogAction()
 </script>
 <style>
   #components-layout-demo-side .logo {

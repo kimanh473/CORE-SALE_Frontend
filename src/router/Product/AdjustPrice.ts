@@ -1,10 +1,9 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const adjust = [
   {
     path: '/price-adjust',
-    component: () =>
-      import('../../page/products/AdjustPrice/ListTablePrice.vue'),
+    component: () => import('@/page/products/AdjustPrice/ListTablePrice.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -13,7 +12,7 @@ const adjust = [
   {
     path: '/create-adjust-price',
     component: () =>
-      import('../../page/products/AdjustPrice/CreateAdjustTable.vue'),
+      import('@/page/products/AdjustPrice/CreateAdjustTable.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -22,7 +21,7 @@ const adjust = [
   {
     path: '/update-adjust-price/:id',
     component: () =>
-      import('../../page/products/AdjustPrice/UpdateAdjustTable.vue'),
+      import('@/page/products/AdjustPrice/UpdateAdjustTable.vue'),
     meta: {
       layout: 'base-layout',
     },

@@ -6,7 +6,7 @@ import {
   createCategoryApi,
   updateCategoryApi,
   deleteCategoryApi,
-} from '../../../services/SettingStoreServices/category.service'
+} from '@/services/SettingStoreServices/category.service'
 import {
   DataCategory,
   TreeCategory,

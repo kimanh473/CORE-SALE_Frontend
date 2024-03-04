@@ -96,10 +96,10 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
-  import { useWebCatalog } from '../../../../store/modules/web-catalog/webcatalog'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRoute, useRouter } from 'vue-router'

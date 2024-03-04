@@ -216,21 +216,18 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../components/common/SideBar.vue'
-  import Header from '../../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   //   import TableResponsive from '@/components/common/TableResponsive.vue'
-  import { useUserSetting } from '../../../../store/modules/users/users'
-  import { usePasswordSetting } from '../../../../store/modules/accounts/password'
-  import {
-    FormatModalX,
-    FormatModalY,
-  } from '../../../../components/constants/FormatAll'
+  import { useUserSetting } from '@/store/modules/users/users'
+  import { usePasswordSetting } from '@/store/modules/accounts/password'
+  import { FormatModalX, FormatModalY } from '@/components/constants/FormatAll'
   import { SearchOutlined } from '@ant-design/icons-vue'
   import { useRouter } from 'vue-router'
   import { ref, reactive } from 'vue'
-  import ContextMenu from '../../../../components/common/ContextMenu.vue'
-  import ModalDelete from '../../../../components/modal/ModalConfirmDelelte.vue'
+  import ContextMenu from '@/components/common/ContextMenu.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useToast } from 'vue-toastification'
   //   import { Table } from 'ant-design-vue'
   import { storeToRefs } from 'pinia'

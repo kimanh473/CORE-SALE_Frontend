@@ -8,7 +8,7 @@
         <slot name="name"></slot>
       </div>
       <!-- <div class="logo flex ml-[20px] items-center">
-        <img src="../../assets/images/btp.png" />
+        <img src="@/assets/images/btp.png" />
       </div> -->
       <slot></slot>
       <div class="text-right w-[300px]" v-if="isShowSearch">
@@ -19,7 +19,7 @@
         <ul
           class="flex xxs222 items-center justify-center max-sm:mr-[60px] mb-[0px]"
         >
-          <!--          menu-->
+          <!--          
           <li
             class="hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1"
             style="color: var(--color-primary)"
@@ -59,7 +59,7 @@
             style="color: var(--color-primary)"
           >
             <i class="fal fa-phone text-lg"></i>
-          </li>
+          </li>menu-->
           <li
             class="hover:bg-gray-100 cursor-pointer p-5 max-sm:px-1 w-[60px]"
             @click="toggleActiveNotifyBox"
@@ -96,7 +96,7 @@
             v-click-outside="onClickOutsideAccountBox"
           >
             <img
-              src="../../assets/images/t.png"
+              src="@/assets/images/t.png"
               style="
                 height: 30px;
                 width: 30px;
@@ -129,13 +129,13 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-  import AccountBox from '../../components/sidebar/AccountBox.vue'
+  import AccountBox from '@/components/sidebar/AccountBox.vue'
   defineProps<{ isShowSearch: boolean }>()
-  const activeMenu = ref(false)
+  // const activeMenu = ref(false)
   const activeNotifyBox = ref(false)
   const activeAccountBox = ref(false)
-  const toggleActiveMenu = () => (activeMenu.value = !activeMenu.value)
-  const onClickOutsideMenuBox = () => (activeMenu.value = false)
+  // const toggleActiveMenu = () => (activeMenu.value = !activeMenu.value)
+  // const onClickOutsideMenuBox = () => (activeMenu.value = false)
   const toggleActiveNotifyBox = () =>
     (activeNotifyBox.value = !activeNotifyBox.value)
   const onClickOutsideNotifyBox = () => (activeNotifyBox.value = false)

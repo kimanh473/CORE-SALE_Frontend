@@ -1,10 +1,9 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const customerAccount = [
   {
     path: '/list-customer-account',
-    component: () =>
-      import('../../page/customers/account/ListCustomerAccount.vue'),
+    component: () => import('@/page/customers/account/ListCustomerAccount.vue'),
     meta: {
       layout: 'base-layout',
     },

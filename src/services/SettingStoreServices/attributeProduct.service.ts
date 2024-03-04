@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách thuộc tính
 const getAllAttributeProductsApi = () => {
   return httpClient.get(`/setting/product-attribute/index`)

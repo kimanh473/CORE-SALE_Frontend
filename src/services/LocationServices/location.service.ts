@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const GetAllCityApi = () => {
   return httpClient.get(`/location/index?type=2`)
 }

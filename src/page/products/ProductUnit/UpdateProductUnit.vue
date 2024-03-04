@@ -92,12 +92,12 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useProductUnit } from '../../../store/modules/store-setting/product-unit'
+  import { useProductUnit } from '@/store/modules/store-setting/product-unit'
   import { useRouter, useRoute } from 'vue-router'
   import { storeToRefs } from 'pinia'
   const dataUnit = useProductUnit()

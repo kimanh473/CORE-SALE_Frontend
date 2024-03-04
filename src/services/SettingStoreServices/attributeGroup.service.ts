@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách nhóm thuộc tính
 const getAllAttributeGroupApi = () => {
   return httpClient.get(`/store/product/group-attribute/index`)

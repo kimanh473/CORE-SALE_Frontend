@@ -249,16 +249,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
-  import { useAttributeGroup } from '../../../store/modules/store-setting/attribute-group'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   const dataAttribute = useAttributeProduct()
   dataAttribute.getListAttributeAction()
   const { listAttributeSpecification } = storeToRefs(dataAttribute)

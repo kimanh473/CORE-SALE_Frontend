@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 // Danh sách kho
 const getAllSourceProductsApi = () => {
   return httpClient.get(
@@ -12,4 +12,15 @@ const createSourceProductApi = (data: Object) => {
     data
   )
 }
-export { getAllSourceProductsApi, createSourceProductApi }
+// xóa kho
+const deleteSourceProductApi = (id: number) => {
+  return httpClient.post(
+    `/catalog-product/setting/inventory-source-location/delete`
+  )
+}
+
+export {
+  getAllSourceProductsApi,
+  createSourceProductApi,
+  deleteSourceProductApi,
+}

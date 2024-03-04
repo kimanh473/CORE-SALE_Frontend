@@ -7,7 +7,7 @@ import {
   updateCurrencyApi,
   getListCurrencyInternationalApi,
   checkDefaultCurrencyApi,
-} from '../../../services/SettingStoreServices/currency.service'
+} from '@/services/SettingStoreServices/currency.service'
 import {
   DataCurrency,
   DataCurrencyInternational,

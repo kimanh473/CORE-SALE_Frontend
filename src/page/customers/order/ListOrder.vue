@@ -66,16 +66,16 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref } from 'vue'
-  import { useOrder } from '../../../store/modules/order-service/order'
-  import ModalDelete from '../../../components/modal/ModalConfirmDelelte.vue'
+  import { useOrder } from '@/store/modules/orders/orders'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { storeToRefs } from 'pinia'
 
   const dataOrder = useOrder()
-  dataOrder.getAllOrderPaginateAction()
+  // dataOrder.getAllOrderPaginateAction()
   const { listOrder } = storeToRefs(dataOrder)
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
@@ -149,3 +149,4 @@
     justify-items: center;
   }
 </style>
+@/store/modules/order/order

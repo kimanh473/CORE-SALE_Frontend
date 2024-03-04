@@ -88,7 +88,6 @@
                             value: 'frontend_input',
                           }"
                           @select="handleChange"
-                          @focus="focusOnSelect(detailAttribute.backend_type)"
                         >
                         </a-select>
                       </div>
@@ -104,7 +103,7 @@
                       <p>Tiêu đề</p>
                     </div>
                     <div
-                      v-for="(item, index) in detailAttribute.option_detail"
+                      v-for="(item, index) in detailAttribute?.option_detail"
                       :key="index"
                       class="flex"
                     >
@@ -273,19 +272,19 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  // import { useLocation } from '../../../store/modules/location/location'
+  // import { useLocation } from '@/store/modules/location/location'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter, useRoute } from 'vue-router'
 
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -298,8 +297,15 @@
   const isLoading = ref<boolean>(false)
   const webCatalog = useWebCatalog()
   const dataAttribute = useAttributeProduct()
-  dataAttribute.getDetailAttributeAction(Number(route.params.id))
+  const showManageChoice = ref<boolean>(false)
   const { detailAttribute } = storeToRefs(dataAttribute)
+  dataAttribute.getDetailAttributeAction(Number(route.params.id)).then(() => {
+    if (detailAttribute.value.frontend_input == 'selection') {
+      showManageChoice.value = true
+    } else {
+      showManageChoice.value = false
+    }
+  })
 
   webCatalog.getAllWebCatalogAction()
   // const isReInput = ref<boolean>(true)
@@ -401,7 +407,6 @@
   // ) {
   //   isReInput.value = false
   // }
-  const showManageChoice = ref<boolean>(false)
   const handleChange = (value: string, options: any) => {
     if (value == 'selection') {
       showManageChoice.value = true
@@ -411,13 +416,13 @@
     detailAttribute.value.backend_type = options.backend_type
     detailAttribute.value.frontend_input = options.frontend_input
   }
-  const focusOnSelect = (type: string) => {
-    if (type == 'selection') {
-      showManageChoice.value = true
-    } else {
-      showManageChoice.value = false
-    }
-  }
+  // const focusOnSelect = (type: string) => {
+  //   if (type == 'selection') {
+  //     showManageChoice.value = true
+  //   } else {
+  //     showManageChoice.value = false
+  //   }
+  // }
   const dataOption = reactive([])
 
   const addOptions = () => {

@@ -282,17 +282,17 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  // import { useLocation } from '../../../store/modules/location/location'
+  // import { useLocation } from '@/store/modules/location/location'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import type { SelectProps } from 'ant-design-vue'
   import { useRouter } from 'vue-router'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useAttributeProduct } from '../../../store/modules/store-setting/attribute-product'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
   // const selectedGroupInventory = ref(null)
   // const selectedCity = ref(null)
   // const selectedDistrict = ref(null)
@@ -484,7 +484,7 @@
       is_unique: attribute.is_unique,
       is_specification: attribute.is_specification,
       note: '',
-      option_detail: dataOption,
+      options: dataOption,
     }
     dataAttribute.createAttributeAction(data, toast, router, EndTimeLoading)
     // dataInventory.createInventoryAction(data, toast, router, EndTimeLoading)

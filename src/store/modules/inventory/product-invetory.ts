@@ -5,7 +5,7 @@ import {
   updateInventoryApi,
   deleteInventoryApi,
   detailInventoryApi,
-} from '../../../services/InventoryServices/inventory.service'
+} from '@/services/InventoryServices/inventory.service'
 import {
   DataInventory,
   DetailInvent,
@@ -101,6 +101,7 @@ export const useInventory = defineStore('Inventory', {
           toast.error(errMess[0])
         })
     },
+
     async updateInventoryAction(
       id: number,
       data: Object,
@@ -129,6 +130,7 @@ export const useInventory = defineStore('Inventory', {
           toast.error(errMess[0])
         })
     },
+
     deleteInventoryAction(
       id: number,
       EndTimeLoading: Function,
@@ -150,6 +152,21 @@ export const useInventory = defineStore('Inventory', {
           console.log(err)
           handleCloseConfirm()
           EndTimeLoading()
+        })
+    },
+
+    deleteAllInventoryAction(id: number, toast: any) {
+      deleteInventoryApi(id)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            toast.success('Xóa thành công', 500)
+            this.getListInventoryAction()
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
         })
     },
   },

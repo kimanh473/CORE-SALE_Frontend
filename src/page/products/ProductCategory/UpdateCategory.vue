@@ -236,14 +236,14 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   // import type { SelectProps } from 'ant-design-vue'
-  // import { useLocation } from '../../../store/modules/location/location'
-  import { useGroupInventory } from '../../../store/modules/inventory/group-inventory'
-  import { useInventory } from '../../../store/modules/inventory/product-invetory'
-  import { useCategory } from '../../../store/modules/store-setting/category'
+  // import { useLocation } from '@/store/modules/location/location'
+  import { useGroupInventory } from '@/store/modules/inventory/group-inventory'
+  import { useInventory } from '@/store/modules/inventory/product-invetory'
+  import { useCategory } from '@/store/modules/store-setting/category'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'

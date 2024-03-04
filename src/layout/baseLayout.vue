@@ -24,9 +24,9 @@
           style="min-height: auto; overflow: auto; z-index: 15"
           class="mx-3 my-2"
         >
-          <slot name="content"></slot>
+          <slot name="content"> </slot>
         </a-layout-content>
-        <a-layout-footer :style="{ textAlign: 'center' }">
+        <a-layout-footer class="z-50" :style="{ textAlign: 'center' }">
           <slot name="footer"></slot>
         </a-layout-footer>
       </a-layout>
@@ -35,9 +35,9 @@
 </template>
 
 <script setup lang="ts">
-  // import Header from '../Components/admin/Header.vue'
-  // import Sidebar from '../Components/Sidebar'
-  // import Footer from '../Components/Footer'
+  // import Header from '@/Components/admin/Header.vue'
+  // import Sidebar from '@/Components/Sidebar'
+  // import Footer from '@/Components/Footer'
   // import { library } from '@fortawesome/fontawesome-svg-core'
   // import { faCog } from '@fortawesome/free-solid-svg-icons'
 
@@ -48,7 +48,7 @@
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
-    background-image: url(../assets/images/btp.png);
+    background-image: url(@/assets/images/btp.png);
   }
   .site-layout .site-layout-background {
     background: #fff;

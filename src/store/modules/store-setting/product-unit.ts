@@ -5,7 +5,7 @@ import {
   createProductUnitApi,
   updateProductUnitApi,
   deleteProductUnitApi,
-} from '../../../services/SettingStoreServices/productUnit.service'
+} from '@/services/SettingStoreServices/productUnit.service'
 import { DataUnit } from '@/store/modules/store-setting/store.type'
 export const useProductUnit = defineStore('ProductUnit', {
   state: () => ({

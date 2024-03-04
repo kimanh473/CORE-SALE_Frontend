@@ -196,12 +196,12 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
-  import { useListCurrency } from '../../../store/modules/store-setting/currency'
+  import { useListCurrency } from '@/store/modules/store-setting/currency'
   import { useRouter } from 'vue-router'
   import { storeToRefs } from 'pinia'
   const dataCurrency = useListCurrency()

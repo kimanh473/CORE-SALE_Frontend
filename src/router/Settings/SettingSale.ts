@@ -1,10 +1,10 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const settingSale = [
   {
     path: '/setting-discount',
     component: () =>
-      import('../../page/settings/Admin/SettingSale/SettingDiscount.vue'),
+      import('@/page/settings/Admin/SettingSale/SettingDiscount.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -13,7 +13,7 @@ const settingSale = [
   {
     path: '/setting-customer',
     component: () =>
-      import('../../page/settings/Admin/SettingSale/SettingCustomer.vue'),
+      import('@/page/settings/Admin/SettingSale/SettingCustomer.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -22,7 +22,7 @@ const settingSale = [
   {
     path: '/setting-product',
     component: () =>
-      import('../../page/settings/Admin/SettingSale/SettingProduct.vue'),
+      import('@/page/settings/Admin/SettingSale/SettingProduct.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -31,7 +31,7 @@ const settingSale = [
   {
     path: '/setting-payment',
     component: () =>
-      import('../../page/settings/Admin/SettingSale/SettingPayment.vue'),
+      import('@/page/settings/Admin/SettingSale/SettingPayment.vue'),
     meta: {
       layout: 'base-layout',
     },
@@ -40,7 +40,7 @@ const settingSale = [
   {
     path: '/setting-order',
     component: () =>
-      import('../../page/settings/Admin/SettingSale/SettingOrder.vue'),
+      import('@/page/settings/Admin/SettingSale/SettingOrder.vue'),
     meta: {
       layout: 'base-layout',
     },

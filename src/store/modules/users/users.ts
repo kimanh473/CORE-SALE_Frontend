@@ -183,5 +183,18 @@ export const useUserSetting = defineStore('UserSetting', {
           EndTimeLoading()
         })
     },
+    async GetUserProfileAction(id: number) {
+      await getDetailUsersApi(id)
+        .then((payload) => {
+          if (payload.data.status === 'success') {
+            this.getDetailUsers(payload?.data?.data)
+          }
+          // console.log(payload);
+        })
+        .catch((err) => {
+          this.LogoutErrorToken()
+          console.log(err)
+        })
+    },
   },
 })

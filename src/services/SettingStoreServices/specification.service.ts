@@ -1,4 +1,4 @@
-import httpClient from '../services'
+import httpClient from '@/services/services'
 const getListSpecificationApi = () => {
   return httpClient.get(`/system-manage/product-specification/index`)
 }

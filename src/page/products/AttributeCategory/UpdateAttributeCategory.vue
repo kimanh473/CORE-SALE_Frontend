@@ -215,7 +215,6 @@
   }
   const dataAttribute = useAttributeProduct()
   const groupAttribute = useAttributeGroup()
-  const { listAttributeProductOption } = storeToRefs(dataAttribute)
   dataAttribute.getListAttributeAction()
   groupAttribute.getListAttributeGroupAction()
 
@@ -231,20 +230,20 @@
   const defaultColDef = reactive({
     flex: 1,
     minWidth: 100,
-    filter: true
+    filter: true,
   })
   groupAttribute
     .getDetailSetAttributeGroupAction(Number(route.params.id))
     .then(() => {
       rightRowData.value = [
-        ...detailAttributeCategory?.value.json_group_attribute_detail.map(
+        ...detailAttributeCategory.value.json_group_attribute_detail.map(
           (item: any) => ({
             id: item.id,
             key: item.id.toString(),
             code: item.code,
-            title: item.title
+            title: item.title,
           })
-        )
+        ),
       ]
     })
   const leftColumns = reactive([
@@ -257,14 +256,14 @@
           return dragItemCount
         }
         return params.rowNode.data.title
-      }
+      },
     },
     {
       colId: 'checkbox',
       maxWidth: 50,
       checkboxSelection: true,
       suppressMenu: true,
-      headerCheckboxSelection: true
+      headerCheckboxSelection: true,
     },
     {
       field: 'title',
@@ -278,13 +277,13 @@
               return (
                 cellValue.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
               )
-            }
-          }
+            },
+          },
         ],
         filterPlaceholder: 'Nhập để tìm',
-        maxNumConditions: 1
-      }
-    }
+        maxNumConditions: 1,
+      },
+    },
   ])
   const rightColumns = [
     {
@@ -296,14 +295,14 @@
           return dragItemCount
         }
         return params.rowNode.data.title
-      }
+      },
     },
     {
       colId: 'checkbox',
       maxWidth: 50,
       checkboxSelection: true,
       suppressMenu: true,
-      headerCheckboxSelection: true
+      headerCheckboxSelection: true,
     },
     {
       field: 'title',
@@ -317,16 +316,16 @@
               return (
                 cellValue.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0
               )
-            }
-          }
+            },
+          },
         ],
         filterPlaceholder: 'Nhập để tìm',
-        maxNumConditions: 1
-      }
-    }
+        maxNumConditions: 1,
+      },
+    },
   ]
   const onRowDragEnd = () => {
-    let rowData: any = []
+    const rowData: any = []
     rightApi.value.forEachNode((node: any) => rowData.push(node.data))
     rightRowData.value = rowData
   }
@@ -337,11 +336,11 @@
     const dropZoneParams1 = rightApi.value.getRowDropZoneParams({
       onDragStop: (params: any) => {
         // console.log(rightRowData.value)
-        var nodes = params.nodes
+        const nodes = params.nodes
         leftApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data
-          })
+          }),
         })
       },
       onRowDragEnter(e: any) {
@@ -349,15 +348,15 @@
       },
       onRowDragEnd(e: any) {
         console.log('onRowDragEnd', e)
-      }
+      },
     })
     const dropZoneParams2 = leftApi.value.getRowDropZoneParams({
       onDragStop: (params: any) => {
-        var nodes = params.nodes
+        const nodes = params.nodes
         rightApi.value.applyTransaction({
           remove: nodes.map(function (node: any) {
             return node.data
-          })
+          }),
         })
       },
       onRowDragEnter(e: any) {
@@ -365,7 +364,7 @@
       },
       onRowDragEnd(e: any) {
         console.log('onRowDragEnd', e)
-      }
+      },
     })
     leftApi.value.addRowDropZone(dropZoneParams1)
     rightApi.value.addRowDropZone(dropZoneParams2)
@@ -383,21 +382,22 @@
     }
   }
 
-  const attribute = reactive({
-    title: '',
-    code: '',
-    status: '0',
-    json_group_attribute: [],
-    json_group_specification: []
-  })
+  // const attribute = reactive({
+  //   title: '',
+  //   code: '',
+  //   status: '0',
+  //   json_group_attribute: [],
+  //   json_group_specification: [],
+  // })
   const updateAttributeCategory = () => {
-    let data = {
+    const data = {
       title: detailAttributeCategory.value.title,
       code: detailAttributeCategory.value.code,
       status: detailAttributeCategory.value.status,
       json_group_attribute: rightRowData.value.map((item: any) => item.code),
-      json_group_specification: <any>[]
+      json_group_specification: <any>[],
     }
+
     groupAttribute.updateAttributeCategoryAction(
       Number(route.params.id),
       data,

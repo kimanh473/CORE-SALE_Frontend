@@ -1,11 +1,11 @@
-import requireAuth from '../requireAuth'
+import requireAuth from '@/router/requireAuth'
 
 const groupInventory = [
   {
     path: '/list-group-inventory',
     component: () =>
       import(
-        '../../page/settings/Shop-settings/ManageProduct/ManageGroupInventory/ListGroupInventory.vue'
+        '@/page/settings/Shop-settings/ManageProduct/ManageGroupInventory/ListGroupInventory.vue'
       ),
     meta: {
       layout: 'base-layout',
@@ -16,7 +16,7 @@ const groupInventory = [
     path: '/update-group-inventory/:id',
     component: () =>
       import(
-        '../../page/settings/Shop-settings/ManageProduct/ManageGroupInventory/UpdateGroupInventory.vue'
+        '@/page/settings/Shop-settings/ManageProduct/ManageGroupInventory/UpdateGroupInventory.vue'
       ),
     meta: {
       layout: 'base-layout',
@@ -27,7 +27,7 @@ const groupInventory = [
     path: '/create-group-inventory',
     component: () =>
       import(
-        '../../page/settings/Shop-settings/ManageProduct/ManageGroupInventory/CreateGroupInventory.vue'
+        '@/page/settings/Shop-settings/ManageProduct/ManageGroupInventory/CreateGroupInventory.vue'
       ),
     meta: {
       layout: 'base-layout',

@@ -23,7 +23,30 @@
       <div
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <div></div>
+        <!-- <div
+          class="button-create-new relative group rounded-md px-2"
+          title="Tạo mới web"
+          @click="CreateInventory()"
+        >
+          <p class="text-[14px] mt-1 px-1">Tạo mới kho</p>
+        </div> -->
+        <!-- ka -->
+        <div>
+          <a-button
+            class="btn mr-4 ml-4"
+            type="primary"
+            :disabled="!hasSelectedDelete"
+            :loading="state.loadingDel"
+            @click="handleOpenDeleteAllInvent"
+          >
+            Xóa tất cả
+          </a-button>
+          <span style="margin-top: 4px; color: white">
+            <template v-if="hasSelectedDelete">
+              {{ `Chọn ${selectedRowKeys.length} kho` }}
+            </template>
+          </span>
+        </div>
         <div
           class="button-create-new relative group rounded-md px-2"
           title="Tạo mới web"
@@ -31,6 +54,7 @@
         >
           <p class="text-[14px] mt-1 px-1">Tạo mới kho</p>
         </div>
+        <!-- ka -->
       </div>
       <a-table
         row-key="id"
@@ -194,19 +218,26 @@
     :ConfirmDelete="handleDelete"
   >
   </modal-delete>
+
+  <modal-delete-all
+    :isOpenAll="isOpenConfirmAll"
+    :handleCloseDetailAll="handleCloseConfirmAll"
+    :ConfirmDeleteAll="handleDeleteAll"
+  ></modal-delete-all>
   <loading-overlay :isLoading="isLoading"></loading-overlay>
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../../../layout/baseLayout.vue'
-  import SideBar from '../../../../../components/common/SideBar.vue'
-  import Header from '../../../../../components/common/Header.vue'
-  import { useInventory } from '../../../../../store/modules/inventory/product-invetory'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
+  import { useInventory } from '@/store/modules/inventory/product-invetory'
   import { useRouter } from 'vue-router'
-  import { ref } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   import { useToast } from 'vue-toastification'
   import { storeToRefs } from 'pinia'
-  import ModalDelete from '../../../../../components/modal/ModalConfirmDelelte.vue'
+  import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
+  import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { DataInventory } from '@/store/modules/inventory/inventory.type'
 
   // const route = useRoute()
@@ -214,6 +245,7 @@
   const toast = useToast()
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const isOpenConfirmAll = ref<boolean>(false)
   const dataInventory = useInventory()
   dataInventory.getListInventoryAction()
   const { listInventory } = storeToRefs(dataInventory)
@@ -289,6 +321,42 @@
     console.log('selectedRowKeys changed: ', selectedRowKeys1)
     selectedRowKeys.value = selectedRowKeys1
   }
+
+  // ka
+  const handleCloseConfirmAll = () => {
+    isOpenConfirmAll.value = false
+  }
+  const state = reactive<{
+    loadingDel: boolean
+  }>({
+    loadingDel: false,
+  })
+  const hasSelectedDelete = computed(() => selectedRowKeys.value.length > 1)
+
+  const handleOpenDeleteAllInvent = () => {
+    isOpenConfirmAll.value = true
+  }
+  const handleDeleteAll = () => {
+    state.loadingDel = true
+    for (let i = 0; i < selectedRowKeys.value.length; i++) {
+      console.log(`delete ${selectedRowKeys.value[i]}`)
+      console.log('------')
+      dataInventory.deleteAllInventoryAction(
+        Number(selectedRowKeys.value[i]),
+        toast
+      )
+    }
+    // ajax request after empty completing
+    setTimeout(() => {
+      state.loadingDel = false
+      selectedRowKeys.value = []
+      handleCloseConfirmAll()
+      EndTimeLoading()
+      console.log('Del all')
+    }, 1000)
+  }
+  // ka
+
   // const rowSelection = ref({
   //   checkStrictly: false,
   //   onChange: (

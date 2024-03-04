@@ -2,7 +2,7 @@
   <base-layout>
     <template v-slot:sidebar>
       <!-- <div class="logo">
-          <img src="../assets/images/btp.png" />
+          <img src="@/assets/images/btp.png" />
         </div> -->
       <SideBar />
     </template>
@@ -629,19 +629,19 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '../../../layout/baseLayout.vue'
-  import SideBar from '../../../components/common/SideBar.vue'
-  import Header from '../../../components/common/Header.vue'
+  import BaseLayout from '@/layout/baseLayout.vue'
+  import SideBar from '@/components/common/SideBar.vue'
+  import Header from '@/components/common/Header.vue'
 
   import dayjs, { Dayjs } from 'dayjs'
   import { storeToRefs } from 'pinia'
   import { ref, reactive } from 'vue'
   import { useToast } from 'vue-toastification'
   import { useRouter } from 'vue-router'
-  import { useLocation } from '../../../store/modules/location/location'
-  import { useCustomerProfile } from '../../../store/modules/customers/customerProfile'
-  import { useWebCatalog } from '../../../store/modules/web-catalog/webcatalog'
-  import { useGroupCustomer } from '../../../store/modules/customers/customerGroup'
+  import { useLocation } from '@/store/modules/location/location'
+  import { useCustomerProfile } from '@/store/modules/customers/customerProfile'
+  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useGroupCustomer } from '@/store/modules/customers/customerGroup'
 
   const router = useRouter()
   const toast = useToast()

@@ -1,15 +1,19 @@
-import httpClient from '../services'
-const getAllOrderApi = () => {
-  return httpClient.get(`/user/order/list-order`)
+import httpClient from '@/services/services'
+const getAllOrderApi = (perPage: number, page: number, status: string[]) => {
+  // return httpClient.get(`/user/order/list-order`)
+  return httpClient.get(
+    `shopee/order/get_order_list_db?per_page=${perPage}&page=${page}&status=${status}`
+  )
 }
 
 // const createGroupCustomerApi = (data: object) => {
 //   return httpClient.post(`/system-manage/customer-type/create`, data)
 // }
 
-// const getDetailGroupCustomerApi = (id: number) => {
-//   return httpClient.get(`/system-manage/customer-type/show/${id}`)
-// }
+const getDetailOrderApi = (id: number) => {
+  // return httpClient.get(`/order/show/${id}`)
+  return httpClient.get(`shopee/order/get_order_detail_db/${id}`)
+}
 
 // const updateGroupCustomerApi = (id: number, data: object) => {
 //   return httpClient.post(`/system-manage/customer-type/update/${id}`, data)
@@ -19,4 +23,4 @@ const getAllOrderApi = () => {
 //   return httpClient.post(`/system-manage/customer-type/delete/${id}`)
 // }
 
-export { getAllOrderApi }
+export { getAllOrderApi, getDetailOrderApi }
