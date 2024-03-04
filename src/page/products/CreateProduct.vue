@@ -468,6 +468,7 @@
                           :options="listProductUnit"
                           v-model:value="item.unit_exchange"
                           :fieldNames="{ label: 'title', value: 'code' }"
+                          @change="handleChangeUnit"
                         >
                         </a-select>
                       </div>
@@ -475,6 +476,7 @@
                         <a-input
                           v-model:value="item.rate"
                           placeholder="Nhập số lượng"
+                          @change="handleChangeUnit"
                         ></a-input>
                         <i
                           @click="removeUnits(index)"
@@ -759,7 +761,7 @@
           <div class="p-4 text-left">
             <button class="button-modal" html-type="submit">Cập nhật</button>
 
-            <button class="button-close-modal" @click="router.go(-1)">
+            <button class="button-close-modal" @click.prevent="router.go(-1)">
               Hủy bỏ
             </button>
             <!-- <button class="button-close-modal" @click="testLog">Test</button> -->
@@ -1084,7 +1086,6 @@
       unit_exchange: item.unit_exchange,
       rate: item.rate,
     }))
-    console.log(dataMapUnit.value)
   }
   const lastGenerateList = ref<any>([])
   const lastGenerateSku = ref<any>([])

@@ -9,6 +9,7 @@ import {
   hideAllProductShopeeApi,
   hideProductShopeeApi,
   pushProductShopeeApi,
+  pushAllProductShopeeApi,
   // updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
 // import { update } from 'lodash-es'
@@ -211,7 +212,7 @@ export const useProductShopee = defineStore('ProductsShopee', {
               EndTimeLoading
             )
           } else {
-            toast.error(res.data.messages, 500)
+            toast.error(res.data.msg, 500)
           }
           EndTimeLoading()
         })
@@ -262,6 +263,35 @@ export const useProductShopee = defineStore('ProductsShopee', {
         .then((res) => {
           if (res.data.status === 'success') {
             toast.success('Ẩn thành công', 500)
+            this.getListProductAction(
+              web_site_code,
+              perPage,
+              page,
+              EndTimeLoading
+            )
+          } else {
+            toast.error(res.data.messages, 500)
+          }
+          EndTimeLoading()
+        })
+        .catch((err) => {
+          console.log(err)
+          EndTimeLoading()
+        })
+    },
+
+    PushAllProductAction(
+      data: Object,
+      EndTimeLoading: Function,
+      toast: any,
+      web_site_code: string,
+      perPage: number,
+      page: number
+    ) {
+      pushAllProductShopeeApi(data)
+        .then((res) => {
+          if (res.data.status === 'success') {
+            toast.success('Đẩy thành công', 500)
             this.getListProductAction(
               web_site_code,
               perPage,

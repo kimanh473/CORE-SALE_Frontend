@@ -93,6 +93,7 @@
               <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
             </div>
           </template>
+
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -228,14 +229,17 @@
     {
       title: 'Giá niêm yết',
       dataIndex: 'listed_price',
+      key: 'listed_price',
     },
     {
       title: 'Giá sỉ',
       dataIndex: 'wholesale_price',
+      key: 'wholesale_price',
     },
     {
       title: 'Giá lẻ',
       dataIndex: 'retail_price',
+      key: 'retail_price',
     },
     {
       title: 'Thao tác',
