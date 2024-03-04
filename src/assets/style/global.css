@@ -142,6 +142,7 @@ body {
     min-width: 35px;
     display: flex;
     justify-content: center;
+    align-items: center;
     background: var(--color-primary);
     font-size: 1.3em;
     color: white;
@@ -161,8 +162,8 @@ body {
     min-height: 30px;
     min-width: 30px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     border-radius: 50%;
     background: var(--color-primary);
     font-size: 1.3em;
@@ -188,6 +189,7 @@ body {
     min-width: 35px;
     display: flex;
     justify-content: center;
+    align-items: center;
     background: var(--color-primary);
     font-size: 1.3em;
     color: white;
@@ -208,12 +210,13 @@ body {
   }
   .button-custom {
     cursor: pointer;
-    /* margin-left: 10px; */
+    background: var(--color-primary);
     margin-right: 10px;
     min-height: 35px;
     min-width: 35px;
     display: flex;
     justify-content: center;
+    align-items: center;
     font-size: 1.3em;
     color: white;
     height: 30px;

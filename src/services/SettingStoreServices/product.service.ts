@@ -67,6 +67,11 @@ const pushAllProductShopeeApi = (data: object) => {
   return httpClient.post(`/product/pushList`, data)
 }
 
+// Cập nhật ds sp
+const getAllProductUpdateFromSPApi = () => {
+  return httpClient.get(`shopee/product/getProductListSP`)
+}
+
 export {
   getAllProductsApi,
   createProductApi,
@@ -82,4 +87,5 @@ export {
   hideAllProductShopeeApi,
   pushProductShopeeApi,
   pushAllProductShopeeApi,
+  getAllProductUpdateFromSPApi,
 }
