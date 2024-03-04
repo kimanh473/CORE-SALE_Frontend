@@ -1086,7 +1086,6 @@
       unit_exchange: item.unit_exchange,
       rate: item.rate,
     }))
-    console.log(dataMapUnit.value)
   }
   const lastGenerateList = ref<any>([])
   const lastGenerateSku = ref<any>([])
