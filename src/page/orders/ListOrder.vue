@@ -29,12 +29,19 @@
           <p class="text-[14px] mt-1 px-1">Tạo mới đơn hàng</p>
         </div>
       </div> -->
-      <a-menu mode="horizontal">
-        <a-menu-item key="1"> Trạng thái 1 </a-menu-item>
-        <a-menu-item key="2"> Trạng thái 2 </a-menu-item>
-        <a-menu-item key="3"> Trạng thái 3 </a-menu-item>
-        <a-menu-item key="4"> Trạng thái 4 </a-menu-item>
-        <a-menu-item key="5"> Trạng thái 5 </a-menu-item>
+      <a-menu
+        v-model:selectedKeys="currentMenu"
+        mode="horizontal"
+        @select="handleSelectStatus"
+      >
+        <a-menu-item key="all"> Tất cả </a-menu-item>
+        <a-menu-item key="1"> Chờ xác nhận </a-menu-item>
+        <a-menu-item key="2"> Chờ lấy hàng </a-menu-item>
+        <a-menu-item key="3"> Đang giao </a-menu-item>
+        <a-menu-item key="4"> Đã giao </a-menu-item>
+        <a-menu-item key="5"> Đơn hủy </a-menu-item>
+        <a-menu-item key="6"> Trả hàng/Hoàn tiền </a-menu-item>
+        <a-menu-item key="7"> Giao không thành công </a-menu-item>
       </a-menu>
       <a-table
         class="!p-[10px]"
@@ -58,9 +65,9 @@
           <template v-if="column.key === 'total_amount'">
             {{ FormatPrice(record.total_amount) }}&#8363;
           </template>
-          <template v-if="column.key === 'tax_money'">
+          <!-- <template v-if="column.key === 'tax_money'">
             {{ FormatPrice(record.tax_money) }}&#8363;
-          </template>
+          </template> -->
           <template v-if="column.key === 'order_status'">
             {{ FormatOrderStatus(record.order_status) }}
           </template>
@@ -121,6 +128,21 @@
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
   //   return webName?.web_name
   // }
+  const currentMenu = ref<string[]>(['1'])
+  const handleSelectStatus = (item: any) => {
+    router.push({
+      path: route.fullPath,
+      query: {
+        status: item.key,
+      },
+    })
+    dataOrder.getAllOrderPaginateAction(
+      perPage.value,
+      Number(route.params.page),
+      item.selectedKeys,
+      EndTimeLoading
+    )
+  }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -130,6 +152,7 @@
   dataOrder.getAllOrderPaginateAction(
     perPage.value,
     Number(route.params.page),
+    currentMenu.value,
     EndTimeLoading
   )
   const changePage = (pageNumber: number) => {
@@ -138,6 +161,7 @@
     dataOrder.getAllOrderPaginateAction(
       perPage.value,
       pageNumber,
+      currentMenu.value,
       EndTimeLoading
     )
   }
@@ -174,20 +198,20 @@
     {
       title: 'Tiền hàng',
       dataIndex: 'total_amount',
+      align: 'right',
       key: 'total_amount',
-      align: 'right',
     },
-    {
-      title: 'Tiền thuế',
-      dataIndex: 'tax_money',
-      key: 'tax_money',
-      align: 'right',
-    },
+    // {
+    //   title: 'Tiền thuế',
+    //   dataIndex: 'tax_money',
+    //   key: 'tax_money',
+    //   align: 'right',
+    // },
     {
       title: 'Tổng tiền',
       dataIndex: 'total_amount',
-      key: 'total_amount',
       align: 'right',
+      key: 'total_amount',
     },
     {
       title: 'Shop',

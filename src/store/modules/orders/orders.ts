@@ -30,10 +30,12 @@ export const useOrder = defineStore('customerGroup', {
     getAllOrderPaginateAction(
       perPage: number,
       page: number,
+      status: string[],
       EndTimeLoading: Function
     ) {
-      getAllOrderApi(perPage, page)
+      getAllOrderApi(perPage, page, status)
         .then((payload: any) => {
+          console.log(status)
           const res = payload?.data?.data
           this.getListOrderPagination(res)
           EndTimeLoading()
@@ -45,7 +47,6 @@ export const useOrder = defineStore('customerGroup', {
     async getDetailOrderAction(id: number, EndTimeLoading: Function) {
       await getDetailOrderApi(id)
         .then((payload: any) => {
-          console.log(payload?.data?.data?.order_detail)
           const res = payload?.data?.data?.order_detail
           this.getDetailOrder(res)
           EndTimeLoading()

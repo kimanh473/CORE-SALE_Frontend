@@ -31,8 +31,8 @@ export const FormatOrderStatus = (code: string) => {
     return 'Đã giao'
   } else if (code === 'CANCELLED') {
     return 'Đơn hủy'
-  } else if (code === 'RETURN') {
-    return 'Trả hang/Hoàn tiền'
+  } else if (code === 'RETURN' || code === 'TO_RETURN') {
+    return 'Trả hàng/Hoàn tiền'
   } else if (code === 'FAILED_DELIVERY') {
     return 'Giao không thành công'
   } else {
