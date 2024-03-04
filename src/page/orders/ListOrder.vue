@@ -55,6 +55,9 @@
               {{ record.order_sn }}
             </a>
           </template>
+          <template v-if="column.key === 'total_amount'">
+            {{ FormatPrice(record.total_amount) }}&#8363;
+          </template>
           <template v-if="column.key === 'id'">
             &nbsp;<a @click="handleToDetail(record.id)">Xem chi tiết</a>
           </template>
@@ -93,6 +96,7 @@
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
   import { ref } from 'vue'
+  import { FormatPrice } from '@/components/constants/FormatAll'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { useOrder } from '@/store/modules/orders/orders'
@@ -161,6 +165,8 @@
     {
       title: 'Tiền hàng',
       dataIndex: 'total_amount',
+      align: 'right',
+      key: 'total_amount',
     },
     {
       title: 'Tiền thuế',
@@ -169,6 +175,8 @@
     {
       title: 'Tổng tiền',
       dataIndex: 'total_amount',
+      align: 'right',
+      key: 'total_amount',
     },
     {
       title: 'Shop',
