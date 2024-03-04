@@ -32,7 +32,7 @@
     <template v-slot:content class="relative">
       <div
         id="task-bar-list"
-        class="!my-4 !py-[10px] !mx-[10px] bg-slate-300 rounded flex justify-between"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <span class="ml-2 mt-1.5 text-slate-700">
           <template v-if="hasSelected">
@@ -46,46 +46,47 @@
             @click="handleOpenDeleteAllProduct"
             v-show="showDeleteAll"
           >
-            <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
+            <span class="text-[14px] px-1">Xoá tất cả</span>
           </div>
           <div
-            class="button-custom update-list-button bg-amber-500 relative group rounded-md px-2"
+            class="button-custom update-list-button relative group rounded-md px-2"
             title="Cập nhật"
+            @click="getAllProductUpdateFromShopee"
           >
-            <p class="text-[14px] mt-1 px-1">Cập nhật</p>
+            <span class="text-[14px] px-1">Cập nhật</span>
           </div>
-          <div
-            class="button-custom export-button bg-red-500 relative group rounded-md px-2"
+          <!-- <div
+            class="button-custom export-button relative group rounded-md px-2"
             title="Export"
           >
-            <p class="text-[14px] mt-1 px-1">Export</p>
+            <span class="text-[14px] px-1">Export</span>
           </div>
           <div
-            class="button-custom import-button bg-red-500 relative group rounded-md px-2"
+            class="button-custom import-button relative group rounded-md px-2"
             title="Import"
           >
-            <p class="text-[14px] mt-1 px-1">Import</p>
-          </div>
+            <span class="text-[14px] px-1">Import</span>
+          </div> -->
           <div
-            class="button-custom hide-product bg-green-500 relative group rounded-md px-2 mr-3"
+            class="button-custom hide-product relative group rounded-md px-2 mr-3"
             title="Ẩn sản phẩm"
             @click="HideAllProductShopee"
           >
-            <p class="text-[14px] mt-1 px-1">Ẩn sản phẩm</p>
+            <span class="text-[14px] px-1">Ẩn sản phẩm</span>
           </div>
           <div
-            class="button-custom push-product bg-green-500 relative group rounded-md px-2 mr-3"
+            class="button-custom push-product relative group rounded-md px-2 mr-3"
             title="Đẩy sản phẩm"
             @click="PushAllProductShopee"
           >
-            <p class="text-[14px] mt-1 px-1">Đẩy sản phẩm</p>
+            <span class="text-[14px] px-1">Đẩy sản phẩm</span>
           </div>
           <div
             class="button-create-new relative group rounded-md px-2"
             title="Tạo mới sản phẩm"
             @click="CreateProduct()"
           >
-            <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+            <p class="text-[14px] px-1 pt-3.5">Tạo mới sản phẩm</p>
           </div>
         </div>
       </div>
@@ -299,7 +300,7 @@
     {
       title: 'Tên sản phẩm',
       dataIndex: 'name',
-      width: 300,
+      width: 350,
       fixed: 'left',
     },
     {
@@ -556,7 +557,9 @@
       state.selectedRowKeys = []
     }, 1000)
   }
-
+  const getAllProductUpdateFromShopee = () => {
+    dataProduct.getListProductUpdateFromSPAction(EndTimeLoading)
+  }
   const backToAllProduct = (page: number) => {
     router.push(`/products-list/page/${page}`)
   }

@@ -881,7 +881,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.list_classify?.length > 0"
+                  v-show="detailProduct?.list_product_config?.length > 0"
                   v-if="item1.attribute_code == 'classify_product'"
                 >
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
@@ -1213,7 +1213,7 @@
   const { detailProduct } = storeToRefs(dataProduct)
   const dataTableConfig = ref<any>([])
   dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
-    fileProductList.value = detailProduct?.value?.image?.map(
+    const arr1 = detailProduct?.value?.image?.map(
       (item: Array<string>, index: number) => ({
         uid: index,
         name: `image ${index}`,
@@ -1221,6 +1221,15 @@
         url: `${UrlImg}/${item}`,
       })
     )
+    const arr2 = detailProduct?.value?.image_index?.map(
+      (item: Array<string>, index: number) => ({
+        uid: index,
+        name: `image ${index}`,
+        status: 'done',
+        url: `${item}`,
+      })
+    )
+    fileProductList.value = arr1?.concat(arr2)
     dataTableConfig.value = detailProduct.value.list_product_config
     const arr = detailProduct.value?.list_product_config?.map(
       (item: any) => item.image
@@ -1245,6 +1254,7 @@
   const specDefault = ref()
   dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
     indexAttribute.value = listDefault.value
+    console.log('indexAttribute.value', indexAttribute.value)
     specDefault.value = listSpecDefault.value
   })
   dataCategory.getListCategoryTreeAction()
@@ -1317,6 +1327,7 @@
         attribute: item.attribute_detail,
       })
     )
+    console.log('indexAttribute', indexAttribute)
   }
   // const checkJPG = (file: any) => {
   //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'

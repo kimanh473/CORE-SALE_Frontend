@@ -391,7 +391,7 @@
                     </p>
                     <div v-for="(item, index) in dataOption" :key="index">
                       <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
-                        <p class="m-0">Nhóm phân loại {{ index }}</p>
+                        <p class="m-0">Nhóm phân loại {{ index + 1 }}</p>
                         <p class="m-0">Phân loại</p>
                         <div class="pr-[100px]">
                           <!-- <a-checkbox
@@ -816,7 +816,7 @@
   const specDefault = ref()
   dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
     indexAttribute.value = listDefault.value
-    console.log(indexAttribute.value)
+    console.log('indexAttribute.value', indexAttribute.value)
     specDefault.value = listSpecDefault.value
   })
   // const filterOption = (input: string, option: any) => {
@@ -916,7 +916,7 @@
         (item: any) => item.preview
       )
     } else if (input_name.includes('date')) {
-      console.log(dayjs(event, 'DD/MM/YYYY'))
+      console.log('??', dayjs(event, 'DD/MM/YYYY'))
       dataCreateProduct.value[input_name] = dayjs(event, 'DD/MM/YYYY').format(
         'YYYY-MM-DD'
       )

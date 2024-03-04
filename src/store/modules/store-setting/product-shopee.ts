@@ -10,6 +10,7 @@ import {
   hideProductShopeeApi,
   pushProductShopeeApi,
   pushAllProductShopeeApi,
+  getAllProductUpdateFromSPApi,
   // updateProductApi,
 } from '@/services/SettingStoreServices/product.service'
 // import { update } from 'lodash-es'
@@ -306,6 +307,18 @@ export const useProductShopee = defineStore('ProductsShopee', {
         .catch((err) => {
           console.log(err)
           EndTimeLoading()
+        })
+    },
+
+    async getListProductUpdateFromSPAction(EndTimeLoading: Function) {
+      await getAllProductUpdateFromSPApi()
+        .then((payload: any) => {
+          const res = payload?.data?.data
+          this.getListProduct(res)
+          EndTimeLoading()
+        })
+        .catch((err) => {
+          console.log(err)
         })
     },
     // async updateProductAction(
