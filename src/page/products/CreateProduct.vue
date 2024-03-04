@@ -245,7 +245,7 @@
                 </div>
                 <div class="w-1/2 pl-2">
                   <label for="" class="form-group-label"
-                    >Đơn vị quy dổi<span class="text-red-600"></span>
+                    >Đơn vị quy đổi<span class="text-red-600"></span>
                     <span></span
                   ></label>
                   <div>
@@ -572,7 +572,7 @@
                     >
                     </a-select>
                   </div> -->
-                  <div
+                  <!-- <div
                     v-for="(itemSpec, indexSpec) in specDefault"
                     :key="indexSpec"
                   >
@@ -624,10 +624,10 @@
                         </component>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
-              <div v-if="item.title == 'mặc định'">
+              <!-- <div v-if="item.title == 'mặc định'">
                 <label for="" class="form-group-label"
                   >Đơn vị quy chuẩn<span class="text-red-600">* </span>
                   <span></span
@@ -643,7 +643,7 @@
                   >
                   </a-select>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <!-- <div id="infor-price" class="w-full ml-4">
@@ -759,10 +759,10 @@
           <div class="p-4 text-left">
             <button class="button-modal" html-type="submit">Cập nhật</button>
 
-            <button class="button-close-modal" @click="CancelCreate">
+            <button class="button-close-modal" @click="router.go(-1)">
               Hủy bỏ
             </button>
-            <button class="button-close-modal" @click="testLog">Test</button>
+            <!-- <button class="button-close-modal" @click="testLog">Test</button> -->
           </div>
         </div></template
       >
@@ -1078,11 +1078,13 @@
   }
   const dataMapUnit = ref<any>([])
   const handleChangeUnit = (value: any) => {
+    console.log(value)
     dataMapUnit.value = dataUnit.map((item: any) => ({
       unit_standard: value,
       unit_exchange: item.unit_exchange,
       rate: item.rate,
     }))
+    console.log(dataMapUnit.value)
   }
   const lastGenerateList = ref<any>([])
   const lastGenerateSku = ref<any>([])
@@ -1151,9 +1153,6 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
-  const CancelCreate = () => {
-    router.push('/products-list/page/1')
-  }
 
   // const createProduct = () => {}
   const onFinish = (values: any) => {
@@ -1194,10 +1193,10 @@
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo)
   }
-  const testLog = () => {
-    console.log('phan loai', dataTableConfig)
-    console.log('product cuoi', product)
-  }
+  // const testLog = () => {
+  //   console.log('phan loai', dataTableConfig)
+  //   console.log('product cuoi', product)
+  // }
 </script>
 
 <style>

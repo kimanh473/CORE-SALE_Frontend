@@ -32,9 +32,9 @@
     <template v-slot:content class="relative">
       <div
         id="task-bar-list"
-        class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
+        class="!my-4 !py-[10px] !mx-[10px] bg-slate-300 rounded flex justify-between"
       >
-        <span class="ml-2 mt-1 text-white">
+        <span class="ml-2 mt-1.5 text-slate-700">
           <template v-if="hasSelected">
             {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
           </template>
@@ -48,15 +48,45 @@
           >
             <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
           </div>
-          <a-button
-            class="button-push-up mr-3"
-            type="primary"
-            :disabled="!hasSelected"
-            :loading="state.loading"
+          <div
+            class="button-custom update-list-button bg-amber-500 relative group rounded-md px-2"
+            title="Cập nhật"
+          >
+            <p class="text-[14px] mt-1 px-1">Cập nhật</p>
+          </div>
+          <div
+            class="button-custom export-button bg-red-500 relative group rounded-md px-2"
+            title="Export"
+          >
+            <p class="text-[14px] mt-1 px-1">Export</p>
+          </div>
+          <div
+            class="button-custom import-button bg-red-500 relative group rounded-md px-2"
+            title="Import"
+          >
+            <p class="text-[14px] mt-1 px-1">Import</p>
+          </div>
+          <div
+            class="button-custom hide-product bg-green-500 relative group rounded-md px-2 mr-3"
+            title="Ẩn sản phẩm"
+            @click="HideAllProductShopee"
+          >
+            <p class="text-[14px] mt-1 px-1">Ẩn sản phẩm</p>
+          </div>
+          <div
+            class="button-custom push-product bg-green-500 relative group rounded-md px-2 mr-3"
+            title="Đẩy sản phẩm"
             @click="start"
           >
-            Đẩy lên sàn
-          </a-button>
+            <p class="text-[14px] mt-1 px-1">Đẩy sản phẩm</p>
+          </div>
+          <div
+            class="button-create-new relative group rounded-md px-2"
+            title="Tạo mới sản phẩm"
+            @click="CreateProduct()"
+          >
+            <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
+          </div>
         </div>
       </div>
       <a-table
@@ -85,15 +115,20 @@
               height="50"
             />
           </template>
+          <template v-if="column.key === 'status'">
+            <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
+            <a-tag v-else>Tắt</a-tag>
+          </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
-              {{ formatWeb(item) }}
+              <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
             </div>
           </template>
           <template v-if="column.key === 'id'">
-            <a @click="handlePushProduct(record.id)">Ẩn</a>&nbsp;|&nbsp;<a
-              @click="navigateUpdate(record.id)"
-              >Sửa</a
+            <a @click="pushProductShopee(record)">Đẩy</a>&nbsp;|&nbsp;<a
+              @click="hideProductShopee(record)"
+              >Ẩn</a
+            >&nbsp;|&nbsp;<a @click="navigateUpdate(record.id)">Sửa</a
             >&nbsp;|&nbsp;<a @click="handleOpenDelete(record)">Xóa</a>
           </template>
         </template>
@@ -150,8 +185,8 @@
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
-  // import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
   import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
+  import type { UploadProps } from 'ant-design-vue'
 
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -168,6 +203,8 @@
   const EndTimeLoading = () => {
     isLoading.value = false
   }
+  const fileProductList = ref<UploadProps['fileList']>([])
+  const fileProductSetting = ref<UploadProps['fileList']>([])
   const dataProduct = useProductShopee()
   const web_site_code = 'shopee'
   const { listProduct, totalPage, currentPage } = storeToRefs(dataProduct)
@@ -180,12 +217,34 @@
   //   Number(route.params.page),
   //   EndTimeLoading
   // )
-  dataProduct.getListProductAction(
-    web_site_code,
-    perPage.value,
-    Number(route.params.page),
-    EndTimeLoading
-  )
+  dataProduct
+    .getListProductAction(
+      web_site_code,
+      perPage.value,
+      Number(route.params.page),
+      EndTimeLoading
+    )
+    .then(() => {
+      fileProductList.value = listProduct?.value?.image?.map(
+        (item: Array<string>, index: number) => ({
+          uid: index,
+          name: `image ${index}`,
+          status: 'done',
+          url: `${UrlImg}/${item}`,
+        })
+      )
+      const arr = listProduct?.value?.list_product_config?.map(
+        (item: any) => item.image
+      )
+      fileProductSetting.value = arr?.map(
+        (item: Array<string>, index: number) => ({
+          uid: index,
+          name: `image ${index}`,
+          status: 'done',
+          url: `${item}`,
+        })
+      )
+    })
   // .then(() => {
   //   listProductShopee = listProduct.value.filter((item: any) => {
   //     return item.web_site_code.indexOf('shopee') != -1
@@ -216,7 +275,7 @@
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
   const isOpenConfirmAll = ref<boolean>(false)
-  const deleteAllProduct = ref()
+  const selectAllProduct = ref()
   const handleCloseConfirmAll = () => {
     isOpenConfirmAll.value = false
   }
@@ -250,6 +309,8 @@
     {
       title: 'Trạng thái',
       dataIndex: 'status',
+      align: 'center',
+      key: 'status',
     },
     {
       title: 'Website',
@@ -278,21 +339,45 @@
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
+  const CreateProduct = () => {
+    router.push('/create-product')
+  }
   const navigateUpdate = (id: number) => {
     router.push(`/update-product/${id}`)
   }
   const onSelectChange = (selectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
-    deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
+    selectAllProduct.value = selectedRowKeys.map((item: number) => String(item))
     state.selectedRowKeys = selectedRowKeys
-    console.log(selectedRowKeys)
+    console.log('?', selectAllProduct)
   }
-  const handlePushProduct = (id: number) => {}
   const idSelected = ref()
+  const pushProductShopee = (record: any) => {
+    idSelected.value = record.id
+    dataProduct.PushProductAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      web_site_code,
+      perPage.value,
+      Number(route.params.page)
+    )
+  }
+  const hideProductShopee = (record: any) => {
+    idSelected.value = record.id
+    dataProduct.HideProductAction(
+      Number(idSelected.value),
+      EndTimeLoading,
+      toast,
+      web_site_code,
+      perPage.value,
+      Number(route.params.page)
+    )
+  }
+
   const handleOpenDelete = (record: any) => {
     isOpenConfirm.value = true
     idSelected.value = record.id
-    console.log(idSelected)
   }
   // const handleDelete = () => {
   //   // da.deleteWebAction(
@@ -320,16 +405,15 @@
   type Key = string | number
   const state = reactive<{
     selectedRowKeys: Key[]
-    loading: boolean
+
     loadingDel: boolean
   }>({
     selectedRowKeys: [], // Check here to configure the default column
-    loading: false,
+
     loadingDel: false,
   })
   const hasSelected = computed(() => state.selectedRowKeys.length > 0)
   const start = () => {
-    state.loading = true
     // ajax request after empty completing
     for (let i = 0; i < state.selectedRowKeys.length; i++) {
       console.log(`push ${state.selectedRowKeys[i]}`)
@@ -341,7 +425,6 @@
     }
     // ajax request after empty completing
     setTimeout(() => {
-      state.loading = false
       state.selectedRowKeys = []
       handleCloseConfirmAll()
       EndTimeLoading()
@@ -351,6 +434,7 @@
   const handleOpenDeleteAllProduct = () => {
     isOpenConfirmAll.value = true
   }
+
   // const handleDeleteAll = () => {
   //   state.loadingDel = true
   //   for (let i = 0; i < state.selectedRowKeys.length; i++) {
@@ -384,10 +468,8 @@
 
   // delete all dùng api xóa all
   const handleDeleteAll = () => {
-    console.log(`delete ${state.selectedRowKeys}`)
-    console.log('------')
     const data = {
-      ids: deleteAllProduct.value,
+      ids: selectAllProduct.value,
     }
 
     // console.log('data', data)
@@ -396,6 +478,27 @@
       EndTimeLoading,
       toast,
       handleCloseConfirmAll,
+      web_site_code,
+      perPage.value,
+      Number(route.params.page)
+    )
+    setTimeout(() => {
+      state.loadingDel = false
+      state.selectedRowKeys = []
+    }, 1000)
+  }
+
+  const HideAllProductShopee = () => {
+    const data = {
+      ids: selectAllProduct.value,
+    }
+    console.log(data)
+
+    // console.log('data', data)
+    dataProduct.HideAllProductAction(
+      Object(data),
+      EndTimeLoading,
+      toast,
       web_site_code,
       perPage.value,
       Number(route.params.page)
@@ -435,5 +538,37 @@
     right: 0px;
     z-index: 9999;
     justify-items: center;
+  }
+
+  .export-button::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f56e';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .update-list-button::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f021';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .push-product::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f062';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+
+  .hide-product::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f063';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
   }
 </style>

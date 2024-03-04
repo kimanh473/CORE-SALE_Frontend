@@ -50,7 +50,7 @@
           </div>
           <div
             class="button-create-new relative group rounded-md px-2"
-            title="Tạo mới web"
+            title="Tạo mới sản phẩm"
             @click="CreateProduct()"
           >
             <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
@@ -90,7 +90,7 @@
           </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
-              {{ formatWeb(item) }}
+              <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
             </div>
           </template>
           <template v-if="column.key === 'id'">
@@ -212,10 +212,12 @@
     {
       title: 'Bộ thuộc tính',
       dataIndex: 'attribute_set_id',
+      key: 'attribute_set_id',
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
+      align: 'center',
       key: 'status',
     },
     {

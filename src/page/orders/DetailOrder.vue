@@ -199,29 +199,32 @@
           <div class="pt-4">
             <div class="flex justify-end pr-8">
               <div class="pr-14">
-                <div>
-                  Tổng tiền ({{ detailOrder?.product_detail?.length }} sản phẩm)
+                <div class="font-bold">
+                  Tổng tiền sản phẩm ({{ detailOrder?.product_detail?.length }}
+                  sản phẩm)
                 </div>
-                <div>Chiết khấu</div>
-                <div>Tiền thuế (VAT)</div>
-                <div>Voucher sàn TMĐT</div>
-                <div>Voucher shop</div>
-                <div>Phí giao hàng</div>
-                <div>Giảm giá phí giao hàng</div>
-                <div>Mã giảm giá</div>
-                <div class="font-bold">Khách phải trả</div>
+                <div class="font-bold">Chiết khấu</div>
+                <div class="font-bold">Tiền thuế (VAT)</div>
+                <div class="font-bold">Phí vân chuyển (không tính trợ giá)</div>
+                <div>Phí vận chuyển thực tế</div>
+                <div>Phí vận chuyển được trợ giá từ sản TMĐT</div>
+                <div class="font-bold">Phí giao dịch từ sàn TMĐT</div>
+                <div>Phí cố định</div>
+                <div>Phí thanh toán</div>
+                <div class="font-bold">Doanh thu đơn hàng</div>
               </div>
               <div class="text-end">
                 <div>{{ FormatPrice(totalOrigin) }}&#8363;</div>
                 <div>- {{ FormatPrice(totalDiscount) }}&#8363;</div>
-                <div>0&#8363;</div>
-                <div>0&#8363;</div>
                 <div>0&#8363;</div>
                 <div>
                   {{
                     FormatPrice(Number(detailOrder.estimated_shipping_fee))
                   }}&#8363;
                 </div>
+                <div>0&#8363;</div>
+                <div>0&#8363;</div>
+                <div>0&#8363;</div>
                 <div>0&#8363;</div>
                 <div>0&#8363;</div>
                 <div>
@@ -258,6 +261,20 @@
                 >
               </template>
             </a-table>
+            <div class="p-4 grid grid-cols-4">
+              <span></span>
+              <span></span>
+              <span class="font-bold pr-8">Tổng số tiền điều chỉnh</span
+              ><span class="text-right"
+                >{{
+                  FormatPrice(
+                    totalOrigin -
+                      totalDiscount +
+                      Number(detailOrder.estimated_shipping_fee)
+                  )
+                }}&#8363;</span
+              >
+            </div>
           </div>
           <h4 class="form-section-title-order w-full m-0">
             <span class="pr-2">
@@ -266,9 +283,11 @@
             Số tiền cuối cùng
           </h4>
           <div class="rounded-md border-2">
-            <div class="p-4 flex justify-end">
+            <div class="p-4 grid grid-cols-4">
+              <span></span>
+              <span></span>
               <span class="font-bold pr-8">Doanh thu đơn hàng (cuối cùng)</span
-              ><span
+              ><span class="text-right"
                 >{{
                   FormatPrice(
                     totalOrigin -
@@ -286,9 +305,11 @@
             Thanh toán người mua
           </h4>
           <div class="rounded-md border-2">
-            <div class="p-4 flex justify-end">
+            <div class="p-4 grid grid-cols-4">
+              <span></span>
+              <span></span>
               <span class="font-bold pr-8">Tổng tiền thanh toán</span
-              ><span
+              ><span class="text-right"
                 >{{
                   FormatPrice(
                     totalOrigin -

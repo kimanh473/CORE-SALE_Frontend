@@ -20,6 +20,25 @@ export const FormatPrice = (price: number) => {
     return 0
   }
 }
+export const FormatOrderStatus = (code: string) => {
+  if (code === 'UNPAID' || code === 'INVOICE_PENDING') {
+    return 'Chờ xác nhận'
+  } else if (code === 'READY_TO_SHIP' || code === 'RETRY SHIP') {
+    return 'Chờ lấy hàng'
+  } else if (code === 'TO_CONFIRM_RECEIVE' || code === 'PROCESSED') {
+    return 'Đang giao'
+  } else if (code === 'COMPLETED' || code === 'SHIPPED') {
+    return 'Đã giao'
+  } else if (code === 'CANCELLED') {
+    return 'Đơn hủy'
+  } else if (code === 'RETURN' || code === 'TO_RETURN') {
+    return 'Trả hàng/Hoàn tiền'
+  } else if (code === 'FAILED_DELIVERY') {
+    return 'Giao không thành công'
+  } else {
+    return ''
+  }
+}
 export const FormatPayMethod = (code: string) => {
   if (code === 'Shopee Wallet (SPM)') {
     return 'Số dư tài khoản Shopee'
