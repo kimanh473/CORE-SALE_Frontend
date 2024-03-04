@@ -775,429 +775,435 @@
 </template>
 
 <script setup lang="ts">
-  import BaseLayout from '@/layout/baseLayout.vue'
-  import SideBar from '@/components/common/SideBar.vue'
-  import Header from '@/components/common/Header.vue'
-  import { ref, reactive } from 'vue'
-  import { useToast } from 'vue-toastification'
-  import { useRouter } from 'vue-router'
-  import { PlusOutlined } from '@ant-design/icons-vue'
-  import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
-  import { useProductUnit } from '@/store/modules/store-setting/product-unit'
-  import { useProduct } from '@/store/modules/store-setting/products'
-  import { useListTax } from '@/store/modules/store-setting/tax'
-  import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
-  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
-  import { useCategory } from '@/store/modules/store-setting/category'
-  import { storeToRefs } from 'pinia'
-  import { typeProduct } from '@/page/products/configProduct'
-  import dayjs from 'dayjs'
-  import type { SelectProps, UploadProps } from 'ant-design-vue'
+    import BaseLayout from '@/layout/baseLayout.vue'
+    import SideBar from '@/components/common/SideBar.vue'
+    import Header from '@/components/common/Header.vue'
+    import { ref, reactive } from 'vue'
+    import { useToast } from 'vue-toastification'
+    import { useRouter } from 'vue-router'
+    import { PlusOutlined } from '@ant-design/icons-vue'
+    import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+    import { useProductUnit } from '@/store/modules/store-setting/product-unit'
+    import { useProduct } from '@/store/modules/store-setting/products'
+    import { useListTax } from '@/store/modules/store-setting/tax'
+    import { useAttributeProduct } from '@/store/modules/store-setting/attribute-product'
+    import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
+    import { useCategory } from '@/store/modules/store-setting/category'
+    import { storeToRefs } from 'pinia'
+    import { typeProduct } from '@/page/products/configProduct'
+    import dayjs from 'dayjs'
+    import type { SelectProps, UploadProps } from 'ant-design-vue'
 
-  // import IconAddImg from '@/assets/images/icon_add_image.png'
-  // import { TreeSelect } from 'ant-design-vue'
+    // import IconAddImg from '@/assets/images/icon_add_image.png'
+    // import { TreeSelect } from 'ant-design-vue'
 
-  // const SHOW_PARENT = TreeSelect.SHOW_ALL
-  const dataCategory = useCategory()
-  dataCategory.getListCategoryTreeAction()
-  const { listTreeCategory } = storeToRefs(dataCategory)
-  const dataAttributeGroup = useAttributeGroup()
-  dataAttributeGroup.getListAttributeGroupAction()
-  const { listSetAttributeGroup, listDefault, listSpecDefault } =
-    storeToRefs(dataAttributeGroup)
-  const dataProductUnit = useProductUnit()
-  dataProductUnit.getListProductUnitAction()
-  const { listProductUnit } = storeToRefs(dataProductUnit)
-  const dataTax = useListTax()
-  dataTax.getListTaxAction()
-  const { listTax } = storeToRefs(dataTax)
-  // const img = ref(IconAddImg)
-  const indexAttribute = ref()
-  const specDefault = ref()
-  dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
-    indexAttribute.value = listDefault.value
-    console.log(indexAttribute.value)
-    specDefault.value = listSpecDefault.value
-  })
-  // const filterOption = (input: string, option: any) => {
-  //   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-  // }
-  dataCategory.getListCategoryTreeAction()
-  const weightUnit = ref<SelectProps['options']>([
-    {
-      value: '0',
-      label: 'g',
-    },
-    {
-      value: '1',
-      label: 'kg',
-    },
-  ])
-  const statusProduct = ref<SelectProps['options']>([
-    {
-      value: '0',
-      label: 'Chưa kích hoạt',
-    },
-    {
-      value: '1',
-      label: 'Đang kích hoạt',
-    },
-  ])
-  const columns = [
-    {
-      title: 'Phiên bản sản phẩm',
-      key: 'group_1',
-      align: 'center',
-    },
-    {
-      title: 'Tên',
-      key: 'name',
-      align: 'center',
-      width: '12%',
-    },
-    {
-      title: 'SKU',
-      key: 'sku',
-      align: 'center',
-      width: '12%',
-    },
-    {
-      title: 'Barcode',
-      key: 'bar_code',
-      align: 'center',
-    },
-    {
-      title: 'Khối lượng',
-      key: 'weight',
-      align: 'center',
-      width: '10%',
-    },
-    {
-      title: 'Tồn kho tối thiểu',
-      key: 'minimum',
-      align: 'center',
-    },
-    {
-      title: 'Tồn kho tối đa',
-      key: 'maximum',
-      align: 'center',
-    },
-  ]
-  const dataCreateProduct = ref<any>({})
-  const handleChangeAttributeGroup = (value: any, options: any) => {
-    indexAttribute.value = options.json_group_attribute_detail.map(
-      (item: any) => ({
-        title: item.title,
-        attribute: item.attribute_detail,
-      })
-    )
-  }
-  // const checkJPG = (file: any) => {
-  //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
-  //   if (!isJPG) {
-  //     toast.error('You can only upload JPG or PNG file!')
-  //     return false
-  //   } else {
-  //     return true
-  //   }
-  // }
-
-  const handleChange = async (event: any, input_name: string) => {
-    if (typeof event == 'number' || typeof event == 'boolean') {
-      dataCreateProduct.value[input_name] = event
-    } else if (input_name == 'image') {
-      // let data: any[] = []
-      if (!event.file.url && !event.preview) {
-        event.file.preview = (await getBase64(
-          event.file.originFileObj
-        )) as string
-      }
-      dataCreateProduct.value[input_name] = fileList.value.map(
-        (item: any) => item.preview
-      )
-    } else if (input_name.includes('date')) {
-      console.log(dayjs(event, 'DD/MM/YYYY'))
-      dataCreateProduct.value[input_name] = dayjs(event, 'DD/MM/YYYY').format(
-        'YYYY-MM-DD'
-      )
-    } else {
-      dataCreateProduct.value[input_name] = event.target.value
-    }
-  }
-  function getBase64(file: File) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = (error) => reject(error)
+    // const SHOW_PARENT = TreeSelect.SHOW_ALL
+    const dataCategory = useCategory()
+    dataCategory.getListCategoryTreeAction()
+    const { listTreeCategory } = storeToRefs(dataCategory)
+    const dataAttributeGroup = useAttributeGroup()
+    dataAttributeGroup.getListAttributeGroupAction()
+    const { listSetAttributeGroup, listDefault, listSpecDefault } =
+      storeToRefs(dataAttributeGroup)
+    const dataProductUnit = useProductUnit()
+    dataProductUnit.getListProductUnitAction()
+    const { listProductUnit } = storeToRefs(dataProductUnit)
+    const dataTax = useListTax()
+    dataTax.getListTaxAction()
+    const { listTax } = storeToRefs(dataTax)
+    // const img = ref(IconAddImg)
+    const indexAttribute = ref()
+    const specDefault = ref()
+    dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
+      indexAttribute.value = listDefault.value
+      console.log(indexAttribute.value)
+      specDefault.value = listSpecDefault.value
     })
-  }
-  // const checked = ref<boolean>(false)
-  const previewVisible = ref<boolean>(false)
-  const previewImage = ref('')
-  const previewTitle = ref('')
-  // const isConfig1 = ref(false)
-  // const isConfig2 = ref(false)
-  // const isConfig3 = ref(false)
-  // const isPrice = ref(true)
-  // const isConfig = ref(true)
-  // const isDetail = ref(true)
-  const isInfor = ref(true)
-  const isDefault = ref(true)
-  const fileList = ref<UploadProps['fileList']>([])
-  const fileProductList = ref<UploadProps['fileList']>([])
-  const handleCancelImage = () => {
-    previewVisible.value = false
-    previewTitle.value = ''
-  }
+    // const filterOption = (input: string, option: any) => {
+    //   return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    // }
+    dataCategory.getListCategoryTreeAction()
+    const weightUnit = ref<SelectProps['options']>([
+      {
+        value: '0',
+        label: 'g',
+      },
+      {
+        value: '1',
+        label: 'kg',
+      },
+    ])
+    const statusProduct = ref<SelectProps['options']>([
+      {
+        value: '0',
+        label: 'Chưa kích hoạt',
+      },
+      {
+        value: '1',
+        label: 'Đang kích hoạt',
+      },
+    ])
+    const columns = [
+      {
+        title: 'Phiên bản sản phẩm',
+        key: 'group_1',
+        align: 'center',
+      },
+      {
+        title: 'Tên',
+        key: 'name',
+        align: 'center',
+        width: '12%',
+      },
+      {
+        title: 'SKU',
+        key: 'sku',
+        align: 'center',
+        width: '12%',
+      },
+      {
+        title: 'Barcode',
+        key: 'bar_code',
+        align: 'center',
+      },
+      {
+        title: 'Khối lượng',
+        key: 'weight',
+        align: 'center',
+        width: '10%',
+      },
+      {
+        title: 'Tồn kho tối thiểu',
+        key: 'minimum',
+        align: 'center',
+      },
+      {
+        title: 'Tồn kho tối đa',
+        key: 'maximum',
+        align: 'center',
+      },
+    ]
+    const dataCreateProduct = ref<any>({})
+    const handleChangeAttributeGroup = (value: any, options: any) => {
+      indexAttribute.value = options.json_group_attribute_detail.map(
+        (item: any) => ({
+          title: item.title,
+          attribute: item.attribute_detail,
+        })
+      )
+    }
+    // const checkJPG = (file: any) => {
+    //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+    //   if (!isJPG) {
+    //     toast.error('You can only upload JPG or PNG file!')
+    //     return false
+    //   } else {
+    //     return true
+    //   }
+    // }
 
-  const res_1 = ref([])
-  const res_2 = ref([])
-  const getDataTableConfig = (arr: any, arr2: any) => {
-    const result = []
-    let i = 0
-    let k = 0
-
-    while (i < arr.length - 1) {
-      while (k < 1) {
-        for (let m = 0; m < arr[0].length; m++) {
-          for (let j = 0; j < arr[1].length; j++) {
-            const a = arr[0][m]
-            const b = a + '_' + arr[1][j]
-            result.push(b)
-          }
+    const handleChange = async (event: any, input_name: string) => {
+      if (typeof event == 'number' || typeof event == 'boolean') {
+        dataCreateProduct.value[input_name] = event
+      } else if (input_name == 'image') {
+        // let data: any[] = []
+        if (!event.file.url && !event.preview) {
+          event.file.preview = (await getBase64(
+            event.file.originFileObj
+          )) as string
         }
-        arr[0] = result
-        arr.splice(1, 1)
-        res_1.value = result
-        k++
+        dataCreateProduct.value[input_name] = fileList.value.map(
+          (item: any) => item.preview
+        )
+      } else if (input_name.includes('date')) {
+        console.log(dayjs(event, 'DD/MM/YYYY'))
+        dataCreateProduct.value[input_name] = dayjs(event, 'DD/MM/YYYY').format(
+          'YYYY-MM-DD'
+        )
+      } else {
+        dataCreateProduct.value[input_name] = event.target.value
       }
-      getDataTableConfig(arr, arr2)
-      i++
     }
-    while (i < arr2.length - 1) {
-      while (k < 1) {
-        for (let m = 0; m < arr2[0].length; m++) {
-          for (let j = 0; j < arr2[1].length; j++) {
-            const a = arr2[0][m]
-            const b = a + '_' + arr2[1][j]
-            result.push(b)
+    function getBase64(file: File) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = (error) => reject(error)
+      })
+    }
+    // const checked = ref<boolean>(false)
+    const previewVisible = ref<boolean>(false)
+    const previewImage = ref('')
+    const previewTitle = ref('')
+    // const isConfig1 = ref(false)
+    // const isConfig2 = ref(false)
+    // const isConfig3 = ref(false)
+    // const isPrice = ref(true)
+    // const isConfig = ref(true)
+    // const isDetail = ref(true)
+    const isInfor = ref(true)
+    const isDefault = ref(true)
+    const fileList = ref<UploadProps['fileList']>([])
+    const fileProductList = ref<UploadProps['fileList']>([])
+    const handleCancelImage = () => {
+      previewVisible.value = false
+      previewTitle.value = ''
+    }
+
+    const res_1 = ref([])
+    const res_2 = ref([])
+    const getDataTableConfig = (arr: any, arr2: any) => {
+      const result = []
+      let i = 0
+      let k = 0
+
+      while (i < arr.length - 1) {
+        while (k < 1) {
+          for (let m = 0; m < arr[0].length; m++) {
+            for (let j = 0; j < arr[1].length; j++) {
+              const a = arr[0][m]
+              const b = a + '_' + arr[1][j]
+              result.push(b)
+            }
           }
+          arr[0] = result
+          arr.splice(1, 1)
+          res_1.value = result
+          k++
         }
-        arr2[0] = result
-        arr2.splice(1, 1)
-        res_2.value = result
-        k++
+        getDataTableConfig(arr, arr2)
+        i++
       }
-      getDataTableConfig(arr, arr2)
-      i++
+      while (i < arr2.length - 1) {
+        while (k < 1) {
+          for (let m = 0; m < arr2[0].length; m++) {
+            for (let j = 0; j < arr2[1].length; j++) {
+              const a = arr2[0][m]
+              const b = a + '_' + arr2[1][j]
+              result.push(b)
+            }
+          }
+          arr2[0] = result
+          arr2.splice(1, 1)
+          res_2.value = result
+          k++
+        }
+        getDataTableConfig(arr, arr2)
+        i++
+      }
     }
-  }
-  const listGenerate = ref<any>([])
-  const mapArr = ref<any>([])
-  const nameArr = ref<any>([])
-  const handleChangeClassify = (valueClassify: any) => {
-    mapArr.value = dataOption.map((item: any) => item.value)
+    const listGenerate = ref<any>([])
+    const mapArr = ref<any>([])
+    const nameArr = ref<any>([])
+    const handleChangeClassify = (valueClassify: any) => {
+      mapArr.value = dataOption.map((item: any) => item.value)
 
-    // listGenerate.value = res_1.value.map((item: any, index: any) => ({
-    //   title: item,
-    //   code: index,
-    // }))
+      // listGenerate.value = res_1.value.map((item: any, index: any) => ({
+      //   title: item,
+      //   code: index,
+      // }))
 
-    // listGenerate.value = value.map((item: any, index: any) => ({
-    //   title: item,
-    //   code: index,
-    // }))
-    // dataOption.push(
-    //   value.map((item: any, index: any) => ({
-    //     title: dataOption[0].title + ' ' + item,
-    //     code: index,
-    //   }))
-    // )
-  }
-
-  const handlePreview = async (file: UploadProps['fileList'][number]) => {
-    if (!file.url && !file.preview) {
-      file.preview = (await getBase64(file.originFileObj)) as string
+      // listGenerate.value = value.map((item: any, index: any) => ({
+      //   title: item,
+      //   code: index,
+      // }))
+      // dataOption.push(
+      //   value.map((item: any, index: any) => ({
+      //     title: dataOption[0].title + ' ' + item,
+      //     code: index,
+      //   }))
+      // )
     }
-    previewImage.value = file.url || file.preview
-    previewVisible.value = true
-    previewTitle.value =
-      file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
-  }
 
-  const dataOption = reactive([
-    {
-      value: <SelectProps>[],
-      title: '',
-    },
-  ])
-  const addOptions = () => {
-    const data = {
-      value: <SelectProps>[],
-      title: '',
+    const handlePreview = async (file: UploadProps['fileList'][number]) => {
+      if (!file.url && !file.preview) {
+        file.preview = (await getBase64(file.originFileObj)) as string
+      }
+      previewImage.value = file.url || file.preview
+      previewVisible.value = true
+      previewTitle.value =
+        file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
     }
-    dataOption.push(data)
-  }
-  const removeOptions = (index: number) => {
-    dataOption.splice(index, 1)
-  }
-  const product = reactive({
-    name: '',
-    sku: '',
-    bar_code: '',
-    code: '',
-    desc: '',
-    website: [],
-    category: [],
-    groupAttributeID: 1,
-    taxID: null,
-    specificationID: null,
-    classifyID: null,
-    nameClassifyID: null,
-    unitCode: null,
-    weight: '',
-    weightUnit: '1',
-    status: '0',
-  })
-  const dataUnit = reactive([
-    {
-      unit_standard: '',
-      unit_exchange: '',
-      rate: '',
-    },
-  ])
-  const addUnits = () => {
-    const data = {
-      unit_standard: '',
-      unit_exchange: '',
-      rate: '',
+
+    const dataOption = reactive([
+      {
+        value: <SelectProps>[],
+        title: '',
+      },
+    ])
+    const addOptions = () => {
+      const data = {
+        value: <SelectProps>[],
+        title: '',
+      }
+      dataOption.push(data)
     }
-    dataUnit.push(data)
-  }
-  const removeUnits = (index: number) => {
-    dataUnit.splice(index, 1)
-  }
-  const dataMapUnit = ref<any>([])
-  const handleChangeUnit = (value: any) => {
-    console.log(value)
-    dataMapUnit.value = dataUnit.map((item: any) => ({
-      unit_standard: value,
-      unit_exchange: item.unit_exchange,
-      rate: item.rate,
-    }))
-  }
-  const lastGenerateList = ref<any>([])
-  const lastGenerateSku = ref<any>([])
-  const dataTableConfig = ref<any>([])
-
-  const skuArr = ref<any>([])
-  const listSku = ref<any>([])
-  const addClassify = async () => {
-    console.log('product', product)
-    nameArr.value = []
-    listGenerate.value = []
-    skuArr.value = []
-    listSku.value = []
-    nameArr.value.push(product.name)
-    listGenerate.value.push(nameArr.value, ...mapArr.value)
-    skuArr.value.push(product.sku)
-    listSku.value.push(skuArr.value, ...mapArr.value)
-    await getDataTableConfig(listGenerate.value, listSku.value)
-    lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
-      name: item,
-      code: index,
-    }))
-    lastGenerateSku.value = res_2.value.map((item: any) => ({
-      sku: item,
-    }))
-
-    const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
-      name: item.name,
-      code: item.code,
-      sku: lastGenerateSku.value[index].sku,
-    }))
-
-    dataTableConfig.value = arrTable.map((item: any, index: number) => ({
-      id: index,
-      name: item.name,
-      sku: item.sku,
+    const removeOptions = (index: number) => {
+      dataOption.splice(index, 1)
+    }
+    const product = reactive({
+      name: '',
+      sku: '',
       bar_code: '',
-      weight: product.weight,
-      weight_unit: product.weightUnit,
-      minimum: '',
-      maximum: '',
-      image: <UploadProps['fileList']>[],
-      image1: <any>[],
-    }))
-  }
-  const handleImageTable = async (event: any, index: number) => {
-    if (!event.file.url && !event.preview) {
-      event.file.preview = (await getBase64(event.file.originFileObj)) as string
+      code: '',
+      desc: '',
+      website: [],
+      category: [],
+      groupAttributeID: 1,
+      taxID: null,
+      specificationID: null,
+      classifyID: null,
+      nameClassifyID: null,
+      unitCode: null,
+      weight: '',
+      weightUnit: '1',
+      status: '0',
+    })
+    const dataUnit = reactive([
+      {
+        unit_standard: '',
+        unit_exchange: '',
+        rate: '',
+      },
+    ])
+    const addUnits = () => {
+      const data = {
+        unit_standard: '',
+        unit_exchange: '',
+        rate: '',
+      }
+      dataUnit.push(data)
     }
+    const removeUnits = (index: number) => {
+      dataUnit.splice(index, 1)
+    }
+    const dataMapUnit = ref<any>([])
+    const handleChangeUnit = (value: any) => {
+      console.log(value)
+      dataMapUnit.value = dataUnit.map((item: any) => ({
+        unit_standard: value,
+        unit_exchange: item.unit_exchange,
+        rate: item.rate,
+      }))
+  <<<<<<<<< Temporary merge branch 1
+      console.log('??', dataUnit)
+      console.log('?', dataMapUnit)
+  =========
+      console.log(dataMapUnit.value)
+  >>>>>>>>> Temporary merge branch 2
+    }
+    const lastGenerateList = ref<any>([])
+    const lastGenerateSku = ref<any>([])
+    const dataTableConfig = ref<any>([])
 
-    dataTableConfig.value[index].image1 = dataTableConfig.value[
-      index
-    ].image.map((item: any) => item.preview)
-    // dataTableConfig.value[index].image = listImageTable.value
-    // dataTableConfig.value.image = event.file.preview
-  }
-  const dataProduct = useProduct()
-  const webCatalog = useWebCatalog()
-  webCatalog.getAllWebCatalogAction()
-  const { listWeb } = storeToRefs(webCatalog)
-  const dataAttribute = useAttributeProduct()
-  dataAttribute.getListAttributeAction()
-  const isLoading = ref<boolean>(false)
-  const toast = useToast()
-  const router = useRouter()
-  const EndTimeLoading = () => {
-    isLoading.value = false
-  }
+    const skuArr = ref<any>([])
+    const listSku = ref<any>([])
+    const addClassify = async () => {
+      console.log('product', product)
+      nameArr.value = []
+      listGenerate.value = []
+      skuArr.value = []
+      listSku.value = []
+      nameArr.value.push(product.name)
+      listGenerate.value.push(nameArr.value, ...mapArr.value)
+      skuArr.value.push(product.sku)
+      listSku.value.push(skuArr.value, ...mapArr.value)
+      await getDataTableConfig(listGenerate.value, listSku.value)
+      lastGenerateList.value = res_1.value.map((item: any, index: any) => ({
+        name: item,
+        code: index,
+      }))
+      lastGenerateSku.value = res_2.value.map((item: any) => ({
+        sku: item,
+      }))
 
-  // const createProduct = () => {}
-  const onFinish = (values: any) => {
-    const dataSource = {
-      name: product.name,
-      attribute_set_id: product.groupAttributeID,
-      website: product.website,
-      nganh_hang: product.category,
-      tax_id: product.taxID,
-      sku: product.sku,
-      code: product.sku,
-      bar_code: product.bar_code,
-      status: product.status,
-      unit_code: product.unitCode,
-      desc: product.desc,
-      image: fileProductList.value.map((item: any) => item.thumbUrl),
-      weight: product.weight,
-      weight_unit: product.weightUnit,
-      list_unit_change: dataMapUnit.value,
-      list_classify: dataOption,
-      list_product_config: dataTableConfig.value.map((item: any) => ({
+      const arrTable = lastGenerateList.value.map((item: any, index: number) => ({
+        name: item.name,
+        code: item.code,
+        sku: lastGenerateSku.value[index].sku,
+      }))
+
+      dataTableConfig.value = arrTable.map((item: any, index: number) => ({
+        id: index,
         name: item.name,
         sku: item.sku,
-        bar_code: item.barcode,
-        weight: item.weight,
-        weight_unit: item.weight_unit,
-        minimum: item.minimum,
-        maximum: item.maximum,
-        image: item.image1,
-      })),
+        bar_code: '',
+        weight: product.weight,
+        weight_unit: product.weightUnit,
+        minimum: '',
+        maximum: '',
+        image: <UploadProps['fileList']>[],
+        image1: <any>[],
+      }))
     }
-    // console.log(dataOption)
-    // console.log(dataUnit)
-    // console.log(dataTableConfig.value)
-    const data = Object.assign({}, dataCreateProduct.value, dataSource)
-    dataProduct.createProductAction(data, toast, router, EndTimeLoading)
-  }
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
-  // const testLog = () => {
-  //   console.log('phan loai', dataTableConfig)
-  //   console.log('product cuoi', product)
-  // }
+    const handleImageTable = async (event: any, index: number) => {
+      if (!event.file.url && !event.preview) {
+        event.file.preview = (await getBase64(event.file.originFileObj)) as string
+      }
+
+      dataTableConfig.value[index].image1 = dataTableConfig.value[
+        index
+      ].image.map((item: any) => item.preview)
+      // dataTableConfig.value[index].image = listImageTable.value
+      // dataTableConfig.value.image = event.file.preview
+    }
+    const dataProduct = useProduct()
+    const webCatalog = useWebCatalog()
+    webCatalog.getAllWebCatalogAction()
+    const { listWeb } = storeToRefs(webCatalog)
+    const dataAttribute = useAttributeProduct()
+    dataAttribute.getListAttributeAction()
+    const isLoading = ref<boolean>(false)
+    const toast = useToast()
+    const router = useRouter()
+    const EndTimeLoading = () => {
+      isLoading.value = false
+    }
+
+    // const createProduct = () => {}
+    const onFinish = (values: any) => {
+      const dataSource = {
+        name: product.name,
+        attribute_set_id: product.groupAttributeID,
+        website: product.website,
+        nganh_hang: product.category,
+        tax_id: product.taxID,
+        sku: product.sku,
+        code: product.sku,
+        bar_code: product.bar_code,
+        status: product.status,
+        unit_code: product.unitCode,
+        desc: product.desc,
+        image: fileProductList.value.map((item: any) => item.thumbUrl),
+        weight: product.weight,
+        weight_unit: product.weightUnit,
+        list_unit_change: dataMapUnit.value,
+        list_classify: dataOption,
+        list_product_config: dataTableConfig.value.map((item: any) => ({
+          name: item.name,
+          sku: item.sku,
+          bar_code: item.barcode,
+          weight: item.weight,
+          weight_unit: item.weight_unit,
+          minimum: item.minimum,
+          maximum: item.maximum,
+          image: item.image1,
+        })),
+      }
+      // console.log(dataOption)
+      // console.log(dataUnit)
+      // console.log(dataTableConfig.value)
+      const data = Object.assign({}, dataCreateProduct.value, dataSource)
+      dataProduct.createProductAction(data, toast, router, EndTimeLoading)
+    }
+    const onFinishFailed = (errorInfo: any) => {
+      console.log('Failed:', errorInfo)
+    }
+    // const testLog = () => {
+    //   console.log('phan loai', dataTableConfig)
+    //   console.log('product cuoi', product)
+    // }
 </script>
 
 <style>
