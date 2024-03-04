@@ -1,8 +1,8 @@
 import httpClient from '@/services/services'
-const getAllOrderApi = (perPage: number, page: number) => {
+const getAllOrderApi = (perPage: number, page: number, status: any) => {
   // return httpClient.get(`/user/order/list-order`)
   return httpClient.get(
-    `shopee/order/get_order_list_db?per_page=${perPage}&page=${page}`
+    `shopee/order/get_order_list_db?per_page=${perPage}&page=${page}&status=${status}`
   )
 }
 

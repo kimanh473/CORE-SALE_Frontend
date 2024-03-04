@@ -104,3 +104,13 @@ export interface OrderDetail {
   package_list: Array<PackageOrderDetail>
   tracking_info: Array<TrackingOrderDetail>
 }
+export interface countStatus {
+  total: number
+  CANCELLED: number
+  COMPLETED_SHIPPED: number
+  FAILED_DELIVERY: number
+  READY_TO_SHIP_RETRY_SHIP: number
+  RETURN_TO_RETURN: number
+  TO_CONFIRM_RECEIVE_PROCESSED: number
+  UNPAID_INVOICE_PENDING: number
+}

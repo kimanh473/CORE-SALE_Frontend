@@ -574,7 +574,7 @@
                     >
                     </a-select>
                   </div> -->
-                  <div
+                  <!-- <div
                     v-for="(itemSpec, indexSpec) in specDefault"
                     :key="indexSpec"
                   >
@@ -626,10 +626,10 @@
                         </component>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
-              <div v-if="item.title == 'mặc định'">
+              <!-- <div v-if="item.title == 'mặc định'">
                 <label for="" class="form-group-label"
                   >Đơn vị quy chuẩn<span class="text-red-600">* </span>
                   <span></span
@@ -645,7 +645,7 @@
                   >
                   </a-select>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <!-- <div id="infor-price" class="w-full ml-4">
@@ -1080,6 +1080,7 @@
   }
   const dataMapUnit = ref<any>([])
   const handleChangeUnit = (value: any) => {
+    console.log(value)
     dataMapUnit.value = dataUnit.map((item: any) => ({
       unit_standard: value,
       unit_exchange: item.unit_exchange,

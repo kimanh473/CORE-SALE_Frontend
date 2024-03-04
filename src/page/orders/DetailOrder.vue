@@ -10,8 +10,11 @@
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
               <p class="longText pl-5 mb-0">
-                Chi tiết đơn hàng - {{ detailOrder.order_sn }}
+                Chi tiết đơn hàng - {{ detailOrder.order_sn }} -
               </p>
+              <a-tag color="red">
+                {{ FormatOrderStatus(detailOrder.order_status) }}</a-tag
+              >
             </div>
           </div>
         </div>
@@ -380,6 +383,7 @@
   import {
     FormatPrice,
     FormatPayMethod,
+    FormatOrderStatus,
   } from '@/components/constants/FormatAll'
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
   const EndTimeLoading = () => {

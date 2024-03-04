@@ -17,33 +17,96 @@
       </Header>
     </template>
     <template v-slot:content class="relative">
-      <!-- <div
+      <div
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div></div>
         <div
-          class="button-create-new relative group rounded-md px-2"
-          title="Tạo mới web"
-          @click="CreateOrder()"
+          class="button-custom update-list-button bg-amber-500 relative group rounded-md px-2"
+          title="Cập nhật"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới đơn hàng</p>
+          <p class="text-[14px] mt-1 px-1">Cập nhật</p>
         </div>
-      </div> -->
-      <a-menu mode="horizontal">
-        <a-menu-item key="1"> Trạng thái 1 </a-menu-item>
-        <a-menu-item key="2"> Trạng thái 2 </a-menu-item>
-        <a-menu-item key="3"> Trạng thái 3 </a-menu-item>
-        <a-menu-item key="4"> Trạng thái 4 </a-menu-item>
-        <a-menu-item key="5"> Trạng thái 5 </a-menu-item>
+      </div>
+      <a-menu
+        class="!mx-[10px]"
+        v-model:selectedKeys="currentMenu"
+        mode="horizontal"
+        @select="handleSelectStatus"
+      >
+        <a-menu-item key="all"> Tất cả ({{ dataCount.total }}) </a-menu-item>
+        <a-menu-item key="1">
+          Chờ xác nhận ({{ dataCount.UNPAID_INVOICE_PENDING }})</a-menu-item
+        >
+        <a-menu-item key="2">
+          Chờ lấy hàng ({{ dataCount.READY_TO_SHIP_RETRY_SHIP }})
+        </a-menu-item>
+        <a-menu-item key="3">
+          Đang giao ({{ dataCount.TO_CONFIRM_RECEIVE_PROCESSED }})
+        </a-menu-item>
+        <a-menu-item key="4">
+          Đã giao ({{ dataCount.COMPLETED_SHIPPED }})
+        </a-menu-item>
+        <a-menu-item key="5"> Đơn hủy ({{ dataCount.CANCELLED }})</a-menu-item>
+        <a-menu-item key="6">
+          Trả hàng/Hoàn tiền ({{ dataCount.RETURN_TO_RETURN }})
+        </a-menu-item>
+        <a-menu-item key="7">
+          Giao không thành công ({{ dataCount.FAILED_DELIVERY }})
+        </a-menu-item>
       </a-menu>
       <a-table
         class="!p-[10px]"
         :columns="columns"
         :data-source="listOrder"
         :pagination="false"
+        :row-class-name="
+          (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
+        "
         v-model:current="currentPage"
         bordered
         row-key="id"
+        ><template #headerCell="{ column }">
+          <template v-if="column.key === 'name'">
+            <span>{{ column.title }}</span>
+          </template> </template
+        ><template
+          #customFilterDropdown="{
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            column,
+          }"
+        >
+          <div style="padding: 8px; text-align: right">
+            <a-input
+              ref="searchInput"
+              :placeholder="`Search ${column.dataIndex}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e: any) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            <a-button
+              type="primary"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+              @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+            >
+              <template #icon><SearchOutlined /></template>
+              Lọc
+            </a-button>
+          </div>
+        </template>
+        <template #customFilterIcon="{ filtered }">
+          <search-outlined
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          /> </template
         ><template #bodyCell="{ column, record, index }">
           <template v-if="column.key === 'stt'">
             <div>
@@ -58,9 +121,9 @@
           <template v-if="column.key === 'total_amount'">
             {{ FormatPrice(record.total_amount) }}&#8363;
           </template>
-          <template v-if="column.key === 'tax_money'">
+          <!-- <template v-if="column.key === 'tax_money'">
             {{ FormatPrice(record.tax_money) }}&#8363;
-          </template>
+          </template> -->
           <template v-if="column.key === 'order_status'">
             {{ FormatOrderStatus(record.order_status) }}
           </template>
@@ -97,11 +160,12 @@
 </template>
 
 <script setup lang="ts">
+  import { SearchOutlined } from '@ant-design/icons-vue'
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { useOrder } from '@/store/modules/orders/orders'
@@ -121,23 +185,41 @@
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
   //   return webName?.web_name
   // }
+  const currentMenu = ref([route.query.status ? route.query.status : '1'])
+  const handleSelectStatus = (item: any) => {
+    router.push({
+      path: route.fullPath,
+      query: {
+        status: item.key,
+      },
+    })
+    dataOrder.getAllOrderPaginateAction(
+      perPage.value,
+      Number(route.params.page),
+      item.selectedKeys,
+      EndTimeLoading
+    )
+  }
   const EndTimeLoading = () => {
     isLoading.value = false
   }
   const dataOrder = useOrder()
   const { totalPage, currentPage } = storeToRefs(dataOrder)
-  const perPage = ref(10)
+  const perPage = ref(20)
   dataOrder.getAllOrderPaginateAction(
     perPage.value,
     Number(route.params.page),
+    currentMenu.value,
     EndTimeLoading
   )
+  console.log(route)
   const changePage = (pageNumber: number) => {
     isLoading.value = true
     router.push(`/orders-list/page/${pageNumber}`)
     dataOrder.getAllOrderPaginateAction(
       perPage.value,
       pageNumber,
+      currentMenu.value,
       EndTimeLoading
     )
   }
@@ -145,8 +227,19 @@
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
 
-  const { listOrder } = storeToRefs(dataOrder)
+  const { listOrder, dataCount } = storeToRefs(dataOrder)
+  console.log(dataCount.value)
+  const state = reactive({
+    searchText: '',
+    searchedColumn: '',
+  })
+  const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+    confirm()
+    state.searchText = selectedKeys[0]
+    state.searchedColumn = dataIndex
+  }
 
+  const searchInput = ref()
   const columns = [
     {
       title: 'STT',
@@ -159,9 +252,24 @@
       key: 'create_time_order',
     },
     {
+      title: 'Ngày đồng bộ',
+      dataIndex: 'update_time',
+      key: 'update_time',
+    },
+    {
       title: 'Mã ĐH',
       dataIndex: 'order_sn',
       key: 'order_sn',
+      customFilterDropdown: true,
+      onFilter: (value: any, record: any) =>
+        record.order_sn.toString().toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
     },
     {
       title: 'Mã KH',
@@ -174,24 +282,34 @@
     {
       title: 'Tiền hàng',
       dataIndex: 'total_amount',
+      align: 'right',
       key: 'total_amount',
-      align: 'right',
     },
-    {
-      title: 'Tiền thuế',
-      dataIndex: 'tax_money',
-      key: 'tax_money',
-      align: 'right',
-    },
+    // {
+    //   title: 'Tiền thuế',
+    //   dataIndex: 'tax_money',
+    //   key: 'tax_money',
+    //   align: 'right',
+    // },
     {
       title: 'Tổng tiền',
       dataIndex: 'total_amount',
-      key: 'total_amount',
       align: 'right',
+      key: 'total_amount',
     },
     {
       title: 'Shop',
       dataIndex: 'shop_name',
+      customFilterDropdown: true,
+      onFilter: (value: any, record: any) =>
+        record.shop_name.toString().toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
     },
     {
       title: 'Trạng thái',
@@ -259,5 +377,12 @@
     right: 0px;
     z-index: 9999;
     justify-items: center;
+  }
+  .update-list-button::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f021';
+    font-weight: 500;
+    margin-top: 2px;
+    margin-right: 2px;
   }
 </style>
