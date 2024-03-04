@@ -62,6 +62,11 @@ const hideAllProductShopeeApi = (data: object) => {
   return httpClient.post(`/product/hiddenList`, data)
 }
 
+// Đẩy hàng loạt
+const pushAllProductShopeeApi = (data: object) => {
+  return httpClient.post(`/product/pushList`, data)
+}
+
 export {
   getAllProductsApi,
   createProductApi,
@@ -76,4 +81,5 @@ export {
   hideProductShopeeApi,
   hideAllProductShopeeApi,
   pushProductShopeeApi,
+  pushAllProductShopeeApi,
 }
