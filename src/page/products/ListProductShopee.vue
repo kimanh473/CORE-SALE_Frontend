@@ -299,7 +299,7 @@
     {
       title: 'Tên sản phẩm',
       dataIndex: 'name',
-      width: 300,
+      width: 350,
       fixed: 'left',
     },
     {
