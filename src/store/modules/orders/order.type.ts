@@ -30,6 +30,7 @@ export interface OrderShopee {
   buyer_username: string
   buyer_user_id: string
   create_time_order: string
+  created_at: string
   total_amount: string
   note: string
   tax_money: string
@@ -83,6 +84,7 @@ export interface TrackingOrderDetail {
 }
 export interface OrderDetail {
   id: string
+  Sales_channels: string
   order_status: string
   shop_id: string
   order_sn: string
@@ -96,6 +98,7 @@ export interface OrderDetail {
   noteupdate: string
   paytime: string
   create_time_order: string
+  created_at: string
   buyer_user_id: string
   buyer_username: string
   region: string

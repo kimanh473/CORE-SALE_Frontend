@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import {
   getAllOrderApi,
   getDetailOrderApi,
+  getAllOrderShopeeApi,
 } from '@/services/OrderServices/Order.services'
 import {
   Order,
@@ -43,12 +44,31 @@ export const useOrder = defineStore('customerGroup', {
       getAllOrderApi(perPage, page, status)
         .then((payload: any) => {
           const res = payload?.data
-          console.log(res)
           this.getListOrderPagination(res)
           EndTimeLoading()
         })
         .catch((err) => {
           console.log(err)
+        })
+    },
+    getOrderShopeeAction(toast: any, EndTimeLoading: Function) {
+      getAllOrderShopeeApi()
+        .then((payload: any) => {
+          console.log(payload)
+
+          if (payload.data.status === 'error') {
+            toast.error(payload.data.message)
+            EndTimeLoading()
+          } else {
+            toast.success('Cập nhật thành công')
+            EndTimeLoading()
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          const arrMess = err.response.data.messages
+          const errMess = arrMess[Object.keys(arrMess)[0]]
+          toast.error(errMess[0])
         })
     },
     async getDetailOrderAction(id: number, EndTimeLoading: Function) {

@@ -35,7 +35,7 @@ export const FormatOrderStatus = (code: string): string => {
     case 'SHIPPED':
       return 'Đã giao'
     case 'CANCELLED':
-      return 'Đơn hủy'
+      return 'Đã hủy'
     case 'RETURN':
     case 'TO_RETURN':
       return 'Trả hàng/Hoàn tiền'
@@ -78,6 +78,24 @@ export const FormatPayMethod = (code: string): string => {
       } else if (code?.search('Cybersource') != -1) {
         return 'Thẻ tín dụng/ghi nợ'
       }
+      return ''
+  }
+}
+export const FormatColorOrderStatus = (status: string): string => {
+  switch (status) {
+    case 'Chờ xác nhận':
+      return 'warning'
+    case 'Chờ lấy hàng':
+    case 'Đang giao':
+      return 'orange'
+    case 'Đã giao':
+      return 'success'
+    case 'Đã hủy':
+      return 'default'
+    case 'Trả hàng/Hoàn tiền':
+    case 'Giao không thành công':
+      return 'error'
+    default:
       return ''
   }
 }
