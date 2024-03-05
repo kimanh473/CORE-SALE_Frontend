@@ -24,8 +24,9 @@
         <div
           class="button-custom update-list-button bg-amber-500 relative group rounded-md px-2"
           title="Cập nhật"
+          @click="handleUpdateShopee"
         >
-          <p class="text-[14px] mt-1 px-1">Cập nhật</p>
+          <p class="text-[14px] mt-[6px] px-1">Cập nhật</p>
         </div>
       </div>
       <a-menu
@@ -168,6 +169,7 @@
   import { ref, reactive } from 'vue'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
+  import { useToast } from 'vue-toastification'
   import { useOrder } from '@/store/modules/orders/orders'
   import {
     FormatPrice,
@@ -178,6 +180,7 @@
 
   const router = useRouter()
   const route = useRoute()
+  const toast = useToast()
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
   // const { listWeb } = storeToRefs(dataWebsite)
@@ -253,8 +256,8 @@
     },
     {
       title: 'Ngày đồng bộ',
-      dataIndex: 'update_time',
-      key: 'update_time',
+      dataIndex: 'created_at',
+      key: 'created_at',
     },
     {
       title: 'Mã ĐH',
@@ -326,7 +329,10 @@
       key: 'id',
     },
   ]
-
+  const handleUpdateShopee = () => {
+    isLoading.value = true
+    dataOrder.getOrderShopeeAction(toast, EndTimeLoading)
+  }
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
   }
@@ -382,7 +388,7 @@
     font-family: 'Font Awesome 5 Pro';
     content: '\f021';
     font-weight: 500;
-    margin-top: 2px;
+    margin-top: 3px;
     margin-right: 2px;
   }
 </style>
