@@ -240,7 +240,7 @@
               {
                 icon: '',
                 label: 'Quản lý đơn hàng ',
-                to: '/orders-list/page/1',
+                to: '/orders-list',
                 permission: [''],
                 submenuGroup: '',
               },

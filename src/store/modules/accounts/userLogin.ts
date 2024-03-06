@@ -26,7 +26,7 @@ export const userLogin = defineStore('UserLogin', {
         .then((payload: any) => {
           if (payload?.status === 'success') {
             this.setDataLogin(payload)
-            router.push('/orders-list/page/1').then(() => {
+            router.push('/orders-list').then(() => {
               window.location.reload()
             })
             useToast().info('Chào mừng bạn đến với BTP holding!!')
