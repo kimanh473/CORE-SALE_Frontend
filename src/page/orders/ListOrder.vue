@@ -55,6 +55,7 @@
         <a-menu-item key="7">
           Giao không thành công ({{ dataCount.FAILED_DELIVERY }})
         </a-menu-item>
+        <a-menu-item key="8"> Khác () </a-menu-item>
       </a-menu>
       <a-table
         class="!p-[10px]"
@@ -280,17 +281,18 @@
   const handleCloseModalSync = () => {
     isOpenModalSync.value = false
   }
-  const currentMenu = ref([route.query.status ? route.query.status : '1'])
+  const currentMenu = ref<any>([route.query.status ? route.query.status : '1'])
   const handleSelectStatus = (item: any) => {
     router.push({
       path: route.fullPath,
       query: {
+        page: 1,
         status: item.key,
       },
     })
     dataOrder.getAllOrderPaginateAction(
       perPage.value,
-      Number(route.params.page),
+      1,
       item.selectedKeys,
       EndTimeLoading
     )
@@ -303,13 +305,20 @@
   const perPage = ref(20)
   dataOrder.getAllOrderPaginateAction(
     perPage.value,
-    Number(route.params.page),
+    1,
     currentMenu.value,
     EndTimeLoading
   )
+
   const changePage = (pageNumber: number) => {
     isLoading.value = true
-    router.push(`/orders-list/page/${pageNumber}`)
+    router.push({
+      path: route.fullPath,
+      query: {
+        page: pageNumber,
+        status: currentMenu.value,
+      },
+    })
     dataOrder.getAllOrderPaginateAction(
       perPage.value,
       pageNumber,

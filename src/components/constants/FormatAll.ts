@@ -42,7 +42,7 @@ export const FormatOrderStatus = (code: string): string => {
     case 'FAILED_DELIVERY':
       return 'Giao không thành công'
     default:
-      return ''
+      return 'Khác'
   }
 }
 export const FormatPayMethod = (code: string): string => {
