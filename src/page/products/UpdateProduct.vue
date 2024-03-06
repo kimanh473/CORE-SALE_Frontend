@@ -566,7 +566,6 @@
                     class="form-control-input !w-[70px]"
                     :options="weightUnit"
                     v-model:value="detailProduct.weightUnit"
-                    @change="handleChangeUnit"
                   >
                   </a-select>
                 </div>
@@ -596,7 +595,6 @@
                 placeholder="Chọn trạng thái"
                 :options="statusProduct"
                 v-model:value="detailProduct.status"
-                @change="handleChangeUnit"
               >
               </a-select>
             </div>
@@ -736,6 +734,8 @@
                     v-if="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
                     valueFormat="DD-MM-YYYY"
                   >
                     <div v-if="item1.attribute_code == 'image'">
@@ -770,7 +770,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.list_classify?.length > 0"
+                  v-show="item1.default_value == '1'"
                   v-if="item1.attribute_code == 'classify_product'"
                   class="bg-[#E8E9EB]"
                 >
@@ -1000,6 +1000,8 @@
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
                           "
+                          :checkedValue="1"
+                          :unCheckedValue="0"
                           valueFormat="DD-MM-YYYY"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
@@ -1209,6 +1211,7 @@
   const fileList = ref<UploadProps['fileList']>([])
   const fileProductList = ref<UploadProps['fileList']>([])
   const fileProductSetting = ref<UploadProps['fileList']>([])
+
   const dataProduct = useProduct()
   const { detailProduct } = storeToRefs(dataProduct)
   const dataTableConfig = ref<any>([])
@@ -1231,17 +1234,39 @@
     )
     fileProductList.value = arr1?.concat(arr2)
     dataTableConfig.value = detailProduct.value.list_product_config
-    const arr = detailProduct.value?.list_product_config?.map(
+    const imgShopee = detailProduct.value?.list_product_config?.map(
       (item: any) => item.image
     )
-    fileProductSetting.value = arr?.map(
-      (item: Array<string>, index: number) => ({
-        uid: index,
-        name: `image ${index}`,
-        status: 'done',
-        url: `${item}`,
-      })
+    console.log('imgshopee', imgShopee)
+    const listImgConfigShopee = imgShopee?.map(
+      (item: Array<string>, index: number) =>
+        item
+          ? {
+              uid: index,
+              name: `image ${index}`,
+              status: 'done',
+              url: `${item}`,
+            }
+          : <any>[]
     )
+    const imgUpload = detailProduct.value?.list_product_config?.map(
+      (item: any) => item.image_list_config
+    )
+    console.log('imgUpload', imgUpload)
+    const listImgConfigUpload = imgUpload.map(
+      (item: Array<string>, index: number) =>
+        item
+          ? {
+              uid: index,
+              name: `image ${index}`,
+              status: 'done',
+              url: `${UrlImg}/${item}`,
+            }
+          : <any>[]
+    )
+    console.log('upload', listImgConfigUpload)
+    fileProductSetting.value = listImgConfigUpload?.concat(listImgConfigShopee)
+    console.log('????', fileProductSetting.value)
   })
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
@@ -1492,7 +1517,6 @@
   ])
   const addUnits = () => {
     const data = {
-      unit_standard: '',
       unit_exchange: '',
       rate: '',
     }

@@ -34,7 +34,7 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <span class="ml-2 mt-1.5 text-slate-700">
+        <span class="ml-2 mt-1.5 text-white">
           <template v-if="hasSelected">
             {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
           </template>
@@ -86,7 +86,7 @@
             title="Tạo mới sản phẩm"
             @click="CreateProduct()"
           >
-            <p class="text-[14px] px-1 pt-3.5">Tạo mới sản phẩm</p>
+            <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
           </div>
         </div>
       </div>
