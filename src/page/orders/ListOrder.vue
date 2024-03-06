@@ -23,10 +23,10 @@
         <div></div>
         <div
           class="button-custom update-list-button bg-amber-500 relative group rounded-md px-2"
-          title="Cập nhật"
-          @click="handleUpdateShopee"
+          title="Đồng bộ"
+          @click="handleOpenModalSync"
         >
-          <p class="text-[14px] mt-[6px] px-1">Cập nhật</p>
+          <p class="text-[14px] mt-[12px] px-1">Đồng bộ</p>
         </div>
       </div>
       <a-menu
@@ -150,7 +150,54 @@
       </div>
     </template>
   </base-layout>
-
+  <a-modal
+    :visible="isOpenModalSync"
+    @cancel="handleCloseModalSync"
+    title="Đồng bộ đơn hàng"
+    width="550px"
+  >
+    <template #footer>
+      <a-button
+        key="submit"
+        type="primary"
+        @click="handleUpdateShopee"
+        :loading="isLoading"
+        >Xác nhận</a-button
+      >
+      <a-button key="back" @click="handleCloseModalSync">Hủy</a-button>
+    </template>
+    <div class="p-[24px]">
+      <div class="form-small">
+        <label for="" class="form-group-label"
+          >Chọn sàn đồng bộ<span class="text-red-600">* </span> <span></span
+        ></label>
+        <div>
+          <a-select
+            show-search
+            class="form-control-input"
+            placeholder="Chọn sàn TMĐT"
+          >
+          </a-select>
+        </div>
+      </div>
+      <div class="form-small">
+        <label for="" class="form-group-label"
+          >Chọn khoảng ngày<span class="text-red-600">* </span> <span></span
+        ></label>
+        <div>
+          <a-range-picker
+            :placeholder="['Ngày bắt đầu', 'Ngày kết thúc']"
+            :value="valueRangeDate || hackValue || value"
+            :disabled-date="disabledDate"
+            :format="dateFormat"
+            @change="onChange"
+            @openChange="onOpenChange"
+            @calendarChange="onCalendarChange"
+          />
+        </div>
+      </div>
+    </div>
+  </a-modal>
   <modal-delete
     :isOpen="isOpenConfirm"
     :handleCloseDetail="handleCloseConfirm"
@@ -175,6 +222,7 @@
     FormatPrice,
     FormatOrderStatus,
   } from '@/components/constants/FormatAll'
+  import dayjs, { Dayjs } from 'dayjs'
   import { storeToRefs } from 'pinia'
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -188,6 +236,50 @@
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
   //   return webName?.web_name
   // }
+  const dateFormat = 'YYYY-MM-DD'
+  const currentTime = new Date()
+  const previous15day = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000)
+  type RangeValue = [Dayjs, Dayjs]
+  const valueRangeDate = ref<[Dayjs, Dayjs]>([
+    dayjs(previous15day.toISOString().substring(0, 10), dateFormat),
+    dayjs(currentTime.toISOString().substring(0, 10), dateFormat),
+  ])
+  const value = ref<RangeValue>()
+  const hackValue = ref<RangeValue>()
+  const disabledDate = (current: Dayjs) => {
+    if (!valueRangeDate.value || (valueRangeDate.value as any).length === 0) {
+      return false
+    }
+    const tooLate =
+      valueRangeDate.value[0] &&
+      current.diff(valueRangeDate.value[0], 'days') > 14
+    const tooEarly =
+      valueRangeDate.value[1] &&
+      valueRangeDate.value[1].diff(current, 'days') > 14
+    return tooEarly || tooLate
+  }
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      valueRangeDate.value = [] as any
+      hackValue.value = [] as any
+    } else {
+      hackValue.value = undefined
+    }
+  }
+
+  const onChange = (val: RangeValue) => {
+    value.value = val
+  }
+  const onCalendarChange = (val: RangeValue) => {
+    valueRangeDate.value = val
+  }
+  const isOpenModalSync = ref<boolean>(false)
+  const handleOpenModalSync = () => {
+    isOpenModalSync.value = true
+  }
+  const handleCloseModalSync = () => {
+    isOpenModalSync.value = false
+  }
   const currentMenu = ref([route.query.status ? route.query.status : '1'])
   const handleSelectStatus = (item: any) => {
     router.push({
@@ -215,7 +307,6 @@
     currentMenu.value,
     EndTimeLoading
   )
-  console.log(route)
   const changePage = (pageNumber: number) => {
     isLoading.value = true
     router.push(`/orders-list/page/${pageNumber}`)
@@ -331,7 +422,19 @@
   ]
   const handleUpdateShopee = () => {
     isLoading.value = true
-    dataOrder.getOrderShopeeAction(toast, EndTimeLoading)
+    dataOrder.getOrderShopeeAction(
+      perPage.value,
+      Number(route.params.page),
+      currentMenu.value,
+      valueRangeDate.value
+        ? dayjs(valueRangeDate.value[0]).format(dateFormat)
+        : '',
+      valueRangeDate.value
+        ? dayjs(valueRangeDate.value[1]).format(dateFormat)
+        : '',
+      toast,
+      EndTimeLoading
+    )
   }
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false

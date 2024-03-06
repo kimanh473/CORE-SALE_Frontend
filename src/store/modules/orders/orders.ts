@@ -51,16 +51,28 @@ export const useOrder = defineStore('customerGroup', {
           console.log(err)
         })
     },
-    getOrderShopeeAction(toast: any, EndTimeLoading: Function) {
-      getAllOrderShopeeApi()
+    getOrderShopeeAction(
+      perPage: number,
+      page: number,
+      status: any,
+      time_from: string,
+      time_to: string,
+      toast: any,
+      EndTimeLoading: Function
+    ) {
+      getAllOrderShopeeApi(time_from, time_to)
         .then((payload: any) => {
-          console.log(payload)
-
           if (payload.data.status === 'error') {
             toast.error(payload.data.message)
             EndTimeLoading()
           } else {
             toast.success('Cập nhật thành công')
+            this.getAllOrderPaginateAction(
+              perPage,
+              page,
+              status,
+              EndTimeLoading
+            )
             EndTimeLoading()
           }
         })
