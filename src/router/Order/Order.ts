@@ -2,7 +2,7 @@ import requireAuth from '@/router/requireAuth'
 
 const order = [
   {
-    path: '/orders-list/page/:page',
+    path: '/orders-list',
     component: () => import('@/page/orders/ListOrder.vue'),
     meta: {
       layout: 'base-layout',
