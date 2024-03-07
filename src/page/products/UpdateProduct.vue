@@ -770,7 +770,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="item1.default_value == '1'"
+                  v-show="detailProduct.classify_product == '1'"
                   v-if="item1.attribute_code == 'classify_product'"
                   class="bg-[#E8E9EB]"
                 >
@@ -783,7 +783,7 @@
                       :key="index"
                     >
                       <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
-                        <p class="m-0">Nhóm phân loại {{ index }}</p>
+                        <p class="m-0">Nhóm phân loại {{ index + 1 }}</p>
                         <p class="m-0">Phân loại</p>
                         <div class="pr-[100px]">
                           <!-- <a-checkbox
@@ -825,7 +825,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.list_unit_change?.length > 0"
+                  v-show="detailProduct?.unit_change == '1'"
                   v-if="item1.attribute_code == 'unit_change'"
                   class="bg-[#E8E9EB]"
                 >
@@ -881,7 +881,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.list_product_config?.length > 0"
+                  v-show="detailProduct.classify_product == '1'"
                   v-if="item1.attribute_code == 'classify_product'"
                 >
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
@@ -1237,7 +1237,7 @@
     const imgShopee = detailProduct.value?.list_product_config?.map(
       (item: any) => item.image
     )
-    console.log('imgshopee', imgShopee)
+
     const listImgConfigShopee = imgShopee?.map(
       (item: Array<string>, index: number) =>
         item
@@ -1252,7 +1252,7 @@
     const imgUpload = detailProduct.value?.list_product_config?.map(
       (item: any) => item.image_list_config
     )
-    console.log('imgUpload', imgUpload)
+
     const listImgConfigUpload = imgUpload.map(
       (item: Array<string>, index: number) =>
         item
@@ -1264,9 +1264,8 @@
             }
           : <any>[]
     )
-    console.log('upload', listImgConfigUpload)
+
     fileProductSetting.value = listImgConfigUpload?.concat(listImgConfigShopee)
-    console.log('????', fileProductSetting.value)
   })
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
@@ -1279,9 +1278,9 @@
   const specDefault = ref()
   dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
     indexAttribute.value = listDefault.value
-    console.log('indexAttribute.value', indexAttribute.value)
     specDefault.value = listSpecDefault.value
   })
+
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
@@ -1352,8 +1351,8 @@
         attribute: item.attribute_detail,
       })
     )
-    console.log('indexAttribute', indexAttribute)
   }
+  console.log('indexAttribute', indexAttribute)
   // const checkJPG = (file: any) => {
   //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
   //   if (!isJPG) {
@@ -1496,6 +1495,7 @@
   const removeOptions = (index: number) => {
     detailProduct.value.list_classify.splice(index, 1)
   }
+
   const product = reactive({
     name: '',
     code: '',

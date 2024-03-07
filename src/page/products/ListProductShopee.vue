@@ -117,6 +117,9 @@
               height="50"
             />
           </template>
+          <template v-if="column.key === 'attribute_set_id'">
+            {{ formatAttributeGroup(record.attribute_set_id) }}
+          </template>
           <template v-if="column.key === 'status'">
             <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
             <a-tag v-else>Tắt</a-tag>
@@ -200,7 +203,17 @@
   import { storeToRefs } from 'pinia'
   import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
   import type { UploadProps } from 'ant-design-vue'
+  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
 
+  const dataAttributeGroup = useAttributeGroup()
+  dataAttributeGroup.getListSetAttributeGroupAction()
+  const { listSetAttributeGroup } = storeToRefs(dataAttributeGroup)
+  function formatAttributeGroup(attribute_id: string) {
+    const attributeGroupTitle = listSetAttributeGroup.value.find(
+      (item: any) => item.id == attribute_id
+    )
+    return attributeGroupTitle?.title
+  }
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const toast = useToast()
