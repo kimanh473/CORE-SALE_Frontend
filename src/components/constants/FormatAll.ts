@@ -26,17 +26,16 @@ export const FormatOrderStatus = (code: string): string => {
     case 'INVOICE_PENDING':
       return 'Chờ xác nhận'
     case 'READY_TO_SHIP':
-    case 'RETRY_SHIP':
+    case 'PROCESSED':
       return 'Chờ lấy hàng'
     case 'TO_CONFIRM_RECEIVE':
-    case 'PROCESSED':
       return 'Đang giao'
     case 'COMPLETED':
     case 'SHIPPED':
       return 'Đã giao'
     case 'CANCELLED':
+    case 'IN_CANCEL':
       return 'Đã hủy'
-    case 'RETURN':
     case 'TO_RETURN':
       return 'Trả hàng/Hoàn tiền'
     case 'FAILED_DELIVERY':

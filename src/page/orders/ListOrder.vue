@@ -305,7 +305,7 @@
   const perPage = ref(20)
   dataOrder.getAllOrderPaginateAction(
     perPage.value,
-    1,
+    route.query.page ? Number(route.query.page) : 1,
     currentMenu.value,
     EndTimeLoading
   )
@@ -488,7 +488,6 @@
   .ant-layout-header {
     height: 60px;
   }
-
   .modal-menu-box {
     position: absolute;
     top: 50px;
@@ -500,7 +499,6 @@
     font-family: 'Font Awesome 5 Pro';
     content: '\f021';
     font-weight: 500;
-    margin-top: 3px;
     margin-right: 2px;
   }
 </style>
