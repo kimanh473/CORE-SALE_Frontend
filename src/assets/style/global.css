@@ -149,6 +149,9 @@ body {
     height: 30px;
     max-width: 2200px;
   }
+  .button-create-new p{
+    margin-bottom: 0.25rem !important;
+  }
   .button-create-new::before {
     font-family: "Font Awesome 5 Pro";
     content: "\f055";
@@ -196,7 +199,9 @@ body {
     height: 30px;
     max-width: 2200px;
   }
-  
+  .button-delete p{
+    margin-bottom: 0.25rem !important;
+  }
   .button-delete::before {
     font-family: "Font Awesome 5 Pro";
     content: "\f1f8";

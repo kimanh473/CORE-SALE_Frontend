@@ -34,7 +34,7 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <span class="ml-2 mt-1.5 text-slate-700">
+        <span class="ml-2 mt-1.5 text-white">
           <template v-if="hasSelected">
             {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
           </template>
@@ -86,7 +86,7 @@
             title="Tạo mới sản phẩm"
             @click="CreateProduct()"
           >
-            <p class="text-[14px] px-1 pt-3.5">Tạo mới sản phẩm</p>
+            <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
           </div>
         </div>
       </div>
@@ -116,6 +116,9 @@
               width="50"
               height="50"
             />
+          </template>
+          <template v-if="column.key === 'attribute_set_id'">
+            {{ formatAttributeGroup(record.attribute_set_id) }}
           </template>
           <template v-if="column.key === 'status'">
             <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
@@ -200,7 +203,17 @@
   import { storeToRefs } from 'pinia'
   import { useProductShopee } from '@/store/modules/store-setting/product-shopee'
   import type { UploadProps } from 'ant-design-vue'
+  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
 
+  const dataAttributeGroup = useAttributeGroup()
+  dataAttributeGroup.getListSetAttributeGroupAction()
+  const { listSetAttributeGroup } = storeToRefs(dataAttributeGroup)
+  function formatAttributeGroup(attribute_id: string) {
+    const attributeGroupTitle = listSetAttributeGroup.value.find(
+      (item: any) => item.id == attribute_id
+    )
+    return attributeGroupTitle?.title
+  }
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const toast = useToast()

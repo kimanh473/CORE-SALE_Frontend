@@ -238,20 +238,19 @@
                       class="!w-[70px]"
                       :options="weightUnit"
                       v-model:value="product.weightUnit"
-                      @change="handleChangeUnit"
                     >
                     </a-select>
                   </div>
                 </div>
                 <div class="w-1/2 pl-2">
                   <label for="" class="form-group-label"
-                    >Đơn vị quy đổi<span class="text-red-600"></span>
+                    >Đơn vị quy chuẩn<span class="text-red-600"></span>
                     <span></span
                   ></label>
                   <div>
                     <a-select
                       class="w-full"
-                      placeholder="Chọn đơn vị quy đổi"
+                      placeholder="Chọn đơn vị quy chuẩn"
                       :options="listProductUnit"
                       v-model:value="product.unitCode"
                       :fieldNames="{ label: 'title', value: 'id' }"
@@ -268,7 +267,6 @@
                   placeholder="Chọn trạng thái"
                   :options="statusProduct"
                   v-model:value="product.status"
-                  @change="handleChangeUnit"
                 >
                 </a-select>
               </div>
@@ -1082,7 +1080,7 @@
   const handleChangeUnit = (value: any) => {
     console.log(value)
     dataMapUnit.value = dataUnit.map((item: any) => ({
-      unit_standard: value,
+      unit_standard: product.unitCode,
       unit_exchange: item.unit_exchange,
       rate: item.rate,
     }))

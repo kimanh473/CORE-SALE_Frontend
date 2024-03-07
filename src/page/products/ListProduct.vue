@@ -88,6 +88,9 @@
             <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
             <a-tag v-else>Tắt</a-tag>
           </template>
+          <template v-if="column.key === 'attribute_set_id'">
+            {{ formatAttributeGroup(record.attribute_set_id) }}
+          </template>
           <template v-if="column.key === 'web_site_code'">
             <div v-for="(item, index) in record.web_site_code" :key="index">
               <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
@@ -154,6 +157,18 @@
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
+  import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
+
+  const dataAttributeGroup = useAttributeGroup()
+  dataAttributeGroup.getListSetAttributeGroupAction()
+  const { listSetAttributeGroup } = storeToRefs(dataAttributeGroup)
+  function formatAttributeGroup(attribute_id: string) {
+    const attributeGroupTitle = listSetAttributeGroup.value.find(
+      (item: any) => item.id == attribute_id
+    )
+    return attributeGroupTitle?.title
+  }
+
   const current = ref<string[]>([])
   const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
@@ -162,11 +177,14 @@
   const route = useRoute()
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
+
   const { listWeb } = storeToRefs(dataWebsite)
+  console.log('listWeb', listWeb.value)
   function formatWeb(webcode: string) {
     const webName = listWeb.value.find((item: any) => item.code == webcode)
     return webName?.web_name
   }
+
   const EndTimeLoading = () => {
     isLoading.value = false
   }
@@ -178,6 +196,7 @@
     Number(route.params.page),
     EndTimeLoading
   )
+
   const changePage = (pageNumber: number) => {
     isLoading.value = true
     router.push(`/products-list/page/${pageNumber}`)
