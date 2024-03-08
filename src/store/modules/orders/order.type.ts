@@ -29,7 +29,7 @@ export interface OrderShopee {
   order_status: string
   buyer_username: string
   buyer_user_id: string
-  create_time_order: string
+  create_time: string
   created_at: string
   total_amount: string
   note: string
@@ -97,7 +97,7 @@ export interface OrderDetail {
   note: string
   noteupdate: string
   paytime: string
-  create_time_order: string
+  create_time: string
   created_at: string
   buyer_user_id: string
   buyer_username: string

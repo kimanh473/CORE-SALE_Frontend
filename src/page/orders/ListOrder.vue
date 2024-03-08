@@ -353,8 +353,8 @@
     },
     {
       title: 'Ngày tạo',
-      dataIndex: 'create_time_order',
-      key: 'create_time_order',
+      dataIndex: 'create_time',
+      key: 'create_time',
     },
     {
       title: 'Ngày đồng bộ',
