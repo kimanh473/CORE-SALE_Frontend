@@ -30,7 +30,7 @@
           title="Tạo mới"
           @click="openModalCreate()"
         >
-          <p class="text-[14px] mt-1 px-1">Tạo mới ngành hàng con</p>
+          <p class="text-[14px] mb-0 px-1">Tạo mới ngành hàng con</p>
         </div>
       </div>
       <Transition :duration="550" name="nested">

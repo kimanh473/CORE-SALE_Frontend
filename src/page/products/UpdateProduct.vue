@@ -566,7 +566,6 @@
                     class="form-control-input !w-[70px]"
                     :options="weightUnit"
                     v-model:value="detailProduct.weightUnit"
-                    @change="handleChangeUnit"
                   >
                   </a-select>
                 </div>
@@ -596,7 +595,6 @@
                 placeholder="Chọn trạng thái"
                 :options="statusProduct"
                 v-model:value="detailProduct.status"
-                @change="handleChangeUnit"
               >
               </a-select>
             </div>
@@ -736,6 +734,8 @@
                     v-if="map.code == item1.frontend_input"
                     @preview="handlePreview"
                     @change="handleChange($event, item1.attribute_code)"
+                    :checkedValue="1"
+                    :unCheckedValue="0"
                     valueFormat="DD-MM-YYYY"
                   >
                     <div v-if="item1.attribute_code == 'image'">
@@ -770,7 +770,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.list_classify?.length > 0"
+                  v-show="detailProduct.classify_product == '1'"
                   v-if="item1.attribute_code == 'classify_product'"
                   class="bg-[#E8E9EB]"
                 >
@@ -783,7 +783,7 @@
                       :key="index"
                     >
                       <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
-                        <p class="m-0">Nhóm phân loại {{ index }}</p>
+                        <p class="m-0">Nhóm phân loại {{ index + 1 }}</p>
                         <p class="m-0">Phân loại</p>
                         <div class="pr-[100px]">
                           <!-- <a-checkbox
@@ -825,7 +825,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.list_unit_change?.length > 0"
+                  v-show="detailProduct?.unit_change == '1'"
                   v-if="item1.attribute_code == 'unit_change'"
                   class="bg-[#E8E9EB]"
                 >
@@ -881,7 +881,7 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.list_classify?.length > 0"
+                  v-show="detailProduct.classify_product == '1'"
                   v-if="item1.attribute_code == 'classify_product'"
                 >
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
@@ -1000,6 +1000,8 @@
                           @change="
                             handleChange($event, itemSpec1.attribute_code)
                           "
+                          :checkedValue="1"
+                          :unCheckedValue="0"
                           valueFormat="DD-MM-YYYY"
                         >
                           <div v-if="itemSpec1.attribute_code == 'image'">
@@ -1209,11 +1211,12 @@
   const fileList = ref<UploadProps['fileList']>([])
   const fileProductList = ref<UploadProps['fileList']>([])
   const fileProductSetting = ref<UploadProps['fileList']>([])
+
   const dataProduct = useProduct()
   const { detailProduct } = storeToRefs(dataProduct)
   const dataTableConfig = ref<any>([])
   dataProduct.getDetailProductAction(Number(route.params.id)).then(() => {
-    fileProductList.value = detailProduct?.value?.image?.map(
+    const arr1 = detailProduct?.value?.image?.map(
       (item: Array<string>, index: number) => ({
         uid: index,
         name: `image ${index}`,
@@ -1221,11 +1224,7 @@
         url: `${UrlImg}/${item}`,
       })
     )
-    dataTableConfig.value = detailProduct.value.list_product_config
-    const arr = detailProduct.value?.list_product_config?.map(
-      (item: any) => item.image
-    )
-    fileProductSetting.value = arr?.map(
+    const arr2 = detailProduct?.value?.image_index?.map(
       (item: Array<string>, index: number) => ({
         uid: index,
         name: `image ${index}`,
@@ -1233,6 +1232,40 @@
         url: `${item}`,
       })
     )
+    fileProductList.value = arr1?.concat(arr2)
+    dataTableConfig.value = detailProduct.value.list_product_config
+    const imgShopee = detailProduct.value?.list_product_config?.map(
+      (item: any) => item.image
+    )
+
+    const listImgConfigShopee = imgShopee?.map(
+      (item: Array<string>, index: number) =>
+        item
+          ? {
+              uid: index,
+              name: `image ${index}`,
+              status: 'done',
+              url: `${item}`,
+            }
+          : <any>[]
+    )
+    const imgUpload = detailProduct.value?.list_product_config?.map(
+      (item: any) => item.image_list_config
+    )
+
+    const listImgConfigUpload = imgUpload.map(
+      (item: Array<string>, index: number) =>
+        item
+          ? {
+              uid: index,
+              name: `image ${index}`,
+              status: 'done',
+              url: `${UrlImg}/${item}`,
+            }
+          : <any>[]
+    )
+
+    fileProductSetting.value = listImgConfigUpload?.concat(listImgConfigShopee)
   })
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListAttributeGroupAction()
@@ -1247,6 +1280,7 @@
     indexAttribute.value = listDefault.value
     specDefault.value = listSpecDefault.value
   })
+
   dataCategory.getListCategoryTreeAction()
   const weightUnit = ref<SelectProps['options']>([
     {
@@ -1318,6 +1352,7 @@
       })
     )
   }
+  console.log('indexAttribute', indexAttribute)
   // const checkJPG = (file: any) => {
   //   const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
   //   if (!isJPG) {
@@ -1460,6 +1495,7 @@
   const removeOptions = (index: number) => {
     detailProduct.value.list_classify.splice(index, 1)
   }
+
   const product = reactive({
     name: '',
     code: '',
@@ -1481,7 +1517,6 @@
   ])
   const addUnits = () => {
     const data = {
-      unit_standard: '',
       unit_exchange: '',
       rate: '',
     }

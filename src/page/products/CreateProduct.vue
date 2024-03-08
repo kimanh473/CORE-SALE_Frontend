@@ -238,20 +238,19 @@
                       class="!w-[70px]"
                       :options="weightUnit"
                       v-model:value="product.weightUnit"
-                      @change="handleChangeUnit"
                     >
                     </a-select>
                   </div>
                 </div>
                 <div class="w-1/2 pl-2">
                   <label for="" class="form-group-label"
-                    >Đơn vị quy đổi<span class="text-red-600"></span>
+                    >Đơn vị quy chuẩn<span class="text-red-600"></span>
                     <span></span
                   ></label>
                   <div>
                     <a-select
                       class="w-full"
-                      placeholder="Chọn đơn vị quy đổi"
+                      placeholder="Chọn đơn vị quy chuẩn"
                       :options="listProductUnit"
                       v-model:value="product.unitCode"
                       :fieldNames="{ label: 'title', value: 'id' }"
@@ -268,7 +267,6 @@
                   placeholder="Chọn trạng thái"
                   :options="statusProduct"
                   v-model:value="product.status"
-                  @change="handleChangeUnit"
                 >
                 </a-select>
               </div>
@@ -391,7 +389,7 @@
                     </p>
                     <div v-for="(item, index) in dataOption" :key="index">
                       <div class="form-large-full grid grid-cols-2 gap-2 !m-0">
-                        <p class="m-0">Nhóm phân loại {{ index }}</p>
+                        <p class="m-0">Nhóm phân loại {{ index + 1 }}</p>
                         <p class="m-0">Phân loại</p>
                         <div class="pr-[100px]">
                           <!-- <a-checkbox
@@ -816,7 +814,7 @@
   const specDefault = ref()
   dataAttributeGroup.getListSetAttributeGroupAction().then(() => {
     indexAttribute.value = listDefault.value
-    console.log(indexAttribute.value)
+    console.log('indexAttribute.value', indexAttribute.value)
     specDefault.value = listSpecDefault.value
   })
   // const filterOption = (input: string, option: any) => {
@@ -916,7 +914,7 @@
         (item: any) => item.preview
       )
     } else if (input_name.includes('date')) {
-      console.log(dayjs(event, 'DD/MM/YYYY'))
+      console.log('??', dayjs(event, 'DD/MM/YYYY'))
       dataCreateProduct.value[input_name] = dayjs(event, 'DD/MM/YYYY').format(
         'YYYY-MM-DD'
       )
@@ -1082,11 +1080,10 @@
   const handleChangeUnit = (value: any) => {
     console.log(value)
     dataMapUnit.value = dataUnit.map((item: any) => ({
-      unit_standard: value,
+      unit_standard: product.unitCode,
       unit_exchange: item.unit_exchange,
       rate: item.rate,
     }))
-    console.log(dataMapUnit.value)
   }
   const lastGenerateList = ref<any>([])
   const lastGenerateSku = ref<any>([])
