@@ -109,11 +109,12 @@ export interface OrderDetail {
 }
 export interface countStatus {
   total: number
-  CANCELLED: number
+  CANCELLED_INCANCELLED: number
   COMPLETED_SHIPPED: number
   FAILED_DELIVERY: number
   READY_TO_SHIP_RETRY_SHIP: number
   RETURN_TO_RETURN: number
   TO_CONFIRM_RECEIVE_PROCESSED: number
   UNPAID_INVOICE_PENDING: number
+  DIFF_STATUS: number
 }

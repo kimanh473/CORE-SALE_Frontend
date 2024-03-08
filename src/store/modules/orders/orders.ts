@@ -23,8 +23,8 @@ export const useOrder = defineStore('customerGroup', {
         state.listOrder = payload.data?.data
         state.totalPage = payload.data?.total
         state.currentPage = payload.data?.current_page
-        state.dataCount = payload.total_status
-        console.log(state.dataCount)
+        state.dataCount = payload.status_total
+        console.log(payload)
       }
     },
     getDetailOrder: (state: any) => {

@@ -35,27 +35,29 @@
         mode="horizontal"
         @select="handleSelectStatus"
       >
-        <a-menu-item key="all"> Tất cả ({{ dataCount.total }}) </a-menu-item>
+        <a-menu-item key="all"> Tất cả ({{ dataCount?.total }}) </a-menu-item>
         <a-menu-item key="1">
-          Chờ xác nhận ({{ dataCount.UNPAID_INVOICE_PENDING }})</a-menu-item
+          Chờ xác nhận ({{ dataCount?.UNPAID_INVOICE_PENDING }})</a-menu-item
         >
         <a-menu-item key="2">
-          Chờ lấy hàng ({{ dataCount.READY_TO_SHIP_RETRY_SHIP }})
+          Chờ lấy hàng ({{ dataCount?.READY_TO_SHIP_RETRY_SHIP }})
         </a-menu-item>
         <a-menu-item key="3">
-          Đang giao ({{ dataCount.TO_CONFIRM_RECEIVE_PROCESSED }})
+          Đang giao ({{ dataCount?.TO_CONFIRM_RECEIVE_PROCESSED }})
         </a-menu-item>
         <a-menu-item key="4">
-          Đã giao ({{ dataCount.COMPLETED_SHIPPED }})
+          Đã giao ({{ dataCount?.COMPLETED_SHIPPED }})
         </a-menu-item>
-        <a-menu-item key="5"> Đơn hủy ({{ dataCount.CANCELLED }})</a-menu-item>
+        <a-menu-item key="5">
+          Đơn hủy ({{ dataCount?.CANCELLED_INCANCELLED }})</a-menu-item
+        >
         <a-menu-item key="6">
-          Trả hàng/Hoàn tiền ({{ dataCount.RETURN_TO_RETURN }})
+          Trả hàng/Hoàn tiền ({{ dataCount?.RETURN_TO_RETURN }})
         </a-menu-item>
         <a-menu-item key="7">
-          Giao không thành công ({{ dataCount.FAILED_DELIVERY }})
+          Giao không thành công ({{ dataCount?.FAILED_DELIVERY }})
         </a-menu-item>
-        <a-menu-item key="8"> Khác () </a-menu-item>
+        <a-menu-item key="8"> Khác ({{ dataCount?.DIFF_STATUS }}) </a-menu-item>
       </a-menu>
       <a-table
         class="!p-[10px]"
