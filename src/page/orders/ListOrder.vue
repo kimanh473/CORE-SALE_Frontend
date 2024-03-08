@@ -195,8 +195,25 @@
         <div>
           <a-select
             show-search
+            v-model:value="selected_platform"
             class="form-control-input"
             placeholder="Chọn sàn TMĐT"
+            :options="list_platform"
+          >
+          </a-select>
+        </div>
+      </div>
+      <div class="form-small">
+        <label for="" class="form-group-label"
+          >Chọn Shop<span class="text-red-600">* </span> <span></span
+        ></label>
+        <div>
+          <a-select
+            show-search
+            v-model:value="selected_shop"
+            class="form-control-input"
+            placeholder="Chọn Shop"
+            :options="list_shop"
           >
           </a-select>
         </div>
@@ -244,6 +261,7 @@
     FormatOrderStatus,
     FormatColorOrderStatus,
   } from '@/components/constants/FormatAll'
+  import type { SelectProps } from 'ant-design-vue'
   import dayjs, { Dayjs } from 'dayjs'
   import { storeToRefs } from 'pinia'
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
@@ -454,19 +472,20 @@
   ]
   const handleUpdateShopee = () => {
     isLoading.value = true
-    dataOrder.getOrderShopeeAction(
-      perPage.value,
-      Number(route.params.page),
-      currentMenu.value,
-      valueRangeDate.value
+
+    dataOrder.getOrderShopeeAction({
+      perPage: perPage.value,
+      page: Number(route.query.page),
+      status: currentMenu.value,
+      time_from: valueRangeDate.value
         ? dayjs(valueRangeDate.value[0]).format(dateFormat)
         : '',
-      valueRangeDate.value
+      time_to: valueRangeDate.value
         ? dayjs(valueRangeDate.value[1]).format(dateFormat)
         : '',
-      toast,
-      EndTimeLoading
-    )
+      toast: toast,
+      EndTimeLoading: EndTimeLoading,
+    })
   }
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false
@@ -500,6 +519,37 @@
     const viewTaskBar = document.getElementById('task-bar-list')
     viewTaskBar.scrollIntoView({ behavior: 'smooth' })
   }
+
+  const selected_platform = ref('shopee')
+  const selected_shop = ref('983519783')
+  const list_platform = ref<SelectProps['options']>([
+    {
+      value: 'shopee',
+      label: 'Shopee',
+    },
+    {
+      value: 'tiktok',
+      label: 'Tiktok',
+    },
+    {
+      value: 'tiki',
+      label: 'Tiki',
+    },
+    {
+      value: 'lazada',
+      label: 'Lazada',
+    },
+    {
+      value: 'web',
+      label: 'Website',
+    },
+  ])
+  const list_shop = ref<SelectProps['options']>([
+    {
+      value: '983519783',
+      label: 'Hawonkoo',
+    },
+  ])
 </script>
 <style>
   #components-layout-demo-side .logo {

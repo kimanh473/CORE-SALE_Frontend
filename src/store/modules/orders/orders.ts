@@ -51,15 +51,20 @@ export const useOrder = defineStore('customerGroup', {
           console.log(err)
         })
     },
-    getOrderShopeeAction(
-      perPage: number,
-      page: number,
-      status: any,
-      time_from: string,
-      time_to: string,
-      toast: any,
-      EndTimeLoading: Function
-    ) {
+    getOrderShopeeAction(param: any) {
+      // perPage: number,
+      //   page: number,
+      //   status: any,
+      //   time_from: string,
+      //   time_to: string,
+      //   toast: any,
+      //   EndTimeLoading: Function
+      const time_from = param?.time_from
+      const time_to = param?.time_to
+      const toast = param?.toast
+      const EndTimeLoading = param?.EndTimeLoading
+      const perPage = param?.perPage
+      const page = param?.page
       getAllOrderShopeeApi(time_from, time_to)
         .then((payload: any) => {
           if (payload.data.status === 'error') {
