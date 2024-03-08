@@ -96,7 +96,15 @@
               <p class="abc text-red-600 mb-0">{{ formatWeb(item) }}</p>
             </div>
           </template>
-
+          <template v-if="column.key === 'listed_price'">
+            {{ FormatPrice(record.listed_price) }}&#8363;
+          </template>
+          <template v-if="column.key === 'wholesale_price'">
+            {{ FormatPrice(record.wholesale_price) }}&#8363;
+          </template>
+          <template v-if="column.key === 'retail_price'">
+            {{ FormatPrice(record.retail_price) }}&#8363;
+          </template>
           <template v-if="column.key === 'id'">
             <a @click="navigateUpdate(record.id)">Sửa</a>&nbsp;|&nbsp;<a
               @click="handleOpenDelete(record)"
@@ -158,7 +166,7 @@
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
   import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
-
+  import { FormatPrice } from '@/components/constants/FormatAll'
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListSetAttributeGroupAction()
   const { listSetAttributeGroup } = storeToRefs(dataAttributeGroup)
@@ -249,16 +257,19 @@
       title: 'Giá niêm yết',
       dataIndex: 'listed_price',
       key: 'listed_price',
+      align: 'right',
     },
     {
       title: 'Giá sỉ',
       dataIndex: 'wholesale_price',
       key: 'wholesale_price',
+      align: 'right',
     },
     {
       title: 'Giá lẻ',
       dataIndex: 'retail_price',
       key: 'retail_price',
+      align: 'right',
     },
     {
       title: 'Thao tác',

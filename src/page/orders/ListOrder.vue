@@ -9,7 +9,7 @@
           <div class="flex items-center">
             <div class="flex items-center">
               <Transition name="slide-fade"> </Transition>
-              <p class="longText pl-5 mb-0">Danh sách đơn hàng</p>
+              <p class="longText font-bold pl-5 mb-0">Danh sách đơn hàng</p>
               <div class="icon-filter-approval relative group"></div>
             </div>
           </div>
@@ -18,6 +18,7 @@
     </template>
     <template v-slot:content class="relative">
       <div
+        id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div></div>
@@ -35,7 +36,9 @@
         mode="horizontal"
         @select="handleSelectStatus"
       >
-        <a-menu-item key="all"> Tất cả ({{ dataCount?.total }}) </a-menu-item>
+        <a-menu-item class="mr-5" key="all">
+          Tất cả ({{ dataCount?.total }})
+        </a-menu-item>
         <a-menu-item key="1">
           Chờ xác nhận ({{ dataCount?.UNPAID_INVOICE_PENDING }})</a-menu-item
         >
@@ -86,7 +89,7 @@
           <div style="padding: 8px; text-align: right">
             <a-input
               ref="searchInput"
-              :placeholder="`Search ${column.dataIndex}`"
+              :placeholder="`Search ${column.title}`"
               :value="selectedKeys[0]"
               style="width: 188px; margin-bottom: 8px; display: block"
               @change="
@@ -99,10 +102,11 @@
             <a-button
               type="primary"
               size="small"
-              style="width: 90px; margin-right: 8px"
+              class="w-20 mr-2"
               @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
             >
-              <template #icon><SearchOutlined /></template>
+              <i class="far fa-search mr-1.5"></i>
+              <!-- <template #icon><SearchOutlined /></template> -->
               Lọc
             </a-button>
           </div>
@@ -129,10 +133,18 @@
             {{ FormatPrice(record.tax_money) }}&#8363;
           </template> -->
           <template v-if="column.key === 'order_status'">
-            {{ FormatOrderStatus(record.order_status) }}
+            <a-tag
+              :color="
+                FormatColorOrderStatus(FormatOrderStatus(record.order_status))
+              "
+            >
+              {{ FormatOrderStatus(record.order_status) }}</a-tag
+            >
           </template>
           <template v-if="column.key === 'id'">
-            &nbsp;<a @click="handleToDetail(record.id)">Xem chi tiết</a>
+            &nbsp;<a @click="handleToDetail(record.id)"
+              ><i class="fad fa-eye"></i
+            ></a>
           </template>
         </template>
         <template #switch="{ text }">
@@ -142,7 +154,7 @@
     </template>
 
     <template v-slot:footer
-      ><div class="text-left px-[20px] py-[10px]">
+      ><div class="text-left px-[20px] py-[10px] flex justify-between">
         <a-pagination
           v-model:current="currentPage"
           v-model:pageSize="perPage"
@@ -150,6 +162,12 @@
           :total="totalPage"
           @change="changePage"
         />
+        <button
+          class="back-top bg-slate-500 focus:outline-none"
+          @click="backTop"
+        >
+          <p class="text-white text-2xl mb-1.5">↑</p>
+        </button>
       </div>
     </template>
   </base-layout>
@@ -224,6 +242,7 @@
   import {
     FormatPrice,
     FormatOrderStatus,
+    FormatColorOrderStatus,
   } from '@/components/constants/FormatAll'
   import dayjs, { Dayjs } from 'dayjs'
   import { storeToRefs } from 'pinia'
@@ -420,6 +439,7 @@
       title: 'Trạng thái',
       dataIndex: 'order_status',
       key: 'order_status',
+      align: 'center',
     },
     {
       title: 'Diễn giải',
@@ -429,6 +449,7 @@
       title: 'Thao tác',
       dataIndex: 'id',
       key: 'id',
+      align: 'center',
     },
   ]
   const handleUpdateShopee = () => {
@@ -475,6 +496,10 @@
     // dataWeb.getAllWebPaginateAction()
     // dataInventory.getListInventoryAction()
   }
+  const backTop = () => {
+    const viewTaskBar = document.getElementById('task-bar-list')
+    viewTaskBar.scrollIntoView({ behavior: 'smooth' })
+  }
 </script>
 <style>
   #components-layout-demo-side .logo {
@@ -502,5 +527,9 @@
     content: '\f021';
     font-weight: 500;
     margin-right: 2px;
+  }
+
+  .ant-tag {
+    margin-right: 0;
   }
 </style>
