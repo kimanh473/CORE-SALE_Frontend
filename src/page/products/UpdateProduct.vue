@@ -825,8 +825,10 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct?.unit_change == '1'"
-                  v-if="item1.attribute_code == 'unit_change'"
+                  v-if="
+                    item1.attribute_code == 'unit_change' &&
+                    detailProduct?.unit_change == '1'
+                  "
                   class="bg-[#E8E9EB]"
                 >
                   <div class="p-4 m-2">
@@ -881,8 +883,10 @@
                 </div>
                 <div
                   id="product_table"
-                  v-show="detailProduct.classify_product == '1'"
-                  v-if="item1.attribute_code == 'classify_product'"
+                  v-if="
+                    item1.attribute_code == 'classify_product' &&
+                    detailProduct.classify_product == '1'
+                  "
                 >
                   <p class="p-3 font-bold text-lg">Bảng cấu hình</p>
                   <a-table
