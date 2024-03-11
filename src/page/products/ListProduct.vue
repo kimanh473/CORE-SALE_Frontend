@@ -67,9 +67,54 @@
         :columns="columns"
         :data-source="listProduct"
         :pagination="false"
+        :row-class-name="
+          (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
+        "
         v-model:current="currentPage"
         bordered
         row-key="id"
+        ><template #headerCell="{ column }">
+          <template v-if="column.key === 'name'">
+            <span>{{ column.title }}</span>
+          </template> </template
+        ><template
+          #customFilterDropdown="{
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+            column,
+          }"
+        >
+          <div style="padding: 8px; text-align: right">
+            <a-input
+              ref="searchInput"
+              :placeholder="`Search ${column.title}`"
+              :value="selectedKeys[0]"
+              style="width: 188px; margin-bottom: 8px; display: block"
+              @change="
+                (e: any) => setSelectedKeys(e.target.value ? [e.target.value] : [])
+              "
+              @pressEnter="
+                handleSearch(selectedKeys, confirm, column.dataIndex)
+              "
+            />
+            <a-button
+              type="primary"
+              size="small"
+              class="w-20 mr-2"
+              @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+            >
+              <i class="far fa-search mr-1.5"></i>
+              <!-- <template #icon><SearchOutlined /></template> -->
+              Lọc
+            </a-button>
+          </div>
+        </template>
+        <template #customFilterIcon="{ filtered }">
+          <search-outlined
+            :style="{ color: filtered ? '#108ee9' : undefined }"
+          /> </template
         ><template #bodyCell="{ column, record, index }">
           <template v-if="column.key === 'stt'">
             <div>
@@ -84,6 +129,8 @@
               height="50"
             />
           </template>
+          <template v-if="column.key === 'name'"> </template>
+
           <template v-if="column.key === 'status'">
             <a-tag v-if="record.status === '1'" color="green">Bật</a-tag>
             <a-tag v-else>Tắt</a-tag>
@@ -152,6 +199,7 @@
 </template>
 
 <script setup lang="ts">
+  import { SearchOutlined } from '@ant-design/icons-vue'
   import BaseLayout from '@/layout/baseLayout.vue'
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
@@ -210,9 +258,19 @@
     router.push(`/products-list/page/${pageNumber}`)
     dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
   }
+  const stateSearch = reactive({
+    searchText: '',
+    searchedColumn: '',
+  })
+  const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+    confirm()
+    stateSearch.searchText = selectedKeys[0]
+    stateSearch.searchedColumn = dataIndex
+  }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const searchInput = ref()
   const columns = [
     {
       title: 'STT',
@@ -228,10 +286,31 @@
       title: 'Tên sản phẩm',
       dataIndex: 'name',
       key: 'name',
+      customFilterDropdown: true,
+      onFilter: (value: any, record: any) =>
+        record.name.toString().toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
     },
     {
       title: 'SKU',
       dataIndex: 'sku',
+      key: 'sku',
+      customFilterDropdown: true,
+      onFilter: (value: any, record: any) =>
+        record.sku.toString().toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
     },
     {
       title: 'Loại sản phẩm',
@@ -291,7 +370,6 @@
 
   const deleteAllProduct = ref()
   const onSelectChange = (selectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
     deleteAllProduct.value = selectedRowKeys.map((item: number) => String(item))
     state.selectedRowKeys = selectedRowKeys
   }

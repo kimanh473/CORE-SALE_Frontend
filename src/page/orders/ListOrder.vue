@@ -22,12 +22,21 @@
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
         <div></div>
-        <div
-          class="button-custom update-list-button bg-amber-500 relative group rounded-md px-2"
-          title="Đồng bộ"
-          @click="handleOpenModalSync"
-        >
-          <p class="text-[14px] mt-[12px] px-1">Đồng bộ</p>
+        <div class="flex">
+          <div
+            class="button-custom filter-button relative group rounded-md px-2 ml-2"
+            title="Bộ lọc"
+            @click="handleOpenModalFilter"
+          >
+            <p class="text-[14px] mt-[12px] px-1">Bộ lọc</p>
+          </div>
+          <div
+            class="button-custom update-list-button relative group rounded-md px-2"
+            title="Đồng bộ"
+            @click="handleOpenModalSync"
+          >
+            <p class="text-[14px] mt-[12px] px-1">Đồng bộ</p>
+          </div>
         </div>
       </div>
       <a-menu
@@ -43,10 +52,10 @@
           Chờ xác nhận ({{ dataCount?.UNPAID_INVOICE_PENDING }})</a-menu-item
         >
         <a-menu-item key="2">
-          Chờ lấy hàng ({{ dataCount?.READY_TO_SHIP_RETRY_SHIP }})
+          Chờ lấy hàng ({{ dataCount?.READY_TO_SHIP_PROCESSED }})
         </a-menu-item>
         <a-menu-item key="3">
-          Đang giao ({{ dataCount?.TO_CONFIRM_RECEIVE_PROCESSED }})
+          Đang giao ({{ dataCount?.TO_CONFIRM_RECEIVE }})
         </a-menu-item>
         <a-menu-item key="4">
           Đã giao ({{ dataCount?.COMPLETED_SHIPPED }})
@@ -55,7 +64,7 @@
           Đơn hủy ({{ dataCount?.CANCELLED_INCANCELLED }})</a-menu-item
         >
         <a-menu-item key="6">
-          Trả hàng/Hoàn tiền ({{ dataCount?.RETURN_TO_RETURN }})
+          Trả hàng/Hoàn tiền ({{ dataCount?.TO_RETURN }})
         </a-menu-item>
         <a-menu-item key="7">
           Giao không thành công ({{ dataCount?.FAILED_DELIVERY }})
@@ -108,6 +117,13 @@
               <i class="far fa-search mr-1.5"></i>
               <!-- <template #icon><SearchOutlined /></template> -->
               Lọc
+            </a-button>
+            <a-button
+              size="small"
+              style="width: 80px"
+              @click="handleReset(clearFilters)"
+            >
+              Hủy
             </a-button>
           </div>
         </template>
@@ -236,6 +252,23 @@
       </div>
     </div>
   </a-modal>
+  <a-modal
+    :visible="isOpenModalFilter"
+    @cancel="handleCloseModalFilter"
+    title="Bộ lọc"
+    width="550px"
+  >
+    <template #footer>
+      <a-button
+        key="submit"
+        type="primary"
+        @click="handleUpdateShopee"
+        :loading="isLoading"
+        >Xác nhận</a-button
+      >
+      <a-button key="back" @click="handleCloseModalFilter">Hủy</a-button>
+    </template>
+  </a-modal>
   <modal-delete
     :isOpen="isOpenConfirm"
     :handleCloseDetail="handleCloseConfirm"
@@ -320,6 +353,14 @@
   const handleCloseModalSync = () => {
     isOpenModalSync.value = false
   }
+
+  const isOpenModalFilter = ref<boolean>(false)
+  const handleOpenModalFilter = () => {
+    isOpenModalFilter.value = true
+  }
+  const handleCloseModalFilter = () => {
+    isOpenModalFilter.value = false
+  }
   const currentMenu = ref<any>([route.query.status ? route.query.status : '1'])
   const handleSelectStatus = (item: any) => {
     router.push({
@@ -381,6 +422,11 @@
     state.searchedColumn = dataIndex
   }
 
+  const handleReset = (clearFilters: any) => {
+    clearFilters({ confirm: true })
+    state.searchText = ''
+  }
+
   const searchInput = ref()
   const columns = [
     {
@@ -420,6 +466,19 @@
     {
       title: 'Tên KH',
       dataIndex: `buyer_username`,
+      customFilterDropdown: true,
+      onFilter: (value: any, record: any) =>
+        record.buyer_username
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase()),
+      onFilterDropdownOpenChange: (visible: boolean) => {
+        if (visible) {
+          setTimeout(() => {
+            searchInput.value.focus()
+          }, 100)
+        }
+      },
     },
     {
       title: 'Tiền hàng',
@@ -472,10 +531,10 @@
   ]
   const handleUpdateShopee = () => {
     isLoading.value = true
-
+    console.log('?', route.query.page)
     dataOrder.getOrderShopeeAction({
       perPage: perPage.value,
-      page: Number(route.query.page),
+      page: String(route.query.page),
       status: currentMenu.value,
       time_from: valueRangeDate.value
         ? dayjs(valueRangeDate.value[0]).format(dateFormat)
@@ -483,8 +542,8 @@
       time_to: valueRangeDate.value
         ? dayjs(valueRangeDate.value[1]).format(dateFormat)
         : '',
-      toast: toast,
-      EndTimeLoading: EndTimeLoading,
+      toast,
+      EndTimeLoading,
     })
   }
   const handleCloseConfirm = () => {
@@ -575,6 +634,13 @@
   .update-list-button::before {
     font-family: 'Font Awesome 5 Pro';
     content: '\f021';
+    font-weight: 500;
+    margin-right: 2px;
+  }
+
+  .filter-button::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f0b0';
     font-weight: 500;
     margin-right: 2px;
   }

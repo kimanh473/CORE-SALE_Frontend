@@ -112,9 +112,9 @@ export interface countStatus {
   CANCELLED_INCANCELLED: number
   COMPLETED_SHIPPED: number
   FAILED_DELIVERY: number
-  READY_TO_SHIP_RETRY_SHIP: number
-  RETURN_TO_RETURN: number
-  TO_CONFIRM_RECEIVE_PROCESSED: number
+  READY_TO_SHIP_PROCESSED: number
+  TO_RETURN: number
+  TO_CONFIRM_RECEIVE: number
   UNPAID_INVOICE_PENDING: number
   DIFF_STATUS: number
 }
