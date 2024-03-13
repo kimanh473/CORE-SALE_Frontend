@@ -94,6 +94,11 @@ export interface OrderDetail {
   currency: string
   days_to_ship: string
   estimated_shipping_fee: string
+  actual_shipping_fee: string
+  shopee_shipping_rebate: string
+  commission_fee: string
+  service_fee: string
+  seller_transaction_fee: string
   note: string
   noteupdate: string
   paytime: string

@@ -216,9 +216,10 @@
                 <div class="font-bold">Tiền thuế (VAT)</div>
                 <div class="font-bold">Phí vân chuyển (không tính trợ giá)</div>
                 <div>Phí vận chuyển thực tế</div>
-                <div>Phí vận chuyển được trợ giá từ sản TMĐT</div>
+                <div>Phí vận chuyển được trợ giá từ sàn TMĐT</div>
                 <div class="font-bold">Phí giao dịch từ sàn TMĐT</div>
                 <div>Phí cố định</div>
+                <div>Phí dịch vụ</div>
                 <div>Phí thanh toán</div>
                 <div class="font-bold">Doanh thu đơn hàng</div>
               </div>
@@ -231,11 +232,37 @@
                     FormatPrice(Number(detailOrder.estimated_shipping_fee))
                   }}&#8363;
                 </div>
-                <div>0&#8363;</div>
-                <div>0&#8363;</div>
-                <div>0&#8363;</div>
-                <div>0&#8363;</div>
-                <div>0&#8363;</div>
+                <div>
+                  {{
+                    FormatPrice(Number(detailOrder.actual_shipping_fee))
+                  }}&#8363;
+                </div>
+                <div>
+                  {{
+                    FormatPrice(Number(detailOrder.shopee_shipping_rebate))
+                  }}&#8363;
+                </div>
+                <div>
+                  {{
+                    FormatPrice(
+                      Number(detailOrder.commission_fee) +
+                        Number(detailOrder.service_fee) +
+                        Number(detailOrder.seller_transaction_fee)
+                    )
+                  }}&#8363;
+                </div>
+                <div v-show="detailOrder.commission_fee !== '0'">
+                  - {{ FormatPrice(Number(detailOrder.commission_fee)) }}&#8363;
+                </div>
+                <div v-show="detailOrder.service_fee !== '0'">
+                  - {{ FormatPrice(Number(detailOrder.service_fee)) }}&#8363;
+                </div>
+                <div v-show="detailOrder.seller_transaction_fee !== '0'">
+                  -
+                  {{
+                    FormatPrice(Number(detailOrder.seller_transaction_fee))
+                  }}&#8363;
+                </div>
                 <div>
                   {{
                     FormatPrice(

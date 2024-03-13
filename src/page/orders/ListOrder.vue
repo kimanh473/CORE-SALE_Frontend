@@ -21,22 +21,48 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <div></div>
-        <div class="flex">
-          <div
-            class="button-custom filter-button relative group rounded-md px-2 ml-2"
-            title="Bộ lọc"
-            @click="handleOpenModalFilter"
+        <div class="flex mr-4 ml-4 w-[500px] max-sm:w-[400px] max-sm:m-0">
+          <label
+            for="default-search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only"
+            >Search</label
           >
-            <p class="text-[14px] mt-[12px] px-1">Bộ lọc</p>
+          <div class="relative">
+            <div
+              class="flex absolute inset-y-0 left-0 items-center pl-3 hover:cursor-pointer"
+            >
+              <!-- @click -->
+              <i class="fal fa-search"></i>
+            </div>
+            <input
+              type="search"
+              class="block p-1.5 pl-10 w-full whitespace-no-wrap outline-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
+              placeholder="Tìm kiếm"
+            />
+            <!-- @pressEnter -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1"
+              stroke="currentColor"
+              class="w-6 h-6 flex absolute right-3 top-1.5 text-gray-600 hover:text-gray-900 hover:cursor-pointer"
+            >
+              <!-- @click -->
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
+              />
+            </svg>
           </div>
-          <div
-            class="button-custom update-list-button relative group rounded-md px-2"
-            title="Đồng bộ"
-            @click="handleOpenModalSync"
-          >
-            <p class="text-[14px] mt-[12px] px-1">Đồng bộ</p>
-          </div>
+        </div>
+        <div
+          class="button-custom update-list-button relative group rounded-md px-2"
+          title="Đồng bộ"
+          @click="handleOpenModalSync"
+        >
+          <p class="text-[14px] mt-[12px] px-1">Đồng bộ</p>
         </div>
       </div>
       <a-menu
@@ -79,6 +105,7 @@
         :row-class-name="
           (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
         "
+        @change="handleChangeFilter"
         v-model:current="currentPage"
         bordered
         row-key="id"
@@ -252,7 +279,7 @@
       </div>
     </div>
   </a-modal>
-  <a-modal
+  <!-- <a-modal
     :visible="isOpenModalFilter"
     @cancel="handleCloseModalFilter"
     title="Bộ lọc"
@@ -268,7 +295,7 @@
       >
       <a-button key="back" @click="handleCloseModalFilter">Hủy</a-button>
     </template>
-  </a-modal>
+  </a-modal> -->
   <modal-delete
     :isOpen="isOpenConfirm"
     :handleCloseDetail="handleCloseConfirm"
@@ -284,7 +311,7 @@
   import SideBar from '@/components/common/SideBar.vue'
   import Header from '@/components/common/Header.vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, computed } from 'vue'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { useToast } from 'vue-toastification'
@@ -294,9 +321,10 @@
     FormatOrderStatus,
     FormatColorOrderStatus,
   } from '@/components/constants/FormatAll'
-  import type { SelectProps } from 'ant-design-vue'
+  import type { SelectProps, TableColumnType, TableProps } from 'ant-design-vue'
   import dayjs, { Dayjs } from 'dayjs'
   import { storeToRefs } from 'pinia'
+
   // const UrlImg = import.meta.env.VITE_APP_IMAGE_URL
 
   const router = useRouter()
@@ -354,13 +382,6 @@
     isOpenModalSync.value = false
   }
 
-  const isOpenModalFilter = ref<boolean>(false)
-  const handleOpenModalFilter = () => {
-    isOpenModalFilter.value = true
-  }
-  const handleCloseModalFilter = () => {
-    isOpenModalFilter.value = false
-  }
   const currentMenu = ref<any>([route.query.status ? route.query.status : '1'])
   const handleSelectStatus = (item: any) => {
     router.push({
@@ -406,6 +427,9 @@
       EndTimeLoading
     )
   }
+  // const onSearch = (searchValue: string) => {
+  //   // if (record.order_sn.toString().toLowerCase().includes(searchValue.toLowerCase()))
+  // }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
@@ -428,113 +452,144 @@
   }
 
   const searchInput = ref()
-  const columns = [
-    {
-      title: 'STT',
-      dataIndex: 'id',
-      key: 'stt',
-    },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'create_time',
-      key: 'create_time',
-    },
-    {
-      title: 'Ngày đồng bộ',
-      dataIndex: 'created_at',
-      key: 'created_at',
-    },
-    {
-      title: 'Mã ĐH',
-      dataIndex: 'order_sn',
-      key: 'order_sn',
-      customFilterDropdown: true,
-      onFilter: (value: any, record: any) =>
-        record.order_sn.toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible: boolean) => {
-        if (visible) {
-          setTimeout(() => {
-            searchInput.value.focus()
-          }, 100)
-        }
+  const filteredInfo = ref()
+  const columns = computed<TableColumnType[]>(() => {
+    const filtered = filteredInfo.value || {}
+    return [
+      {
+        title: 'STT',
+        dataIndex: 'id',
+        key: 'stt',
       },
-    },
-    {
-      title: 'Mã KH',
-      dataIndex: 'buyer_user_id',
-    },
-    {
-      title: 'Tên KH',
-      dataIndex: `buyer_username`,
-      customFilterDropdown: true,
-      onFilter: (value: any, record: any) =>
-        record.buyer_username
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible: boolean) => {
-        if (visible) {
-          setTimeout(() => {
-            searchInput.value.focus()
-          }, 100)
-        }
+      {
+        title: 'Ngày tạo',
+        dataIndex: 'create_time',
+        key: 'create_time',
       },
-    },
-    {
-      title: 'Tiền hàng',
-      dataIndex: 'total_amount',
-      align: 'right',
-      key: 'total_amount',
-    },
-    // {
-    //   title: 'Tiền thuế',
-    //   dataIndex: 'tax_money',
-    //   key: 'tax_money',
-    //   align: 'right',
-    // },
-    {
-      title: 'Tổng tiền',
-      dataIndex: 'total_amount',
-      align: 'right',
-      key: 'total_amount',
-    },
-    {
-      title: 'Shop',
-      dataIndex: 'shop_name',
-      customFilterDropdown: true,
-      onFilter: (value: any, record: any) =>
-        record.shop_name.toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible: boolean) => {
-        if (visible) {
-          setTimeout(() => {
-            searchInput.value.focus()
-          }, 100)
-        }
+      {
+        title: 'Ngày đồng bộ',
+        dataIndex: 'created_at',
+        key: 'created_at',
       },
-    },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'order_status',
-      key: 'order_status',
-      align: 'center',
-    },
-    {
-      title: 'Diễn giải',
-      dataIndex: 'note',
-    },
-    {
-      title: 'Thao tác',
-      dataIndex: 'id',
-      key: 'id',
-      align: 'center',
-    },
-  ]
+      {
+        title: 'Mã ĐH',
+        dataIndex: 'order_sn',
+        key: 'order_sn',
+        customFilterDropdown: true,
+        filteredValue: filtered.name || null,
+        onFilter: (value: any, record: any) =>
+          record.order_sn
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+      },
+      {
+        title: 'Mã KH',
+        dataIndex: 'buyer_user_id',
+        customFilterDropdown: true,
+        onFilter: (value: any, record: any) =>
+          record.buyer_user_id
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+      },
+      {
+        title: 'Tên KH',
+        dataIndex: `buyer_username`,
+        customFilterDropdown: true,
+        onFilter: (value: any, record: any) =>
+          record.buyer_username
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+      },
+      {
+        title: 'Tiền hàng',
+        dataIndex: 'total_amount',
+        align: 'right',
+        key: 'total_amount',
+      },
+      // {
+      //   title: 'Tiền thuế',
+      //   dataIndex: 'tax_money',
+      //   key: 'tax_money',
+      //   align: 'right',
+      // },
+      {
+        title: 'Tổng tiền',
+        dataIndex: 'total_amount',
+        align: 'right',
+        key: 'total_amount',
+      },
+      {
+        title: 'Shop',
+        dataIndex: 'shop_name',
+        customFilterDropdown: true,
+        onFilter: (value: any, record: any) =>
+          record.shop_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+      },
+      {
+        title: 'Trạng thái',
+        dataIndex: 'order_status',
+        key: 'order_status',
+        align: 'center',
+      },
+      {
+        title: 'Diễn giải',
+        dataIndex: 'note',
+      },
+      {
+        title: 'Thao tác',
+        dataIndex: 'id',
+        key: 'id',
+        align: 'center',
+      },
+    ]
+  })
+
+  const handleChangeFilter: TableProps['onChange'] = (pagination, filters) => {
+    console.log('Various parameters', pagination, filters)
+    filteredInfo.value = filters
+  }
+
   const handleUpdateShopee = () => {
     isLoading.value = true
     console.log('?', route.query.page)
     dataOrder.getOrderShopeeAction({
       perPage: perPage.value,
-      page: String(route.query.page),
+      page: Number(route.query.page) ? Number(route.query.page) : 1,
       status: currentMenu.value,
       time_from: valueRangeDate.value
         ? dayjs(valueRangeDate.value[0]).format(dateFormat)

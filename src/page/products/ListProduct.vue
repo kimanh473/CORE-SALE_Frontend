@@ -51,6 +51,13 @@
           <div
             class="button-create-new relative group rounded-md px-2"
             title="Tạo mới sản phẩm"
+            @click="clearAllFilter"
+          >
+            <p class="text-[14px] mt-1 px-1">Xóa bộ lọc</p>
+          </div>
+          <div
+            class="button-create-new relative group rounded-md px-2"
+            title="Tạo mới sản phẩm"
             @click="CreateProduct()"
           >
             <p class="text-[14px] mt-1 px-1">Tạo mới sản phẩm</p>
@@ -60,6 +67,7 @@
       <a-table
         id="table-data-list-sp"
         class="!p-[10px]"
+        @change="handleChangeFilter"
         :row-selection="{
           selectedRowKeys: state.selectedRowKeys,
           onChange: onSelectChange,
@@ -108,6 +116,13 @@
               <i class="far fa-search mr-1.5"></i>
               <!-- <template #icon><SearchOutlined /></template> -->
               Lọc
+            </a-button>
+            <a-button
+              size="small"
+              style="width: 80px"
+              @click="handleReset(clearFilters)"
+            >
+              Hủy
             </a-button>
           </div>
         </template>
@@ -215,6 +230,8 @@
   import { storeToRefs } from 'pinia'
   import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
   import { FormatPrice } from '@/components/constants/FormatAll'
+  import type { TableColumnType, TableProps } from 'ant-design-vue'
+
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListSetAttributeGroupAction()
   const { listSetAttributeGroup } = storeToRefs(dataAttributeGroup)
@@ -259,103 +276,125 @@
     dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
   }
   const stateSearch = reactive({
-    searchText: '',
+    searchText: null,
     searchedColumn: '',
   })
   const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
     confirm()
+    console.log('selectedKeys', selectedKeys)
     stateSearch.searchText = selectedKeys[0]
     stateSearch.searchedColumn = dataIndex
+  }
+  const handleReset = (clearFilters: any) => {
+    clearFilters({ confirm: true })
+    stateSearch.searchText = null
+    console.log('??', filteredInfo)
   }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
   const searchInput = ref()
-  const columns = [
-    {
-      title: 'STT',
-      dataIndex: 'id',
-      key: 'stt',
-    },
-    {
-      title: 'Ảnh',
-      dataIndex: 'image',
-      key: 'image',
-    },
-    {
-      title: 'Tên sản phẩm',
-      dataIndex: 'name',
-      key: 'name',
-      customFilterDropdown: true,
-      onFilter: (value: any, record: any) =>
-        record.name.toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible: boolean) => {
-        if (visible) {
-          setTimeout(() => {
-            searchInput.value.focus()
-          }, 100)
-        }
+
+  const filteredInfo = ref()
+  const columns = computed<TableColumnType[]>(() => {
+    const filtered = filteredInfo.value || {}
+    return [
+      {
+        title: 'STT',
+        dataIndex: 'id',
+        key: 'stt',
       },
-    },
-    {
-      title: 'SKU',
-      dataIndex: 'sku',
-      key: 'sku',
-      customFilterDropdown: true,
-      onFilter: (value: any, record: any) =>
-        record.sku.toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible: boolean) => {
-        if (visible) {
-          setTimeout(() => {
-            searchInput.value.focus()
-          }, 100)
-        }
+      {
+        title: 'Ảnh',
+        dataIndex: 'image',
+        key: 'image',
       },
-    },
-    {
-      title: 'Loại sản phẩm',
-      dataIndex: `type_id`,
-    },
-    {
-      title: 'Bộ thuộc tính',
-      dataIndex: 'attribute_set_id',
-      key: 'attribute_set_id',
-    },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      align: 'center',
-      key: 'status',
-    },
-    {
-      title: 'Website',
-      dataIndex: 'web_site_code',
-      key: 'web_site_code',
-    },
-    {
-      title: 'Giá niêm yết',
-      dataIndex: 'listed_price',
-      key: 'listed_price',
-      align: 'right',
-    },
-    {
-      title: 'Giá sỉ',
-      dataIndex: 'wholesale_price',
-      key: 'wholesale_price',
-      align: 'right',
-    },
-    {
-      title: 'Giá lẻ',
-      dataIndex: 'retail_price',
-      key: 'retail_price',
-      align: 'right',
-    },
-    {
-      title: 'Thao tác',
-      dataIndex: 'id',
-      key: 'id',
-    },
-  ]
+      {
+        title: 'Tên sản phẩm',
+        dataIndex: 'name',
+        key: 'name',
+        customFilterDropdown: true,
+        filteredValue: filtered.name || null,
+        onFilter: (value: any, record: any) =>
+          record.name.toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+        ellipsis: true,
+      },
+      {
+        title: 'SKU',
+        dataIndex: 'sku',
+        key: 'sku',
+        customFilterDropdown: true,
+        filteredValue: filtered.sku || null,
+        onFilter: (value: any, record: any) =>
+          record.sku.toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+      },
+      {
+        title: 'Loại sản phẩm',
+        dataIndex: `type_id`,
+      },
+      {
+        title: 'Bộ thuộc tính',
+        dataIndex: 'attribute_set_id',
+        key: 'attribute_set_id',
+      },
+      {
+        title: 'Trạng thái',
+        dataIndex: 'status',
+        align: 'center',
+        key: 'status',
+      },
+      {
+        title: 'Website',
+        dataIndex: 'web_site_code',
+        key: 'web_site_code',
+      },
+      {
+        title: 'Giá niêm yết',
+        dataIndex: 'listed_price',
+        key: 'listed_price',
+        align: 'right',
+      },
+      {
+        title: 'Giá sỉ',
+        dataIndex: 'wholesale_price',
+        key: 'wholesale_price',
+        align: 'right',
+      },
+      {
+        title: 'Giá lẻ',
+        dataIndex: 'retail_price',
+        key: 'retail_price',
+        align: 'right',
+      },
+      {
+        title: 'Thao tác',
+        dataIndex: 'id',
+        key: 'id',
+      },
+    ]
+  })
+  const handleChangeFilter: TableProps['onChange'] = (pagination, filters) => {
+    filteredInfo.value = filters
+  }
+
+  const clearAllFilter = () => {
+    filteredInfo.value = null
+    console.log('?', filteredInfo)
+  }
 
   type Key = string
   const state = reactive<{
