@@ -34,11 +34,14 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <span class="ml-2 mt-1.5 text-white">
-          <template v-if="hasSelected">
-            {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
-          </template>
-        </span>
+        <div class="flex">
+          <SearchWithFilter @searchInTable="handlesearchInTable" />
+          <span class="flex ml-2 mt-1.5 text-white">
+            <template v-if="hasSelected">
+              {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
+            </template>
+          </span>
+        </div>
         <div class="flex">
           <div
             class="button-delete relative group rounded-md px-2"
@@ -49,11 +52,11 @@
             <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
           </div>
           <div
-            class="button-create-new relative group rounded-md px-2"
+            class="button-custom delete-x relative group rounded-md px-2"
             title="Tạo mới sản phẩm"
             @click="clearAllFilter"
           >
-            <p class="text-[14px] mt-1 px-1">Xóa bộ lọc</p>
+            <p class="text-[14px] my-1 px-1">Xóa bộ lọc</p>
           </div>
           <div
             class="button-create-new relative group rounded-md px-2"
@@ -73,7 +76,7 @@
           onChange: onSelectChange,
         }"
         :columns="columns"
-        :data-source="listProduct"
+        :data-source="filteredListProduct"
         :pagination="false"
         :row-class-name="
           (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
@@ -226,10 +229,12 @@
   import { useToast } from 'vue-toastification'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
+  import SearchWithFilter from '@/components/modal/ModalSearchWithFilter.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
   import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
   import { FormatPrice } from '@/components/constants/FormatAll'
+
   import type { TableColumnType, TableProps } from 'ant-design-vue'
 
   const dataAttributeGroup = useAttributeGroup()
@@ -252,7 +257,8 @@
   dataWebsite.getAllWebCatalogAction()
 
   const { listWeb } = storeToRefs(dataWebsite)
-  console.log('listWeb', listWeb.value)
+  console.log('???', listWeb.value)
+
   function formatWeb(webcode: string) {
     const webName = listWeb.value.find((item: any) => item.code == webcode)
     return webName?.web_name
@@ -281,21 +287,37 @@
   })
   const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
     confirm()
-    console.log('selectedKeys', selectedKeys)
+
     stateSearch.searchText = selectedKeys[0]
     stateSearch.searchedColumn = dataIndex
   }
   const handleReset = (clearFilters: any) => {
     clearFilters({ confirm: true })
     stateSearch.searchText = null
-    console.log('??', filteredInfo)
   }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const searchInTableValue = ref('')
+
+  const handlesearchInTable = (searchInTable: any) => {
+    searchInTableValue.value = searchInTable
+  }
+
+  const filteredListProduct = computed(() => {
+    if (searchInTableValue.value == '') return listProduct.value
+
+    return listProduct.value.filter((item: any) =>
+      Object.values(item).some((value) =>
+        String(value).includes(searchInTableValue.value)
+      )
+    )
+  })
+
   const searchInput = ref()
 
   const filteredInfo = ref()
+
   const columns = computed<TableColumnType[]>(() => {
     const filtered = filteredInfo.value || {}
     return [
@@ -361,6 +383,14 @@
         title: 'Website',
         dataIndex: 'web_site_code',
         key: 'web_site_code',
+        filters: listWeb.value.map((item) => ({
+          text: item.web_name,
+          value: item.code,
+        })),
+        onFilter: (value: string, record: any) =>
+          record.web_site_code.some(
+            (code: string) => code.indexOf(value) === 0
+          ),
       },
       {
         title: 'Giá niêm yết',
@@ -393,7 +423,6 @@
 
   const clearAllFilter = () => {
     filteredInfo.value = null
-    console.log('?', filteredInfo)
   }
 
   type Key = string
@@ -550,5 +579,11 @@
     padding: 2px !important;
     display: flex !important;
     border: 0px !important;
+  }
+  .delete-x::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f00d';
+    font-weight: 500;
+    margin-right: 2px;
   }
 </style>

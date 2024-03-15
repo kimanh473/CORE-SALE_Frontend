@@ -21,42 +21,10 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <div class="flex mr-4 ml-4 w-[500px] max-sm:w-[400px] max-sm:m-0">
-          <label
-            for="default-search"
-            class="mb-2 text-sm font-medium text-gray-900 sr-only"
-            >Search</label
-          >
-          <div class="relative">
-            <div
-              class="flex absolute inset-y-0 left-0 items-center pl-3 hover:cursor-pointer"
-            >
-              <!-- @click -->
-              <i class="fal fa-search"></i>
-            </div>
-            <input
-              type="search"
-              class="block p-1.5 pl-10 w-full whitespace-no-wrap outline-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
-              placeholder="Tìm kiếm"
-            />
-            <!-- @pressEnter -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1"
-              stroke="currentColor"
-              class="w-6 h-6 flex absolute right-3 top-1.5 text-gray-600 hover:text-gray-900 hover:cursor-pointer"
-            >
-              <!-- @click -->
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
-              />
-            </svg>
-          </div>
-        </div>
+        <SearchWithFilter
+          @searchInTable="handlesearchInTable"
+          @showFilterInTable="handleShowFilterInTable"
+        />
         <div
           class="button-custom update-list-button relative group rounded-md px-2"
           title="Đồng bộ"
@@ -100,7 +68,7 @@
       <a-table
         class="!p-[10px]"
         :columns="columns"
-        :data-source="listOrder"
+        :data-source="filteredListOrder"
         :pagination="false"
         :row-class-name="
           (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
@@ -215,6 +183,37 @@
     </template>
   </base-layout>
   <a-modal
+    :visible="isOpenModalFilterTable"
+    @cancel="handleCloseModalFilter"
+    title="Lựa chọn bộ lọc"
+    width="550px"
+    ><template #footer>
+      <a-button key="submit" type="primary" :loading="isLoading"
+        >Áp dụng</a-button
+      >
+      <a-button key="back" @click="handleCloseModalFilter">Hủy</a-button>
+    </template>
+    <div class="p-[24px]">
+      <div class="form-small">
+        <label for="" class="form-group-label"
+          >Chọn khoảng ngày<span></span
+        ></label>
+        <div>
+          <a-range-picker
+            :placeholder="['Ngày bắt đầu', 'Ngày kết thúc']"
+            :value="valueRangeDate || hackValue || value"
+            :disabled-date="disabledDate"
+            :format="dateFormat"
+            @change="onChange"
+            @openChange="onOpenChange"
+            @calendarChange="onCalendarChange"
+          />
+        </div>
+      </div>
+    </div>
+  </a-modal>
+
+  <a-modal
     :visible="isOpenModalSync"
     @cancel="handleCloseModalSync"
     title="Đồng bộ đơn hàng"
@@ -313,6 +312,7 @@
   import { useRoute, useRouter } from 'vue-router'
   import { ref, reactive, computed } from 'vue'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
+  import SearchWithFilter from '@/components/modal/ModalSearchWithFilter.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { useToast } from 'vue-toastification'
   import { useOrder } from '@/store/modules/orders/orders'
@@ -375,11 +375,19 @@
     valueRangeDate.value = val
   }
   const isOpenModalSync = ref<boolean>(false)
+  const isOpenModalFilterTable = ref<boolean>(false)
+
   const handleOpenModalSync = () => {
     isOpenModalSync.value = true
   }
   const handleCloseModalSync = () => {
     isOpenModalSync.value = false
+  }
+  const handleShowFilterInTable = (showFilterInTable: boolean) => {
+    isOpenModalFilterTable.value = showFilterInTable
+  }
+  const handleCloseModalFilter = () => {
+    isOpenModalFilterTable.value = false
   }
 
   const currentMenu = ref<any>([route.query.status ? route.query.status : '1'])
@@ -427,6 +435,8 @@
       EndTimeLoading
     )
   }
+
+  // const handleSearchInTable = (searchInTable: any) => {}
   // const onSearch = (searchValue: string) => {
   //   // if (record.order_sn.toString().toLowerCase().includes(searchValue.toLowerCase()))
   // }
@@ -451,10 +461,26 @@
     state.searchText = ''
   }
 
+  const searchInTableValue = ref('')
+
+  const handlesearchInTable = (searchInTable: any) => {
+    searchInTableValue.value = searchInTable
+    console.log('searchvalue', searchInTableValue.value)
+  }
   const searchInput = ref()
   const filteredInfo = ref()
+  const filteredListOrder = computed(() => {
+    if (searchInTableValue.value == '') return listOrder.value
+
+    return listOrder.value.filter((item: any) =>
+      Object.values(item).some((value) =>
+        String(value).includes(searchInTableValue.value)
+      )
+    )
+  })
   const columns = computed<TableColumnType[]>(() => {
     const filtered = filteredInfo.value || {}
+
     return [
       {
         title: 'STT',
@@ -689,13 +715,6 @@
   .update-list-button::before {
     font-family: 'Font Awesome 5 Pro';
     content: '\f021';
-    font-weight: 500;
-    margin-right: 2px;
-  }
-
-  .filter-button::before {
-    font-family: 'Font Awesome 5 Pro';
-    content: '\f0b0';
     font-weight: 500;
     margin-right: 2px;
   }
