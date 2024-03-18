@@ -34,11 +34,14 @@
         id="task-bar-list"
         class="!my-4 !py-[10px] !mx-[10px] bg-slate-500 rounded flex justify-between"
       >
-        <span class="ml-2 mt-1.5 text-white">
-          <template v-if="hasSelected">
-            {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
-          </template>
-        </span>
+        <div class="flex">
+          <SearchWithFilter @searchInTable="handlesearchInTable" />
+          <span class="flex ml-2 mt-1.5 text-white">
+            <template v-if="hasSelected">
+              {{ `Chọn ${state.selectedRowKeys.length} sản phẩm` }}
+            </template>
+          </span>
+        </div>
         <div class="flex">
           <div
             class="button-delete relative group rounded-md px-2"
@@ -47,6 +50,13 @@
             v-show="showDeleteAll"
           >
             <p class="text-[14px] mt-1 px-1">Xoá tất cả</p>
+          </div>
+          <div
+            class="button-custom delete-x relative group rounded-md px-2"
+            title="Tạo mới sản phẩm"
+            @click="clearAllFilter"
+          >
+            <p class="text-[14px] my-1 px-1">Xóa bộ lọc</p>
           </div>
           <div
             class="button-create-new relative group rounded-md px-2"
@@ -60,12 +70,13 @@
       <a-table
         id="table-data-list-sp"
         class="!p-[10px]"
+        @change="handleChangeFilter"
         :row-selection="{
           selectedRowKeys: state.selectedRowKeys,
           onChange: onSelectChange,
         }"
         :columns="columns"
-        :data-source="listProduct"
+        :data-source="filteredListProduct"
         :pagination="false"
         :row-class-name="
           (_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)
@@ -108,6 +119,13 @@
               <i class="far fa-search mr-1.5"></i>
               <!-- <template #icon><SearchOutlined /></template> -->
               Lọc
+            </a-button>
+            <a-button
+              size="small"
+              style="width: 80px"
+              @click="handleReset(clearFilters)"
+            >
+              Hủy
             </a-button>
           </div>
         </template>
@@ -211,10 +229,14 @@
   import { useToast } from 'vue-toastification'
   import ModalDelete from '@/components/modal/ModalConfirmDelelte.vue'
   import ModalDeleteAll from '@/components/modal/ModalConfirmDeleteAll.vue'
+  import SearchWithFilter from '@/components/modal/ModalSearchWithFilter.vue'
   import { useWebCatalog } from '@/store/modules/web-catalog/webcatalog'
   import { storeToRefs } from 'pinia'
   import { useAttributeGroup } from '@/store/modules/store-setting/attribute-group'
   import { FormatPrice } from '@/components/constants/FormatAll'
+
+  import type { TableColumnType, TableProps } from 'ant-design-vue'
+
   const dataAttributeGroup = useAttributeGroup()
   dataAttributeGroup.getListSetAttributeGroupAction()
   const { listSetAttributeGroup } = storeToRefs(dataAttributeGroup)
@@ -235,7 +257,8 @@
   dataWebsite.getAllWebCatalogAction()
 
   const { listWeb } = storeToRefs(dataWebsite)
-  console.log('listWeb', listWeb.value)
+  console.log('???', listWeb.value)
+
   function formatWeb(webcode: string) {
     const webName = listWeb.value.find((item: any) => item.code == webcode)
     return webName?.web_name
@@ -259,103 +282,148 @@
     dataProduct.getListProductAction(perPage.value, pageNumber, EndTimeLoading)
   }
   const stateSearch = reactive({
-    searchText: '',
+    searchText: null,
     searchedColumn: '',
   })
   const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
     confirm()
+
     stateSearch.searchText = selectedKeys[0]
     stateSearch.searchedColumn = dataIndex
+  }
+  const handleReset = (clearFilters: any) => {
+    clearFilters({ confirm: true })
+    stateSearch.searchText = null
   }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
+  const searchInTableValue = ref('')
+
+  const handlesearchInTable = (searchInTable: any) => {
+    searchInTableValue.value = searchInTable
+  }
+
+  const filteredListProduct = computed(() => {
+    if (searchInTableValue.value == '') return listProduct.value
+
+    return listProduct.value.filter((item: any) =>
+      Object.values(item).some((value) =>
+        String(value).includes(searchInTableValue.value)
+      )
+    )
+  })
+
   const searchInput = ref()
-  const columns = [
-    {
-      title: 'STT',
-      dataIndex: 'id',
-      key: 'stt',
-    },
-    {
-      title: 'Ảnh',
-      dataIndex: 'image',
-      key: 'image',
-    },
-    {
-      title: 'Tên sản phẩm',
-      dataIndex: 'name',
-      key: 'name',
-      customFilterDropdown: true,
-      onFilter: (value: any, record: any) =>
-        record.name.toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible: boolean) => {
-        if (visible) {
-          setTimeout(() => {
-            searchInput.value.focus()
-          }, 100)
-        }
+
+  const filteredInfo = ref()
+
+  const columns = computed<TableColumnType[]>(() => {
+    const filtered = filteredInfo.value || {}
+    return [
+      {
+        title: 'STT',
+        dataIndex: 'id',
+        key: 'stt',
       },
-    },
-    {
-      title: 'SKU',
-      dataIndex: 'sku',
-      key: 'sku',
-      customFilterDropdown: true,
-      onFilter: (value: any, record: any) =>
-        record.sku.toString().toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownOpenChange: (visible: boolean) => {
-        if (visible) {
-          setTimeout(() => {
-            searchInput.value.focus()
-          }, 100)
-        }
+      {
+        title: 'Ảnh',
+        dataIndex: 'image',
+        key: 'image',
       },
-    },
-    {
-      title: 'Loại sản phẩm',
-      dataIndex: `type_id`,
-    },
-    {
-      title: 'Bộ thuộc tính',
-      dataIndex: 'attribute_set_id',
-      key: 'attribute_set_id',
-    },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      align: 'center',
-      key: 'status',
-    },
-    {
-      title: 'Website',
-      dataIndex: 'web_site_code',
-      key: 'web_site_code',
-    },
-    {
-      title: 'Giá niêm yết',
-      dataIndex: 'listed_price',
-      key: 'listed_price',
-      align: 'right',
-    },
-    {
-      title: 'Giá sỉ',
-      dataIndex: 'wholesale_price',
-      key: 'wholesale_price',
-      align: 'right',
-    },
-    {
-      title: 'Giá lẻ',
-      dataIndex: 'retail_price',
-      key: 'retail_price',
-      align: 'right',
-    },
-    {
-      title: 'Thao tác',
-      dataIndex: 'id',
-      key: 'id',
-    },
-  ]
+      {
+        title: 'Tên sản phẩm',
+        dataIndex: 'name',
+        key: 'name',
+        customFilterDropdown: true,
+        filteredValue: filtered.name || null,
+        onFilter: (value: any, record: any) =>
+          record.name.toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+        ellipsis: true,
+      },
+      {
+        title: 'SKU',
+        dataIndex: 'sku',
+        key: 'sku',
+        customFilterDropdown: true,
+        filteredValue: filtered.sku || null,
+        onFilter: (value: any, record: any) =>
+          record.sku.toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible: boolean) => {
+          if (visible) {
+            setTimeout(() => {
+              searchInput.value.focus()
+            }, 100)
+          }
+        },
+      },
+      {
+        title: 'Loại sản phẩm',
+        dataIndex: `type_id`,
+      },
+      {
+        title: 'Bộ thuộc tính',
+        dataIndex: 'attribute_set_id',
+        key: 'attribute_set_id',
+      },
+      {
+        title: 'Trạng thái',
+        dataIndex: 'status',
+        align: 'center',
+        key: 'status',
+      },
+      {
+        title: 'Website',
+        dataIndex: 'web_site_code',
+        key: 'web_site_code',
+        filters: listWeb.value.map((item) => ({
+          text: item.web_name,
+          value: item.code,
+        })),
+        onFilter: (value: string, record: any) =>
+          record.web_site_code.some(
+            (code: string) => code.indexOf(value) === 0
+          ),
+      },
+      {
+        title: 'Giá niêm yết',
+        dataIndex: 'listed_price',
+        key: 'listed_price',
+        align: 'right',
+      },
+      {
+        title: 'Giá sỉ',
+        dataIndex: 'wholesale_price',
+        key: 'wholesale_price',
+        align: 'right',
+      },
+      {
+        title: 'Giá lẻ',
+        dataIndex: 'retail_price',
+        key: 'retail_price',
+        align: 'right',
+      },
+      {
+        title: 'Thao tác',
+        dataIndex: 'id',
+        key: 'id',
+      },
+    ]
+  })
+  const handleChangeFilter: TableProps['onChange'] = (pagination, filters) => {
+    filteredInfo.value = filters
+  }
+
+  const clearAllFilter = () => {
+    filteredInfo.value = null
+  }
 
   type Key = string
   const state = reactive<{
@@ -511,5 +579,11 @@
     padding: 2px !important;
     display: flex !important;
     border: 0px !important;
+  }
+  .delete-x::before {
+    font-family: 'Font Awesome 5 Pro';
+    content: '\f00d';
+    font-weight: 500;
+    margin-right: 2px;
   }
 </style>
