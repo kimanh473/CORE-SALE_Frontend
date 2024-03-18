@@ -51,7 +51,7 @@ export const useOrder = defineStore('customerGroup', {
           console.log(err)
         })
     },
-    getOrderShopeeAction(param: any) {
+    async getOrderShopeeAction(param: any) {
       // perPage: number,
       //   page: number,
       //   status: any,
@@ -65,7 +65,7 @@ export const useOrder = defineStore('customerGroup', {
       const EndTimeLoading = param?.EndTimeLoading
       const perPage = param?.perPage
       const page = param?.page
-      getAllOrderShopeeApi(time_from, time_to)
+      await getAllOrderShopeeApi(time_from, time_to)
         .then((payload: any) => {
           if (payload.data.status === 'error') {
             toast.error(payload.data.message)
@@ -78,11 +78,11 @@ export const useOrder = defineStore('customerGroup', {
               status,
               EndTimeLoading
             )
+
             EndTimeLoading()
           }
         })
         .catch((err) => {
-          console.log(err)
           const arrMess = err.response.data.messages
           const errMess = arrMess[Object.keys(arrMess)[0]]
           toast.error(errMess[0])

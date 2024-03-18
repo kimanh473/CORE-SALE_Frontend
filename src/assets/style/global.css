@@ -215,7 +215,6 @@ body {
   }
   .button-custom {
     cursor: pointer;
-    /* margin-left: 10px; */
     background: var(--color-primary);
     margin-right: 10px;
     min-height: 35px;

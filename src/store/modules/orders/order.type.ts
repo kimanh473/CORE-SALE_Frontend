@@ -21,6 +21,7 @@ export interface Order {
   json_product_detail: string
   created_at: string
   updated_at: string
+  create_time: string
 }
 export interface OrderShopee {
   id: number

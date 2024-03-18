@@ -188,26 +188,40 @@
     title="Lựa chọn bộ lọc"
     width="550px"
     ><template #footer>
-      <a-button key="submit" type="primary" :loading="isLoading"
+      <a-button
+        key="submit"
+        type="primary"
+        :loading="isLoading"
+        @click="ApplyFilterOnTable"
         >Áp dụng</a-button
       >
-      <a-button key="back" @click="handleCloseModalFilter">Hủy</a-button>
+      <a-button key="back" @click="handleCloseModalFilter">Xóa bộ lọc</a-button>
     </template>
     <div class="p-[24px]">
       <div class="form-small">
-        <label for="" class="form-group-label"
-          >Chọn khoảng ngày<span></span
-        ></label>
+        <label class="form-group-label font-bold">Chọn khoảng ngày</label>
         <div>
           <a-range-picker
             :placeholder="['Ngày bắt đầu', 'Ngày kết thúc']"
-            :value="valueRangeDate || hackValue || value"
-            :disabled-date="disabledDate"
+            :value="date_value_filter"
             :format="dateFormat"
-            @change="onChange"
-            @openChange="onOpenChange"
-            @calendarChange="onCalendarChange"
+            @change="onChangeDateFilter"
           />
+        </div>
+        <a-divider />
+        <div class="pb-4">
+          <label class="form-group-label font-bold mr-12">Chọn shop </label>
+          <div>
+            <a-select
+              show-search
+              v-model:value="selected_shop_filter"
+              class="form-control-input"
+              placeholder="Chọn Shop"
+              :options="list_shop"
+              mode="multiple"
+            >
+            </a-select>
+          </div>
         </div>
       </div>
     </div>
@@ -332,6 +346,7 @@
   const toast = useToast()
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
+  console.log()
   // const { listWeb } = storeToRefs(dataWebsite)
   // function formatWeb(webcode: string) {
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
@@ -345,7 +360,9 @@
     dayjs(previous15day.toISOString().substring(0, 10), dateFormat),
     dayjs(currentTime.toISOString().substring(0, 10), dateFormat),
   ])
+
   const value = ref<RangeValue>()
+  const date_value_filter = ref<RangeValue>()
   const hackValue = ref<RangeValue>()
   const disabledDate = (current: Dayjs) => {
     if (!valueRangeDate.value || (valueRangeDate.value as any).length === 0) {
@@ -366,6 +383,17 @@
     } else {
       hackValue.value = undefined
     }
+  }
+  const start_day = ref('')
+  const end_day = ref<any>([])
+  const onChangeDateFilter = (val: RangeValue) => {
+    date_value_filter.value = val
+    start_day.value = date_value_filter.value
+      ? dayjs(date_value_filter.value[0]).format(dateFormat)
+      : ''
+    end_day.value = date_value_filter.value
+      ? dayjs(date_value_filter.value[1]).format(dateFormat)
+      : ''
   }
 
   const onChange = (val: RangeValue) => {
@@ -389,6 +417,16 @@
   const handleCloseModalFilter = () => {
     isOpenModalFilterTable.value = false
   }
+  const list_shop = ref<SelectProps['options']>([
+    {
+      value: '983519783',
+      label: 'Hawonkoo',
+    },
+    {
+      value: '983519785',
+      label: 'Junger',
+    },
+  ])
 
   const currentMenu = ref<any>([route.query.status ? route.query.status : '1'])
   const handleSelectStatus = (item: any) => {
@@ -445,7 +483,6 @@
   const isOpenConfirm = ref<boolean>(false)
 
   const { listOrder, dataCount } = storeToRefs(dataOrder)
-  console.log(dataCount.value)
   const state = reactive({
     searchText: '',
     searchedColumn: '',
@@ -465,7 +502,6 @@
 
   const handlesearchInTable = (searchInTable: any) => {
     searchInTableValue.value = searchInTable
-    console.log('searchvalue', searchInTableValue.value)
   }
   const searchInput = ref()
   const filteredInfo = ref()
@@ -474,10 +510,13 @@
 
     return listOrder.value.filter((item: any) =>
       Object.values(item).some((value) =>
-        String(value).includes(searchInTableValue.value)
+        String(value)
+          .toLowerCase()
+          .includes(searchInTableValue.value.toLowerCase())
       )
     )
   })
+
   const columns = computed<TableColumnType[]>(() => {
     const filtered = filteredInfo.value || {}
 
@@ -606,13 +645,17 @@
   })
 
   const handleChangeFilter: TableProps['onChange'] = (pagination, filters) => {
-    console.log('Various parameters', pagination, filters)
     filteredInfo.value = filters
   }
-
+  console.log('filtered', filteredListOrder.value)
+  const ApplyFilterOnTable = () => {
+    filteredListOrder.value.filter((item: any) => {
+      dayjs(item.create_time).isAfter(dayjs(start_day.value)) &&
+        dayjs(item.create_time).isBefore(dayjs(end_day.value))
+    })
+  }
   const handleUpdateShopee = () => {
     isLoading.value = true
-    console.log('?', route.query.page)
     dataOrder.getOrderShopeeAction({
       perPage: perPage.value,
       page: Number(route.query.page) ? Number(route.query.page) : 1,
@@ -662,6 +705,7 @@
 
   const selected_platform = ref('shopee')
   const selected_shop = ref('983519783')
+  const selected_shop_filter = ref('983519783')
   const list_platform = ref<SelectProps['options']>([
     {
       value: 'shopee',
@@ -682,12 +726,6 @@
     {
       value: 'web',
       label: 'Website',
-    },
-  ])
-  const list_shop = ref<SelectProps['options']>([
-    {
-      value: '983519783',
-      label: 'Hawonkoo',
     },
   ])
 </script>
