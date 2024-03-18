@@ -483,19 +483,19 @@
   const isOpenConfirm = ref<boolean>(false)
 
   const { listOrder, dataCount } = storeToRefs(dataOrder)
-  const state = reactive({
+  const stateSearch = reactive({
     searchText: '',
     searchedColumn: '',
   })
   const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
     confirm()
-    state.searchText = selectedKeys[0]
-    state.searchedColumn = dataIndex
+    stateSearch.searchText = selectedKeys[0]
+    stateSearch.searchedColumn = dataIndex
   }
 
   const handleReset = (clearFilters: any) => {
     clearFilters({ confirm: true })
-    state.searchText = ''
+    stateSearch.searchText = null
   }
 
   const searchInTableValue = ref('')
@@ -541,7 +541,7 @@
         dataIndex: 'order_sn',
         key: 'order_sn',
         customFilterDropdown: true,
-        filteredValue: filtered.name || null,
+        filteredValue: filtered.order_sn || null,
         onFilter: (value: any, record: any) =>
           record.order_sn
             .toString()
@@ -560,6 +560,7 @@
         title: 'Mã KH',
         dataIndex: 'buyer_user_id',
         customFilterDropdown: true,
+        filteredValue: filtered.buyer_user_id || null,
         onFilter: (value: any, record: any) =>
           record.buyer_user_id
             .toString()
@@ -577,6 +578,7 @@
         title: 'Tên KH',
         dataIndex: `buyer_username`,
         customFilterDropdown: true,
+        filteredValue: filtered.buyer_username || null,
         onFilter: (value: any, record: any) =>
           record.buyer_username
             .toString()
@@ -612,6 +614,7 @@
         title: 'Shop',
         dataIndex: 'shop_name',
         customFilterDropdown: true,
+        filteredValue: filtered.shop_name || null,
         onFilter: (value: any, record: any) =>
           record.shop_name
             .toString()
@@ -647,12 +650,13 @@
   const handleChangeFilter: TableProps['onChange'] = (pagination, filters) => {
     filteredInfo.value = filters
   }
+
   console.log('filtered', filteredListOrder.value)
   const ApplyFilterOnTable = () => {
-    filteredListOrder.value.filter((item: any) => {
-      dayjs(item.create_time).isAfter(dayjs(start_day.value)) &&
-        dayjs(item.create_time).isBefore(dayjs(end_day.value))
-    })
+    //   filteredListOrder.value.filter((item: any) => {
+    //     dayjs(item.create_time).isAfter(dayjs(start_day.value)) &&
+    //       dayjs(item.create_time).isBefore(dayjs(end_day.value))
+    //   })
   }
   const handleUpdateShopee = () => {
     isLoading.value = true
