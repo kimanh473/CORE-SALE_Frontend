@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import {
   getAllOrderApi,
+  getAllOrderShopeeFilterApi,
   getDetailOrderApi,
   getAllOrderShopeeApi,
 } from '@/services/OrderServices/Order.services'
@@ -49,6 +50,31 @@ export const useOrder = defineStore('customerGroup', {
         })
         .catch((err) => {
           console.log(err)
+        })
+    },
+    async getOrderShopeeFilterAction(
+      perPage: number,
+      page: any,
+      data: object,
+      toast: any,
+      EndTimeLoading: Function
+    ) {
+      await getAllOrderShopeeFilterApi(data)
+        .then((payload: any) => {
+          if (payload.data.status === 'error') {
+            toast.error(payload.data.message)
+            EndTimeLoading()
+          } else {
+            toast.success('Đã áp dụng bộ lọc thành công')
+            this.getAllOrderPaginateAction(perPage, page, EndTimeLoading)
+
+            EndTimeLoading()
+          }
+        })
+        .catch((err) => {
+          const arrMess = err.response.data.messages
+          const errMess = arrMess[Object.keys(arrMess)[0]]
+          toast.error(errMess[0])
         })
     },
     async getOrderShopeeAction(param: any) {

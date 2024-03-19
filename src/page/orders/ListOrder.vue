@@ -195,7 +195,8 @@
         @click="ApplyFilterOnTable"
         >Áp dụng</a-button
       >
-      <a-button key="back" @click="handleCloseModalFilter">Xóa bộ lọc</a-button>
+      <a-button @click="handleDeleteFilter">Xóa bộ lọc</a-button>
+      <a-button key="back" @click="handleCloseModalFilter">Ẩn</a-button>
     </template>
     <div class="p-[24px]">
       <div class="form-small">
@@ -413,6 +414,11 @@
   }
   const handleShowFilterInTable = (showFilterInTable: boolean) => {
     isOpenModalFilterTable.value = showFilterInTable
+  }
+  const handleDeleteFilter = () => {
+    isOpenModalFilterTable.value = false
+    selected_shop_filter.value = undefined
+    date_value_filter.value = undefined
   }
   const handleCloseModalFilter = () => {
     isOpenModalFilterTable.value = false
@@ -657,6 +663,20 @@
     //     dayjs(item.create_time).isAfter(dayjs(start_day.value)) &&
     //       dayjs(item.create_time).isBefore(dayjs(end_day.value))
     //   })
+
+    const data = {
+      start_day: start_day.value,
+      end_day: end_day.value,
+      selected_shop_filter: selected_shop_filter.value,
+    }
+    console.log('?', data)
+    dataOrder.getOrderShopeeFilterAction(
+      Number(perPage.value),
+      Number(route.query.page) ? Number(route.query.page) : 1,
+      data,
+      toast,
+      EndTimeLoading
+    )
   }
   const handleUpdateShopee = () => {
     isLoading.value = true
@@ -709,7 +729,7 @@
 
   const selected_platform = ref('shopee')
   const selected_shop = ref('983519783')
-  const selected_shop_filter = ref('983519783')
+  const selected_shop_filter = ref()
   const list_platform = ref<SelectProps['options']>([
     {
       value: 'shopee',

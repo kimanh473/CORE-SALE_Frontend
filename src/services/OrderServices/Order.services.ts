@@ -5,6 +5,10 @@ const getAllOrderApi = (perPage: number, page: number, status: any) => {
     `shopee/order/get_order_list_db?per_page=${perPage}&page=${page}&status=${status}`
   )
 }
+
+const getAllOrderShopeeFilterApi = (data: Object) => {
+  return httpClient.post(`/catalog/product/create`, data)
+}
 const getAllOrderShopeeApi = (time_from: string, time_to: string) => {
   // return httpClient.get(`/user/order/list-order`)
   return httpClient.get(`shopee/order/get_order_list_sp`, {
@@ -28,4 +32,9 @@ const getDetailOrderApi = (id: number) => {
 //   return httpClient.post(`/system-manage/customer-type/delete/${id}`)
 // }
 
-export { getAllOrderApi, getDetailOrderApi, getAllOrderShopeeApi }
+export {
+  getAllOrderApi,
+  getAllOrderShopeeFilterApi,
+  getDetailOrderApi,
+  getAllOrderShopeeApi,
+}
