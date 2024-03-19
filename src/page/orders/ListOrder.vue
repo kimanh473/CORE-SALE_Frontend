@@ -659,17 +659,11 @@
 
   console.log('filtered', filteredListOrder.value)
   const ApplyFilterOnTable = () => {
-    //   filteredListOrder.value.filter((item: any) => {
-    //     dayjs(item.create_time).isAfter(dayjs(start_day.value)) &&
-    //       dayjs(item.create_time).isBefore(dayjs(end_day.value))
-    //   })
-
     const data = {
       start_day: start_day.value,
       end_day: end_day.value,
       selected_shop_filter: selected_shop_filter.value,
     }
-    console.log('?', data)
     dataOrder.getOrderShopeeFilterAction(
       Number(perPage.value),
       Number(route.query.page) ? Number(route.query.page) : 1,

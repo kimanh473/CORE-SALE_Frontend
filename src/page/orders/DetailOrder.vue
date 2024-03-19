@@ -212,9 +212,38 @@
                   Tổng tiền sản phẩm ({{ detailOrder?.product_detail?.length }}
                   sản phẩm)
                 </div>
-                <div class="font-bold">Chiết khấu</div>
-                <div class="font-bold">Tiền thuế (VAT)</div>
+                <!-- <div class="font-bold">Chiết khấu</div> -->
+                <div>Giá sản phẩm</div>
+                <div
+                  v-if="
+                    detailOrder.order_status == 'cancelled' ||
+                    detailOrder.order_status == 'in_cancelled'
+                  "
+                  v-show="
+                    detailOrder.seller_return_refund &&
+                    detailOrder.seller_return_refund !== '0'
+                  "
+                >
+                  Giá sản phẩm hủy
+                </div>
+                <div
+                  v-if="detailOrder.return_order_sn_list !== null"
+                  v-show="
+                    detailOrder.seller_return_refund &&
+                    detailOrder.seller_return_refund !== '0'
+                  "
+                >
+                  Số tiền đã hoàn
+                </div>
                 <div class="font-bold">Phí vận chuyển (không tính trợ giá)</div>
+                <div
+                  v-show="
+                    detailOrder.final_shipping_fee &&
+                    detailOrder.final_shipping_fee !== '0'
+                  "
+                >
+                  Phí vận chuyển người mua trả
+                </div>
                 <div
                   v-show="
                     detailOrder.actual_shipping_fee &&
@@ -231,6 +260,7 @@
                 >
                   Phí vận chuyển được trợ giá từ sàn TMĐT
                 </div>
+                <div class="font-bold">Mã giảm giá</div>
                 <div class="font-bold">Phí giao dịch từ sàn TMĐT</div>
                 <div
                   v-show="
@@ -255,15 +285,72 @@
                 >
                   Phí thanh toán
                 </div>
+                <div
+                  v-show="
+                    detailOrder.order_ams_commission_fee &&
+                    detailOrder.order_ams_commission_fee !== '0'
+                  "
+                >
+                  Phí hoa hồng tiếp thị liên kết
+                </div>
+
                 <div class="font-bold">Doanh thu đơn hàng</div>
               </div>
               <div class="text-end">
                 <div>{{ FormatPrice(totalOrigin) }}&#8363;</div>
-                <div>- {{ FormatPrice(totalDiscount) }}&#8363;</div>
-                <div>0&#8363;</div>
+                <!-- giá sp-giá sp hủy-số tiền hoàn -->
+                <!-- <div>- {{ FormatPrice(totalDiscount) }}&#8363;</div> -->
                 <div>
                   {{
-                    FormatPrice(Number(detailOrder.estimated_shipping_fee))
+                    FormatPrice(
+                      Number(detailOrder.original_cost_of_goods_sold)
+                    )
+                  }}&#8363;
+                </div>
+                <div
+                  v-if="
+                    detailOrder.order_status == 'CANCELLED' ||
+                    detailOrder.order_status == 'IN_CANCELLED'
+                  "
+                  v-show="
+                    detailOrder.seller_return_refund &&
+                    detailOrder.seller_return_refund !== '0'
+                  "
+                >
+                  -
+                  {{
+                    FormatPrice(Number(detailOrder.seller_return_refund))
+                  }}&#8363;
+                </div>
+                <div
+                  v-if="detailOrder.return_order_sn_list !== null"
+                  v-show="
+                    detailOrder.seller_return_refund &&
+                    detailOrder.seller_return_refund !== '0'
+                  "
+                >
+                  -
+                  {{
+                    FormatPrice(Number(detailOrder.seller_return_refund))
+                  }}&#8363;
+                </div>
+                <div>
+                  {{
+                    FormatPrice(
+                      Number(detailOrder.final_shipping_fee) +
+                        Number(detailOrder.shopee_shipping_rebate) -
+                        Number(detailOrder.actual_shipping_fee)
+                    )
+                  }}&#8363;
+                </div>
+                <div
+                  v-show="
+                    detailOrder.final_shipping_fee &&
+                    detailOrder.final_shipping_fee !== '0'
+                  "
+                >
+                  {{
+                    FormatPrice(Number(detailOrder.final_shipping_fee))
                   }}&#8363;
                 </div>
                 <div
@@ -272,6 +359,7 @@
                     detailOrder.actual_shipping_fee !== '0'
                   "
                 >
+                  -
                   {{
                     FormatPrice(Number(detailOrder.actual_shipping_fee))
                   }}&#8363;
@@ -287,6 +375,13 @@
                   }}&#8363;
                 </div>
                 <div>
+                  -
+                  {{
+                    FormatPrice(Number(detailOrder.voucher_from_seller))
+                  }}&#8363;
+                </div>
+                <div>
+                  -
                   {{
                     FormatPrice(
                       Number(detailOrder.commission_fee) +
@@ -295,6 +390,7 @@
                     )
                   }}&#8363;
                 </div>
+
                 <div
                   v-show="
                     detailOrder.commission_fee &&
@@ -321,14 +417,19 @@
                     FormatPrice(Number(detailOrder.seller_transaction_fee))
                   }}&#8363;
                 </div>
-                <div>
+                <div
+                  v-show="
+                    detailOrder.order_ams_commission_fee &&
+                    detailOrder.order_ams_commission_fee !== '0'
+                  "
+                >
+                  -
                   {{
-                    FormatPrice(
-                      totalOrigin -
-                        totalDiscount +
-                        Number(detailOrder.estimated_shipping_fee)
-                    )
+                    FormatPrice(Number(detailOrder.order_ams_commission_fee))
                   }}&#8363;
+                </div>
+                <div>
+                  {{ FormatPrice(Number(detailOrder.escrow_amount)) }}&#8363;
                 </div>
               </div>
             </div>
@@ -361,11 +462,7 @@
               <span class="font-bold pr-8">Tổng số tiền điều chỉnh</span
               ><span class="text-right"
                 >{{
-                  FormatPrice(
-                    totalOrigin -
-                      totalDiscount +
-                      Number(detailOrder.estimated_shipping_fee)
-                  )
+                  FormatPrice(Number(detailOrder.total_adjustment_amount))
                 }}&#8363;</span
               >
             </div>
@@ -384,9 +481,7 @@
               ><span class="text-right"
                 >{{
                   FormatPrice(
-                    totalOrigin -
-                      totalDiscount +
-                      Number(detailOrder.estimated_shipping_fee)
+                    Number(detailOrder.escrow_amount_after_adjustment)
                   )
                 }}&#8363;</span
               >
@@ -402,16 +497,49 @@
             <div class="p-4 grid grid-cols-4">
               <span></span>
               <span></span>
-              <span class="font-bold pr-8">Tổng tiền thanh toán</span
-              ><span class="text-right"
-                >{{
-                  FormatPrice(
-                    totalOrigin -
-                      totalDiscount +
-                      Number(detailOrder.estimated_shipping_fee)
-                  )
-                }}&#8363;</span
-              >
+              <div>
+                <div class="font-bold">Tổng tiền sản phẩm</div>
+                <div class="">Phí vận chuyển</div>
+                <div>Shopee Voucher</div>
+                <div>Mã giảm giá của shop</div>
+                <div>Shopee xu đã dùng</div>
+                <div class="font-bold">Thanh toán người mua</div>
+              </div>
+              <div class="text-end">
+                <div>{{ FormatPrice(totalOrigin) }}&#8363;</div>
+                <div>
+                  {{
+                    FormatPrice(Number(detailOrder.buyer_paid_shipping_fee))
+                  }}&#8363;
+                </div>
+                <div>
+                  -
+                  {{
+                    FormatPrice(
+                      Number(detailOrder.discount_from_voucher_shopee)
+                    )
+                  }}&#8363;
+                </div>
+                <div>
+                  -
+                  {{
+                    FormatPrice(
+                      Number(detailOrder.discount_voucher_from_seller)
+                    )
+                  }}&#8363;
+                </div>
+                <div>
+                  -
+                  {{
+                    FormatPrice(Number(detailOrder.discount_from_coin))
+                  }}&#8363;
+                </div>
+                <div>
+                  {{
+                    FormatPrice(Number(detailOrder.buyer_total_amount))
+                  }}&#8363;
+                </div>
+              </div>
             </div>
           </div>
         </div>

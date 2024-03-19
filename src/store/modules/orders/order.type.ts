@@ -94,12 +94,16 @@ export interface OrderDetail {
   payment_method: string
   currency: string
   days_to_ship: string
-  estimated_shipping_fee: string
+  final_shipping_fee: string
   actual_shipping_fee: string
   shopee_shipping_rebate: string
+  voucher_from_seller: string
   commission_fee: string
   service_fee: string
   seller_transaction_fee: string
+  order_ams_commission_fee: string
+  escrow_amount: string
+  total_adjustment_amount: string
   note: string
   noteupdate: string
   paytime: string
@@ -109,6 +113,12 @@ export interface OrderDetail {
   buyer_username: string
   region: string
   cod: number
+  escrow_amount_after_adjustment: string
+  discount_from_coin: string
+  discount_voucher_from_seller: string
+  discount_from_voucher_shopee: string
+  buyer_paid_shipping_fee: string
+  buyer_total_amount: string
   product_detail: Array<ProductOrderDetail>
   package_list: Array<PackageOrderDetail>
   tracking_info: Array<TrackingOrderDetail>
