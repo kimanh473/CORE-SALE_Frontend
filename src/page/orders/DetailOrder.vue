@@ -216,8 +216,8 @@
                 <div>Giá sản phẩm</div>
                 <div
                   v-if="
-                    detailOrder.order_status == 'cancelled' ||
-                    detailOrder.order_status == 'in_cancelled'
+                    detailOrder.order_status == 'CANCELLED' ||
+                    detailOrder.order_status == 'IN_CANCELLED'
                   "
                   v-show="
                     detailOrder.seller_return_refund &&

@@ -6,8 +6,14 @@ const getAllOrderApi = (perPage: number, page: number, status: any) => {
   )
 }
 
-const getAllOrderShopeeFilterApi = (data: Object) => {
-  return httpClient.post(`/catalog/product/create`, data)
+const getAllOrderShopeeFilterApi = (
+  time_from: string,
+  time_to: string,
+  shop_ids: string
+) => {
+  return httpClient.get(`shopee/order/get_order_list_sp`, {
+    params: { time_from, time_to, shop_ids },
+  })
 }
 const getAllOrderShopeeApi = (time_from: string, time_to: string) => {
   // return httpClient.get(`/user/order/list-order`)

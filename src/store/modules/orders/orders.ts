@@ -52,21 +52,27 @@ export const useOrder = defineStore('customerGroup', {
           console.log(err)
         })
     },
-    async getOrderShopeeFilterAction(
-      perPage: number,
-      page: any,
-      data: object,
-      toast: any,
-      EndTimeLoading: Function
-    ) {
-      await getAllOrderShopeeFilterApi(data)
+    async getOrderShopeeFilterAction(param: any) {
+      const time_from = param?.time_from
+      const time_to = param?.time_to
+      const shop_ids = param?.shop_ids
+      const toast = param?.toast
+      const EndTimeLoading = param?.EndTimeLoading
+      const perPage = param?.perPage
+      const page = param?.page
+      await getAllOrderShopeeFilterApi(time_from, time_to, shop_ids)
         .then((payload: any) => {
           if (payload.data.status === 'error') {
             toast.error(payload.data.message)
             EndTimeLoading()
           } else {
             toast.success('Đã áp dụng bộ lọc thành công')
-            this.getAllOrderPaginateAction(perPage, page, EndTimeLoading)
+            this.getAllOrderPaginateAction(
+              perPage,
+              page,
+              status,
+              EndTimeLoading
+            )
 
             EndTimeLoading()
           }

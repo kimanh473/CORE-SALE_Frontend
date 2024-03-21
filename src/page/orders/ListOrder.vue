@@ -385,7 +385,7 @@
       hackValue.value = undefined
     }
   }
-  const start_day = ref('')
+  const start_day = ref<string>()
   const end_day = ref<any>([])
   const onChangeDateFilter = (val: RangeValue) => {
     date_value_filter.value = val
@@ -415,11 +415,7 @@
   const handleShowFilterInTable = (showFilterInTable: boolean) => {
     isOpenModalFilterTable.value = showFilterInTable
   }
-  const handleDeleteFilter = () => {
-    isOpenModalFilterTable.value = false
-    selected_shop_filter.value = undefined
-    date_value_filter.value = undefined
-  }
+
   const handleCloseModalFilter = () => {
     isOpenModalFilterTable.value = false
   }
@@ -464,14 +460,30 @@
   )
 
   const changePage = (pageNumber: number) => {
+    console.log('start', start_day.value)
     isLoading.value = true
-    router.push({
-      path: route.fullPath,
-      query: {
+    if (start_day.value == undefined) {
+      const updatedQuery = {
         page: pageNumber,
         status: currentMenu.value,
-      },
-    })
+      }
+      router.push({
+        path: route.fullPath,
+        query: updatedQuery,
+      })
+    }
+    if (start_day.value !== undefined) {
+      const updatedQuery = {
+        page: pageNumber,
+        status: currentMenu.value,
+        time_from: start_day.value,
+        time_to: end_day.value,
+      }
+      router.push({
+        path: route.fullPath,
+        query: updatedQuery,
+      })
+    }
     dataOrder.getAllOrderPaginateAction(
       perPage.value,
       pageNumber,
@@ -657,36 +669,83 @@
     filteredInfo.value = filters
   }
 
-  console.log('filtered', filteredListOrder.value)
   const ApplyFilterOnTable = () => {
-    const data = {
-      start_day: start_day.value,
-      end_day: end_day.value,
-      selected_shop_filter: selected_shop_filter.value,
-    }
-    dataOrder.getOrderShopeeFilterAction(
-      Number(perPage.value),
-      Number(route.query.page) ? Number(route.query.page) : 1,
-      data,
-      toast,
+    // const data = {
+    //   time_from: start_day.value,
+    //   time_to: end_day.value,
+    //   selected_shop_filter: selected_shop_filter.value,
+    // }
+
+    dataOrder
+      .getOrderShopeeFilterAction({
+        perPage: perPage.value,
+        page: Number(route.query.page) ? Number(route.query.page) : 1,
+        time_from: start_day.value,
+        time_to: end_day.value,
+        shop_ids: selected_shop_filter.value.join(','),
+        status: currentMenu.value,
+        toast,
+        EndTimeLoading,
+      })
+      .then(() => {
+        const updatedQuery = {
+          page: 1,
+          status: currentMenu.value,
+          time_from: start_day.value,
+          time_to: end_day.value,
+          shop_ids: selected_shop_filter.value.join(','),
+        }
+        router
+          .push({
+            path: route.fullPath,
+            query: updatedQuery,
+          })
+          .then(() => {
+            isOpenModalFilterTable.value = false
+          })
+      })
+  }
+  const handleDeleteFilter = (pageNumber: number) => {
+    isOpenModalFilterTable.value = false
+    selected_shop_filter.value = undefined
+    date_value_filter.value = undefined
+    start_day.value = undefined
+    end_day.value = undefined
+    dataOrder.getAllOrderPaginateAction(
+      perPage.value,
+      pageNumber,
+      currentMenu.value,
       EndTimeLoading
     )
+
+    const updatedQuery = {
+      page: 1,
+      status: currentMenu.value,
+    }
+    router.push({
+      path: route.fullPath,
+      query: updatedQuery,
+    })
   }
   const handleUpdateShopee = () => {
     isLoading.value = true
-    dataOrder.getOrderShopeeAction({
-      perPage: perPage.value,
-      page: Number(route.query.page) ? Number(route.query.page) : 1,
-      status: currentMenu.value,
-      time_from: valueRangeDate.value
-        ? dayjs(valueRangeDate.value[0]).format(dateFormat)
-        : '',
-      time_to: valueRangeDate.value
-        ? dayjs(valueRangeDate.value[1]).format(dateFormat)
-        : '',
-      toast,
-      EndTimeLoading,
-    })
+    dataOrder
+      .getOrderShopeeAction({
+        perPage: perPage.value,
+        page: Number(route.query.page) ? Number(route.query.page) : 1,
+        status: currentMenu.value,
+        time_from: valueRangeDate.value
+          ? dayjs(valueRangeDate.value[0]).format(dateFormat)
+          : '',
+        time_to: valueRangeDate.value
+          ? dayjs(valueRangeDate.value[1]).format(dateFormat)
+          : '',
+        toast,
+        EndTimeLoading,
+      })
+      .then(() => {
+        router.go(0)
+      })
   }
   const handleCloseConfirm = () => {
     isOpenConfirm.value = false

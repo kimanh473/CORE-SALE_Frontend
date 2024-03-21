@@ -94,6 +94,9 @@ export interface OrderDetail {
   payment_method: string
   currency: string
   days_to_ship: string
+  estimated_shipping_fee: string
+  original_cost_of_goods_sold: string
+  seller_return_refund: string
   final_shipping_fee: string
   actual_shipping_fee: string
   shopee_shipping_rebate: string
@@ -119,6 +122,7 @@ export interface OrderDetail {
   discount_from_voucher_shopee: string
   buyer_paid_shipping_fee: string
   buyer_total_amount: string
+  return_order_sn_list: any
   product_detail: Array<ProductOrderDetail>
   package_list: Array<PackageOrderDetail>
   tracking_info: Array<TrackingOrderDetail>
