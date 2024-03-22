@@ -53,20 +53,31 @@ export const useOrder = defineStore('customerGroup', {
         })
     },
     async getOrderShopeeFilterAction(param: any) {
+      const search_word = param?.search_word
       const time_from = param?.time_from
       const time_to = param?.time_to
-      const shop_ids = param?.shop_ids
+      const shop_id = param?.shop_id
+      const platform = param?.platform
+      const order_status = param?.order_status
+      const status = param?.status
       const toast = param?.toast
       const EndTimeLoading = param?.EndTimeLoading
       const perPage = param?.perPage
       const page = param?.page
-      await getAllOrderShopeeFilterApi(time_from, time_to, shop_ids)
+      await getAllOrderShopeeFilterApi(
+        search_word,
+        time_from,
+        time_to,
+        shop_id,
+        platform,
+        order_status
+      )
         .then((payload: any) => {
           if (payload.data.status === 'error') {
             toast.error(payload.data.message)
             EndTimeLoading()
           } else {
-            toast.success('Đã áp dụng bộ lọc thành công')
+            toast.success('Lọc thành công')
             this.getAllOrderPaginateAction(
               perPage,
               page,
@@ -94,6 +105,7 @@ export const useOrder = defineStore('customerGroup', {
       const time_from = param?.time_from
       const time_to = param?.time_to
       const toast = param?.toast
+      const status = param?.status
       const EndTimeLoading = param?.EndTimeLoading
       const perPage = param?.perPage
       const page = param?.page

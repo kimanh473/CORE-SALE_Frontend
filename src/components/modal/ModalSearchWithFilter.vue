@@ -6,7 +6,10 @@
       >Search</label
     >
     <div class="relative">
-      <div class="flex absolute inset-y-0 left-0 items-center pl-3">
+      <div
+        @click.prevent="searchWordInTable"
+        class="flex absolute inset-y-0 left-0 items-center pl-3 hover:cursor-pointer"
+      >
         <i class="fal fa-search"></i>
       </div>
       <input
@@ -15,6 +18,7 @@
         placeholder="Tìm kiếm"
         :v-model="searchValue"
         @input="searchInTable"
+        @keyup.enter="searchWordInTable"
       />
 
       <svg
@@ -38,12 +42,22 @@
 <script setup>
   import { ref, defineEmits } from 'vue'
 
-  const emit = defineEmits(['searchInTable', 'showFilterInTable'])
+  const emit = defineEmits([
+    'searchInTable',
+    'showFilterInTable',
+    'searchWordInTable',
+  ])
   const searchValue = ref('')
+
   const isOpenModalFilter = ref(false)
   const searchInTable = (e) => {
     searchValue.value = e.target.value
     emit('searchInTable', searchValue.value)
+  }
+  const searchWordInTable = () => {
+    if (searchValue.value) {
+      emit('searchWordInTable', searchValue.value)
+    }
   }
   const showFilterInTable = () => {
     isOpenModalFilter.value = true

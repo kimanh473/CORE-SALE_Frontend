@@ -24,6 +24,7 @@
         <SearchWithFilter
           @searchInTable="handlesearchInTable"
           @showFilterInTable="handleShowFilterInTable"
+          @searchWordInTable="ShowTableSearchWord"
         />
         <div
           class="button-custom update-list-button relative group rounded-md px-2"
@@ -210,8 +211,23 @@
           />
         </div>
         <a-divider />
-        <div class="pb-4">
-          <label class="form-group-label font-bold mr-12">Chọn shop </label>
+        <div>
+          <label class="form-group-label font-bold">Chọn sàn</label>
+          <div class="pb-1">
+            <a-select
+              show-search
+              v-model:value="selected_platform_filter"
+              class="form-control-input"
+              placeholder="Chọn sàn TMĐT"
+              :options="list_platform"
+              mode="multiple"
+            >
+            </a-select>
+          </div>
+        </div>
+        <a-divider />
+        <div class="pb-1">
+          <label class="form-group-label font-bold">Chọn shop </label>
           <div>
             <a-select
               show-search
@@ -219,6 +235,23 @@
               class="form-control-input"
               placeholder="Chọn Shop"
               :options="list_shop"
+              mode="multiple"
+            >
+            </a-select>
+          </div>
+        </div>
+        <a-divider />
+        <div class="pb-1">
+          <label class="form-group-label font-bold"
+            >Chọn trạng thái đơn hàng
+          </label>
+          <div>
+            <a-select
+              show-search
+              v-model:value="selected_status_filter"
+              class="form-control-input"
+              placeholder="Chọn trạng thái"
+              :options="list_status"
               mode="multiple"
             >
             </a-select>
@@ -347,7 +380,7 @@
   const toast = useToast()
   const dataWebsite = useWebCatalog()
   dataWebsite.getAllWebCatalogAction()
-  console.log()
+
   // const { listWeb } = storeToRefs(dataWebsite)
   // function formatWeb(webcode: string) {
   //   const webName = listWeb.value.find((item: any) => item.code == webcode)
@@ -386,7 +419,7 @@
     }
   }
   const start_day = ref<string>()
-  const end_day = ref<any>([])
+  const end_day = ref<string>()
   const onChangeDateFilter = (val: RangeValue) => {
     date_value_filter.value = val
     start_day.value = date_value_filter.value
@@ -419,6 +452,7 @@
   const handleCloseModalFilter = () => {
     isOpenModalFilterTable.value = false
   }
+  const selected_status_filter = ref<any>([])
   const list_shop = ref<SelectProps['options']>([
     {
       value: '983519783',
@@ -460,30 +494,9 @@
   )
 
   const changePage = (pageNumber: number) => {
-    console.log('start', start_day.value)
     isLoading.value = true
-    if (start_day.value == undefined) {
-      const updatedQuery = {
-        page: pageNumber,
-        status: currentMenu.value,
-      }
-      router.push({
-        path: route.fullPath,
-        query: updatedQuery,
-      })
-    }
-    if (start_day.value !== undefined) {
-      const updatedQuery = {
-        page: pageNumber,
-        status: currentMenu.value,
-        time_from: start_day.value,
-        time_to: end_day.value,
-      }
-      router.push({
-        path: route.fullPath,
-        query: updatedQuery,
-      })
-    }
+
+    router.push(`/orders-list?page=${pageNumber}&status=${currentMenu.value}`)
     dataOrder.getAllOrderPaginateAction(
       perPage.value,
       pageNumber,
@@ -491,11 +504,6 @@
       EndTimeLoading
     )
   }
-
-  // const handleSearchInTable = (searchInTable: any) => {}
-  // const onSearch = (searchValue: string) => {
-  //   // if (record.order_sn.toString().toLowerCase().includes(searchValue.toLowerCase()))
-  // }
   const isCheck = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const isOpenConfirm = ref<boolean>(false)
@@ -534,6 +542,58 @@
       )
     )
   })
+
+  const ShowTableSearchWord = () => {
+    const platform_filter = ref()
+    const shop_filter = ref()
+    const status_filter = ref()
+
+    platform_filter.value = selected_platform_filter.value.join(',')
+    shop_filter.value = selected_shop_filter.value.join(',')
+    status_filter.value = selected_status_filter.value.join(',')
+    if (platform_filter.value == '') {
+      platform_filter.value = null
+    }
+    if (shop_filter.value == '') {
+      shop_filter.value = null
+    }
+    if (status_filter.value == '') {
+      status_filter.value = null
+    }
+    if (searchInTableValue.value == '') {
+      searchInTableValue.value = null
+    }
+    dataOrder
+      .getOrderShopeeFilterAction({
+        perPage: perPage.value,
+        page: Number(route.query.page) ? Number(route.query.page) : 1,
+        search_word: searchInTableValue.value,
+        time_from: start_day.value,
+        time_to: end_day.value,
+        shop_id: shop_filter.value,
+        platform: platform_filter.value,
+        order_status: status_filter.value,
+        status: currentMenu.value,
+        toast,
+        EndTimeLoading,
+      })
+      .then(() => {
+        const updatedQuery = {
+          page: 1,
+          status: currentMenu.value,
+          time_from: start_day.value,
+          time_to: end_day.value,
+          shop_id: shop_filter.value,
+          platform: platform_filter.value,
+          order_status: status_filter.value,
+          search: searchInTableValue.value,
+        }
+        router.push({
+          path: route.fullPath,
+          query: updatedQuery,
+        })
+      })
+  }
 
   const columns = computed<TableColumnType[]>(() => {
     const filtered = filteredInfo.value || {}
@@ -670,19 +730,35 @@
   }
 
   const ApplyFilterOnTable = () => {
-    // const data = {
-    //   time_from: start_day.value,
-    //   time_to: end_day.value,
-    //   selected_shop_filter: selected_shop_filter.value,
-    // }
+    const platform_filter = ref()
+    const shop_filter = ref()
+    const status_filter = ref()
 
+    platform_filter.value = selected_platform_filter.value.join(',')
+    shop_filter.value = selected_shop_filter.value.join(',')
+    status_filter.value = selected_status_filter.value.join(',')
+    if (platform_filter.value == '') {
+      platform_filter.value = null
+    }
+    if (shop_filter.value == '') {
+      shop_filter.value = null
+    }
+    if (status_filter.value == '') {
+      status_filter.value = null
+    }
+    if (searchInTableValue.value == '') {
+      searchInTableValue.value = null
+    }
     dataOrder
       .getOrderShopeeFilterAction({
         perPage: perPage.value,
         page: Number(route.query.page) ? Number(route.query.page) : 1,
+        search_word: searchInTableValue.value,
         time_from: start_day.value,
         time_to: end_day.value,
-        shop_ids: selected_shop_filter.value.join(','),
+        shop_id: shop_filter.value,
+        platform: platform_filter.value,
+        order_status: status_filter.value,
         status: currentMenu.value,
         toast,
         EndTimeLoading,
@@ -693,7 +769,10 @@
           status: currentMenu.value,
           time_from: start_day.value,
           time_to: end_day.value,
-          shop_ids: selected_shop_filter.value.join(','),
+          shop_id: shop_filter.value,
+          platform: platform_filter.value,
+          order_status: status_filter.value,
+          search: searchInTableValue.value,
         }
         router
           .push({
@@ -707,10 +786,12 @@
   }
   const handleDeleteFilter = (pageNumber: number) => {
     isOpenModalFilterTable.value = false
-    selected_shop_filter.value = undefined
-    date_value_filter.value = undefined
-    start_day.value = undefined
-    end_day.value = undefined
+    selected_platform_filter.value = []
+    selected_shop_filter.value = []
+    selected_status_filter.value = []
+    date_value_filter.value = null
+    start_day.value = null
+    end_day.value = null
     dataOrder.getAllOrderPaginateAction(
       perPage.value,
       pageNumber,
@@ -781,8 +862,9 @@
   }
 
   const selected_platform = ref('shopee')
+  const selected_platform_filter = ref([])
   const selected_shop = ref('983519783')
-  const selected_shop_filter = ref()
+  const selected_shop_filter = ref([])
   const list_platform = ref<SelectProps['options']>([
     {
       value: 'shopee',
@@ -803,6 +885,37 @@
     {
       value: 'web',
       label: 'Website',
+    },
+  ])
+
+  const list_status = ref<SelectProps['options']>([
+    {
+      value: 'INVOICE_PEDING',
+      label: 'Chờ xác nhận',
+    },
+    {
+      value: 'READY_TO_SHIP',
+      label: 'Chờ lấy hàng',
+    },
+    {
+      value: 'TO_CONFIRM_RECEIVE',
+      label: 'Đang giao',
+    },
+    {
+      value: 'COMPLETED',
+      label: 'Đã giao',
+    },
+    {
+      value: 'CANCELLED',
+      label: 'Đơn hủy',
+    },
+    {
+      value: 'TO_RETURN',
+      label: 'Trả hàng/Hoàn tiền',
+    },
+    {
+      value: 'FAILED_DELIVERY',
+      label: 'Giao không thành công',
     },
   ])
 </script>
