@@ -662,6 +662,13 @@
                 permission: [''],
                 submenuGroup: 'Bán hàng',
               },
+              {
+                icon: '',
+                label: 'Sàn TMĐT',
+                to: '/setting-platform',
+                permission: [''],
+                submenuGroup: 'Bán hàng',
+              },
             ],
           },
         ],

@@ -46,5 +46,14 @@ const settingSale = [
     },
     beforeEnter: requireAuth,
   },
+  {
+    path: '/setting-platform',
+    component: () =>
+      import('@/page/settings/Admin/SettingGroupPlatform/ListPlatform.vue'),
+    meta: {
+      layout: 'base-layout',
+    },
+    beforeEnter: requireAuth,
+  },
 ]
 export default settingSale

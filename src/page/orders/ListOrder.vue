@@ -890,11 +890,11 @@
 
   const list_status = ref<SelectProps['options']>([
     {
-      value: 'INVOICE_PEDING',
+      value: 'UNPAID',
       label: 'Chờ xác nhận',
     },
     {
-      value: 'READY_TO_SHIP',
+      value: 'PROCESSED',
       label: 'Chờ lấy hàng',
     },
     {

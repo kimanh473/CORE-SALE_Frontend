@@ -126,6 +126,7 @@ export interface OrderDetail {
   product_detail: Array<ProductOrderDetail>
   package_list: Array<PackageOrderDetail>
   tracking_info: Array<TrackingOrderDetail>
+  recipient_address: Object
 }
 export interface countStatus {
   total: number

@@ -39,8 +39,13 @@
             <a-row class="p-4">
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ giao hàng</div>
-                <div>{{ detailOrder.buyer_username }} - SĐT</div>
-                <div>30 Trương Định, Thịnh Liệt, Hoàng Mai, Hà Nội.</div></a-col
+                <div>
+                  {{ detailOrder.buyer_username }} -
+                  <!-- {{ detailOrder.recipient_address.phone }} -->
+                </div>
+                <div>
+                  <!-- {{ detailOrder.recipient_address.full_address }} -->
+                </div></a-col
               >
               <a-col :span="12"
                 ><div class="text-base font-bold">Địa chỉ thanh toán</div>
